@@ -20,7 +20,6 @@ public class Swagger {
                 .info(new Info().title("PeakSpace").description("Good projects!"))
 
                 .security(Collections.singletonList(new SecurityRequirement().addList(API_KEY)));
-
     }
     public SecurityScheme apiKeySecurityScheme(){
         return new SecurityScheme()
@@ -29,7 +28,6 @@ public class Swagger {
                 .in(SecurityScheme.In.HEADER)
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("Bearer");
-
     }
 
 }
