@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Getter;
 import lombok.Setter;
-import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -15,10 +14,9 @@ import java.time.ZonedDateTime;
 @Table(name = "link_publications")
 public class Link_Publication {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "link_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "link_seq", allocationSize = 1)
     private Long id;
     private String link;
-    private ZonedDateTime createdAt;
 
 }

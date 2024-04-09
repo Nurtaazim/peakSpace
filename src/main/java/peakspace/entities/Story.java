@@ -11,10 +11,10 @@ import java.util.List;
 @Table(name = "stories")
 public class Story {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "story_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "story_seq", allocationSize = 1)
     private Long id;
-    private ZonedDateTime createdAd;
+    private ZonedDateTime createdAt;
     private ZonedDateTime expDate;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
@@ -26,5 +26,9 @@ public class Story {
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Link_Publication> linkPublications;
 
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = ZonedDateTime.now();
+    }
 
 }

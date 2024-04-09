@@ -1,5 +1,12 @@
 package peakspace.entities;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.ZonedDateTime;
@@ -10,7 +17,7 @@ import java.time.ZonedDateTime;
 @Table(name = "notifications")
 public class Notification {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "not_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "not_seq", allocationSize = 1)
     private Long id;
     private ZonedDateTime createdAt;
