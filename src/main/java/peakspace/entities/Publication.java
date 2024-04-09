@@ -1,12 +1,5 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.ZonedDateTime;
@@ -26,16 +19,16 @@ public class Publication {
     private ZonedDateTime updatedAt;
     private String location;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User owner;
     @OneToMany
     private List<User> tagFriends;
-    @OneToMany(mappedBy = "publication")
+    @OneToMany
     private List<Link_Publication> linkPublications;
-    @OneToMany(mappedBy = "publication")
+    @OneToMany(mappedBy = "publication",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Comment> comments;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private PablicProfile pablicProfile;
-    @OneToMany()
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Like> likes;
 }

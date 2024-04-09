@@ -1,12 +1,5 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,16 +14,7 @@ public class Like {
     private Long id;
     private boolean isLike;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private User user;
-//    @ManyToOne
-//    private Story story;
-//    @ManyToOne
-//    private Comment comment;
-//    @OneToOne(mappedBy = "like")
-//    private Notification notification;
-//    @ManyToOne
-//    private Publication publication;
-
 
 }

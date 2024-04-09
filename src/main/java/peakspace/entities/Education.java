@@ -1,13 +1,8 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import peakspace.enums.Studies;
 
 @Getter
 @Setter
@@ -18,9 +13,11 @@ public class Education {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "edu_seq", allocationSize = 1)
     private Long id;
+    private Studies avgAndHigher;
     private String city;
     private String educationalInstitution;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private Profile profile;
+
 }

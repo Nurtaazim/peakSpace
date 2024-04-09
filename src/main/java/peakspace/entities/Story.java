@@ -1,12 +1,5 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.ZonedDateTime;
@@ -24,13 +17,13 @@ public class Story {
     private ZonedDateTime createdAd;
     private ZonedDateTime expDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User owner;
     @OneToMany
     private List<User> tagFiends;
-    @OneToMany()
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Like> likes;
-    @OneToMany(mappedBy = "stories")
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Link_Publication> linkPublications;
 
 

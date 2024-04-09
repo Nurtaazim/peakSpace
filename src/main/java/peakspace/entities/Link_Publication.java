@@ -5,8 +5,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.ZonedDateTime;
@@ -22,12 +20,5 @@ public class Link_Publication {
     private Long id;
     private String link;
     private ZonedDateTime createdAt;
-
-    @ManyToOne
-    private Story stories;
-    @ManyToOne
-    private Chat chat;
-    @ManyToOne
-    private Publication publication;
 
 }

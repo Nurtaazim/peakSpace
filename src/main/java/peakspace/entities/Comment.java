@@ -1,14 +1,5 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.ZonedDateTime;
@@ -26,14 +17,14 @@ public class Comment {
     private String message;
     private ZonedDateTime createdAt;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private User user;
-    @OneToOne(mappedBy = "comment")
+    @OneToOne(mappedBy = "comment",cascade = {CascadeType.PERSIST})
     private Notification notification;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private Publication publication;
     @OneToMany
-    @JoinColumn(name = "innerComment")
+    @JoinTable(name = "innerComment")
     private List<Comment> innerComments;
 
 }
