@@ -17,12 +17,12 @@ import java.util.List;
 @Entity
 @Table(name = "chapters")
 public class Chapter {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "chapter_seq", allocationSize = 1)
     private Long id;
     private String groupName;
-
     @OneToMany
     private List<User> friends;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

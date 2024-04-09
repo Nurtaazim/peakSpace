@@ -18,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "profiles")
 public class Profile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "profile_seq", allocationSize = 1)
@@ -28,7 +29,6 @@ public class Profile {
     private String fullName;
     private String phoneNumber;
     private String profession;
-
     @ElementCollection
     private List<Long> favorites;
     @OneToMany(mappedBy = "profile",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})

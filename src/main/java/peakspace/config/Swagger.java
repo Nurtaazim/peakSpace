@@ -10,6 +10,7 @@ import java.util.Collections;
 
 @Configuration
 public class Swagger {
+
     private static final String  API_KEY = "Bearer Token";
     @Bean
     public OpenAPI customOpenAPI(){
@@ -30,4 +31,5 @@ public class Swagger {
                 .scheme("Bearer");
 
     }
+
 }

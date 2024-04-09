@@ -17,11 +17,11 @@ import java.util.List;
 @Entity
 @Table(name = "chats")
 public class Chat {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "chat_seq", allocationSize = 1)
     private Long id;
-
     @OneToMany(mappedBy = "chat",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<MessageContent>messageContents;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

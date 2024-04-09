@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "pablic_profiles")
 public class PablicProfile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "public_p_seq", allocationSize = 1)
@@ -27,7 +28,6 @@ public class PablicProfile {
     private String avatar;
     private String pablicName;
     private Tematica tematica;
-
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private User user;
     @ManyToMany

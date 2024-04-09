@@ -16,6 +16,7 @@ import peakspace.enums.Studies;
 @Entity
 @Table(name = "educations")
 public class Education {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "edu_seq", allocationSize = 1)
@@ -23,7 +24,6 @@ public class Education {
     private Studies avgAndHigher;
     private String city;
     private String educationalInstitution;
-
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private Profile profile;
 

@@ -13,6 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "link_publications")
 public class Link_Publication {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "link_seq", allocationSize = 1)

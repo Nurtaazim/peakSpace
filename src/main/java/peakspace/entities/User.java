@@ -9,19 +9,17 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "user_seq", allocationSize = 1)
     private Long id;
     private String userName;
     private String email;
     private String password;
     private Boolean isBlock;
-
     @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private Profile profile;
-    @OneToOne(mappedBy = "user",cascade = {CascadeType.DETACH,CascadeType.PERSIST})
-    private Like like;
     @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Story> stories;
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})

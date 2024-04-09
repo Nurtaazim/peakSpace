@@ -20,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "publications")
 public class Publication {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "publications_seq", allocationSize = 1)
@@ -28,7 +29,6 @@ public class Publication {
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
     private String location;
-
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User owner;
     @OneToMany
@@ -41,7 +41,6 @@ public class Publication {
     private PablicProfile pablicProfile;
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Like> likes;
-
     @PrePersist
     public void prePersist(){
         this.createdAt = ZonedDateTime.now();

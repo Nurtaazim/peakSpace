@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "notifications")
 public class Notification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "not_seq", allocationSize = 1)
@@ -23,7 +24,6 @@ public class Notification {
     private ZonedDateTime createdAt;
     private boolean seen;
     private String notificationMessage;
-
     @OneToOne
     private Like like;
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

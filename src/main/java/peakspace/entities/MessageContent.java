@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "message_content")
 public class MessageContent {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "message_content_seq", allocationSize = 1)
@@ -23,7 +24,6 @@ public class MessageContent {
     private String content;
     private ZonedDateTime timestamp;
     private boolean readOrNotRead;
-
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private Chat chat;
 

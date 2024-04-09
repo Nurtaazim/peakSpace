@@ -20,13 +20,13 @@ import java.util.List;
 @Entity
 @Table(name = "comments")
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "comment_seq", allocationSize = 1)
     private Long id;
     private String message;
     private ZonedDateTime createdAt;
-
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private User user;
     @OneToOne(mappedBy = "comment",cascade = {CascadeType.PERSIST})
