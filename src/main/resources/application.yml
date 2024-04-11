@@ -1,12 +1,13 @@
 spring:
     datasource:
-        driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/peakspace
         username: postgres
         password: mirlan001m.
+        driver-class-name: org.postgresql.Driver
+
 jpa:
     hibernate:
-        ddl-auto: update
+        ddl-auto: create
         show-sql: true
 
 server:
