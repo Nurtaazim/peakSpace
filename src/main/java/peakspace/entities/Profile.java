@@ -21,7 +21,7 @@ public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "profile_seq", allocationSize = 1)
+    @SequenceGenerator(name = "profile_seq", allocationSize = 1,initialValue = 11)
     private Long id;
     private String avatar;
     private String cover;

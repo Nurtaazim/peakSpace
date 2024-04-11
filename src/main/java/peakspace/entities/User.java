@@ -2,6 +2,8 @@ package peakspace.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import peakspace.enums.Tematica;
+
 import java.util.List;
 
 @Getter
@@ -12,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "user_seq", allocationSize = 1)
+    @SequenceGenerator(name = "user_seq", allocationSize = 1,initialValue = 11)
     private Long id;
     private String userName;
     private String email;

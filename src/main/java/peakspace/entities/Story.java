@@ -13,16 +13,16 @@ public class Story {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "story_seq", allocationSize = 1)
+    @SequenceGenerator(name = "story_seq", allocationSize = 1,initialValue = 9)
     private Long id;
     private ZonedDateTime createdAt;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User owner;
-    @OneToMany
+    @ManyToMany
     private List<User> tagFiends;
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Like> likes;
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Link_Publication> linkPublications;
     @PrePersist
     public void prePersist(){

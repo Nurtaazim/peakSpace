@@ -19,7 +19,7 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "not_seq", allocationSize = 1)
+    @SequenceGenerator(name = "not_seq", allocationSize = 1,initialValue = 4)
     private Long id;
     private ZonedDateTime createdAt;
     private boolean seen;

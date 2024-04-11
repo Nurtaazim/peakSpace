@@ -16,7 +16,7 @@ public class Link_Publication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "link_seq", allocationSize = 1)
+    @SequenceGenerator(name = "link_seq", allocationSize = 1,initialValue = 11)
     private Long id;
     private String link;
 

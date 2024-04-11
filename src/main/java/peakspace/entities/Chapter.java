@@ -20,7 +20,7 @@ public class Chapter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "chapter_seq", allocationSize = 1)
+    @SequenceGenerator(name = "chapter_seq", allocationSize = 1,initialValue = 4)
     private Long id;
     private String groupName;
     @OneToMany

@@ -23,7 +23,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "comment_seq", allocationSize = 1)
+    @SequenceGenerator(name = "comment_seq", allocationSize = 1,initialValue = 9)
     private Long id;
     private String message;
     private ZonedDateTime createdAt;
