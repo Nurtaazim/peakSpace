@@ -8,4 +8,6 @@ import java.io.NotActiveException;
 
 public interface UserService {
     ResponseWithGoogle verifyToken(String tokenFromGoogle);
+
+    ResponseWithGoogle signUpWithGoogle(String tokenFromGoogle);
 }

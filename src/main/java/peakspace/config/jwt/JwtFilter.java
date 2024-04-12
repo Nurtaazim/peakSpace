@@ -17,6 +17,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
+
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
@@ -26,7 +27,6 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String headerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-
         String bearer = "Bearer ";
         if (headerToken != null && headerToken.startsWith(bearer)){
             String token = headerToken.substring(bearer.length());
@@ -50,4 +50,5 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
 }

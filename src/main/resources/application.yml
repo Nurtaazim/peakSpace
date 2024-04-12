@@ -1,10 +1,20 @@
 spring:
     datasource:
-        url: jdbc:postgresql://localhost:5432/peakspace
-        username: postgres
-        password: mirlan001m.
-        driver-class-name: org.postgresql.Driver
-
+        url: jdbc:postgresql://localhost:5432/
+        username:
+        password:
+        driver-class-name:
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: arstanbeekovvv@gmail.com
+        password: gnfh xali juew hdna
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
 jpa:
     hibernate:
         ddl-auto: create

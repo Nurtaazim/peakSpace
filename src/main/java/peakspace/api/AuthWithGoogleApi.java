@@ -9,9 +9,15 @@ import peakspace.service.UserService;
 @RestController("/auth-with-google")
 @RequiredArgsConstructor
 public class AuthWithGoogleApi {
+
     private final UserService userService;
     @PostMapping("/verifyToken")
     public ResponseWithGoogle verifyToken(@RequestBody String tokenFromGoogle) {
         return userService.verifyToken(tokenFromGoogle);
     }
+    @PostMapping("/sign_up-with_token")
+    public ResponseWithGoogle signUpWithGoogle(@RequestBody String tokenFromGoogle) {
+        return userService.signUpWithGoogle(tokenFromGoogle);
+    }
+
 }

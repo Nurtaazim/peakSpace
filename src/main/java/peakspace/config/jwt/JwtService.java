@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 
 @Service
 public class JwtService {
+
     @Value("${app.jwt.secret}")
     private String secretKey;
 
@@ -28,4 +29,5 @@ public class JwtService {
         DecodedJWT decodedJWT = jwtVerify.verify(token);
         return decodedJWT.getClaim("email").asString();
     }
+
 }
