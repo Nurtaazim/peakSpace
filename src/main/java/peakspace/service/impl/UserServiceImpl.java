@@ -1,5 +1,4 @@
 package peakspace.service.impl;
-import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseWithGoogle verifyToken(String tokenFromGoogle) {
+
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
             String email = decodedToken.getEmail();

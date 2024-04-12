@@ -11,10 +11,12 @@ import peakspace.service.UserService;
 public class AuthWithGoogleApi {
 
     private final UserService userService;
+
     @PostMapping("/verifyToken")
     public ResponseWithGoogle verifyToken(@RequestBody String tokenFromGoogle) {
         return userService.verifyToken(tokenFromGoogle);
     }
+
     @PostMapping("/sign_up-with_token")
     public ResponseWithGoogle signUpWithGoogle(@RequestBody String tokenFromGoogle) {
         return userService.signUpWithGoogle(tokenFromGoogle);

@@ -8,7 +8,7 @@ group = 'peakspace'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '21'
+    sourceCompatibility = '17'
 }
 
 repositories {
@@ -28,7 +28,8 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'com.google.firebase:firebase-admin:9.2.0'
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.2.0'
+
 }
 
 tasks.named('test') {
