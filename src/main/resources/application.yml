@@ -1,9 +1,9 @@
 spring:
     datasource:
-        url: jdbc:postgresql://localhost:5432/
-        username:
-        password:
         driver-class-name:
+        password:
+        url:
+        username:
     mail:
         host: smtp.gmail.com
         port: 587
@@ -17,7 +17,7 @@ spring:
                         enable: true
 jpa:
     hibernate:
-        ddl-auto: create
+        ddl-auto:
         show-sql: true
 
 server:
