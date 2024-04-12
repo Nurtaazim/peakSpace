@@ -1,5 +1,4 @@
 package peakspace.api;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ public class AuthAPI {
 
 
     @PostMapping("/forgot")
-    public SimpleResponse forgotPassword(@RequestParam("email") String email) throws MessagingException {
+    public SimpleResponse forgotPassword(@RequestParam("email") String email){
         return userService.forgot(email);
     }
 
@@ -27,7 +26,7 @@ public class AuthAPI {
     }
 
     @PostMapping("/newPassword")
-    public UpdatePasswordResponse newPassword(@RequestBody PasswordRequest passwordRequest) throws MessagingException {
+    public UpdatePasswordResponse newPassword(@RequestBody PasswordRequest passwordRequest){
         return userService.updatePassword(passwordRequest);
     }
 }

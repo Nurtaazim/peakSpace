@@ -3,6 +3,15 @@ app:
     secret: Java12
 
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: 1234
+    url: jdbc:postgresql://localhost:5432/peak_space
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
   mail:
     host: smtp.gmail.com
@@ -16,7 +25,5 @@ spring:
           starttls:
             enable: true
 
-
-
-
-
+server:
+  port: 8080
