@@ -20,13 +20,14 @@ import java.util.List;
 public class Profile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "profile_seq", allocationSize = 1,initialValue = 11)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "AA")
+    @SequenceGenerator(name = "AA", allocationSize = 1,initialValue = 11)
     private Long id;
     private String avatar;
     private String cover;
     private String aboutYourSelf;
-    private String fullName;
+    private String firstName;
+    private String lastName;
     private String phoneNumber;
     private String profession;
     @ElementCollection
