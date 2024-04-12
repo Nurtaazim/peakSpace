@@ -5,16 +5,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.config.security.jwt.JwtService;
 import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.SubscriptionResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.entities.Chapter;
 import peakspace.entities.User;
 import peakspace.exception.MessagingException;
+import peakspace.repository.ChapterRepository;
+import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -27,6 +36,8 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private String userName;
     private int randomCode;
+    private final ChapterRepository chapterRepository;
+    private final PablicProfileRepository pablicProfileRepository;
 
 
     @Override
@@ -100,6 +111,40 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .token(jwtService.createToken(user))
                 .build();
+    }
+
+    @Override
+    public List<SubscriptionResponse> sendFriends(Long foundUserId) {
+        List<SubscriptionResponse> subscriptionResponses = userRepository.findAllUsers();
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.getByEmail(email);
+
+        List<Chapter> chapters = currentUser.getChapters();
+
+        for (Chapter chapter : chapters) {
+            List<User> currenUserFriends = chapter.getFriends();
+
+            for (User currenUserFriend : currenUserFriends) {
+                if (currenUserFriend.getId().equals(foundUserId)) {
+                    currenUserFriends.remove(currenUserFriend);
+                } else {
+                    currenUserFriends.add(currenUserFriend);
+                }
+            }
+
+        }return subscriptionResponses;
+    }
+
+    @Override
+    public List<SearchResponse> searchFriends(String sample, String keyWord) {
+        if (sample.equals("Ползователь")) {
+            return userRepository.findAllSearch(sample);
+        }
+        if (sample.equals("Группы")){
+            return pablicProfileRepository.findAllPablic(keyWord);
+        }
+        return List.of();
     }
 
 }
