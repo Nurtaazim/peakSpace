@@ -9,19 +9,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.config.security.jwt.JwtService;
+import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.SubscriptionResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
 import peakspace.entities.Chapter;
 import peakspace.entities.User;
+import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.MessagingException;
+import peakspace.exception.NotFoundException;
 import peakspace.repository.ChapterRepository;
 import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -114,37 +115,74 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SubscriptionResponse> sendFriends(Long foundUserId) {
-        List<SubscriptionResponse> subscriptionResponses = userRepository.findAllUsers();
+    @Transactional
+    public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userRepository.getByEmail(email);
 
+        if (currentUser.getId().equals(foundUserId)) {
+            throw new IllegalArgumentException(" Нельзя подписатся самого себя !");
+        }
         List<Chapter> chapters = currentUser.getChapters();
+        boolean removed = false;
+        String messages = "";
 
         for (Chapter chapter : chapters) {
-            List<User> currenUserFriends = chapter.getFriends();
+            List<User> currentUserFriends = chapter.getFriends();
+            List<User> updatedFriends = new ArrayList<>(currentUserFriends);
 
-            for (User currenUserFriend : currenUserFriends) {
-                if (currenUserFriend.getId().equals(foundUserId)) {
-                    currenUserFriends.remove(currenUserFriend);
-                } else {
-                    currenUserFriends.add(currenUserFriend);
+            for (User currentUserFriend : currentUserFriends) {
+                if (currentUserFriend.getId().equals(foundUserId)) {
+                    updatedFriends.remove(currentUserFriend);
+                    removed = true;
+                    break;
                 }
             }
 
-        }return subscriptionResponses;
+            if (!removed) {
+                User foundUser = userRepository.findById(foundUserId).orElse(null);
+                if (foundUser != null) {
+                    updatedFriends.add(foundUser);
+                }
+            }
+
+            if (chapter.getGroupName().equals(nameChapter)){
+                chapter.setFriends(updatedFriends);
+            }else throw new NotFoundException(" Нет такой раздел " + nameChapter);
+
+            messages = (removed) ? "Удачно отписался!" : "Удачно подписались!";
+        }
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(messages)
+                .build();
     }
+
 
     @Override
     public List<SearchResponse> searchFriends(String sample, String keyWord) {
         if (sample.equals("Ползователь")) {
-            return userRepository.findAllSearch(sample);
+            return userRepository.findAllSearch(keyWord);
         }
         if (sample.equals("Группы")){
             return pablicProfileRepository.findAllPablic(keyWord);
         }
         return List.of();
+    }
+
+    @Override @Transactional
+    public SimpleResponse createChapter(ChapterRequest chapterRequest) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.getByEmail(email);
+        Chapter chapter = new Chapter();
+        chapter.setGroupName(chapterRequest.getGroupName());
+        chapterRepository.save(chapter);
+        chapter.setUser(currentUser);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(" Удачно сохранился раздел !")
+                .build();
     }
 
 }

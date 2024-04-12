@@ -23,7 +23,7 @@ public class Chapter {
     @SequenceGenerator(name = "chapter_seq", allocationSize = 1)
     private Long id;
     private String groupName;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<User> friends;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User user;

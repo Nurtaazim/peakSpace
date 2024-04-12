@@ -1,11 +1,10 @@
 package peakspace.service;
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
+import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.request.SampleRequest;
 import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.SubscriptionResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
 import java.util.List;
 
@@ -16,7 +15,9 @@ public interface UserService {
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 
-    List<SubscriptionResponse> sendFriends(Long foundUserId);
+    SimpleResponse sendFriends(Long foundUserId,String nameChapter);
 
     List<SearchResponse> searchFriends(String sample, String keyWord);
+
+    SimpleResponse createChapter(ChapterRequest chapterRequest);
 }
