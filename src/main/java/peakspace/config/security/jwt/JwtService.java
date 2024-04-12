@@ -1,5 +1,4 @@
 package peakspace.config.security.jwt;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;

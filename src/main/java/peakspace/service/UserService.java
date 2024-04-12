@@ -1,5 +1,4 @@
 package peakspace.service;
-
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
 import peakspace.dto.request.PasswordRequest;

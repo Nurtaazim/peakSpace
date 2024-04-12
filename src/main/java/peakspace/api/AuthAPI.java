@@ -1,18 +1,15 @@
 package peakspace.api;
-
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
 import peakspace.service.UserService;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class AuthAPI {
 
