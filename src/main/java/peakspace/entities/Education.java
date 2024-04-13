@@ -18,6 +18,7 @@ public class Education {
     private Studies avgAndHigher;
     private String city;
     private String educationalInstitution;
+
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private Profile profile;
 
