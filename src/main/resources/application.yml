@@ -9,11 +9,7 @@ spring:
       ddl-auto: update
     show-sql: true
 
-
-
 #When you will click 'create' you shout click to 'always'! from Myrzaiym
-
-
     defer-datasource-initialization: true
   sql:
     init:
@@ -24,5 +20,3 @@ spring:
       #  spring.jpa.defer-datasource-initialization=true
       #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
       #  spring.sql.init.mode=never
-      #
-      #

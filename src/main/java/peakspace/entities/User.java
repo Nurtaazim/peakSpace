@@ -5,8 +5,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import peakspace.enums.Role;
-
-
 import java.util.Collection;
 import java.util.List;
 
@@ -48,7 +46,6 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);
     }
-
     @Override
     public String getPassword(){
         return password;
@@ -57,24 +54,21 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return false;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         return false;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return false;
     }
-
     @Override
     public boolean isEnabled() {
         return false;
     }
+
 }
