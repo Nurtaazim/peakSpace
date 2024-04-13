@@ -121,28 +121,28 @@ values --gotovo
        (20, 17, null, 'Exploring Historical Sites', '2024-08-15T00:00:00+00:00', '2024-08-20T00:00:00+00:00', 'Osh');
 
 
-insert into profiles(id, user_id, avatar, cover, about_your_self, last_name,first_name ,phone_number, profession)
+insert into profiles(id, user_id,work_or_not, avatar, cover, about_your_self, last_name,first_name ,phone_number, profession)
 values --gotovo
-       (1, 1, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', '996500500500', 'DataIng'),
-       (2, 2, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan', '996500500501', 'Backend dev'),
-       (3, 3, 'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', '996500500502', 'Java dev'),
-       (4, 4, 'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', '996500500503', 'C# dev'),
-       (5, 5, 'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed', '996500500504', 'C++ dev'),
-       (6, 6, 'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', '996500500505', 'JS dev'),
-       (7, 7, 'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', '996500500506', 'UX/UI'),
-       (8, 8, 'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', '996500500507', 'UX/UI'),
-       (9, 9, 'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', '996500500508', 'C++ dev'),
-       (10, 10, 'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', '996500500509', 'Backend dev'),
-       (11, 11, 'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', '996500500510', 'Full-stack dev'),
-       (12, 12, 'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', '996500500511', 'Software Engineer'),
-       (13, 13, 'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon', '996500500512', 'Frontend dev'),
-       (14, 14, 'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan', '996500500513', 'Web Developer'),
-       (15, 15, 'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', '996500500514', 'Mobile App Developer'),
-       (16, 16, 'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', '996500500515', 'Software Developer'),
-       (17, 17, 'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', '996500500516', 'Systems Analyst'),
-       (18, 18, 'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', '996500500517', 'Database Administrator'),
-       (19, 19, 'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat', '996500500518', 'Network Administrator'),
-       (20, 20, 'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy', '996500500519', 'Machine Learning Engineer');
+       (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', '996500500500', 'DataIng'),
+       (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan', '996500500501', 'Backend dev'),
+       (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', '996500500502', 'Java dev'),
+       (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', '996500500503', 'C# dev'),
+       (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed', '996500500504', 'C++ dev'),
+       (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', '996500500505', 'JS dev'),
+       (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', '996500500506', 'UX/UI'),
+       (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', '996500500507', 'UX/UI'),
+       (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', '996500500508', 'C++ dev'),
+       (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', '996500500509', 'Backend dev'),
+       (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', '996500500510', 'Full-stack dev'),
+       (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', '996500500511', 'Software Engineer'),
+       (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon', '996500500512', 'Frontend dev'),
+       (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan', '996500500513', 'Web Developer'),
+       (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', '996500500514', 'Mobile App Developer'),
+       (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', '996500500515', 'Software Developer'),
+       (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', '996500500516', 'Systems Analyst'),
+       (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', '996500500517', 'Database Administrator'),
+       (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat', '996500500518', 'Network Administrator'),
+       (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy', '996500500519', 'Machine Learning Engineer');
 
 
 

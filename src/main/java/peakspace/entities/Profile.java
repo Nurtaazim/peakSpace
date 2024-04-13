@@ -21,7 +21,7 @@ public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "AA")
-    @SequenceGenerator(name = "AA", allocationSize = 1,initialValue = 11)
+    @SequenceGenerator(name = "AA", allocationSize = 1,initialValue = 21)
     private Long id;
     private String avatar;
     private String cover;
@@ -30,6 +30,7 @@ public class Profile {
     private String lastName;
     private String phoneNumber;
     private String profession;
+    private boolean workOrNot;
     @ElementCollection
     private List<Long> favorites;
     @OneToMany(mappedBy = "profile",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
