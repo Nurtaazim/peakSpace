@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseWithGoogle verifyToken(String tokenFromGoogle) {
-
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
             String email = decodedToken.getEmail();
@@ -98,7 +97,6 @@ public class UserServiceImpl implements UserService {
                                               Welcome to Peakspace!
                                               """);
             mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
-
             javaMailSender.send(mimeMessage);
             System.out.println("Mail sent to " + user.getEmail());
         } catch (MessagingException e) {
