@@ -1,4 +1,4 @@
-package peakspace.exceptions;
+package peakspace.exception;
 
 public class NotActiveException extends RuntimeException{
     public NotActiveException() {

@@ -15,15 +15,13 @@ spring:
                     auth: true
                     starttls:
                         enable: true
-jpa:
-    hibernate:
-        ddl-auto: create
+    jpa:
+        hibernate:
+            ddl-auto: create
         show-sql: true
-
 server:
     error:
         include-stacktrace: always
-
 app:
     jwt:
         secret: peak-space-java12

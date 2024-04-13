@@ -2,6 +2,9 @@ package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import peakspace.entities.User;
 import java.util.Random;
+import org.springframework.data.jpa.repository.Query;
+import peakspace.exception.NotFoundException;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -19,6 +22,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
             sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
         }
         return sb.toString();
+    }
+
+    @Query("select u from User u where u.email =:email")
+    Optional<User> findByEmail(String email);
+
+    default User getByEmail(String email){
+        return findByEmail(email).orElseThrow(() ->
+                new NotFoundException("User with email: "+email+" not found!"));
     }
 
 }
