@@ -1,11 +1,20 @@
 package peakspace.entities;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.CascadeType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import peakspace.enums.Role;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -16,15 +25,16 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "user_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     private String userName;
     private String email;
     private String password;
-    private Boolean isBlock;
+    private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private Boolean isBlock;
     @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private Profile profile;
     @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
@@ -56,21 +66,19 @@ public class User implements UserDetails {
     }
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return false;
     }
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return false;
     }
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return false;
     }
     @Override
     public boolean isEnabled() {
-        return true;
+        return false;
     }
-
-
 
 }

@@ -1,8 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: 2020
+    url: jdbc:postgresql://localhost:5432/peakSpace
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 app:
   jwt:
     secret: Java12
-
-spring:
 
   mail:
     host: smtp.gmail.com
@@ -16,7 +25,14 @@ spring:
           starttls:
             enable: true
 
+#When you will click 'create' you shout click to 'always'! from Myrzaiym
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:dataInit/dataInit.sql
+      mode: never
 
-
-
-
+      #  #DATA-INIT
+      #  spring.jpa.defer-datasource-initialization=true
+      #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
+      #  spring.sql.init.mode=never
