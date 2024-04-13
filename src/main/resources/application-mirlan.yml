@@ -1,6 +1,5 @@
 spring:
-    application:
-        name: peak-space-b12
+    datasource:
         url: jdbc:postgresql://localhost:5432/peakspace
         username: postgres
         password: mirlan001m.
@@ -8,7 +7,6 @@ spring:
     jpa:
         hibernate:
             ddl-auto: create
-
         show-sql: true
 
 server:
