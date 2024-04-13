@@ -19,9 +19,7 @@ spring:
     init:
       data-locations: classpath:dataInit/dataInit.sql
       mode: never
-app:
-  jwt:
-    secret: Myrzaiym
+
       #  #DATA-INIT
       #  spring.jpa.defer-datasource-initialization=true
       #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
