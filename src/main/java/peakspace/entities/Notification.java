@@ -18,8 +18,8 @@ import java.time.ZonedDateTime;
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "not_seq", allocationSize = 1,initialValue = 4)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "not_seq")
+    @SequenceGenerator(name = "not_seq", allocationSize = 1,initialValue = 11)
     private Long id;
     private ZonedDateTime createdAt;
     private boolean seen;

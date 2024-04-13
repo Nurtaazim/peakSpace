@@ -12,8 +12,8 @@ import java.util.List;
 public class PablicProfile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "public_p_seq", allocationSize = 1,initialValue = 9)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "public_p_seq")
+    @SequenceGenerator(name = "public_p_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     private String cover;
     private String avatar;

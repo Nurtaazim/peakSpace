@@ -11,8 +11,8 @@ import peakspace.enums.Studies;
 public class Education {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "edu_seq", allocationSize = 1,initialValue = 9)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "edu_seq")
+    @SequenceGenerator(name = "edu_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     @Enumerated(EnumType.STRING)
     private Studies avgAndHigher;

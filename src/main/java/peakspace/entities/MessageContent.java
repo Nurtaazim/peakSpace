@@ -20,8 +20,8 @@ import java.time.ZonedDateTime;
 public class MessageContent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "message_content_seq", allocationSize = 1, initialValue = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "message_content_seq")
+    @SequenceGenerator(name = "message_content_seq", allocationSize = 1, initialValue = 19)
     private long id;
     private String content;
     private ZonedDateTime timestamp;

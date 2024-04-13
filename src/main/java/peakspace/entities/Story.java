@@ -12,8 +12,8 @@ import java.util.List;
 public class Story {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "story_seq", allocationSize = 1,initialValue = 9)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "story_seq")
+    @SequenceGenerator(name = "story_seq", allocationSize = 1,initialValue = 19)
     private Long id;
     private ZonedDateTime createdAt;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})

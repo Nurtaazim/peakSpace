@@ -12,8 +12,8 @@ import java.util.List;
 public class Publication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "publications_seq", allocationSize = 1,initialValue = 9)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "publications_seq")
+    @SequenceGenerator(name = "publications_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     private String description;
     private ZonedDateTime createdAt;

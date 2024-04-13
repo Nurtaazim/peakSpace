@@ -17,8 +17,8 @@ import jakarta.persistence.CascadeType;
 public class Like {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "likes_seq", allocationSize = 1,initialValue = 9)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "likes_seq")
+    @SequenceGenerator(name = "likes_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     @OneToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private User user;

@@ -12,8 +12,8 @@ import java.util.List;
 public class Chat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "chat_seq", allocationSize = 1,initialValue = 9)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "chat_seq")
+    @SequenceGenerator(name = "chat_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     @OneToMany(mappedBy = "chat",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<MessageContent>messageContents;
