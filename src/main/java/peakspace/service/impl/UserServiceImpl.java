@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import peakspace.config.security.jwt.JwtService;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
@@ -21,6 +22,7 @@ import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.ChapterRepository;
 import peakspace.repository.PablicProfileRepository;
+import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private int randomCode;
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
+    private final PublicationRepository publicationRepository;
 
 
     @Override
@@ -162,13 +165,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SearchResponse> searchFriends(String sample, String keyWord) {
-        if (sample.equals("Ползователь")) {
+        if (sample.equals("Пользователь")) {
             return userRepository.findAllSearch(keyWord);
         }
-        if (sample.equals("Группы")){
+        if (sample.equals("Группы")) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        return List.of();
+        throw new MessagingException("");
     }
 
     @Override @Transactional
@@ -183,6 +186,15 @@ public class UserServiceImpl implements UserService {
                 .httpStatus(HttpStatus.OK)
                 .message(" Удачно сохранился раздел !")
                 .build();
+    }
+    @Override
+    public List<SearchHashtagsResponse> searchHashtags(String keyword) {
+        return publicationRepository.findAllHashtags(keyword);
+    }
+
+    @Override
+    public List<SearchResponse> searchMyFriends(String section) {
+        return List.of();
     }
 
 }

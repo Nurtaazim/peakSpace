@@ -2,6 +2,7 @@ package peakspace.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.ChapterRequest;
+import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.UserService;
@@ -26,5 +27,14 @@ public class UserAPI {
     @PostMapping("/createChapter")
     public SimpleResponse createChapter(@RequestBody ChapterRequest chapterRequest){
         return userService.createChapter(chapterRequest);
+    }
+
+    @GetMapping("/searchHashtags")
+    public List<SearchHashtagsResponse> searchHashTags(@RequestParam  String keyWord) {
+        return userService.searchHashtags(keyWord);
+    }
+    @GetMapping("/findAllChapter")
+    public List<SearchResponse> findAllChapter(@RequestParam  String section) {
+        return userService.searchMyFriends(section);
     }
 }

@@ -1,6 +1,7 @@
 package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.SearchResponse;
 import peakspace.entities.User;
@@ -19,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 new NotFoundException("User with email: "+email+" not found!"));
     }
 
-    @Query("select new peakspace.dto.response.SearchResponse(u.id,u.userName,p.avatar,p.aboutYourSelf) from User u join u.profile p where  u.userName =:keyword")
-    List<SearchResponse> findAllSearch(String keyword);
+    @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
+            "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")
+    List<SearchResponse>    findAllSearch(@Param("keyword") String keyword);
 }
