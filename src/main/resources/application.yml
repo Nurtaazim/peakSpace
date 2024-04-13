@@ -9,6 +9,22 @@ spring:
       ddl-auto: update
     show-sql: true
 
+app:
+  jwt:
+    secret: Java12
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: aliaskartemirbekov@gmail.com
+    password: izcp edth hxpv nkgl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 #When you will click 'create' you shout click to 'always'! from Myrzaiym
     defer-datasource-initialization: true
   sql:
