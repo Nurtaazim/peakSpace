@@ -1,5 +1,4 @@
 package peakspace.dto.response;
-
 import lombok.Builder;
 
 @Builder
@@ -9,4 +8,7 @@ public record SearchResponse(
         String avatar,
         String description
 ) {
+    public SearchResponse(Long id, String name, String avatar) {
+        this(id, name, avatar, "");
+    }
 }

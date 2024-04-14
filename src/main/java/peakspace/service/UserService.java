@@ -3,10 +3,8 @@ import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.*;
+
 import java.util.List;
 
 public interface UserService {
@@ -24,5 +22,7 @@ public interface UserService {
 
     List<SearchHashtagsResponse> searchHashtags(String keyWord);
 
-    List<SearchResponse> searchMyFriends(String section);
+    List<SearchResponse> searchMyFriends(Long chapterId, String userName);
+
+    ProfileFriendsResponse findFriendsProfile(Long foundUserId);
 }

@@ -5,18 +5,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.config.security.jwt.JwtService;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.PublicationResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.dto.response.ProfileFriendsResponse;
 import peakspace.entities.Chapter;
+import peakspace.entities.PablicProfile;
 import peakspace.entities.User;
+import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
@@ -111,7 +117,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return UpdatePasswordResponse.builder()
                 .id(user.getId())
-                .userName(user.getUsername())
                 .email(user.getEmail())
                 .token(jwtService.createToken(user))
                 .build();
@@ -121,8 +126,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userRepository.getByEmail(email);
+        User currentUser = getCurrentUser();
 
         if (currentUser.getId().equals(foundUserId)) {
             throw new IllegalArgumentException(" Нельзя подписатся самого себя !");
@@ -165,6 +169,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SearchResponse> searchFriends(String sample, String keyWord) {
+        getCurrentUser();
         if (sample.equals("Пользователь")) {
             return userRepository.findAllSearch(keyWord);
         }
@@ -176,8 +181,7 @@ public class UserServiceImpl implements UserService {
 
     @Override @Transactional
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userRepository.getByEmail(email);
+        User currentUser = getCurrentUser();
         Chapter chapter = new Chapter();
         chapter.setGroupName(chapterRequest.getGroupName());
         chapterRepository.save(chapter);
@@ -189,12 +193,74 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public List<SearchHashtagsResponse> searchHashtags(String keyword) {
+        getCurrentUser();
         return publicationRepository.findAllHashtags(keyword);
     }
 
     @Override
-    public List<SearchResponse> searchMyFriends(String section) {
-        return List.of();
+    public List<SearchResponse> searchMyFriends(Long chapterId, String userName) {
+        getCurrentUser();
+        Chapter chapter = chapterRepository.findByID(chapterId);
+        if (chapter.getId().equals(chapterId)){
+            if (userName == null || userName.trim().isEmpty()) {
+                return userRepository.findAllSearchEmpty();
+            } else {
+                return userRepository.findAllSearch(userName);
+            }
+        } else {
+            throw new BadRequestException("Плохой запрос");
+        }
     }
 
+    @Override
+    public ProfileFriendsResponse findFriendsProfile(Long foundUserId) {
+
+        User currentUser = getCurrentUser();
+        ProfileFriendsResponse friendsResponse = userRepository.getId(foundUserId);
+        long friendSize = 0L;
+        long pablicSize = 0L;
+        User founUser = userRepository.findById(foundUserId).orElseThrow(() -> new NotFoundException("Нет такой пользователь !"));
+        for (Chapter chapter : founUser.getChapters()) {
+            friendSize +=getFriendsSize(chapter.getId());
+        }
+
+        for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
+            pablicSize += getFriendsPublicSize(pablicProfile.getId());
+        }
+
+        List<PublicationResponse> friendsPublic = userRepository.findFriendsPublic(foundUserId);
+        List<PublicationResponse> friendsFavorite = userRepository.findFavorite(foundUserId);
+        List<PublicationResponse> friendTagWithMe = userRepository.findTagWithMe(foundUserId);
+
+                 ProfileFriendsResponse response = ProfileFriendsResponse.builder()
+                .id(friendsResponse.getId())
+                .avatar(friendsResponse.getAvatar())
+                .cover(friendsResponse.getCover())
+                .aboutYourSelf(friendsResponse.getAboutYourSelf())
+                .profession(friendsResponse.getProfession())
+                .friendsSize(friendSize)
+                .pablicationsSize(pablicSize)
+                .friendsPublications(friendsPublic)
+                .friendsFavoritesPublications(friendsFavorite)
+                .friendsWitMePublications(friendTagWithMe)
+                .build();
+                 return response;
+    }
+
+    private long getFriendsSize(Long foundUserID){
+        Chapter chapter = chapterRepository.findByID(foundUserID);
+        return chapter.getFriends().size();
+    }
+    private long getFriendsPublicSize(Long foundUserID){
+        PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
+        return pablicProfile.getPublications().size();
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User current = userRepository.getByEmail(email);
+        if (current.getRole().equals(Role.USER))
+            return current;
+        else throw new AccessDeniedException("Forbidden 403");
+    }
 }

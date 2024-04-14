@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
-import peakspace.exception.ForbiddenException;
+import peakspace.exception.*;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.MessagingException;
-import peakspace.exception.NotFoundException;
 import peakspace.exception.response.ExceptionResponse;
 
 @RestControllerAdvice
@@ -50,11 +48,11 @@ public class GlobalHandlerException {
                 .build();
     }
 
-    @ExceptionHandler(HttpClientErrorException.BadRequest.class)
+    @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse badReq(HttpClientErrorException.BadRequest e){
+    public ExceptionResponse badReq(BadRequestException e){
         return ExceptionResponse.builder()
-                .httpStatus(HttpStatus.FORBIDDEN)
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(e.getClass().getSimpleName())
                 .message(e.getMessage())
                 .build();
