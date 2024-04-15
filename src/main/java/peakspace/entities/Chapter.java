@@ -19,8 +19,8 @@ import java.util.List;
 public class Chapter {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "chapter_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "chapter_seq")
+    @SequenceGenerator(name = "chapter_seq", allocationSize = 1,initialValue = 11)
     private Long id;
     private String groupName;
     @OneToMany(cascade = CascadeType.PERSIST)
