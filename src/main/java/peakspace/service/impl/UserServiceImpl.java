@@ -1,4 +1,7 @@
 package peakspace.service.impl;
+import com.google.type.PhoneNumber;
+import com.twilio.Twilio;
+import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import peakspace.config.jwt.JwtService;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.ResponseWithGoogle;
 import peakspace.entities.Profile;
+import peakspace.exception.InvalidConfirmationCode;
 import peakspace.repository.ProfileRepository;
 import peakspace.entities.User;
 import peakspace.enums.Role;
@@ -23,6 +28,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
+
+import javax.annotation.processing.Messager;
+import java.util.Locale;
 import java.util.Random;
 
 @Service
@@ -36,18 +44,33 @@ public class UserServiceImpl implements UserService {
     private int randomCode;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private static final String accountSID = "SK36c5a0c6fc5df79afa0cc72a9a8d8102";
+    private static final String authToken = "0JFf0O8Ynlp1jnjav1ckEIUkIimdpnDI";
 
     @Override
     public ResponseWithGoogle verifyToken(String tokenFromGoogle) {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
             String email = decodedToken.getEmail();
+            String phoneNumber = (String) decodedToken.getClaims().get("phone_number");
             boolean b = userRepository.existsByEmail(email);
             if (b) {
                 User user = userRepository.getReferenceByEmail(email);
                 return ResponseWithGoogle.builder()
                         .id(user.getId())
                         .token(jwtService.createToken(user))
+                        .build();
+            }
+            if (phoneNumber != null && phoneNumber.length() > 2) {
+                User user = new User();
+                user.setEmail(email);
+                user.setPhoneNumber(phoneNumber);
+                String maskedPhoneNumber = maskPhoneNumber(phoneNumber);
+                user.setPassword(maskedPhoneNumber);
+                return ResponseWithGoogle.builder()
+                        .id(user.getId())
+                        .description(maskedPhoneNumber)
+                        .token(tokenFromGoogle)
                         .build();
             }
             throw new NotActiveException();
@@ -57,44 +80,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseWithGoogle signUpWithGoogle(String tokenFromGoogle) {
-        try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
-            String email = decodedToken.getEmail();
-            String fullName = decodedToken.getName();
-            String picture = decodedToken.getPicture();
-            boolean b = userRepository.existsByEmail(email);
-            if (b) throw new NotActiveException();
-            String defaultPassword = userRepository.generatorDefaultPassword(8, 8);
-            String defaultUserName = userRepository.generatorDefaultPassword(6, 13);
-            User user = new User();
-            Profile profile = new Profile();
-            user.setEmail(email);
-            user.setRole(Role.USER);
-            user.setPassword(defaultPassword);
-            user.setUserName(defaultUserName);
-            String[] parts = fullName.split(" ");
-            if (parts.length >= 1) {
-                profile.setLastName(parts[0]);
+    @Transactional
+    public ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest tokenFromGoogle) {
+        User userForVerifier = userRepository.getReferenceById(tokenFromGoogle.idVerifierUser());
+        if(userForVerifier.getPassword().equals(tokenFromGoogle.confirmationCode())) {
+            try {
+                FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle.tokenGoogle());
+                String email = decodedToken.getEmail();
+                String fullName = decodedToken.getName();
+                String picture = decodedToken.getPicture();
+                boolean b = userRepository.existsByEmail(email);
+                if (b) throw new NotActiveException();
+                String defaultPassword = userRepository.generatorDefaultPassword(8, 8);
+                User user = userRepository.getReferenceById(userForVerifier.getId());
+                Profile profile = new Profile();
+                user.setRole(Role.USER);
+                user.setPassword(defaultPassword);
+                String[] parts = fullName.split(" ");
+                if (parts.length >= 1) {
+                    profile.setLastName(parts[0]);
+                }
+                if (parts.length >= 2) {
+                    profile.setFirstName(parts[1]);
+                }
+                if (parts.length >= 3) {
+                    profile.setPatronymicName(parts[2]);
+                }
+                if(userRepository.existsByUserName(user.getProfile().getLastName())){
+                    user.setUserName(user.getProfile().getLastName().toLowerCase(Locale.ROOT));
+                }
+                profile.setAvatar(picture);
+                userRepository.save(user);
+                profile.setUser(user);
+                profileRepository.save(profile);
+                user.setProfile(profile);
+                sendDefaultPasswordToEmail(user);
+                return ResponseWithGoogle.builder()
+                        .id(user.getId())
+                        .token(jwtService.createToken(user)).build();
+            } catch (com.google.firebase.auth.FirebaseAuthException e) {
+                throw new FirebaseAuthException();
             }
-            if (parts.length >= 2) {
-                profile.setFirstName(parts[1]);
-            }
-            if (parts.length >= 3) {
-                profile.setPatronymicName(parts[2]);
-            }
-            profile.setAvatar(picture);
-            userRepository.save(user);
-            profile.setUser(user);
-            profileRepository.save(profile);
-            user.setProfile(profile);
-            sendDefaultPasswordToEmail(user);
-            return ResponseWithGoogle.builder()
-                    .id(user.getId())
-                    .token(jwtService.createToken(user)).build();
-        } catch (com.google.firebase.auth.FirebaseAuthException e) {
-            throw new FirebaseAuthException();
         }
+        throw new InvalidConfirmationCode();
     }
 
     private void sendDefaultPasswordToEmail(User user) {
@@ -106,7 +134,7 @@ public class UserServiceImpl implements UserService {
             mimeMessageHelper.setText("""
                                               Hi """ + user.getUsername() + """
                                               НИКОМУ НЕ ГОВОРИТЕ КОД!
-                                              Это пароль по умолчанию для Peakspace. 
+                                              Это пароль по умолчанию для Peakspace.
                                               Важно изменить этот пароль в целях вашей безопасности.
                                               """
                                       +
@@ -195,5 +223,27 @@ public class UserServiceImpl implements UserService {
                 .token(jwtService.createToken(user))
                 .build();
     }
+
+    private String maskPhoneNumber(String phoneNumber) {
+        int length = phoneNumber.length();
+        StringBuilder masked = new StringBuilder();
+        for (int i = 3; i < length - 2; i++) {
+            masked.append("*");
+        }
+        masked.append(phoneNumber.substring(length - 2));
+        return masked.toString();
+    }
+
+    public static void sendSms(String phoneNumberGetter, String verificationCode) {
+        Twilio.init(accountSID, authToken);
+
+//        Messager message = Message.creator(
+//                        new PhoneNumber(phoneNumberGetter), // Номер получателя
+//                        new PhoneNumber("Ваш_номер_Twilio"), // Ваш Twilio номер
+//                        "Код подтверждения: " + verificationCode) // Текст сообщения
+//                .create();
+
+    }
+
 
 }

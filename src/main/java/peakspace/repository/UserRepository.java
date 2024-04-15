@@ -32,4 +32,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 new NotFoundException("User with email: "+email+" not found!"));
     }
 
+    boolean existsByUserName(String userName);
 }

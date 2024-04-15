@@ -1,9 +1,9 @@
 spring:
     datasource:
-        driver-class-name:
-        password:
-        url:
-        username:
+        driver-class-name: org.postgresql.Driver
+        password: mirlan001m.
+        url: jdbc:postgresql://localhost:5432/peakspace
+        username: postgres
     mail:
         host: smtp.gmail.com
         port: 587
@@ -28,7 +28,7 @@ spring:
       #  spring.sql.init.mode=never
     jpa:
         hibernate:
-          ddl-auto:
+          ddl-auto: create
         show-sql: true
 server:
   error:

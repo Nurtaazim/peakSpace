@@ -3,6 +3,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.ResponseWithGoogle;
 import peakspace.service.UserService;
 
@@ -18,8 +19,10 @@ public class AuthWithGoogleApi {
     }
 
     @PostMapping("/sign_up-with_token")
-    public ResponseWithGoogle signUpWithGoogle(@RequestBody String tokenFromGoogle) {
-        return userService.signUpWithGoogle(tokenFromGoogle);
+    public ResponseWithGoogle signUpWithGoogle(@RequestBody RegisterWithGoogleRequest registerWithGoogle) {
+        return userService.signUpWithGoogle(registerWithGoogle);
     }
+
+
 
 }
