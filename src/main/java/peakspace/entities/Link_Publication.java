@@ -15,8 +15,8 @@ import lombok.Setter;
 public class Link_Publication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "link_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "link_seq")
+    @SequenceGenerator(name = "link_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     private String link;
 
