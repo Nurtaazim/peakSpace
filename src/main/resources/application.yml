@@ -8,11 +8,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-app:
-  jwt:
-    secret: Java12
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -25,12 +20,19 @@ app:
           starttls:
             enable: true
 
-#When you will click 'create' you shout click to 'always'! from Myrzaiym
-    defer-datasource-initialization: true
+            defer-datasource-initialization: true
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
       mode: never
+app:
+  jwt:
+    secret: Java12
+
+
+
+#When you will click 'create' you shout click to 'always'! from Myrzaiym
+
 
       #  #DATA-INIT
       #  spring.jpa.defer-datasource-initialization=true

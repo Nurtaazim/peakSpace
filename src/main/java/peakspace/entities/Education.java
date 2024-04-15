@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import peakspace.enums.Studies;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
