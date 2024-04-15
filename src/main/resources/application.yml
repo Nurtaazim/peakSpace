@@ -1,5 +1,40 @@
 spring:
     application:
         name: peak-space-b12
+    datasource:
+      driver-class-name: org.postgresql.Driver
+      password: 2020
+      url: jdbc:postgresql://localhost:5432/peakSpace
+      username: postgres
+jpa:
+    hibernate:
+      ddl-auto:
+    show-sql: true
 
+app:
+  jwt:
+    secret: Java12
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: aliaskartemirbekov@gmail.com
+    password: izcp edth hxpv nkgl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+#When you will click 'create' you shout click to 'always'! from Myrzaiym
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:dataInit/dataInit.sql
+      mode: never
+
+      #  #DATA-INIT
+      #  spring.jpa.defer-datasource-initialization=true
+      #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
+      #  spring.sql.init.mode=never
