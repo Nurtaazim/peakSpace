@@ -1,9 +1,9 @@
 spring:
     datasource:
         driver-class-name:
-        password: mirlan001m.
-        url: jdbc:postgresql://localhost:5432/peakspace
-        username: postgres
+        password:
+        url:
+        username:
     mail:
         host: smtp.gmail.com
         port: 587
