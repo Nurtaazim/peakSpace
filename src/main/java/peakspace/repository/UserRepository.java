@@ -16,4 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findByEmail(email).orElseThrow(() ->
                 new NotFoundException("User with email: "+email+" not found!"));
     }
+    @Query("select u from  User u where u.userName like :email")
+    Optional<User> getByUserName(String email);
+
 }
