@@ -1,9 +1,9 @@
 spring:
     datasource:
         driver-class-name:
-        password:
-        url:
-        username:
+        password: mirlan001m.
+        url: jdbc:postgresql://localhost:5432/peakspace
+        username: postgres
     mail:
         host: smtp.gmail.com
         port: 587
@@ -15,13 +15,24 @@ spring:
                     auth: true
                     starttls:
                         enable: true
+#When you will click 'create' you shout click to 'always'! from Myrzaiym
+            defer-datasource-initialization: true
+            sql:
+                init:
+                    data-locations: classpath:dataInit/dataInit.sql
+                    mode: never
+
+      #  #DATA-INIT
+      #  spring.jpa.defer-datasource-initialization=true
+      #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
+      #  spring.sql.init.mode=never
     jpa:
         hibernate:
-            ddl-auto:
+          ddl-auto:
         show-sql: true
 server:
-    error:
-        include-stacktrace: always
+  error:
+    include-stacktrace: always
 app:
-    jwt:
-        secret:
+  jwt:
+    secret: Java12

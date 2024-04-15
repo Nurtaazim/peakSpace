@@ -73,7 +73,16 @@ public class UserServiceImpl implements UserService {
             user.setRole(Role.USER);
             user.setPassword(defaultPassword);
             user.setUserName(defaultUserName);
-            profile.setFullName(fullName);
+            String[] parts = fullName.split(" ");
+            if (parts.length >= 1) {
+                profile.setLastName(parts[0]);
+            }
+            if (parts.length >= 2) {
+                profile.setFirstName(parts[1]);
+            }
+            if (parts.length >= 3) {
+                profile.setPatronymicName(parts[2]);
+            }
             profile.setAvatar(picture);
             userRepository.save(user);
             profile.setUser(user);
