@@ -66,7 +66,9 @@ public class UserServiceImpl implements UserService {
                 user.setEmail(email);
                 user.setPhoneNumber(phoneNumber);
                 String maskedPhoneNumber = maskPhoneNumber(phoneNumber);
-                user.setPassword(maskedPhoneNumber);
+
+                user.setPassword("heshcode"); //kj
+
                 return ResponseWithGoogle.builder()
                         .id(user.getId())
                         .description(maskedPhoneNumber)
