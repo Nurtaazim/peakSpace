@@ -1,6 +1,8 @@
 package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import peakspace.entities.User;
+
+import java.util.Map;
 import java.util.Random;
 import org.springframework.data.jpa.repository.Query;
 import peakspace.exception.NotFoundException;

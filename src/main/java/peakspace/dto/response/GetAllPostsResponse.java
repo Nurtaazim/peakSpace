@@ -8,7 +8,7 @@ public record GetAllPostsResponse(String cover,
                                   String userName,
                                   String aboutMe,
                                   String major,
-                                  Long countFriends,
-                                  String countPublics,
+                                  int countFriends,
+                                  int countPublics,
                                   Map<Long, String> publications) {
 }
