@@ -18,4 +18,7 @@ public interface UserService {
     SimpleResponse randomCode(int codeRequest) throws BadRequestException, MessagingException;
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
+
+    String signIn(String email);
+
 }

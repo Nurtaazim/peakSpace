@@ -107,4 +107,13 @@ public class GlobalHandlerException {
                 .build();
     }
 
+    @ExceptionHandler(SmsSendingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public peakspace.exception.response.ExceptionResponse BadRequest(SmsSendingException smsSendingException){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .exceptionClassName(smsSendingException.getClass().getSimpleName())
+                .message(smsSendingException.getMessage() + "Не удалось отправить СМС!")
+                .build();
+    }
 }

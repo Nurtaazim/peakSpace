@@ -15,6 +15,8 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import peakspace.enums.Role;
+
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,6 +37,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isBlock;
+    private Boolean blockAccount;
+    private String confirmationCode;
+    private ZonedDateTime createdAt;
     @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private Profile profile;
     @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})

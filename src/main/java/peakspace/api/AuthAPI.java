@@ -15,6 +15,10 @@ public class AuthAPI {
 
     private final UserService userService;
 
+    @GetMapping("/forgot")
+    public String signIn(String email){
+        return userService.signIn(email);
+    }
 
     @PostMapping("/forgot")
     public SimpleResponse forgotPassword(@RequestParam("email") String email) throws MessagingException {
