@@ -12,7 +12,6 @@ spring:
 app:
   jwt:
     secret: Java12
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -31,7 +30,6 @@ app:
     init:
       data-locations: classpath:dataInit/dataInit.sql
       mode: never
-
       #  #DATA-INIT
       #  spring.jpa.defer-datasource-initialization=true
       #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
