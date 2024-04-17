@@ -9,9 +9,12 @@ spring:
       ddl-auto: update
     show-sql: true
 
-app:
-  jwt:
-    secret: Java12
+  defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:dataInit/dataInit.sql
+      mode: never
+
 
   mail:
     host: smtp.gmail.com
@@ -25,14 +28,15 @@ app:
           starttls:
             enable: true
 
-#When you will click 'create' you shout click to 'always'! from Myrzaiym
-    defer-datasource-initialization: true
-  sql:
-    init:
-      data-locations: classpath:dataInit/dataInit.sql
-      mode: never
+google:
+   maps:
+    api:
+       key: AIzaSyDvMzOD4I73b-5iUYh-pjaWHFCojuNRV4c
 
-      #  #DATA-INIT
-      #  spring.jpa.defer-datasource-initialization=true
-      #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
-      #  spring.sql.init.mode=never
+    #When you will click 'create' you shout click to 'always'! from Myrzaiym
+
+
+
+app:
+  jwt:
+    secret: Java12
