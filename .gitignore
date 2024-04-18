@@ -36,7 +36,6 @@ out/
 
 ### VS Code ###
 .vscode/
-.vscode/
 
 src/main/resources/application-aliaskar.yml
 src/main/resources/application-mirlan.yml

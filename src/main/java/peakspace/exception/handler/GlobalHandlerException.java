@@ -11,6 +11,8 @@ import peakspace.exception.ForbiddenException;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.exception.response.ExceptionResponse;
+import peakspace.exception.FirebaseAuthException;
+import peakspace.exception.NotActiveException;
 
 @RestControllerAdvice
 @Slf4j
@@ -26,7 +28,6 @@ public class GlobalHandlerException {
                 .message(notFoundException.getMessage())
                 .build();
     }
-
 
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -80,5 +81,23 @@ public class GlobalHandlerException {
                 .build();
     }
 
+    @ExceptionHandler(NotActiveException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public peakspace.exception.response.ExceptionResponse notFound(NotActiveException notActiveException){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .exceptionClassName(notActiveException.getClass().getSimpleName())
+                .message(notActiveException.getMessage())
+                .build();
+    }
+    @ExceptionHandler(FirebaseAuthException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public peakspace.exception.response.ExceptionResponse notFound(FirebaseAuthException notActiveException){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .exceptionClassName(notActiveException.getClass().getSimpleName())
+                .message(notActiveException.getMessage())
+                .build();
+    }
 
 }
