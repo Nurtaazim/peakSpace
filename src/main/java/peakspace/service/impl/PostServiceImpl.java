@@ -34,12 +34,12 @@ public class PostServiceImpl implements PostService {
 
         Link_Publication linkPublication = new Link_Publication();
         linkPublication.setLink(postRequest.getLink());
-        Link_Publication linkPublication1 = linkPublicationRepo.save(linkPublication);
+        linkPublicationRepo.save(linkPublication);
 
         Publication publication = new Publication();
         publication.setDescription(postRequest.getDescription());
         publication.setLocation(postRequest.getLocation());
-        publication.getLinkPublications().add(linkPublication1);
+        publication.getLinkPublications().add(linkPublication);
 
         Publication publication1 = publicationRepo.save(publication);
 
