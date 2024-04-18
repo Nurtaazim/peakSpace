@@ -5,16 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseToken;
 import peakspace.config.jwt.JwtService;
-import peakspace.dto.response.ResponseWithGoogle;
-import peakspace.entities.Profile;
 import peakspace.repository.ProfileRepository;
 import peakspace.entities.User;
-import peakspace.enums.Role;
-import peakspace.exception.FirebaseAuthException;
-import peakspace.exception.NotActiveException;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
 import jakarta.transaction.Transactional;
@@ -35,94 +28,7 @@ public class UserServiceImpl implements UserService {
     private String userName;
     private int randomCode;
     private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
 
-    @Override
-    public ResponseWithGoogle verifyToken(String tokenFromGoogle) {
-        try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
-            String email = decodedToken.getEmail();
-            boolean b = userRepository.existsByEmail(email);
-            if (b) {
-                User user = userRepository.getReferenceByEmail(email);
-                return ResponseWithGoogle.builder()
-                        .id(user.getId())
-                        .token(jwtService.createToken(user))
-                        .build();
-            }
-            throw new NotActiveException();
-        } catch (com.google.firebase.auth.FirebaseAuthException e) {
-            throw new FirebaseAuthException();
-        }
-    }
-
-    @Override
-    public ResponseWithGoogle signUpWithGoogle(String tokenFromGoogle) {
-        try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
-            String email = decodedToken.getEmail();
-            String fullName = decodedToken.getName();
-            String picture = decodedToken.getPicture();
-            boolean b = userRepository.existsByEmail(email);
-            if (b) throw new NotActiveException();
-            String defaultPassword = userRepository.generatorDefaultPassword(8, 8);
-            String defaultUserName = userRepository.generatorDefaultPassword(6, 13);
-            User user = new User();
-            Profile profile = new Profile();
-            user.setEmail(email);
-            user.setRole(Role.USER);
-            user.setPassword(defaultPassword);
-            user.setUserName(defaultUserName);
-            String[] parts = fullName.split(" ");
-            if (parts.length >= 1) {
-                profile.setLastName(parts[0]);
-            }
-            if (parts.length >= 2) {
-                profile.setFirstName(parts[1]);
-            }
-            if (parts.length >= 3) {
-                profile.setPatronymicName(parts[2]);
-            }
-            profile.setAvatar(picture);
-            userRepository.save(user);
-            profile.setUser(user);
-            profileRepository.save(profile);
-            user.setProfile(profile);
-            sendDefaultPasswordToEmail(user);
-            return ResponseWithGoogle.builder()
-                    .id(user.getId())
-                    .token(jwtService.createToken(user)).build();
-        } catch (com.google.firebase.auth.FirebaseAuthException e) {
-            throw new FirebaseAuthException();
-        }
-    }
-
-    private void sendDefaultPasswordToEmail(User user) {
-        try {
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
-            mimeMessageHelper.setTo(user.getEmail());
-            mimeMessageHelper.setText("""
-                                              Hi """ + user.getUsername() + """
-                                              НИКОМУ НЕ ГОВОРИТЕ КОД!
-                                              Это пароль по умолчанию для Peakspace. 
-                                              Важно изменить этот пароль в целях вашей безопасности.
-                                              """
-                                      +
-                                      user.getPassword()
-                                      +
-                                      """
-                                              Welcome to Peakspace!
-                                              """);
-            mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
-            javaMailSender.send(mimeMessage);
-            System.out.println("Mail sent to " + user.getEmail());
-        } catch (MessagingException e) {
-            throw new NotActiveException();
-        }
-
-    }
     @Override
     public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
         User user = userRepository.getByEmail(email);
