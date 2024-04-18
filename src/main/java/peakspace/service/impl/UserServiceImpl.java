@@ -94,11 +94,15 @@ public class UserServiceImpl implements UserService {
                 if (parts.length >= 3) {
                     profile.setPatronymicName(parts[2]);
                 }
-                // while confirmation username
-                if (!userRepository.existsByUserName(user.getProfile().getLastName())) {
-                    user.setUserName(user.getProfile().getLastName().toLowerCase(Locale.ROOT));
-                }
+                String username = user.getProfile().getLastName();
+                while (!user.getUsername().isEmpty()) {
+                    if (!userRepository.existsByUserName(username)) {
+                        user.setUserName(user.getProfile().getLastName().toLowerCase(Locale.ROOT));
+                    }else{
+                        username = username + new Random().nextInt(1, userRepository.findAll().size()*2);
+                    }
 
+                }
                 return ResponseWithGoogle.builder()
                         .id(user.getId())
                         .description(maskedPhoneNumber)
@@ -251,12 +255,9 @@ public class UserServiceImpl implements UserService {
         ResponseEntity<String> response = restTemplate.postForEntity(apiURL, entity, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            // SMS was sent successfully
         } else {
             throw new SmsSendingException();
         }
-
     }
-
 
 }
