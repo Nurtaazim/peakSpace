@@ -10,7 +10,6 @@ import peakspace.dto.response.SimpleResponse;
 import peakspace.entities.Education;
 import peakspace.entities.Profile;
 import peakspace.entities.User;
-import peakspace.enums.Studies;
 import peakspace.repository.EducationRepository;
 import peakspace.repository.ProfileRepository;
 import peakspace.repository.UserRepository;
@@ -23,10 +22,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserRepository userRepository;
     private final EducationRepository educationRepo;
     private final ProfileRepository profileRepo;
-
     @Transactional
     @Override
     public SimpleResponse editProfile(UserInfoRequest userInfoRequest) {
+        //county
+        //city
+        //VUZ
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
 
@@ -39,88 +40,26 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.getProfile().setProfession(userInfoRequest.getProfession());
         user.getProfile().setWorkOrNot(userInfoRequest.isWorkOrNot());
 
-        if (userInfoRequest.getAvgAndHigher() != null) {
-            Education education = new Education();
-            Profile profile = userRepository.findBYProfile(user.getProfile().getId());
-            if (userInfoRequest.getAvgAndHigher().equals(Studies.AVG)) {
-                education.setAvgAndHigher(userInfoRequest.getAvgAndHigher());
-                education.setCity(userInfoRequest.getCity());
-                education.setEducationalInstitution(userInfoRequest.getEducationalInstitution());
-                education.setProfile(profile);
-                educationRepo.save(education);
-                profile.getEducations().add(education);
-                profileRepo.save(profile);
-                user.setProfile(profile);
-
-            } else if (userInfoRequest.getAvgAndHigher().equals(Studies.HIGHER)) {
-                Education education2 = new Education();
-                education2.setAvgAndHigher(userInfoRequest.getAvgAndHigher());
-                education2.setCity(userInfoRequest.getCity());
-                education2.setEducationalInstitution(userInfoRequest.getEducationalInstitution());
-                education2.setProfile(profile);
-                educationRepo.save(education2);
-                profile.getEducations().add(education2);
-                profileRepo.save(profile);
-                user.setProfile(profile);
-            }
-        }
-        userRepository.save(user);
-        return SimpleResponse.builder()
-                .message("Successfully  saved!")
-                .httpStatus(HttpStatus.OK)
-                .build();
-    }
-
-    //-------------------------------------------------------------------------------
-    //Тут второй вариант, по отдельности
-    //------------------------------------------------------------------------------------
-    @Override
-    public SimpleResponse saveAvg(UserInfoRequest userInfoRequest) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.getByEmail(email);
-
         Education education = new Education();
         Profile profile = userRepository.findBYProfile(user.getProfile().getId());
-        if (userInfoRequest.getAvgAndHigher().equals(Studies.AVG)) {
-            education.setAvgAndHigher(userInfoRequest.getAvgAndHigher());
-            education.setCity(userInfoRequest.getCity());
-            education.setEducationalInstitution(userInfoRequest.getEducationalInstitution());
-            education.setProfile(profile);
-            educationRepo.save(education);
-            profile.getEducations().add(education);
-            profileRepo.save(profile);
-            user.setProfile(profile);
-        }
+
+        education.setCountry(userInfoRequest.getCountry());
+        education.setLocation(userInfoRequest.getLocation());
+        education.setEducationalInstitution(userInfoRequest.getEducationalInstitution());
+
+
+        education.setProfile(profile);
+        educationRepo.save(education);
+        profile.getEducations().add(education);
+        profileRepo.save(profile);
+        user.setProfile(profile);
+
         userRepository.save(user);
         return SimpleResponse.builder()
-                .message("Successfully  saved!")
                 .httpStatus(HttpStatus.OK)
-                .build();
-
-    }
-
-    @Override
-    public SimpleResponse saveHigher(UserInfoRequest userInfoRequest) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.getByEmail(email);
-
-        Profile profile = userRepository.findBYProfile(user.getProfile().getId());
-        if (userInfoRequest.getAvgAndHigher().equals(Studies.HIGHER)) {
-            Education education2 = new Education();
-            education2.setAvgAndHigher(userInfoRequest.getAvgAndHigher());
-            education2.setCity(userInfoRequest.getCity());
-            education2.setEducationalInstitution(userInfoRequest.getEducationalInstitution());
-            education2.setProfile(profile);
-            educationRepo.save(education2);
-            profile.getEducations().add(education2);
-            profileRepo.save(profile);
-            user.setProfile(profile);
-        }
-        userRepository.save(user);
-        return SimpleResponse.builder()
-                .message("Successfully  saved!")
-                .httpStatus(HttpStatus.OK)
+                .message("Successfully saved!")
                 .build();
     }
+
 
 }

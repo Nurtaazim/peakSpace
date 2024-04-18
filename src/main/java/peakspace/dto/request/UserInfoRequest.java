@@ -1,9 +1,8 @@
 package peakspace.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import peakspace.enums.Studies;
+import peakspace.enums.Country;
 
 @Getter @Setter
 public class UserInfoRequest {
@@ -13,8 +12,8 @@ public class UserInfoRequest {
     private String firstName;
     private String lastName;
     private String aboutYourSelf;
-    private Studies avgAndHigher;
-    private String city;
+    private Country country;
+    private String location;
     private String educationalInstitution;
     private String profession;
     private boolean workOrNot;
