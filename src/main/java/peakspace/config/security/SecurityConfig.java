@@ -32,7 +32,8 @@ public class SecurityConfig {
                     .requestMatchers(
                             "/**",
                             "/api/**",
-                            "/swagger-ui/index.html/**"
+                            "/swagger-ui/index.html/**",
+                            "http://smspro.nikita.kg/api/message"
                     )
                     .permitAll()
                     .anyRequest()
