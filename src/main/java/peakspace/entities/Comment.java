@@ -36,5 +36,7 @@ public class Comment {
     @OneToMany
     @JoinTable(name = "innerComment")
     private List<Comment> innerComments;
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Like> likes;
 
 }
