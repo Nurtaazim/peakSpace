@@ -4,9 +4,10 @@ import java.time.ZonedDateTime;
 
 @Builder
 public record InnerCommentResponse(Long id,
+                                   Long userId,
                                    String avatar,
                                    String userName,
                                    String comment,
-                                   int countLike,
+                                   long countLike,
                                    ZonedDateTime createdAt) {
 }

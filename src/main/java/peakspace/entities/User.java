@@ -52,6 +52,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "userNotification",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private Notification notification;
 
+    public String getThisUserName() {
+        return this.userName;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);

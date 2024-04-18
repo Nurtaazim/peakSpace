@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.MyPostResponse;
+import peakspace.entities.Link_Publication;
 import peakspace.repository.CommentRepository;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
@@ -11,6 +12,7 @@ import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,18 +38,34 @@ public class PublicationServiceImpl implements PublicationService {
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
                 .countFriends(user.getChapters().size())
-                .countPublics(user.getPublications().size())
+                .countPablics(user.getPablicProfiles().size())
                 .publications(publics)
                 .build();
     }
 
     @Override
-    public MyPostResponse getById(Long postId, Principal principal) {
-        MyPostResponse myPost = publicationRepository.getMyPost(postId);
+    public MyPostResponse getById(Long postId) {
+        MyPostResponse myPost = getMyPost(postId);
         for (CommentResponse commentResponse : myPost.commentResponses()) {
             commentResponse.setInnerComments(commentRepository.getInnerComments(commentResponse.getId()));
         }
         return myPost;
+    }
+
+    public MyPostResponse getMyPost(Long postId){
+        Publication publication = publicationRepository.getReferenceById(postId);
+        List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
+        commentForResponse.reversed();
+        return MyPostResponse.builder()
+                .id(publication.getId())
+                .userId(publication.getOwner().getId())
+                .links(publication.getLinkPublications().stream().map(Link_Publication::getLink).collect(Collectors.toList()))
+                .countLikes(publication.getLikes().size())
+                .avatar(publication.getOwner().getProfile().getAvatar())
+                .userName(publication.getOwner().getThisUserName())
+                .location(publication.getLocation())
+                .commentResponses(commentForResponse)
+                .build();
     }
 
 }

@@ -1,6 +1,7 @@
 package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.InnerCommentResponse;
 import peakspace.entities.Comment;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select new peakspace.dto.response.InnerCommentResponse(" +
            "ic.id, " +
+           "ic.user.id," +
            "ic.user.profile.avatar, " +
            "ic.user.userName, " +
            "ic.message, " +
@@ -17,5 +19,14 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
            "where c.id = ?1")
     List<InnerCommentResponse> getInnerComments(Long id);
 
+    @Query("select new peakspace.dto.response.CommentResponse(" +
+           "c.id, " +
+           "c.user.id," +
+           "c.user.profile.avatar, " +
+           "c.user.userName, " +
+           "c.message, " +
+           "(select count(lik.user) from c.likes lik), " +
+           "c.createdAt) from Comment c where c.publication.id = ?1")
+    List<CommentResponse> getCommentForResponse(Long idPublic);
 
 }
