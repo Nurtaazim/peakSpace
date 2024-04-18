@@ -8,38 +8,47 @@ import com.google.maps.model.LatLng;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import peakspace.dto.request.PostRequest;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.entities.Link_Publication;
+import peakspace.entities.Publication;
 import peakspace.entities.User;
+import peakspace.repository.LinkPublicationRepo;
+import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
+import peakspace.service.PostService;
 
 import java.io.IOException;
 
 @Repository
 @RequiredArgsConstructor
-public class PostServiceImpl {
+public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
+    private final LinkPublicationRepo linkPublicationRepo;
+    private final PublicationRepository publicationRepo;
+
+    @Override
+    public SimpleResponse savePost(PostRequest postRequest) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = userRepository.getByEmail(email);
-    String apiKey = "AIzaSyDvMzOD4I73b-5iUYh-pjaWHFCojuNRV4c"; // Your Google Maps API Key
-    GeoApiContext context = new GeoApiContext
-            .Builder()
-            .apiKey(apiKey)
-            .build();
 
-        try {
-        GeocodingResult[] results = new GeocodingResult[0];
-        try {
-            results = GeocodingApi.geocode(context, "Kyrgyzstan").await();
-        } catch (ApiException ex) {
-            throw new RuntimeException(ex);
-        } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        LatLng location = results[0].geometry.location;
-        System.out.println("Latitude: " + location.lat);
-        System.out.println("Longitude: " + location.lng);
-        } catch(Exception e) {
-        e.printStackTrace();
+        Link_Publication linkPublication = new Link_Publication();
+        linkPublication.setLink(postRequest.getLink());
+        Link_Publication linkPublication1 = linkPublicationRepo.save(linkPublication);
+
+        Publication publication = new Publication();
+        publication.setDescription(postRequest.getDescription());
+        publication.setLocation(postRequest.getLocation());
+        publication.getLinkPublications().add(linkPublication1);
+
+        Publication publication1 = publicationRepo.save(publication);
+
+        user.getPublications().add(publication1);
+        userRepository.save(user);
+
+        return null;
     }
+
+
+
 }

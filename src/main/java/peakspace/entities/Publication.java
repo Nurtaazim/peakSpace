@@ -19,6 +19,7 @@ public class Publication {
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
     private String location;
+    private boolean isBlockComment;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User owner;
     @ManyToMany

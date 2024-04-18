@@ -1,124 +1,124 @@
-insert into users(id, user_name, email, password, is_block)
-values -- gotovo
-       (1, 'Aliaskar', 'aliaskar@gmail.com', '$2a$12$V3VQ8h4pfGBNNQYGlggXlOHf6.eFNH4VChm0bxKHPDMRv7te/GOvK',
-        false), --aliaskar1234
-       (2, 'Mirlan', 'mirlan@gmail.com', '$2a$12$nBn2dhJXXKXNLcx5LFH.LOrXKuDQSQUVGr5vh90Uo73XHSZ0YP636',
-        false), --mirlan1234
-       (3, 'Myrzaiym', 'myrzaiym@gmail.com', '$2a$12$bjn01purODRpvf714JFbj./91rXrvMRL5QgjCbgIEAYnQdeYoz68K',
-        false), --myrzaiym1234
-       (4, 'Nurtaazim', 'nurtaazim@gmail.com', '$2a$12$7w1javZANTDTW.PTHWoPMewNHO1WOPOpURSy5BGHOIcgc5V/gVv8S',
-        false), --nurtaazim1234
-       (5, 'Nurmukhammed', 'nurmukhammed@gmail.com', '$2a$12$7wuEoK1raMY0ACiHI0cpJOUB4q5MMAAbrJJdKpbdzyIKPCZ5o.fb2',
-        false), --nurmukhammed1234
-       (6, 'Nurkamil', 'nurkamil@gmail.com', '$2a$12$rDuM/7QHNuls7F/uSnYORehUR6RJOAkvHDpjLxO7WLjf1TheZfcXu',
-        false), --nurkamil1234
-       (7, 'Aiturgan', 'aiturgan@gmail.com', '$2a$12$gmRvdp9mjYsWvQomynXDV.QXkey69qZXogJcvh0wQLvHvCl0za6Oq',
-        false), --aiturgan1234
-       (8, 'Gulukan', 'gulumkan@gmail.com', '$2a$12$4kLeZzjyQxv.n/dwRk./GeVo54IG4b8F.hZGk2jEc0oqQzSYQAVOi',
-        false), --gulumkan1234
-       (9, 'Ajybek', 'ajybek@gmail.com', '$2a$12$lWjTBGDFDJecVBbmvEHAAeZOqL8VmGP2ESrGACr5xwfPJZUYirJMO',
-        false), --ajybek1234
-       (10, 'Nurislam', 'nurt@gmail.com', '$2a$12$t7nUpSW.BjMy2Fe2N2HTgOWY723XNMj6yC15piA9gTV2nkh5CLgNS',
-        false), --nurislam1234
-       (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false),
-       (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false),
-       (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false),
-       (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false),
-       (15, 'JamesJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false),
-       (16, 'OliviaGarcia', 'olivia.garcia@example.com', '$2a$12$encodedPassword6', false),
-       (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false),
-       (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false),
-       (19, 'BenjaminClark', 'benjamin.clark@example.com', '$2a$12$encodedPassword9', false),
-       (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false);
+-- insert into users(id, user_name, email, password, is_block)
+-- values -- gotovo
+--        (1, 'Aliaskar', 'aliaskar@gmail.com', '$2a$12$V3VQ8h4pfGBNNQYGlggXlOHf6.eFNH4VChm0bxKHPDMRv7te/GOvK',
+--         false), --aliaskar1234
+--        (2, 'Mirlan', 'mirlan@gmail.com', '$2a$12$nBn2dhJXXKXNLcx5LFH.LOrXKuDQSQUVGr5vh90Uo73XHSZ0YP636',
+--         false), --mirlan1234
+--        (3, 'Myrzaiym', 'myrzaiym@gmail.com', '$2a$12$bjn01purODRpvf714JFbj./91rXrvMRL5QgjCbgIEAYnQdeYoz68K',
+--         false), --myrzaiym1234
+--        (4, 'Nurtaazim', 'nurtaazim@gmail.com', '$2a$12$7w1javZANTDTW.PTHWoPMewNHO1WOPOpURSy5BGHOIcgc5V/gVv8S',
+--         false), --nurtaazim1234
+--        (5, 'Nurmukhammed', 'nurmukhammed@gmail.com', '$2a$12$7wuEoK1raMY0ACiHI0cpJOUB4q5MMAAbrJJdKpbdzyIKPCZ5o.fb2',
+--         false), --nurmukhammed1234
+--        (6, 'Nurkamil', 'nurkamil@gmail.com', '$2a$12$rDuM/7QHNuls7F/uSnYORehUR6RJOAkvHDpjLxO7WLjf1TheZfcXu',
+--         false), --nurkamil1234
+--        (7, 'Aiturgan', 'aiturgan@gmail.com', '$2a$12$gmRvdp9mjYsWvQomynXDV.QXkey69qZXogJcvh0wQLvHvCl0za6Oq',
+--         false), --aiturgan1234
+--        (8, 'Gulukan', 'gulumkan@gmail.com', '$2a$12$4kLeZzjyQxv.n/dwRk./GeVo54IG4b8F.hZGk2jEc0oqQzSYQAVOi',
+--         false), --gulumkan1234
+--        (9, 'Ajybek', 'ajybek@gmail.com', '$2a$12$lWjTBGDFDJecVBbmvEHAAeZOqL8VmGP2ESrGACr5xwfPJZUYirJMO',
+--         false), --ajybek1234
+--        (10, 'Nurislam', 'nurt@gmail.com', '$2a$12$t7nUpSW.BjMy2Fe2N2HTgOWY723XNMj6yC15piA9gTV2nkh5CLgNS',
+--         false), --nurislam1234
+--        (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false),
+--        (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false),
+--        (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false),
+--        (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false),
+--        (15, 'JamesJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false),
+--        (16, 'OliviaGarcia', 'olivia.garcia@example.com', '$2a$12$encodedPassword6', false),
+--        (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false),
+--        (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false),
+--        (19, 'BenjaminClark', 'benjamin.clark@example.com', '$2a$12$encodedPassword9', false),
+--        (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false);
+--
+-- insert into stories(id, owner_id, created_at)
+-- values --gotovo
+--        (1, 1, '2024-10-10T00:00:00+00:00'),
+--        (2, 1, '2024-09-05T00:00:00+00:00'),
+--        (3, 2, '2024-08-10T00:00:00+00:00'),
+--        (4, 3, '2024-07-12T00:00:00+00:00'),
+--        (5, 3, '2024-07-12T00:00:00+00:00'),
+--        (6, 4, '2024-07-12T00:00:00+00:00'),
+--        (7, 5, '2024-07-12T00:00:00+00:00'),
+--        (8, 6, '2024-07-12T00:00:00+00:00'),
+--        (9, 7, '2024-07-12T00:00:00+00:00'),
+--        (10, 8, '2024-07-12T00:00:00+00:00'),
+--        (11, 9, '2024-07-12T00:00:00+00:00'),
+--        (12, 10, '2024-07-12T00:00:00+00:00'),
+--        (13, 11, '2024-07-12T00:00:00+00:00'),
+--        (14, 12, '2024-07-12T00:00:00+00:00'),
+--        (15, 13, '2024-07-12T00:00:00+00:00'),
+--        (16, 14, '2024-07-12T00:00:00+00:00'),
+--        (17, 15, '2024-07-12T00:00:00+00:00'),
+--        (18, 16, '2024-07-12T00:00:00+00:00');
+--
+--
+-- insert into likes(id, user_id)
+-- values (1, 1),
+--        (2, 2), --gotovo
+--        (3, 3),
+--        (4, 4),
+--        (5, 5),
+--        (6, 6),
+--        (7, 7),
+--        (8, 8),
+--        (9, 9),
+--        (10, 10),
+--        (11, 11),
+--        (12, 12),
+--        (13, 13),
+--        (14, 14),
+--        (15, 15),
+--        (16, 16),
+--        (17, 17),
+--        (18, 18),
+--        (19, 19),
+--        (20, 20);
+--
+-- INSERT INTO stories_likes(story_id, likes_id)
+-- VALUES (1, 1),
+--        (1, 2), --gotovo
+--        (2, 3),
+--        (2, 4),
+--        (3, 5),
+--        (4, 6),
+--        (4, 7),
+--        (5, 8),
+--        (5, 9),
+--        (6, 10),
+--        (7, 11),
+--        (8, 12),
+--        (8, 13),
+--        (9, 14),
+--        (9, 15),
+--        (10, 16),
+--        (11, 17),
+--        (12, 18);
 
-insert into stories(id, owner_id, created_at)
+
+
+insert into publications(id, owner_id, pablic_profile_id,is_block_comment, description, created_at, updated_at, location)
 values --gotovo
-       (1, 1, '2024-10-10T00:00:00+00:00'),
-       (2, 1, '2024-09-05T00:00:00+00:00'),
-       (3, 2, '2024-08-10T00:00:00+00:00'),
-       (4, 3, '2024-07-12T00:00:00+00:00'),
-       (5, 3, '2024-07-12T00:00:00+00:00'),
-       (6, 4, '2024-07-12T00:00:00+00:00'),
-       (7, 5, '2024-07-12T00:00:00+00:00'),
-       (8, 6, '2024-07-12T00:00:00+00:00'),
-       (9, 7, '2024-07-12T00:00:00+00:00'),
-       (10, 8, '2024-07-12T00:00:00+00:00'),
-       (11, 9, '2024-07-12T00:00:00+00:00'),
-       (12, 10, '2024-07-12T00:00:00+00:00'),
-       (13, 11, '2024-07-12T00:00:00+00:00'),
-       (14, 12, '2024-07-12T00:00:00+00:00'),
-       (15, 13, '2024-07-12T00:00:00+00:00'),
-       (16, 14, '2024-07-12T00:00:00+00:00'),
-       (17, 15, '2024-07-12T00:00:00+00:00'),
-       (18, 16, '2024-07-12T00:00:00+00:00');
-
-
-insert into likes(id, user_id)
-values (1, 1),
-       (2, 2), --gotovo
-       (3, 3),
-       (4, 4),
-       (5, 5),
-       (6, 6),
-       (7, 7),
-       (8, 8),
-       (9, 9),
-       (10, 10),
-       (11, 11),
-       (12, 12),
-       (13, 13),
-       (14, 14),
-       (15, 15),
-       (16, 16),
-       (17, 17),
-       (18, 18),
-       (19, 19),
-       (20, 20);
-
-INSERT INTO stories_likes(story_id, likes_id)
-VALUES (1, 1),
-       (1, 2), --gotovo
-       (2, 3),
-       (2, 4),
-       (3, 5),
-       (4, 6),
-       (4, 7),
-       (5, 8),
-       (5, 9),
-       (6, 10),
-       (7, 11),
-       (8, 12),
-       (8, 13),
-       (9, 14),
-       (9, 15),
-       (10, 16),
-       (11, 17),
-       (12, 18);
-
-
-
-insert into publications(id, owner_id, pablic_profile_id, description, created_at, updated_at, location)
-values --gotovo
-       (1, 1, null, 'Summer time', '2024-10-10T00:00:00+00:00', '2024-11-01T00:00:00+00:00', 'Bishkek'),
-       (2, 1, null, 'At the school', '2024-09-05T00:00:00+00:00', '2024-11-10T00:00:00+00:00', 'Naryn'),
-       (3, 2, null, 'Happy times', '2024-08-10T00:00:00+00:00', '2024-10-01T00:00:00+00:00', 'Bishkek'),
-       (4, 3, null, 'Moments', '2024-07-12T00:00:00+00:00', '2024-09-01T00:00:00+00:00', 'Bishkek'),
-       (5, 3, null, 'Birthday', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
-       (6, 4, null, 'With family', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
-       (7, 5, null, 'Brothers', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
-       (8, 6, null, 'My vibe', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
-       (9, 6, null, 'Adventure in the Mountains', '2024-07-20T00:00:00+00:00', '2024-08-15T00:00:00+00:00', 'Issyk-Kul'),
-       (10, 8, null, 'Exploring the City', '2024-06-15T00:00:00+00:00', '2024-07-25T00:00:00+00:00', 'Karabalta'),
-       (11, 9, null, 'Family Picnic', '2024-07-30T00:00:00+00:00', '2024-08-05T00:00:00+00:00', 'Cholpon-Ata'),
-       (12, 9, null, 'Weekend Getaway', '2024-08-10T00:00:00+00:00', '2024-08-12T00:00:00+00:00', 'Talas'),
-       (13, 11, null, 'Beach Day', '2024-06-25T00:00:00+00:00', '2024-06-26T00:00:00+00:00', 'Issyk-Kul'),
-       (14, 12, null, 'Hiking in the Forest', '2024-07-05T00:00:00+00:00', '2024-07-06T00:00:00+00:00', 'Karakol'),
-       (15, 12, null, 'Celebrating Graduation', '2024-07-15T00:00:00+00:00', '2024-07-16T00:00:00+00:00', 'Naryn'),
-       (16, 14, null, 'Road Trip', '2024-08-20T00:00:00+00:00', '2024-08-25T00:00:00+00:00', 'Balykchy'),
-       (17, 15, null, 'Summer Festival', '2024-06-30T00:00:00+00:00', '2024-07-05T00:00:00+00:00', 'Talas'),
-       (18, 17, null, 'City Nightlife', '2024-08-05T00:00:00+00:00', '2024-08-10T00:00:00+00:00', 'Bishkek'),
-       (19, 17, null, 'Camping Trip', '2024-07-10T00:00:00+00:00', '2024-07-15T00:00:00+00:00', 'Issyk-Kul'),
-       (20, 17, null, 'Exploring Historical Sites', '2024-08-15T00:00:00+00:00', '2024-08-20T00:00:00+00:00', 'Osh');
+       (1, 1, null,false, 'Summer time', '2024-10-10T00:00:00+00:00', '2024-11-01T00:00:00+00:00', 'Bishkek'),
+       (2, 1, null,false, 'At the school', '2024-09-05T00:00:00+00:00', '2024-11-10T00:00:00+00:00', 'Naryn'),
+       (3, 2, null,false, 'Happy times', '2024-08-10T00:00:00+00:00', '2024-10-01T00:00:00+00:00', 'Bishkek'),
+       (4, 3, null,false,'Moments', '2024-07-12T00:00:00+00:00', '2024-09-01T00:00:00+00:00', 'Bishkek'),
+       (5, 3, null,false, 'Birthday', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
+       (6, 4, null,false, 'With family', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
+       (7, 5, null,false, 'Brothers', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
+       (8, 6, null,false, 'My vibe', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
+       (9, 6, null,false, 'Adventure in the Mountains', '2024-07-20T00:00:00+00:00', '2024-08-15T00:00:00+00:00', 'Issyk-Kul'),
+       (10, 8, null,false, 'Exploring the City', '2024-06-15T00:00:00+00:00', '2024-07-25T00:00:00+00:00', 'Karabalta'),
+       (11, 9, null,false, 'Family Picnic', '2024-07-30T00:00:00+00:00', '2024-08-05T00:00:00+00:00', 'Cholpon-Ata'),
+       (12, 9, null,false, 'Weekend Getaway', '2024-08-10T00:00:00+00:00', '2024-08-12T00:00:00+00:00', 'Talas'),
+       (13, 11, null,false, 'Beach Day', '2024-06-25T00:00:00+00:00', '2024-06-26T00:00:00+00:00', 'Issyk-Kul'),
+       (14, 12, null,false, 'Hiking in the Forest', '2024-07-05T00:00:00+00:00', '2024-07-06T00:00:00+00:00', 'Karakol'),
+       (15, 12, null,false, 'Celebrating Graduation', '2024-07-15T00:00:00+00:00', '2024-07-16T00:00:00+00:00', 'Naryn'),
+       (16, 14, null,false, 'Road Trip', '2024-08-20T00:00:00+00:00', '2024-08-25T00:00:00+00:00', 'Balykchy'),
+       (17, 15, null,false, 'Summer Festival', '2024-06-30T00:00:00+00:00', '2024-07-05T00:00:00+00:00', 'Talas'),
+       (18, 17, null,false, 'City Nightlife', '2024-08-05T00:00:00+00:00', '2024-08-10T00:00:00+00:00', 'Bishkek'),
+       (19, 17, null,false, 'Camping Trip', '2024-07-10T00:00:00+00:00', '2024-07-15T00:00:00+00:00', 'Issyk-Kul'),
+       (20, 17, null,false, 'Exploring Historical Sites', '2024-08-15T00:00:00+00:00', '2024-08-20T00:00:00+00:00', 'Osh');
 
 
 insert into profiles(id, user_id,work_or_not, avatar, cover, about_your_self, last_name,first_name ,phone_number, profession)
