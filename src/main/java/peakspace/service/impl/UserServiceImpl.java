@@ -1,5 +1,4 @@
 package peakspace.service.impl;
-
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
-
 import java.util.Locale;
 import java.util.Random;
 
@@ -48,9 +46,9 @@ public class UserServiceImpl implements UserService {
     private int randomCode;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-    @Value("${nikita.api.url}")
+    @Value("${http://smspro.nikita.kg/api/message}")
     private String apiURL;
-    @Value("${nikita.api.key}")
+    @Value("${bfc87413578d8bf8181838ca5418239b}")
     private String apiKey;
 
     @Override
@@ -227,12 +225,6 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .token(jwtService.createToken(user))
                 .build();
-    }
-
-    @Override
-    public String signIn(String email) {
-        User user = userRepository.getReferenceByEmail(email);
-        return jwtService.createToken(user);
     }
 
     private String maskPhoneNumber(String phoneNumber) {

@@ -19,6 +19,4 @@ public interface UserService {
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 
-    String signIn(String email);
-
 }

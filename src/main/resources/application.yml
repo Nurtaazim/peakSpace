@@ -20,7 +20,7 @@ spring:
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
-      mode: always
+      mode: never
 
     #  #DATA-INIT
     #  spring.jpa.defer-datasource-initialization=true
@@ -38,5 +38,5 @@ app:
     secret: Java12
 nikita:
   api:
-    url: https://api.nikita.kg/sms/
+    url: http://smspro.nikita.kg/api/message
     key: bfc87413578d8bf8181838ca5418239b
