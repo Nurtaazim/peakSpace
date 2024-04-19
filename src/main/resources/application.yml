@@ -34,3 +34,20 @@ app:
       #  spring.jpa.defer-datasource-initialization=true
       #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
       #  spring.sql.init.mode=never
+
+
+
+
+
+
+
+cloud:
+  aws:
+    region: us-east-1
+    accessKey: AKIAZI2LDVKOR6V4MDP7
+    secretKey: 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
+  s3:
+    bucketName: peakspacebucket
+    keyName: ваш-файл.txt
+    filePath: путь/к/вашему/файлу.txt
+
