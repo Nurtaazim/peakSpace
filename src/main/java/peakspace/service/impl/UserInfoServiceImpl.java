@@ -14,7 +14,6 @@ import peakspace.repository.EducationRepository;
 import peakspace.repository.ProfileRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserInfoService;
-
 @Service
 @RequiredArgsConstructor
 public class UserInfoServiceImpl implements UserInfoService {
@@ -25,9 +24,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Transactional
     @Override
     public SimpleResponse editProfile(UserInfoRequest userInfoRequest) {
-        //county
-        //city
-        //VUZ
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
 
@@ -59,7 +55,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully saved!")
                 .build();
-    }
 
+    }
 
 }
