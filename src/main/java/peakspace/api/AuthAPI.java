@@ -37,6 +37,8 @@ public class AuthAPI {
     SignInResponse signIn (@RequestBody SignInRequest signInRequest){
         return userService.signIn(signInRequest);
     }
+//    User kaira kod jonotush kerek eski dannyilary menen
+//    Kod 3 minut ishtesh kerek
     @GetMapping("/signUp")
     String signUp (@RequestBody SignUpRequest signUpRequest) throws MessagingException {
         return userService.signUp(signUpRequest);
