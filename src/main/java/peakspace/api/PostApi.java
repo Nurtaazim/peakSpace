@@ -17,9 +17,9 @@ public class PostApi {
       return   postService.savePost(postRequest);
     }
 
-    @GetMapping("/getPost/{postId}")
-    public PostResponse getPost(@PathVariable Long postId){
-        return postService.getById(postId);
+    @GetMapping("/getPost/{postId}/{userId}")
+    public PostResponse getPost(@PathVariable Long postId,@PathVariable Long userId){
+        return postService.getById(postId,userId);
     }
 
     @PostMapping("/updatePost/{postId}")

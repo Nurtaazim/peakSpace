@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.LinkPublicationResponse;
@@ -33,14 +34,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public SimpleResponse savePost(PostRequest postRequest) {
-    String email = SecurityContextHolder.getContext().getAuthentication().getName();
-    User user = userRepository.getByEmail(email);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
         List<Link_Publication> linkPublications = new ArrayList<>();
         for (int i = 0; i < postRequest.getLinks().size(); i++) {
-        Link_Publication linkPublication = new Link_Publication();
-        linkPublication.setLink(postRequest.getLinks().get(i));
-        linkPublications.add(linkPublication);
-        linkPublicationRepo.save(linkPublication);
+            Link_Publication linkPublication = new Link_Publication();
+            linkPublication.setLink(postRequest.getLinks().get(i));
+            linkPublications.add(linkPublication);
+            linkPublicationRepo.save(linkPublication);
         }
         Publication publication = new Publication();
         publication.setDescription(postRequest.getDescription());
@@ -54,46 +56,52 @@ public class PostServiceImpl implements PostService {
         user.getPublications().add(publication);
         userRepository.save(user);
 
-        return  SimpleResponse.builder()
+        return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully saved!")
                 .build();
     }
 
     @Override
-    public PostResponse getById(Long postId) {
-        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
-        List<Link_Publication> linkPublications = publication.getLinkPublications();
-        List<Comment> comments = publication.getComments();
-        List<CommentResponse> commentResponses = mapToComment(comments);
-        List<LinkPublicationResponse> linkResponses = mapToLinkResponse(linkPublications);
-        return mapToPost(publication,linkResponses,commentResponses);
+    public PostResponse getById(Long postId,Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("With this id user not found!"));
+        for (Publication publication : user.getPublications()) {
+            if(publication.getId().equals(postId)){
+                List<Link_Publication> linkPublications = publication.getLinkPublications();
+                List<Comment> comments = publication.getComments();
+                List<CommentResponse> commentResponses = mapToComment(comments);
+                List<LinkPublicationResponse> linkResponses = mapToLinkResponse(linkPublications);
+                return mapToPost(publication, linkResponses, commentResponses);
+            }
+        }
+//        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
+           return  null;
     }
 
-    public PostResponse mapToPost(Publication post, List<LinkPublicationResponse> linkPublicationResponses,List<CommentResponse> commentResponses){
-    return new PostResponse(
-            post.getId(),
-            post.getDescription(),
-            post.getLocation(),
-            post.isBlockComment(),
-            linkPublicationResponses,
-            commentResponses
-            );
+    public PostResponse mapToPost(Publication post, List<LinkPublicationResponse> linkPublicationResponses, List<CommentResponse> commentResponses) {
+        return new PostResponse(
+                post.getId(),
+                post.getDescription(),
+                post.getLocation(),
+                post.isBlockComment(),
+                linkPublicationResponses,
+                commentResponses
+        );
     }
 
-    public List<LinkPublicationResponse> mapToLinkResponse(List<Link_Publication> links){
-    List<LinkPublicationResponse> linkPublicationRes = new ArrayList<>();
+    public List<LinkPublicationResponse> mapToLinkResponse(List<Link_Publication> links) {
+        List<LinkPublicationResponse> linkPublicationRes = new ArrayList<>();
         for (Link_Publication link : links) {
             LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse(
-            link.getId(),
-            link.getLink()
+                    link.getId(),
+                    link.getLink()
             );
             linkPublicationRes.add(linkPublicationResponse);
         }
-      return linkPublicationRes;
+        return linkPublicationRes;
     }
 
-    public List<CommentResponse> mapToComment(List <Comment> commentList){
+    public List<CommentResponse> mapToComment(List<Comment> commentList) {
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : commentList) {
             CommentResponse commentResponse = new CommentResponse(
@@ -111,24 +119,28 @@ public class PostServiceImpl implements PostService {
     public SimpleResponse update(Long postId, PostRequest postRequest) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
-        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
 
-        if(publication.getOwner().getId().equals(user.getId())){
-            publication.setDescription(postRequest.getDescription());
-                List<Link_Publication> linkPublications = new ArrayList<>();
-                for (int i = 0; i < postRequest.getLinks().size(); i++) {
-                    Link_Publication linkPublication = new Link_Publication();
-                    linkPublication.setLink(postRequest.getLinks().get(i));
-                    linkPublications.add(linkPublication);
-                    linkPublicationRepo.save(linkPublication);
-            }
-            publication.setLinkPublications(linkPublications);
-            publication.setLocation(postRequest.getLocation());
-            publication.setBlockComment(postRequest.isBlockComment());
+        for (Publication publication : user.getPublications()) {
+            if (publication.getOwner().getId().equals(user.getId())) {
+                if(publication.getId().equals(postId)) {
+                    publication.setDescription(postRequest.getDescription());
+                    List<Link_Publication> linkPublications = new ArrayList<>();
+                    for (int i = 0; i < postRequest.getLinks().size(); i++) {
+                        Link_Publication linkPublication = new Link_Publication();
+                        linkPublication.setLink(postRequest.getLinks().get(i));
+                        linkPublications.add(linkPublication);
+                        linkPublicationRepo.save(linkPublication);
+                    }
+                    publication.setLinkPublications(linkPublications);
+                    publication.setLocation(postRequest.getLocation());
+                    publication.setBlockComment(postRequest.isBlockComment());
 
-            publicationRepo.save(publication);
-            user.getPublications().add(publication);
-            userRepository.save(user);
+                    publicationRepo.save(publication);
+                    user.getPublications().add(publication);
+                    userRepository.save(user);
+                }
+           }
+//        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
         }
         return SimpleResponse.builder()
                 .message("Successfully updated!")
@@ -140,16 +152,20 @@ public class PostServiceImpl implements PostService {
     public SimpleResponse delete(Long postId) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
-        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
 
-        if(publication.getOwner().getId().equals(user.getId())){
-
-            publicationRepo.deleteCom(postId);
-            publicationRepo.deleteLink(postId);
-            publicationRepo.deleteTag(postId);
-            publicationRepo.deleteLike(postId);
-            publicationRepo.delete(publication);
+        for (Publication publication : user.getPublications()) {
+            if (publication.getOwner().getId().equals(user.getId())) {
+                if(publication.getId().equals(postId)) {
+                    publicationRepo.deleteCom(postId);
+                    publicationRepo.deleteLink(postId);
+                    publicationRepo.deleteTag(postId);
+                    publicationRepo.deleteLike(postId);
+                    publicationRepo.delete(publication);
+                }
+            }
         }
+//        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
+
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully deleted!")
@@ -157,29 +173,42 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public SimpleResponse deleteLinkFromPost(Long linkId,Long postId) {
+    @Transactional
+    public SimpleResponse deleteLinkFromPost(Long linkId, Long postId) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
 
-        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException("With this id not found!"));
-
-        if(publication.getOwner().getId().equals(user.getId())){
-
-            for (Link_Publication linkPublication : publication.getLinkPublications()) {
-                Link_Publication linkPublication1 = linkPublicationRepo.findById(linkPublication.getId()).get();
-                if (linkPublication1.getId().equals(linkId)) {
-                    publication.getLinkPublications().remove(linkPublication1);
-                    linkPublicationRepo.delete(linkPublication1);
-                    publication.getLinkPublications().add(linkPublication);
-                    publicationRepo.save(publication);
+        for (Publication publication : user.getPublications()) {
+            if(publication.getId().equals(postId)){
+                if (publication.getOwner().getId().equals(user.getId())) {
+                    List<Link_Publication> photots = publication.getLinkPublications();
+                    List<Link_Publication> orig = new ArrayList<>();
+                    for (Link_Publication phot : photots) {
+                        if (!phot.getId().equals(linkId)) {
+                            orig.add(phot);
+                        }
+                    }
+                    publication.setLinkPublications(orig);
+                    linkPublicationRepo.deleteById(linkId);
                 }
-
             }
         }
+
         return SimpleResponse.builder()
                 .message("Successfully deleted!")
                 .httpStatus(HttpStatus.OK)
                 .build();
+    }
+
+    @Override
+    public PostResponse getAll(Long userId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        if(user.getId().equals(userId)){
+            user.getPublications();
+        }
+        return null;
     }
 
 
