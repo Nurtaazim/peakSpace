@@ -1,8 +1,6 @@
 package peakspace.dto.response;
 
 import lombok.Builder;
-import peakspace.entities.MessageContent;
-
 import java.util.List;
 
 @Builder

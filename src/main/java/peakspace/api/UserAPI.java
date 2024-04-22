@@ -1,7 +1,6 @@
 package peakspace.api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.response.*;
