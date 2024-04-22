@@ -8,11 +8,9 @@ import peakspace.dto.response.SimpleResponse;
 public interface PostService {
 
     public SimpleResponse savePost(PostRequest postRequest);
-    public PostResponse getById(Long postId,Long userId);
-    public SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest);
+     public SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest);
     public SimpleResponse delete(Long postId);
     public SimpleResponse deleteLinkFromPost(Long linkId,Long postId);
 
-    public PostResponse getAll(Long userId);
 
 }

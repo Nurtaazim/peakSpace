@@ -28,6 +28,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepo;
     private final PublicationRepository publicationRepo;
@@ -60,60 +61,6 @@ public class PostServiceImpl implements PostService {
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully saved!")
                 .build();
-    }
-
-    @Override
-    public PostResponse getById(Long postId,Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("With this id user not found!"));
-        user.getProfile().getId();
-        user.getProfile().getAvatar();
-        for (Publication publication : user.getPublications()) {
-            if(publication.getId().equals(postId)){
-                List<Link_Publication> linkPublications = publication.getLinkPublications();
-                List<Comment> comments = publication.getComments();
-                List<CommentResponse> commentResponses = mapToComment(comments);
-                List<LinkPublicationResponse> linkResponses = mapToLinkResponse(linkPublications);
-                return mapToPost(publication, linkResponses, commentResponses);
-            }
-        }
-//        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
-           return  null;
-    }
-
-    public PostResponse mapToPost(Publication post, List<LinkPublicationResponse> linkPublicationResponses, List<CommentResponse> commentResponses) {
-        return new PostResponse(
-                post.getId(),
-                post.getDescription(),
-                post.getLocation(),
-                post.isBlockComment(),
-                linkPublicationResponses,
-                commentResponses
-        );
-    }
-
-    public List<LinkPublicationResponse> mapToLinkResponse(List<Link_Publication> links) {
-        List<LinkPublicationResponse> linkPublicationRes = new ArrayList<>();
-        for (Link_Publication link : links) {
-            LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse(
-                    link.getId(),
-                    link.getLink()
-            );
-            linkPublicationRes.add(linkPublicationResponse);
-        }
-        return linkPublicationRes;
-    }
-
-    public List<CommentResponse> mapToComment(List<Comment> commentList) {
-        List<CommentResponse> commentResponses = new ArrayList<>();
-        for (Comment comment : commentList) {
-            CommentResponse commentResponse = new CommentResponse(
-                    comment.getId(),
-                    comment.getMessage(),
-                    comment.getCreatedAt()
-            );
-            commentResponses.add(commentResponse);
-        }
-        return commentResponses;
     }
 
     @Override
@@ -153,8 +100,6 @@ public class PostServiceImpl implements PostService {
                 }
             }
         }
-//        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
-
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully deleted!")
@@ -182,23 +127,9 @@ public class PostServiceImpl implements PostService {
                 }
             }
         }
-
         return SimpleResponse.builder()
                 .message("Successfully deleted!")
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
-
-    @Override
-    public PostResponse getAll(Long userId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.getByEmail(email);
-
-        if(user.getId().equals(userId)){
-            user.getPublications();
-        }
-        return null;
-    }
-
-
 }

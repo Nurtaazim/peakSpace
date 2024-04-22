@@ -1,5 +1,4 @@
 package peakspace.repository;
-
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,7 +8,6 @@ import peakspace.entities.Publication;
 
 @Repository
 public interface PublicationRepository extends JpaRepository<Publication,Long> {
-
 
     @Modifying
     @Transactional
@@ -30,4 +28,5 @@ public interface PublicationRepository extends JpaRepository<Publication,Long> {
     @Transactional
     @Query(value = "delete from publications_likes where publication_id =:postId",nativeQuery = true)
     void deleteLike(Long postId);
+
 }
