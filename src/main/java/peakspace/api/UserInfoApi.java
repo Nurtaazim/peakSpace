@@ -26,6 +26,7 @@ public class UserInfoApi {
     @PostMapping("/addEdu")
     public SimpleResponse addEducation(@RequestBody AddEducationRequest addEducationRequest){
         return userInfoService.addEducation(addEducationRequest);
+
     }
 
 }
