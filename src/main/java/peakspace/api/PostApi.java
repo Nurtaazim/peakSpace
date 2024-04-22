@@ -3,6 +3,7 @@ package peakspace.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
+import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.PostResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
@@ -23,8 +24,8 @@ public class PostApi {
     }
 
     @PostMapping("/updatePost/{postId}")
-    public SimpleResponse updatePost(@PathVariable Long postId,@RequestBody PostRequest postRequest){
-        return  postService.update(postId,postRequest);
+    public SimpleResponse updatePost(@PathVariable Long postId,@RequestBody PostUpdateRequest postUpdateRequest){
+        return  postService.update(postId,postUpdateRequest);
     }
     @PostMapping("/deletePost/{postId}")
     public SimpleResponse delete (@PathVariable Long postId){

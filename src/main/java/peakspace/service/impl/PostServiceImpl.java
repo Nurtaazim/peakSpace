@@ -1,12 +1,12 @@
 package peakspace.service.impl;
 
-import io.opencensus.trace.Link;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
+import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.LinkPublicationResponse;
 import peakspace.dto.response.PostResponse;
@@ -21,7 +21,7 @@ import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PostService;
 
-import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +65,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getById(Long postId,Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("With this id user not found!"));
+        user.getProfile().getId();
+        user.getProfile().getAvatar();
         for (Publication publication : user.getPublications()) {
             if(publication.getId().equals(postId)){
                 List<Link_Publication> linkPublications = publication.getLinkPublications();
@@ -114,33 +116,20 @@ public class PostServiceImpl implements PostService {
         return commentResponses;
     }
 
-
     @Override
-    public SimpleResponse update(Long postId, PostRequest postRequest) {
+    @Transactional
+    public SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
 
         for (Publication publication : user.getPublications()) {
-            if (publication.getOwner().getId().equals(user.getId())) {
                 if(publication.getId().equals(postId)) {
-                    publication.setDescription(postRequest.getDescription());
-                    List<Link_Publication> linkPublications = new ArrayList<>();
-                    for (int i = 0; i < postRequest.getLinks().size(); i++) {
-                        Link_Publication linkPublication = new Link_Publication();
-                        linkPublication.setLink(postRequest.getLinks().get(i));
-                        linkPublications.add(linkPublication);
-                        linkPublicationRepo.save(linkPublication);
-                    }
-                    publication.setLinkPublications(linkPublications);
-                    publication.setLocation(postRequest.getLocation());
-                    publication.setBlockComment(postRequest.isBlockComment());
-
-                    publicationRepo.save(publication);
-                    user.getPublications().add(publication);
-                    userRepository.save(user);
+                    publication.setDescription(postUpdateRequest.getDescription());
+                    publication.setLocation(postUpdateRequest.getLocation());
+                    publication.setBlockComment(postUpdateRequest.isBlockComment());
+                    publication.setUpdatedAt(ZonedDateTime.now());
+                    break;
                 }
-           }
-//        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new RuntimeException("With this id not found!"));
         }
         return SimpleResponse.builder()
                 .message("Successfully updated!")
