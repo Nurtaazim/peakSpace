@@ -1,6 +1,7 @@
 package peakspace.service;
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.ResponseEntity;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.SimpleResponse;
@@ -19,4 +20,5 @@ public interface UserService {
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 
+    ResponseEntity<String> sendSms(String phoneNumberGetter, String verificationCode);
 }

@@ -48,8 +48,6 @@ public class UserServiceImpl implements UserService {
     private final ProfileRepository profileRepository;
     @Value("${http://smspro.nikita.kg/api/message}")
     private String apiURL;
-    @Value("${bfc87413578d8bf8181838ca5418239b}")
-    private String apiKey;
 
     @Override
     @Transactional
@@ -241,20 +239,21 @@ public class UserServiceImpl implements UserService {
         return masked.toString();
     }
 
-    public void sendSms(String phoneNumberGetter, String verificationCode) {
+    @Override
+    public ResponseEntity<String> sendSms(String phoneNumberGetter, String verificationCode) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String requestBody = String.format("{\"phone\": \"%s\", \"message\": \"%s\"}", phoneNumberGetter, verificationCode);
+        String requestBody = String.format("{\"phone\": \"%s\", \"message\": \"%s\"}", "996771900091", "156481");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + apiKey);
 
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(apiURL, entity, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
+            return response;
         } else {
             throw new SmsSendingException();
         }
