@@ -15,14 +15,13 @@ public class AuthAPI {
 
     private final UserService userService;
 
-
     @PostMapping("/forgot")
     public SimpleResponse forgotPassword(@RequestParam("email") String email) throws MessagingException {
         return userService.forgot(email);
     }
 
     @PostMapping("/code")
-    public SimpleResponse code(@RequestParam("code") int codeRequest) throws BadRequestException {
+    public SimpleResponse code(@RequestParam("code") int codeRequest) throws BadRequestException, MessagingException {
         return userService.randomCode(codeRequest);
     }
 
@@ -30,4 +29,5 @@ public class AuthAPI {
     public UpdatePasswordResponse newPassword(@RequestBody PasswordRequest passwordRequest) throws MessagingException {
         return userService.updatePassword(passwordRequest);
     }
+
 }
