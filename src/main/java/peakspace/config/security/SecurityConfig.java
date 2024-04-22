@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import peakspace.config.security.jwt.JwtFilter;
+import peakspace.config.jwt.JwtFilter;
 import peakspace.repository.UserRepository;
 
 @Configuration
@@ -32,7 +32,8 @@ public class SecurityConfig {
                     .requestMatchers(
                             "/**",
                             "/api/**",
-                            "/swagger-ui/index.html/**"
+                            "/swagger-ui/index.html/**",
+                            "http://smspro.nikita.kg/api/message"
                     )
                     .permitAll()
                     .anyRequest()
@@ -48,8 +49,6 @@ public class SecurityConfig {
         return email -> userRepository.findByEmail(email).orElseThrow(() ->
                 new UsernameNotFoundException("User with email: " +email+ " not exists"));
     }
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -61,8 +60,5 @@ public class SecurityConfig {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
-
-
-
 
 }

@@ -1,13 +1,17 @@
 package peakspace.service.impl;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.config.security.jwt.JwtService;
+import peakspace.config.jwt.JwtService;
+import peakspace.entities.User;
+import peakspace.repository.UserRepository;
+import peakspace.service.UserService;
+import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
@@ -15,19 +19,22 @@ import peakspace.dto.response.SignInResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
 import peakspace.entities.Profile;
-import peakspace.entities.User;
 import peakspace.enums.Role;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
-import peakspace.repository.UserRepository;
-import peakspace.service.UserService;
+
+
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
     private final JwtService jwtService;
@@ -35,7 +42,7 @@ public class UserServiceImpl implements UserService {
     private int randomCode;
     User user = new User();
     int code = 0;
-
+    private final UserRepository userRepository;
 
     @Override
     public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
@@ -94,9 +101,10 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException {
-        if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())){
+        if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())) {
             throw new MessagingException("Пароль не корректный !");
         }
         User user = userRepository.getByEmail(userName);
@@ -111,12 +119,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SignInResponse signIn(SignInRequest signInRequest) {
+    public SignInResponse signIn(SignInRequest signInRequest) throws MessagingException {
         User user;
         if (signInRequest.email().endsWith("@gmail.com")) {
             user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
-        }
-        else {
+        } else {
             user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
         }
         if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
@@ -132,13 +139,15 @@ public class UserServiceImpl implements UserService {
         user.setUserName(signUpRequest.userName());
         user.setEmail(signUpRequest.email());
         user.setPassword(passwordEncoder.encode(signUpRequest.password()));
-        user.setProfile(new Profile(signUpRequest.name(),signUpRequest.surName(), user));
+        user.setProfile(new Profile(signUpRequest.name(), signUpRequest.surName(), user));
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
-        code = new Random().nextInt(1000,9000);
+        user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
+        user.setCreatedAt(ZonedDateTime.now());
+        user.setBlockAccount(true);
         String message = "<html>"
                 + "<head>"
                 + "<style>"
@@ -169,19 +178,39 @@ public class UserServiceImpl implements UserService {
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
+        startTask();
         return "Код подтверждения был отправлен на вашу почту.";
     }
 
     @Override
-    public SimpleResponse confirmToSignUp(int codeInEmail) {
-        if (codeInEmail == code){
-            userRepository.save(user);
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message("Вы успешно зарегистрировались!")
-                    .build();
+    public SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
+        if (userRepository.findAll().contains(userRepository.findById(id).orElseThrow(() -> new MessagingException("\"Время истекло попробуйте снова!\"")))) {
+            if (codeInEmail == code) {
+                userRepository.save(user);
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.OK)
+                        .message("Вы успешно зарегистрировались!")
+                        .build();
+            } else throw new MessagingException("Не правильный код!");
         }
-        else throw new MessagingException("Не правильный код!");
+        else throw new MessagingException("Ошибка!");
+    }
+    public void startTask() {
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
+        executor.scheduleAtFixedRate(this::yourMethod, 0, 1, TimeUnit.SECONDS);
     }
 
+    private void yourMethod() {
+        List<User> all = userRepository.findAll();
+        for (User user1 : all) {
+            if (ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()){
+                user1.setConfirmationCode(null);
+                userRepository.delete(user1);
+            }
+        }
+    }
+
+
 }
+
