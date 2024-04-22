@@ -3,9 +3,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.*;
 import peakspace.entities.User;
 import peakspace.exception.NotFoundException;
 import java.util.List;
@@ -28,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
-            "from User u left join u.profile p ")
+            "from User u left join u.profile p")
     List<SearchResponse> findAllSearchEmpty();
 
     default User findByIds(Long foundUserId){
@@ -49,4 +47,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.tagFriends tg where tg.id = :foundUserId and p.owner.id = :foundUserId")
     List<PublicationResponse> findTagWithMe(Long foundUserId);
 
+    @Query("select new peakspace.dto.response.ChapTerResponse(c.id,c.groupName) from Chapter c join c.user u where lower(c.groupName) like lower(concat('%' ,:search ,'%') )")
+    List<ChapTerResponse> searchChapter(String search);
 }

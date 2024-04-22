@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5' // Use the latest version
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.2.3'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     implementation 'com.auth0:java-jwt:4.4.0'
@@ -23,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     testImplementation 'org.springframework.security:spring-security-test'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'

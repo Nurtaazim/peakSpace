@@ -1,17 +1,12 @@
 package peakspace.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -24,9 +19,15 @@ public class MessageContent {
     @SequenceGenerator(name = "message_content_seq", allocationSize = 1, initialValue = 19)
     private long id;
     private String content;
-    private ZonedDateTime timestamp;
+    private Date timestamp;
     private boolean readOrNotRead;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.LAZY)
+    @JsonIgnore
     private Chat chat;
+
+//    @PrePersist
+//    public void prePersist(){
+//        this.timestamp = ZonedDateTime.now();
+//    }
 
 }

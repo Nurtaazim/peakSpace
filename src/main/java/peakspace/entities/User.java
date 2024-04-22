@@ -1,22 +1,15 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import peakspace.enums.Role;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -41,7 +34,7 @@ public class User implements UserDetails {
     private List<Story> stories;
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Chapter> chapters;
-    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "sender",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Chat> chats;
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Comment> comments;
@@ -49,8 +42,10 @@ public class User implements UserDetails {
     private List<PablicProfile> pablicProfiles;
     @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Publication> publications;
-    @OneToOne(mappedBy = "userNotification",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private Notification notification;
+    @OneToMany(mappedBy = "userNotification",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Notification> notifications;
+    @ElementCollection
+    private List<Long> searchFriendsHistory;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -79,6 +74,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public List<User> getFriendsWithChats() {
+        List<User> friends = new ArrayList<>();
+        for (Chat chat : chats) {
+            if (chat.getSender().equals(this)) {
+                friends.add(chat.getReceiver());
+            } else {
+                friends.add(chat.getSender());
+            }
+        }
+        return friends.stream().distinct().collect(Collectors.toList());
     }
 
 }

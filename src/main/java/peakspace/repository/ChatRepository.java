@@ -1,0 +1,44 @@
+package peakspace.repository;
+
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import peakspace.dto.response.ChatResponse;
+import peakspace.entities.Chat;
+import peakspace.entities.MessageContent;
+import peakspace.entities.User;
+
+import java.util.List;
+
+public interface ChatRepository extends JpaRepository<Chat, Long> {
+
+
+    @Query("SELECT c FROM Chat c " +
+            "JOIN  c.sender sender " +
+            "JOIN  c.receiver recipient " +
+            "JOIN  c.messageContents mc " +
+            "WHERE sender = :sender AND recipient = :recipient")
+        Chat findByUsers(User sender, User recipient);
+
+
+    @Query("select new peakspace.dto.response.ChatResponse(u.id,p.avatar,u.userName,p.aboutYourSelf) from User u left join u.profile p where u.id =:foundUserId")
+    ChatResponse findByChatId(Long foundUserId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from message_content where chat_id =:chatId",nativeQuery = true)
+    void deleteMessage(Long chatId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from chats_link_publications where chat_id =:chatId",nativeQuery = true)
+    void deleteLink(Long chatId);
+
+    @Query("SELECT mc FROM Chat c " +
+            "JOIN c.messageContents mc " +
+            "WHERE (c.sender = :user1 AND c.receiver = :user2) OR " +
+            "(c.sender = :user2 AND c.receiver = :user1)")
+    List<MessageContent> findMessagesBetweenUsers(User user1, User user2);
+
+}

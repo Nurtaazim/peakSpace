@@ -1,5 +1,7 @@
 package peakspace.dto.response;
+import jakarta.persistence.Enumerated;
 import lombok.Builder;
+import peakspace.enums.Choise;
 
 @Builder
 public record SearchResponse(

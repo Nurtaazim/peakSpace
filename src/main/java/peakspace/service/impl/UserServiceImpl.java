@@ -12,15 +12,12 @@ import org.springframework.stereotype.Service;
 import peakspace.config.security.jwt.JwtService;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.*;
 import peakspace.entities.Chapter;
+import peakspace.entities.Notification;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.User;
+import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
@@ -31,6 +28,7 @@ import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -80,7 +78,7 @@ public class UserServiceImpl implements UserService {
                 + "</head>"
                 + "<body>"
                 + "<div style=\"text-align: center; padding: 50px;\">"
-                + "<h2>Забыли пароль?</h2>"
+                + "<h2>ЗабылиSimpleResponse пароль?</h2>"
                 + "<p>Вы запросили сброс пароля для учетной записи на сайте. Ваш код подтверждения:</p>"
                 + "<h3>Код подтверждения: " + randomCode + "</h3>"
                 + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
@@ -122,58 +120,80 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override
-    @Transactional
-    public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
+        @Override
+        @Transactional
+        public SimpleResponse sendFriends(Long foundUserId, String nameChapter) {
 
-        User currentUser = getCurrentUser();
+            User currentUser = getCurrentUser();
 
-        if (currentUser.getId().equals(foundUserId)) {
-            throw new IllegalArgumentException(" Нельзя подписатся самого себя !");
-        }
-        List<Chapter> chapters = currentUser.getChapters();
-        boolean removed = false;
-        String messages = "";
+            if (currentUser.getId().equals(foundUserId)) {
+                throw new IllegalArgumentException("Нельзя подписаться на самого себя!");
+            }
 
-        for (Chapter chapter : chapters) {
-            List<User> currentUserFriends = chapter.getFriends();
-            List<User> updatedFriends = new ArrayList<>(currentUserFriends);
+            Chapter targetChapter = null;
+            for (Chapter chapter : currentUser.getChapters()) {
+                if (chapter.getGroupName().equals(nameChapter)) {
+                    targetChapter = chapter;
+                    break;
+                }
+            }
 
-            for (User currentUserFriend : currentUserFriends) {
-                if (currentUserFriend.getId().equals(foundUserId)) {
-                    updatedFriends.remove(currentUserFriend);
+            if (targetChapter == null) {
+                throw new NotFoundException("Нет такого раздела: " + nameChapter);
+            }
+
+            List<Chapter> userChapters = currentUser.getChapters();
+            for (Chapter chapter : userChapters) {
+                if (!chapter.getGroupName().equals(nameChapter) && chapter.getFriends().stream()
+                        .anyMatch(user -> user.getId().equals(foundUserId))) {
+                    throw new IllegalArgumentException("Пользователь уже добавлен в другой раздел: " + chapter.getGroupName());
+                }
+            }
+
+            List<User> updatedFriends = new ArrayList<>(targetChapter.getFriends());
+            boolean removed = false;
+
+            for (User friend : updatedFriends) {
+                if (friend.getId().equals(foundUserId)) {
+                    updatedFriends.remove(friend);
                     removed = true;
                     break;
                 }
             }
 
+            User foundUser = userRepository.findById(foundUserId)
+                    .orElseThrow(() -> new NotFoundException("Пользователь с id " + foundUserId + " не найден"));
             if (!removed) {
-                User foundUser = userRepository.findById(foundUserId).orElse(null);
-                if (foundUser != null) {
-                    updatedFriends.add(foundUser);
-                }
+
+                updatedFriends.add(foundUser);
             }
 
-            if (chapter.getGroupName().equals(nameChapter)){
-                chapter.setFriends(updatedFriends);
-            }else throw new NotFoundException(" Нет такой раздел " + nameChapter);
+            targetChapter.setFriends(updatedFriends);
 
-            messages = (removed) ? "Удачно отписался!" : "Удачно подписались!";
+            // Уведомление по подписка друзей
+
+            Notification notification = new Notification();
+            notification.setNotificationMessage("Подписался !");
+            notification.setUserNotification(foundUser);
+            notification.setSeen(false);
+            notification.setCreatedAt(ZonedDateTime.now());
+            notification.setSenderUserId(currentUser.getId());
+            foundUser.getNotifications().add(notification);
+
+
+            String message = removed ? "Удачно отписались!" : "Удачно подписались!";
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message(message)
+                    .build();
         }
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message(messages)
-                .build();
-    }
-
 
     @Override
-    public List<SearchResponse> searchFriends(String sample, String keyWord) {
+    public List<SearchResponse> searchFriends(Choise sample, String keyWord) {
         getCurrentUser();
-        if (sample.equals("Пользователь")) {
+        if (sample.equals(Choise.User)) {
             return userRepository.findAllSearch(keyWord);
-        }
-        if (sample.equals("Группы")) {
+        } else if (sample.equals(Choise.Groups)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
         throw new MessagingException("");
@@ -183,18 +203,25 @@ public class UserServiceImpl implements UserService {
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
         User currentUser = getCurrentUser();
         Chapter chapter = new Chapter();
-        chapter.setGroupName(chapterRequest.getGroupName());
-        chapterRepository.save(chapter);
-        chapter.setUser(currentUser);
+        for (Chapter currentUserChapter : currentUser.getChapters()) {
+            if (currentUserChapter.getGroupName().equals(chapterRequest.getGroupName())) {
+               throw new IllegalArgumentException(" Уже есть такой раздел !");
+            }
+            chapter.setGroupName(chapterRequest.getGroupName());
+            chapterRepository.save(chapter);
+            chapter.setUser(currentUser);
+        }
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Удачно сохранился раздел !")
                 .build();
     }
     @Override
-    public List<SearchHashtagsResponse> searchHashtags(String keyword) {
+    public List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyword) {
         getCurrentUser();
-        return publicationRepository.findAllHashtags(keyword);
+        if (sample.equals(Choise.Hashtag)) {
+            return publicationRepository.findAllHashtags(keyword);
+        }throw new MessagingException(" Плохой запрос !");
     }
 
     @Override
@@ -213,6 +240,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ProfileFriendsResponse findFriendsProfile(Long foundUserId) {
 
         User currentUser = getCurrentUser();
@@ -232,6 +260,10 @@ public class UserServiceImpl implements UserService {
         List<PublicationResponse> friendsFavorite = userRepository.findFavorite(foundUserId);
         List<PublicationResponse> friendTagWithMe = userRepository.findTagWithMe(foundUserId);
 
+        //сохранение на истории поискавика
+            List<Long> friends = currentUser.getSearchFriendsHistory();
+            friends.add(foundUserId);
+
                  ProfileFriendsResponse response = ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
                 .avatar(friendsResponse.getAvatar())
@@ -245,6 +277,40 @@ public class UserServiceImpl implements UserService {
                 .friendsWitMePublications(friendTagWithMe)
                 .build();
                  return response;
+    }
+
+    @Override
+    public List<ChapTerResponse> searchChapter(String search) {
+        getCurrentUser();
+        return userRepository.searchChapter(search);
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId) {
+        User currentUser = getCurrentUser();
+        User foundUser = userRepository.findByIds(foundUserId);
+        boolean foundUserInFriends = false;
+
+        for (Chapter chapter : currentUser.getChapters()) {
+            if (chapter.getId().equals(chapterId)) {
+                List<User> friends = chapter.getFriends();
+                if (friends.contains(foundUser)) {
+                    friends.remove(foundUser);
+                    foundUserInFriends = true;
+                } else {
+                    friends.add(foundUser);
+                }
+                break;
+            }
+        }
+
+        String message = foundUserInFriends ? "Удачно отписано !" :" Удачно подписались !";
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(message)
+                .build();
     }
 
     private long getFriendsSize(Long foundUserID){
@@ -263,4 +329,5 @@ public class UserServiceImpl implements UserService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
+
 }
