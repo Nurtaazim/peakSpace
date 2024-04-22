@@ -21,6 +21,7 @@ public class Education {
     private String location;
     private String educationalInstitution;
 
+
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private Profile profile;
 

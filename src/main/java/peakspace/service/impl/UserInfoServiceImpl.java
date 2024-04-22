@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import peakspace.dto.request.AddEducationRequest;
 import peakspace.dto.request.UserInfoRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.entities.Education;
@@ -56,6 +57,28 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .message("Successfully saved!")
                 .build();
 
+    }
+
+    @Override
+    public SimpleResponse addEducation(AddEducationRequest addEducationRequest) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        Education education = new Education();
+        Profile profile = userRepository.findBYProfile(user.getProfile().getId());
+
+        education.setCountry(addEducationRequest.getCountry());
+        education.setEducationalInstitution(addEducationRequest.getEducationalInstitution());
+
+        education.setProfile(profile);
+        educationRepo.save(education);
+        profile.getEducations().add(education);
+        profileRepo.save(profile);
+        user.setProfile(profile);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Successfully saved!")
+                .build();
     }
 
 }
