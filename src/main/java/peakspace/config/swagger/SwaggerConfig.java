@@ -1,4 +1,4 @@
-package peakspace.config;
+package peakspace.config.swagger;
 
 
 import io.swagger.v3.oas.models.Components;

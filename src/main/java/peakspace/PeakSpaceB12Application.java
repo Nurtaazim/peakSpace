@@ -1,5 +1,4 @@
 package peakspace;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,5 +9,4 @@ public class PeakSpaceB12Application {
     public static void main(String[] args) {
         SpringApplication.run(PeakSpaceB12Application.class, args);
     }
-
 }

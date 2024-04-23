@@ -1,7 +1,6 @@
 package peakspace.exception.response;
+import lombok.Builder;
 
-import
-        lombok.Builder;
 import org.springframework.http.HttpStatus;
 
 
