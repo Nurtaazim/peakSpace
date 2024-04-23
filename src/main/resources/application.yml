@@ -1,63 +1,36 @@
 spring:
-    datasource:
-        driver-class-name: org.postgresql.Driver
-        password: 1234
-        url: jdbc:postgresql://localhost:5432/peakspace
-        username: postgres
-    mail:
-        host: smtp.gmail.com
-        port: 587
-        username: arstanbeekovvv@gmail.com
-        password: gnfh xali juew hdna
-        properties:
-            mail:
-                smtp:
-                    auth: true
-                    starttls:
-                        enable: true
-            defer-datasource-initialization: true
-    sql:
-        init:
-            data-locations: classpath:dataInit/dataInit.sql
-            mode: never
-    jpa:
-        hibernate:
-            ddl-auto:
-        show-sql: true
-server:
-    error:
-        include-stacktrace: always
-app:
-  jwt:
-    secret: Java12
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: yiman
+    url: jdbc:postgresql://localhost:5434/peakspace
+    username: postgres
   mail:
     host: smtp.gmail.com
     port: 587
-    username: aliaskartemirbekov@gmail.com
-    password: izcp edth hxpv nkgl
+    username: arstanbeekovvv@gmail.com
+    password: gnfh xali juew hdna
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-
-#When you will click 'create' you shout click to 'always'! from Myrzaiym
-    defer-datasource-initialization: true
+      defer-datasource-initialization: true
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
       mode: never
-      #  #DATA-INIT
-      #  spring.jpa.defer-datasource-initialization=true
-      #  spring.sql.init.data-locations=classpath:datainit/dataInit.sql
-      #  spring.sql.init.mode=never
-
-
-
-
-
-
+  jpa:
+    hibernate:
+      ddl-auto:
+    show-sql: true
+server:
+  error:
+    include-stacktrace: always
+  port: 9090
+app:
+  jwt:
+    secret: peak-space-java12
 
 cloud:
   aws:
@@ -66,10 +39,7 @@ cloud:
     secretKey: q8YvKp5zotyi27B63H+0ZQYPPKFFuDOO06lcvuRD
   s3:
     bucketName: peakspacebucket
-    jwt:
-        secret: peak-space-java12
-
-#When you will click 'create' you shout click to 'always'! from Myrzaiym
+      #When you will click 'create' you shout click to 'always'! from Myrzaiym
 
       #  #DATA-INIT
 #        spring.jpa.defer-datasource-initialization=true
