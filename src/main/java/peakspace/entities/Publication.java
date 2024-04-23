@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,12 +20,13 @@ public class Publication {
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
     private String location;
+    private boolean isBlockComment;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User owner;
     @ManyToMany
     private List<User> tagFriends;
     @ManyToMany
-    private List<Link_Publication> linkPublications;
+    private List<Link_Publication> linkPublications = new ArrayList<>();
     @OneToMany(mappedBy = "publication",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Comment> comments;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

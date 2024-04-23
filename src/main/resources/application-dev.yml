@@ -22,12 +22,12 @@ spring:
             mode: never
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
         show-sql: true
 server:
     error:
-        include-stacktrace: always
-    port: 5000
+        include-stacktrace: never
+    port: 8090
 app:
     jwt:
         secret: peak-space-java12
