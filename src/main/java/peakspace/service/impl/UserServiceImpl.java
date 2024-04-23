@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import peakspace.config.jwt.JwtService;
+
+import peakspace.repository.ProfileRepository;
 import peakspace.entities.User;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
