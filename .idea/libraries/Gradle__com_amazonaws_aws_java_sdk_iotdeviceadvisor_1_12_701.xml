@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.amazonaws:aws-java-sdk-iotdeviceadvisor:1.12.701" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.amazonaws" artifactId="aws-java-sdk-iotdeviceadvisor" version="1.12.701" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-iotdeviceadvisor/1.12.701/ee3d70f9c7981d62e30b96f4feca2d0caebece53/aws-java-sdk-iotdeviceadvisor-1.12.701.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

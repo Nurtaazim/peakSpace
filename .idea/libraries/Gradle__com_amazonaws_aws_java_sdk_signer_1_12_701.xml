@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.amazonaws:aws-java-sdk-signer:1.12.701" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.amazonaws" artifactId="aws-java-sdk-signer" version="1.12.701" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-signer/1.12.701/359dca91afba70000512edf5e70a6fa7d315e538/aws-java-sdk-signer-1.12.701.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
