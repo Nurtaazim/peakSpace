@@ -22,8 +22,6 @@ public class Notification {
     private Like like;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})  // поменять отношения ManyToOne
     private User userNotification;   // получатель
-//      @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})  // поменять отношения ManyToOne
-//    private List<User> userNotification;   // получатель
     private Long senderUserId;       // отправитель
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private Comment comment;

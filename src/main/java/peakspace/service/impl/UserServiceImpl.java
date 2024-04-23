@@ -256,10 +256,6 @@ public class UserServiceImpl implements UserService {
             pablicSize += getFriendsPublicSize(pablicProfile.getId());
         }
 
-        List<PublicationResponse> friendsPublic = userRepository.findFriendsPublic(foundUserId);
-        List<PublicationResponse> friendsFavorite = userRepository.findFavorite(foundUserId);
-        List<PublicationResponse> friendTagWithMe = userRepository.findTagWithMe(foundUserId);
-
         //сохранение на истории поискавика
             List<Long> friends = currentUser.getSearchFriendsHistory();
             friends.add(foundUserId);
@@ -272,9 +268,6 @@ public class UserServiceImpl implements UserService {
                 .profession(friendsResponse.getProfession())
                 .friendsSize(friendSize)
                 .pablicationsSize(pablicSize)
-                .friendsPublications(friendsPublic)
-                .friendsFavoritesPublications(friendsFavorite)
-                .friendsWitMePublications(friendTagWithMe)
                 .build();
                  return response;
     }

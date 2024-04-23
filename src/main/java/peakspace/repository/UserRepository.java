@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.*;
+import peakspace.entities.Publication;
 import peakspace.entities.User;
 import peakspace.exception.NotFoundException;
 import java.util.List;
@@ -38,9 +39,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.id = :foundUserId")
     ProfileFriendsResponse getId(Long foundUserId);
 
-    @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p where p.owner.id =:foundUserId")
-    List<PublicationResponse> findFriendsPublic(Long foundUserId);
-
     @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.owner.profile pr where pr.id = :foundUserId and p.id in (select f from Profile pf join pf.favorites f where pf.id = :foundUserId)")
     List<PublicationResponse> findFavorite(Long foundUserId);
 
@@ -49,4 +47,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select new peakspace.dto.response.ChapTerResponse(c.id,c.groupName) from Chapter c join c.user u where lower(c.groupName) like lower(concat('%' ,:search ,'%') )")
     List<ChapTerResponse> searchChapter(String search);
+
+    @Query("select p from Publication p where p.owner.id =:friendId")
+    List<Publication> findFriendsPub(Long friendId);
 }
