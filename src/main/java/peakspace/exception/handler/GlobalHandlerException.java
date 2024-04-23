@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import peakspace.exception.*;
 import peakspace.exception.IllegalArgumentException;
+
 import peakspace.exception.response.ExceptionResponse;
 
 @RestControllerAdvice
@@ -25,7 +26,6 @@ public class GlobalHandlerException {
                 .message(notFoundException.getMessage())
                 .build();
     }
-
 
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -89,5 +89,43 @@ public class GlobalHandlerException {
                 .build();
     }
 
+    @ExceptionHandler(NotActiveException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public peakspace.exception.response.ExceptionResponse notFound(NotActiveException notActiveException){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .exceptionClassName(notActiveException.getClass().getSimpleName())
+                .message(notActiveException.getMessage())
+                .build();
+    }
 
+    @ExceptionHandler(FirebaseAuthException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public peakspace.exception.response.ExceptionResponse firebaseAuth(FirebaseAuthException notActiveException){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .exceptionClassName(notActiveException.getClass().getSimpleName())
+                .message(notActiveException.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(InvalidConfirmationCode.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public peakspace.exception.response.ExceptionResponse BadRequest(InvalidConfirmationCode invalidConfirmationCode){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .exceptionClassName(invalidConfirmationCode.getClass().getSimpleName())
+                .message(invalidConfirmationCode.getMessage() + "Неправильный код!")
+                .build();
+    }
+
+    @ExceptionHandler(SmsSendingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public peakspace.exception.response.ExceptionResponse BadRequest(SmsSendingException smsSendingException){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .exceptionClassName(smsSendingException.getClass().getSimpleName())
+                .message(smsSendingException.getMessage() + "Не удалось отправить СМС!")
+                .build();
+    }
 }

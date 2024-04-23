@@ -22,8 +22,8 @@ import java.util.List;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "comment_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comment_seq")
+    @SequenceGenerator(name = "comment_seq", allocationSize = 1,initialValue = 21)
     private Long id;
     private String message;
     private ZonedDateTime createdAt;
@@ -36,5 +36,7 @@ public class Comment {
     @OneToMany
     @JoinTable(name = "innerComment")
     private List<Comment> innerComments;
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Like> likes;
 
 }
