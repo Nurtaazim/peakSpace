@@ -16,8 +16,6 @@ public class UserAPI {
     private final UserService userService;
 
 
-
-
     @GetMapping("/send/{foundUserId}")
     @ApiOperation(value = "Send friends", notes = "Send friends to a specific chapter")
     public SimpleResponse send(@PathVariable Long foundUserId,@RequestParam String nameChapter) {

@@ -52,7 +52,8 @@ public class PublicationServiceImpl implements PublicationService {
                 .publications(publics)
                 .build();
 
-        }
+    }
+
     public List<PublicationWithYouResponse> withPhoto(Long foundUserId) {
         User foundUser = userRepository.findByIds(foundUserId);
         List<PublicationWithYouResponse> publicationsWithYou = new ArrayList<>();
@@ -94,31 +95,32 @@ public class PublicationServiceImpl implements PublicationService {
         }
         return myPost;
     }
-        @Override
-        public List<PublicationResponse> findAllPublic(Long friendId) {
 
-                List<Publication> friendsPublic = userRepository.findFriendsPub(friendId);
-                List<PublicationResponse> allPublications = new ArrayList<>();
-                for (Publication publication : friendsPublic) {
-                    PublicationResponse publicationResponse = new PublicationResponse();
-                    publicationResponse.setId(publication.getId());
+    @Override
+    public List<PublicationResponse> findAllPublic(Long friendId) {
 
-                    List<Link_Publication> linkPublications = publication.getLinkPublications();
-                    List<LinkPublicationResponse> linkPublicationResponses = new ArrayList<>();
+        List<Publication> friendsPublic = userRepository.findFriendsPub(friendId);
+        List<PublicationResponse> allPublications = new ArrayList<>();
+        for (Publication publication : friendsPublic) {
+            PublicationResponse publicationResponse = new PublicationResponse();
+            publicationResponse.setId(publication.getId());
 
-                    for (Link_Publication linkPublication : linkPublications) {
-                        LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse();
-                        linkPublicationResponse.setId(linkPublication.getId());
-                        linkPublicationResponse.setLink(linkPublication.getLink());
-                        linkPublicationResponses.add(linkPublicationResponse);
-                    }
-                    publicationResponse.setLinkPublications(linkPublicationResponses);
-                    allPublications.add(publicationResponse);
-                }
-                return allPublications;
+            List<Link_Publication> linkPublications = publication.getLinkPublications();
+            List<LinkPublicationResponse> linkPublicationResponses = new ArrayList<>();
+
+            for (Link_Publication linkPublication : linkPublications) {
+                LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse();
+                linkPublicationResponse.setId(linkPublication.getId());
+                linkPublicationResponse.setLink(linkPublication.getLink());
+                linkPublicationResponses.add(linkPublicationResponse);
+            }
+            publicationResponse.setLinkPublications(linkPublicationResponses);
+            allPublications.add(publicationResponse);
         }
+        return allPublications;
+    }
 
-    public MyPostResponse getMyPost(Long postId){
+    public MyPostResponse getMyPost(Long postId) {
         Publication publication = publicationRepository.getReferenceById(postId);
         List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
         commentForResponse.reversed();
@@ -133,7 +135,8 @@ public class PublicationServiceImpl implements PublicationService {
                 .commentResponses(commentForResponse)
                 .build();
 
-        }
+    }
+
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User current = userRepository.getByEmail(email);
