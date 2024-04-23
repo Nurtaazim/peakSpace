@@ -9,6 +9,4 @@ public interface UserInfoService {
 
     public SimpleResponse addEducation(AddEducationRequest addEducationRequest);
 
-
-
 }
