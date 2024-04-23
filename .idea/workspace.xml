@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicationAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicationAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/repository/PublicationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/PublicationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/PublicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/PublicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PublicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PublicationServiceImpl.java" afterDir="false" />
-    </list>
+    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,7 +62,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/regst_with_google" />
+        <entry key="$PROJECT_DIR$" value="postt" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -100,7 +95,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.PeakSpaceB12Application.executor": "Run",
-    "git-widget-placeholder": "feature/getAllMyPosts",
+    "git-widget-placeholder": "postt",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/DELLG/IdeaProjects/peak-space-b12/src/main/resources",
     "node.js.detected.package.eslint": "true",
