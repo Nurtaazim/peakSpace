@@ -1,6 +1,6 @@
 package peakspace.service.impl;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 import peakspace.config.security.jwt.JwtService;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.*;
+import peakspace.dto.response.PublicationResponse;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.dto.response.ProfileFriendsResponse;
 import peakspace.entities.Chapter;
-import peakspace.entities.Notification;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.User;
-import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
@@ -28,9 +31,20 @@ import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
+import peakspace.config.jwt.JwtService;
+
+import peakspace.repository.ProfileRepository;
+import peakspace.entities.User;
+import peakspace.repository.UserRepository;
+import peakspace.service.UserService;
+import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UpdatePasswordResponse;
 import java.util.Random;
 
 @Service
@@ -46,7 +60,6 @@ public class UserServiceImpl implements UserService {
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
-
 
     @Override
     public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
@@ -78,7 +91,7 @@ public class UserServiceImpl implements UserService {
                 + "</head>"
                 + "<body>"
                 + "<div style=\"text-align: center; padding: 50px;\">"
-                + "<h2>ЗабылиSimpleResponse пароль?</h2>"
+                + "<h2>Забыли пароль?</h2>"
                 + "<p>Вы запросили сброс пароля для учетной записи на сайте. Ваш код подтверждения:</p>"
                 + "<h3>Код подтверждения: " + randomCode + "</h3>"
                 + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
@@ -105,9 +118,10 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException {
-        if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())){
+        if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())) {
             throw new MessagingException("Пароль не корректный !");
         }
         User user = userRepository.getByEmail(userName);
@@ -120,9 +134,9 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-        @Override
-        @Transactional
-        public SimpleResponse sendFriends(Long foundUserId, String nameChapter) {
+    @Override
+    @Transactional
+    public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
 
             User currentUser = getCurrentUser();
 
@@ -324,3 +338,4 @@ public class UserServiceImpl implements UserService {
     }
 
 }
+

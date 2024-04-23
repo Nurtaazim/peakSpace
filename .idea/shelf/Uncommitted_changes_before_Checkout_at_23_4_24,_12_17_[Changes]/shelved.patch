@@ -1,0 +1,73 @@
+Index: build/resources/main/application.properties
+===================================================================
+diff --git a/build/resources/main/application.properties b/build/resources/main/application.properties
+deleted file mode 100644
+--- a/build/resources/main/application.properties	(revision 1d4306eb18a824b346433439b2d505fcfdf03b02)
++++ /dev/null	(revision 1d4306eb18a824b346433439b2d505fcfdf03b02)
+@@ -1,1 +0,0 @@
+-spring.application.name=peak-space-b12
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"1859ced2-95f9-4419-9d4a-86b1dda4bc1a\" name=\"Changes\" comment=\"\">\n      <change beforePath=\"$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <projects_view>\n          <tree_state>\n            <expand />\n            <select />\n          </tree_state>\n        </projects_view>\n      </state>\n    </system>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Enum\" />\n        <option value=\"Interface\" />\n        <option value=\"Record\" />\n        <option value=\"com.haulmont.jpb.JpaRepository\" />\n        <option value=\"Class\" />\n        <option value=\"JavaScript File\" />\n        <option value=\"HTML File\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <favorite-branches>\n      <branch-storage>\n        <map>\n          <entry type=\"LOCAL\">\n            <value>\n              <list>\n                <branch-info repo=\"$PROJECT_DIR$\" source=\"feature/auth_with_google\" />\n                <branch-info repo=\"$PROJECT_DIR$\" source=\"feature/regst_with_google\" />\n              </list>\n            </value>\n          </entry>\n        </map>\n      </branch-storage>\n    </favorite-branches>\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"feature/regst_with_google\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"JpbToolWindowState\">\n    <option name=\"isToolWindowVisible\" value=\"false\" />\n  </component>\n  <component name=\"KubernetesApiProvider\"><![CDATA[{\n  \"isMigrated\": true\n}]]></component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 8\n}</component>\n  <component name=\"ProjectId\" id=\"2eoWm57RI11Wtwf3CkfFJOrcFJH\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"DefaultHtmlFileTemplate\": \"HTML File\",\n    \"Gradle.Build peak-space-b12.executor\": \"Run\",\n    \"RequestMappingsPanelOrder0\": \"0\",\n    \"RequestMappingsPanelOrder1\": \"1\",\n    \"RequestMappingsPanelWidth0\": \"75\",\n    \"RequestMappingsPanelWidth1\": \"75\",\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"Spring Boot.PeakSpaceB12Application.executor\": \"Run\",\n    \"git-widget-placeholder\": \"main\",\n    \"kotlin-language-version-configured\": \"true\",\n    \"last_opened_file_path\": \"C:/Users/DELLG/IdeaProjects/peak-space-b12/src/main/resources\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  },\n  \"keyToStringList\": {\n    \"DatabaseDriversLRU\": [\n      \"postgresql\"\n    ]\n  }\n}]]></component>\n  <component name=\"RecentsManager\">\n    <key name=\"CreateClassDialog.RecentsKey\">\n      <recent name=\"peakspace.dto.response\" />\n      <recent name=\"peakspace.exception\" />\n      <recent name=\"peakspace.dto.request\" />\n      <recent name=\"peakspace.repository\" />\n      <recent name=\"peakspace.service\" />\n    </key>\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"C:\\Users\\DELLG\\IdeaProjects\\peak-space-b12\\src\\main\\resources\" />\n      <recent name=\"C:\\Users\\DELLG\\IdeaProjects\\peak-space-b12\\src\\main\\java\\peakspace\\config\" />\n    </key>\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\n      <recent name=\"peakspace.config\" />\n      <recent name=\"peakspace.exceptions\" />\n    </key>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"PeakSpaceB12Application\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\n      <module name=\"peak-space-b12.main\" />\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"peakspace.PeakSpaceB12Application\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"jdk-21.0.2-openjdk-21.0.2-4caba194b151-322ed176\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"1859ced2-95f9-4419-9d4a-86b1dda4bc1a\" name=\"Changes\" comment=\"\" />\n      <created>1712571566972</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1712571566972</updated>\n      <workItem from=\"1712571568499\" duration=\"3670000\" />\n      <workItem from=\"1712663513812\" duration=\"4112000\" />\n      <workItem from=\"1712814905020\" duration=\"4040000\" />\n      <workItem from=\"1712825998371\" duration=\"6518000\" />\n      <workItem from=\"1712833003564\" duration=\"4573000\" />\n      <workItem from=\"1712837935305\" duration=\"8794000\" />\n      <workItem from=\"1712902525205\" duration=\"7393000\" />\n      <workItem from=\"1713013219562\" duration=\"6643000\" />\n      <workItem from=\"1713157595427\" duration=\"42425000\" />\n      <workItem from=\"1713851817178\" duration=\"673000\" />\n    </task>\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 1d4306eb18a824b346433439b2d505fcfdf03b02)
++++ b/.idea/workspace.xml	(date 1713852612378)
+@@ -4,9 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
+-    </list>
++    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -161,7 +159,7 @@
+       <workItem from="1712902525205" duration="7393000" />
+       <workItem from="1713013219562" duration="6643000" />
+       <workItem from="1713157595427" duration="42425000" />
+-      <workItem from="1713851817178" duration="673000" />
++      <workItem from="1713851817178" duration="794000" />
+     </task>
+     <servers />
+   </component>
+Index: build/resources/main/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring:\n    datasource:\n        driver-class-name: org.postgresql.Driver\n        password: mirlan001m.\n        url: jdbc:postgresql://localhost:5432/peakspace\n        username: postgres\n    mail:\n        host: smtp.gmail.com\n        port: 587\n        username: arstanbeekovvv@gmail.com\n        password: gnfh xali juew hdna\n        properties:\n            mail:\n                smtp:\n                    auth: true\n                    starttls:\n                        enable: true\n            defer-datasource-initialization: true\n    sql:\n        init:\n            data-locations: classpath:dataInit/dataInit.sql\n            mode: never\n    jpa:\n        hibernate:\n            ddl-auto: update\n        show-sql: true\nserver:\n    error:\n        include-stacktrace: always\napp:\n    jwt:\n        secret: peak-space-java12\n\n#When you will click 'create' you shout click to 'always'! from Myrzaiym\n\n      #  #DATA-INIT\n#        spring.jpa.defer-datasource-initialization=true\n#        spring.sql.init.data-locations=classpath:datainit/dataInit.sql\n#        spring.sql.init.mode=never
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build/resources/main/application.yml b/build/resources/main/application.yml
+--- a/build/resources/main/application.yml	(revision 1d4306eb18a824b346433439b2d505fcfdf03b02)
++++ b/build/resources/main/application.yml	(date 1713852765783)
+@@ -1,8 +1,8 @@
+ spring:
+     datasource:
+         driver-class-name: org.postgresql.Driver
+-        password: mirlan001m.
+-        url: jdbc:postgresql://localhost:5432/peakspace
++        password: yiman
++        url: jdbc:postgresql://localhost:5434/peakspace
+         username: postgres
+     mail:
+         host: smtp.gmail.com
+@@ -22,11 +22,11 @@
+             mode: never
+     jpa:
+         hibernate:
+-            ddl-auto: update
++            ddl-auto: create
+         show-sql: true
+ server:
+     error:
+-        include-stacktrace: always
++        include-stacktrace: never
+ app:
+     jwt:
+         secret: peak-space-java12

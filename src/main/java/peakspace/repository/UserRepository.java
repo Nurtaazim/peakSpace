@@ -5,13 +5,37 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
+import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.PublicationResponse;
+import peakspace.dto.response.SearchResponse;
+
+import peakspace.entities.Profile;
+
 import peakspace.entities.User;
+import java.util.Random;
+import org.springframework.data.jpa.repository.Query;
 import peakspace.exception.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    boolean existsByEmail(String email);
+
+    User getReferenceByEmail(String email);
+
+    default String generatorDefaultPassword(int minLength, int maxLength) {
+        Random random = new Random();
+        int length = + random.nextInt(maxLength - minLength + 1);
+        StringBuilder sb = new StringBuilder(length);
+        String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
+            sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
+        }
+        return sb.toString();
+    }
 
     @Query("select u from User u where u.email =:email")
     Optional<User> findByEmail(String email);
@@ -44,6 +68,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.tagFriends tg where tg.id = :foundUserId and p.owner.id = :foundUserId")
     List<PublicationResponse> findTagWithMe(Long foundUserId);
+    @Query("select p from Profile p where  p.id=:id")
+    Profile findBYProfile(Long id);
+
+    boolean existsByUserName(String userName);
 
     @Query("select new peakspace.dto.response.ChapTerResponse(c.id,c.groupName) from Chapter c join c.user u where lower(c.groupName) like lower(concat('%' ,:search ,'%') )")
     List<ChapTerResponse> searchChapter(String search);

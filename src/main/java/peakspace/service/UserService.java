@@ -9,9 +9,10 @@ import peakspace.enums.Choise;
 import java.util.List;
 
 public interface UserService {
+
     SimpleResponse forgot(String email) throws MessagingException;
 
-    SimpleResponse randomCode(int codeRequest) throws BadRequestException;
+    SimpleResponse randomCode(int codeRequest) throws BadRequestException, MessagingException;
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 

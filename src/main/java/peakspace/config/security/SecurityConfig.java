@@ -17,52 +17,49 @@
     import peakspace.config.security.jwt.JwtFilter;
     import peakspace.repository.UserRepository;
 
-    @Configuration
-    @EnableWebSecurity
-    @RequiredArgsConstructor
-    @EnableMethodSecurity(securedEnabled = true)
-    public class SecurityConfig {
-        private final UserRepository userRepository;
-        private final JwtFilter jwtFilter;
-        @Bean
-        SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http.authorizeHttpRequests(request -> {
-                request
 
-                        .requestMatchers(
-                                "/**",
-                                "/api/**",
-                                "/swagger-ui/index.html/**"
-                        )
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated();
-            });
-            http.csrf(AbstractHttpConfigurer::disable);
-            http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-            return http.build();
-        }
-        @Bean
-        public UserDetailsService userDetailsService() {
-            System.err.println("User method");
-            return email -> userRepository.findByEmail(email).orElseThrow(() ->
-                    new UsernameNotFoundException("User with email: " +email+ " not exists"));
-        }
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
+public class SecurityConfig {
+    private final UserRepository userRepository;
+    private final JwtFilter jwtFilter;
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(request -> {
+            request
 
-
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder();
-        }
-        @Bean
-        public AuthenticationProvider authenticationProvider() {
-            DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-            daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-            daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-            return daoAuthenticationProvider;
-        }
-
-
-
-
+                    .requestMatchers(
+                            "/**",
+                            "/api/**",
+                            "/swagger-ui/index.html/**",
+                            "http://smspro.nikita.kg/api/message"
+                    )
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated();
+        });
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        System.err.println("User method");
+        return email -> userRepository.findByEmail(email).orElseThrow(() ->
+                new UsernameNotFoundException("User with email: " +email+ " not exists"));
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
+    }
+
+}

@@ -1,5 +1,4 @@
 package peakspace.api;
-import io.swagger.annotations.ApiOperation;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -15,7 +14,6 @@ import peakspace.service.UserService;
 public class AuthAPI {
 
     private final UserService userService;
-
 
     @PostMapping("/forgot")
     @ApiOperation(value = "Отправление сообщение код  !")

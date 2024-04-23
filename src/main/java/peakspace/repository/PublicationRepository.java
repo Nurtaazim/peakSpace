@@ -8,11 +8,33 @@ import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.Publication;
 import java.util.List;
 
-@Repository
-public interface PublicationRepository extends JpaRepository<Publication, Long> {
 
+ @Repository
+ public interface PublicationRepository extends JpaRepository<Publication,Long> {
 
   @Query("SELECT new peakspace.dto.response.SearchHashtagsResponse(p.id, l) FROM Publication p INNER JOIN p.linkPublications l WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
   List<SearchHashtagsResponse> findAllHashtags(@Param("keyword") String keyword);
+
+
+    @Modifying
+    @Transactional
+    @Query("delete from Comment c where c.publication.id =:postId")
+    void deleteCom(Long postId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from publications_link_publications where publication_id =:postId",nativeQuery = true)
+    void deleteLink(Long postId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from publications_tag_friends where publication_id =:postId",nativeQuery = true)
+    void deleteTag(Long postId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from publications_likes where publication_id =:postId",nativeQuery = true)
+    void deleteLike(Long postId);
+
 
 }
