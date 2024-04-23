@@ -15,6 +15,7 @@ import peakspace.repository.EducationRepository;
 import peakspace.repository.ProfileRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserInfoService;
+
 @Service
 @RequiredArgsConstructor
 public class UserInfoServiceImpl implements UserInfoService {
@@ -22,6 +23,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserRepository userRepository;
     private final EducationRepository educationRepo;
     private final ProfileRepository profileRepo;
+
     @Transactional
     @Override
     public SimpleResponse editProfile(UserInfoRequest userInfoRequest) {
