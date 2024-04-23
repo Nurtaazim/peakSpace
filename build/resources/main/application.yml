@@ -24,35 +24,9 @@ spring:
     hibernate:
       ddl-auto:
     show-sql: true
-    datasource:
-        driver-class-name: org.postgresql.Driver
-        password:
-        url:
-        username:
-    mail:
-        host: smtp.gmail.com
-        port: 587
-        username: arstanbeekovvv@gmail.com
-        password: gnfh xali juew hdna
-        properties:
-            mail:
-                smtp:
-                    auth: true
-                    starttls:
-                        enable: true
-            defer-datasource-initialization: true
-    sql:
-        init:
-            data-locations: classpath:dataInit/dataInit.sql
-            mode: never
-    jpa:
-        hibernate:
-            ddl-auto: update
-        show-sql: true
 server:
   error:
     include-stacktrace: always
-  port: 8888
 app:
   jwt:
     secret: peak-space-java12
