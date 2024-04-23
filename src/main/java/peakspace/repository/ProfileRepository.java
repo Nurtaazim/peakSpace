@@ -7,3 +7,4 @@ import peakspace.entities.Profile;
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile,Long> {
 }
+
