@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="peakspace.PeakSpaceB12ApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-04-23T07:24:56" hostname="Mukhammeds-MacBook-Pro.local" time="0.723">
+  <properties/>
+  <testcase name="contextLoads()" classname="peakspace.PeakSpaceB12ApplicationTests" time="0.723"/>
+  <system-out><![CDATA[Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+13:24:51.861 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [peakspace.PeakSpaceB12ApplicationTests]: PeakSpaceB12ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+13:24:51.932 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration peakspace.PeakSpaceB12Application for test class peakspace.PeakSpaceB12ApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.4)
+
+2024-04-23T13:24:52.198+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] peakspace.PeakSpaceB12ApplicationTests   : Starting PeakSpaceB12ApplicationTests using Java 21.0.2 with PID 19917 (started by mukhammedasantegin in /Applications/peak-space-b12)
+2024-04-23T13:24:52.199+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] peakspace.PeakSpaceB12ApplicationTests   : No active profile set, falling back to 1 default profile: "default"
+2024-04-23T13:24:52.749+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-23T13:24:52.789+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 34 ms. Found 5 JPA repository interfaces.
+2024-04-23T13:24:53.092+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-23T13:24:53.123+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-04-23T13:24:53.143+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-04-23T13:24:53.263+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-04-23T13:24:53.278+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-04-23T13:24:53.498+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@61d011e
+2024-04-23T13:24:53.499+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-04-23T13:24:54.424+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-04-23T13:24:54.426+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-23T13:24:54.658+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-04-23T13:24:55.731+06:00  WARN 19917 --- [peak-space-b12] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-23T13:24:56.189+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@790431bf, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7b48451b, org.springframework.security.web.context.SecurityContextHolderFilter@26781ebb, org.springframework.security.web.header.HeaderWriterFilter@6a4c9d1b, org.springframework.web.filter.CorsFilter@ba1edf4, org.springframework.security.web.authentication.logout.LogoutFilter@5ca01e01, peakspace.config.jwt.JwtFilter@63fcbf75, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e15a0d7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@947782d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@74f2593b, org.springframework.security.web.access.ExceptionTranslationFilter@4373a443, org.springframework.security.web.access.intercept.AuthorizationFilter@1b232da1]
+2024-04-23T13:24:56.728+06:00  INFO 19917 --- [peak-space-b12] [    Test worker] peakspace.PeakSpaceB12ApplicationTests   : Started PeakSpaceB12ApplicationTests in 4.727 seconds (process running for 5.515)
+]]></system-out>
+  <system-err><![CDATA[User method
+WARNING: A Java agent has been loaded dynamically (/Users/mukhammedasantegin/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.12/be4984cb6fd1ef1d11f218a648889dfda44b8a15/byte-buddy-agent-1.14.12.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>

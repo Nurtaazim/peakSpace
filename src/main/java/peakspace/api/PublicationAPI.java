@@ -26,7 +26,6 @@ public class PublicationAPI {
 
     @Secured({"USER", "ADMIN"})
     @GetMapping("/{postId}")
-    @Operation(description = "")
     public MyPostResponse getById(@PathVariable Long postId){
         return publicationService.getById(postId);
     }
