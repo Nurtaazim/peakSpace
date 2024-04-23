@@ -1,0 +1,31 @@
+app:
+    jwt:
+        secret: Java12
+server:
+    port: 8082
+spring:
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        password: 1234
+        url: jdbc:postgresql://localhost:5432/peak_space
+        username: postgres
+    jpa:
+        hibernate:
+            ddl-auto:  update
+        show-sql: true
+    mail:
+        host: smtp.gmail.com
+        password: izcp edth hxpv nkgl
+        port: 587
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        defer-datasource-initialization: true
+                        enable: true
+        username: aliaskartemirbekov@gmail.com
+    sql:
+        init:
+            data-locations: classpath:dataInit/dataInit.sql
+            mode: never
