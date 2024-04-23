@@ -37,10 +37,9 @@ public class AuthAPI {
     SignInResponse signIn (@Valid @RequestBody SignInRequest signInRequest) throws MessagingException {
         return userService.signIn(signInRequest);
     }
-//    User kaira kod jonotush kerek eski dannyilary menen
-//    Kod 3 minut ishtesh kerek
+
     @GetMapping("/signUp")
-    String signUp (@RequestBody SignUpRequest signUpRequest) throws MessagingException {
+    String signUp (@Valid @RequestBody SignUpRequest signUpRequest) throws MessagingException {
         return userService.signUp(signUpRequest);
     }
     @PostMapping("/confirmCodeByEmail")

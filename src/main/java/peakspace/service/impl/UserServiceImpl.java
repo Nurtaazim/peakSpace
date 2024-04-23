@@ -40,8 +40,7 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private String userName;
     private int randomCode;
-    User user = new User();
-    int code = 0;
+
     private final UserRepository userRepository;
 
     @Override
@@ -136,6 +135,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String signUp(SignUpRequest signUpRequest) throws jakarta.mail.MessagingException {
+        User user = new User();
         user.setUserName(signUpRequest.userName());
         user.setEmail(signUpRequest.email());
         user.setPassword(passwordEncoder.encode(signUpRequest.password()));
@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
                 + "<div style=\"text-align: center; padding: 50px;\">"
                 + "<h2>Sign Up</h2>"
                 + "<p>Ваш код подтверждения для регистрации:</p>"
-                + "<h3>Код подтверждения: " + code + "</h3>"
+                + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
                 + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
                 + "</div>"
                 + "</body>"
@@ -178,22 +178,23 @@ public class UserServiceImpl implements UserService {
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
+        userRepository.save(user);
         startTask();
         return "Код подтверждения был отправлен на вашу почту.";
     }
 
-    @Override
+    @Override @Transactional
     public SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
-        if (userRepository.findAll().contains(userRepository.findById(id).orElseThrow(() -> new MessagingException("\"Время истекло попробуйте снова!\"")))) {
-            if (codeInEmail == code) {
-                userRepository.save(user);
+        User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("\"Время истекло попробуйте снова!\""));
+        if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
+            user.setBlockAccount(false);
+            user.setConfirmationCode(null);
                 return SimpleResponse.builder()
                         .httpStatus(HttpStatus.OK)
                         .message("Вы успешно зарегистрировались!")
                         .build();
-            } else throw new MessagingException("Не правильный код!");
         }
-        else throw new MessagingException("Ошибка!");
+        else throw new MessagingException("Не правильный код!");
     }
     public void startTask() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -205,7 +206,6 @@ public class UserServiceImpl implements UserService {
         List<User> all = userRepository.findAll();
         for (User user1 : all) {
             if (ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()){
-                user1.setConfirmationCode(null);
                 userRepository.delete(user1);
             }
         }
