@@ -27,7 +27,7 @@ spring:
 server:
   error:
     include-stacktrace: always
-  port: 9090
+  port: 8888
 app:
   jwt:
     secret: peak-space-java12

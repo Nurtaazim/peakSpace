@@ -1,5 +1,9 @@
 package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import peakspace.entities.Profile;
+
 import peakspace.entities.User;
 import java.util.Random;
 import org.springframework.data.jpa.repository.Query;
@@ -32,5 +36,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 new NotFoundException("User with email: "+email+" not found!"));
     }
 
+    @Query("select p from Profile p where  p.id=:id")
+    Profile findBYProfile(Long id);
+  
     boolean existsByUserName(String userName);
+
 }
