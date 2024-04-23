@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.PostResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
 
@@ -12,24 +11,26 @@ import peakspace.service.PostService;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class PostApi {
-    private final PostService  postService;
+    private final PostService postService;
+
     @PostMapping("/post")
-    public SimpleResponse savePost(@RequestBody PostRequest postRequest){
-      return   postService.savePost(postRequest);
+    public SimpleResponse savePost(@RequestBody PostRequest postRequest) {
+        return postService.savePost(postRequest);
     }
 
     @PostMapping("/updatePost/{postId}")
-    public SimpleResponse updatePost(@PathVariable Long postId,@RequestBody PostUpdateRequest postUpdateRequest){
-        return  postService.update(postId,postUpdateRequest);
+    public SimpleResponse updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
+        return postService.update(postId, postUpdateRequest);
     }
+
     @PostMapping("/deletePost/{postId}")
-    public SimpleResponse delete (@PathVariable Long postId){
+    public SimpleResponse delete(@PathVariable Long postId) {
         return postService.delete(postId);
     }
 
     @PostMapping("/deleteLink/{linkId}/{postId}")
-    public SimpleResponse deleteLink(@PathVariable Long linkId,@PathVariable Long postId){
-        return postService.deleteLinkFromPost(linkId,postId);
+    public SimpleResponse deleteLink(@PathVariable Long linkId, @PathVariable Long postId) {
+        return postService.deleteLinkFromPost(linkId, postId);
     }
 
 }

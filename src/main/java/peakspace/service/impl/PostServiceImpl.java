@@ -7,15 +7,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.CommentResponse;
-import peakspace.dto.response.LinkPublicationResponse;
-import peakspace.dto.response.PostResponse;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.entities.Comment;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
-import peakspace.exception.NotFoundException;
 import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
@@ -70,13 +65,13 @@ public class PostServiceImpl implements PostService {
         User user = userRepository.getByEmail(email);
 
         for (Publication publication : user.getPublications()) {
-                if(publication.getId().equals(postId)) {
-                    publication.setDescription(postUpdateRequest.getDescription());
-                    publication.setLocation(postUpdateRequest.getLocation());
-                    publication.setBlockComment(postUpdateRequest.isBlockComment());
-                    publication.setUpdatedAt(ZonedDateTime.now());
-                    break;
-                }
+            if (publication.getId().equals(postId)) {
+                publication.setDescription(postUpdateRequest.getDescription());
+                publication.setLocation(postUpdateRequest.getLocation());
+                publication.setBlockComment(postUpdateRequest.isBlockComment());
+                publication.setUpdatedAt(ZonedDateTime.now());
+                break;
+            }
         }
         return SimpleResponse.builder()
                 .message("Successfully updated!")
@@ -91,7 +86,7 @@ public class PostServiceImpl implements PostService {
 
         for (Publication publication : user.getPublications()) {
             if (publication.getOwner().getId().equals(user.getId())) {
-                if(publication.getId().equals(postId)) {
+                if (publication.getId().equals(postId)) {
                     publicationRepo.deleteCom(postId);
                     publicationRepo.deleteLink(postId);
                     publicationRepo.deleteTag(postId);
@@ -113,7 +108,7 @@ public class PostServiceImpl implements PostService {
         User user = userRepository.getByEmail(email);
 
         for (Publication publication : user.getPublications()) {
-            if(publication.getId().equals(postId)){
+            if (publication.getId().equals(postId)) {
                 if (publication.getOwner().getId().equals(user.getId())) {
                     List<Link_Publication> photots = publication.getLinkPublications();
                     List<Link_Publication> orig = new ArrayList<>();
