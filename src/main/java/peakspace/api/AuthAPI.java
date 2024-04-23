@@ -1,4 +1,5 @@
 package peakspace.api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -23,7 +24,7 @@ public class AuthAPI {
 
     @PostMapping("/code")
     @ApiOperation(value = " Сравнивание кода правильности !")
-    public SimpleResponse code(@RequestParam("code") int codeRequest) throws BadRequestException {
+    public SimpleResponse code(@RequestParam("code") int codeRequest) throws BadRequestException, MessagingException {
         return userService.randomCode(codeRequest);
     }
 

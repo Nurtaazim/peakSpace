@@ -2,7 +2,7 @@ app:
     jwt:
         secret: Java12
 server:
-    port: 8082
+    port: 8080
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
@@ -29,3 +29,11 @@ spring:
         init:
             data-locations: classpath:dataInit/dataInit.sql
             mode: never
+
+cloud:
+    aws:
+        region: eu-north-1
+        accessKey: AKIAZI2LDVKOR6V4MDP7
+        secretKey: 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
+    s3:
+        bucketName: peakspacebucket

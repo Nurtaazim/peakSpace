@@ -1,5 +1,6 @@
 package peakspace.api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.ChapterRequest;
@@ -42,7 +43,7 @@ public class UserAPI {
 
     @GetMapping("/searchHashtags")
     @ApiOperation(value = "Поискавик", notes = "Поиск по хештегам  !")
-    public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample,@RequestParam String keyWord) {
+    public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample,@RequestParam String keyWord) throws MessagingException {
         return userService.searchHashtags(sample,keyWord);
     }
     @GetMapping("/findAllChapter/{chapterId}")
@@ -51,16 +52,16 @@ public class UserAPI {
         return userService.searchMyFriends(chapterId,userName);
     }
 
-    @GetMapping("/profileFriends/{foundUserId}")
-    @ApiOperation(value = " Профиль ", notes = "Профиль страница друга  !")
-    public ProfileFriendsResponse findByIdFriends(@PathVariable Long foundUserId){
-        return userService.findFriendsProfile(foundUserId);
-    }
-
     @GetMapping("/deleteUser/{chapterId}/{foundUserId}")
     @ApiOperation(value = "Отписатся  пользователя из раздела !")
-    public SimpleResponse deleteUser(@PathVariable Long chapterId,@PathVariable Long foundUserId) {
+    public SimpleResponse unsubscribeUser(@PathVariable Long chapterId,@PathVariable Long foundUserId) {
         return userService.unsubscribeUser(chapterId,foundUserId);
+    }
+
+    @GetMapping("/searchHistory")
+    @ApiOperation(value = "Пользователи, которые введены в поисковике, сохранены! ")
+    public List<SubscriptionResponse> getAllSearchUserHistory(){
+        return userService.getAllSearchUserHistory();
     }
 }
 

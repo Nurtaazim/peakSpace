@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
-import peakspace.config.security.jwt.JwtService;
+import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.ChatRequest;
 import peakspace.dto.response.ChatResponse;
 import peakspace.dto.response.SimpleResponse;

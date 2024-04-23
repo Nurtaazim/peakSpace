@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import peakspace.enums.Role;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,6 +73,12 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return false;

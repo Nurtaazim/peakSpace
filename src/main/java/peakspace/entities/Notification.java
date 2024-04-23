@@ -20,7 +20,7 @@ public class Notification {
     private String notificationMessage;
     @OneToOne
     private Like like;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})  // поменять отношения ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User userNotification;   // получатель
     private Long senderUserId;       // отправитель
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

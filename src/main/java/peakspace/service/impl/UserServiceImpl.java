@@ -9,43 +9,26 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.config.security.jwt.JwtService;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.entities.Chapter;
-import peakspace.entities.PablicProfile;
-import peakspace.entities.User;
+import peakspace.dto.response.*;
+import peakspace.entities.*;
+import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.ChapterRepository;
 import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.stereotype.Service;
-import peakspace.config.jwt.JwtService;
+import java.time.ZonedDateTime;
+import java.util.*;
 
-import peakspace.repository.ProfileRepository;
+import peakspace.config.jwt.JwtService;
 import peakspace.entities.User;
-import peakspace.repository.UserRepository;
-import peakspace.service.UserService;
 import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -210,7 +193,7 @@ public class UserServiceImpl implements UserService {
         } else if (sample.equals(Choise.Groups)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new MessagingException("");
+        throw new peakspace.exception.MessagingException("");
     }
 
     @Override @Transactional
@@ -231,11 +214,11 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
     @Override
-    public List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyword) {
+    public List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyword) throws MessagingException {
         getCurrentUser();
         if (sample.equals(Choise.Hashtag)) {
             return publicationRepository.findAllHashtags(keyword);
-        }throw new MessagingException(" Плохой запрос !");
+        }throw new BadRequestException(" Плохой запрос !");
     }
 
     @Override
@@ -318,6 +301,29 @@ public class UserServiceImpl implements UserService {
                 .httpStatus(HttpStatus.OK)
                 .message(message)
                 .build();
+    }
+
+    @Override
+    public List<SubscriptionResponse> getAllSearchUserHistory() {
+        User currentUser = getCurrentUser();
+        List<Long> searchFriendsHistory = currentUser.getSearchFriendsHistory();
+        List<SubscriptionResponse> searchUserResponses = new ArrayList<>();
+
+        for (Long userId : searchFriendsHistory) {
+            User foundUser = userRepository.findById(userId).orElse(null);
+            if (foundUser != null) {
+                SubscriptionResponse response = new SubscriptionResponse(
+                        foundUser.getId(),
+                        foundUser.getUsername(),
+                        foundUser.getProfile().getAvatar(),
+                        foundUser.getProfile().getAboutYourSelf()
+                );
+                searchUserResponses.add(response);
+            }
+        }
+        Collections.reverse(searchUserResponses);
+
+        return searchUserResponses;
     }
 
     private long getFriendsSize(Long foundUserID){

@@ -38,7 +38,12 @@ cloud:
     secretKey: q8YvKp5zotyi27B63H+0ZQYPPKFFuDOO06lcvuRD
   s3:
     bucketName: peakspacebucket
+
       #When you will click 'create' you shout click to 'always'! from Myrzaiym
+
+
+
+
 
       #  #DATA-INIT
 #        spring.jpa.defer-datasource-initialization=true

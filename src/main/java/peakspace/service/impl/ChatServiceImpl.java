@@ -7,7 +7,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.config.security.jwt.JwtService;
+import peakspace.config.jwt.JwtService;
 import peakspace.dto.response.ChatResponse;
 import peakspace.dto.response.MessageResponse;
 import peakspace.dto.response.SimpleResponse;

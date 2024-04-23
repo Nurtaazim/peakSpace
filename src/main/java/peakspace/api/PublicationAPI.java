@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.PublicationWithYouResponse;
-import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.MyPostResponse;
+import peakspace.dto.response.*;
 import peakspace.service.PublicationService;
+import peakspace.service.UserService;
 
 import java.util.List;
 import java.security.Principal;
@@ -22,6 +20,7 @@ import java.security.Principal;
 public class PublicationAPI {
 
     private final PublicationService publicationService;
+    private final UserService userService;
 
     @Secured("USER")
     @GetMapping("/getAllMyPosts")
@@ -39,13 +38,21 @@ public class PublicationAPI {
     @GetMapping("/{postId}")
     public MyPostResponse getById(@PathVariable Long postId) {
         return publicationService.getById(postId);
+    }
 
-        }
-    @GetMapping("/public/{friendId}")
+    @GetMapping("/findAll/{friendId}")
     @ApiOperation(value = " Все публикации друга ! ")
     public List<PublicationResponse> findAllPublic(@PathVariable Long friendId) {
         return publicationService.findAllPublic(friendId);
     }
+
+    @GetMapping("/profileFriends/{foundUserId}")
+    @ApiOperation(value = " Профиль ", notes = "Профиль страница друга  !")
+    public ProfileFriendsResponse findByIdFriends(@PathVariable Long foundUserId){
+        return userService.findFriendsProfile(foundUserId);
+    }
+
+
 
 
 }

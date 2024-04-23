@@ -1,11 +1,8 @@
 package peakspace.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter @Setter @AllArgsConstructor
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class LinkPublicationResponse {
     private Long id;
     private String link;

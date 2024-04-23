@@ -22,7 +22,7 @@ public interface UserService {
 
     SimpleResponse createChapter(ChapterRequest chapterRequest);
 
-    List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyWord);
+    List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyWord) throws MessagingException;
 
     List<SearchResponse> searchMyFriends(Long chapterId, String userName);
 
@@ -31,4 +31,6 @@ public interface UserService {
     List<ChapTerResponse> searchChapter(String search);
 
     SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId);
+
+    List<SubscriptionResponse> getAllSearchUserHistory();
 }
