@@ -1,10 +1,11 @@
 package peakspace.service;
+
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.*;
-
 import java.util.List;
 
 public interface UserService {
@@ -30,5 +31,7 @@ public interface UserService {
     ResponseWithGoogle verifyToken(String tokenFromGoogle);
 
     ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest registerWithGoogle);
+
+    String sendConfirmationCode(String email) throws MessagingException;
 
 }

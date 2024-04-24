@@ -1,4 +1,5 @@
 package peakspace.service.impl;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
@@ -11,9 +12,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
 import peakspace.enums.Role;
@@ -24,20 +25,19 @@ import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
+
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Service;
-import peakspace.config.jwt.JwtService;
 
+import peakspace.config.jwt.JwtService;
 import peakspace.repository.ProfileRepository;
 import peakspace.entities.User;
-import peakspace.repository.UserRepository;
-import peakspace.service.UserService;
 import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
+
 import java.util.Random;
 
 @Service
@@ -69,18 +69,21 @@ public class UserServiceImpl implements UserService {
                         .idUser(user.getId())
                         .token(jwtService.createToken(user))
                         .build();
-            }
-            else if (phoneNumber != null && phoneNumber.length() > 2) {
+            } else if (phoneNumber != null && phoneNumber.length() > 2) {
                 String fullName = decodedToken.getName();
                 User user = new User();
                 Profile profile = new Profile();
                 String picture = decodedToken.getPicture();
-                String defaultPassword = userRepository.generatorDefaultPassword(8, 8);
+                String defaultPassword = generatorDefaultPassword(8, 8);
                 user.setRole(Role.USER);
                 user.setPassword(passwordEncoder.encode(defaultPassword));
                 user.setEmail(email);
                 user.setPhoneNumber(phoneNumber);
-                sendConfirmationCodeToEmail(user, userRepository.generatorDefaultPassword(6, 6));
+                try {
+                    sendConfirmationCode(email);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
                 user.setBlockAccount(true);
                 profile.setAvatar(picture);
                 profile.setUser(user);
@@ -101,8 +104,8 @@ public class UserServiceImpl implements UserService {
                 while (!user.getUsername().isEmpty()) {
                     if (!userRepository.existsByUserName(username)) {
                         user.setUserName(user.getProfile().getLastName().toLowerCase());
-                    }else{
-                        username = username + new Random().nextInt(1, userRepository.findAll().size()*2);
+                    } else {
+                        username = username + new Random().nextInt(1, userRepository.findAll().size() * 2);
                     }
 
                 }
@@ -114,33 +117,6 @@ public class UserServiceImpl implements UserService {
             throw new NotActiveException();
         } catch (com.google.firebase.auth.FirebaseAuthException e) {
             throw new FirebaseAuthException();
-        }
-    }
-
-    private void sendConfirmationCodeToEmail(User user, String s) {
-        try {
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
-            mimeMessageHelper.setTo(user.getEmail());
-            mimeMessageHelper.setText("""
-                                    Привет, """ + user.getProfile().getFirstName() + " " + user.getProfile().getLastName() + "!"+"""
-                                    
-                                    НИКОМУ НЕ СООБЩАЙТЕ ЭТОТ КОД!
-                                    Это код для регистрации в Peak Space.
-                                    Этот код действителен только 5 минут!
-                                    """
-                                      +
-                                      user.getPassword()
-                                      +
-                                      """
-                                              Welcome to Peakspace!
-                                              """);
-            mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
-            javaMailSender.send(mimeMessage);
-            System.out.println("Mail sent to " + user.getEmail());
-        } catch (MessagingException e) {
-            throw new NotActiveException();
         }
     }
 
@@ -159,6 +135,119 @@ public class UserServiceImpl implements UserService {
         throw new InvalidConfirmationCode();
     }
 
+    @Override
+    @Transactional
+    public String sendConfirmationCode(String email) throws MessagingException {
+        User user = userRepository.getByEmail(email);
+        userName = user.getEmail();
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
+        mimeMessageHelper.setTo(email);
+        String randomCode = generatorConfirmationCode(6);
+        user.setConfirmationCode(randomCode);
+        String fullName = user.getThisUserName();
+        String message = "<!DOCTYPE html>\n" +
+                         "<html lang=\"en\">\n" +
+                         "\n" +
+                         "<head>\n" +
+                         "    <meta charset=\"UTF-8\">\n" +
+                         "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                         "    <title>Confirmation Code</title>\n" +
+                         "    <style>\n" +
+                         "        body {\n" +
+                         "            background-image: url('https://files.slack.com/files-pri/T023L1WBFLH-F06TT7FAU0J/img_2536.jpg');\n" +
+                         "            background-size: cover;\n" +
+                         "            background-position: center;\n" +
+                         "            color: #ffffff;\n" +
+                         "            font-family: Arial, sans-serif;\n" +
+                         "            margin: 0;\n" +
+                         "            padding: 0;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        .container {\n" +
+                         "            text-align: center;\n" +
+                         "            padding: 10% 5%;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        h2 {\n" +
+                         "            color: #ffcc00;\n" +
+                         "            font-size: 2.5em;\n" +
+                         "            margin-bottom: 20px;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        h3 {\n" +
+                         "            color: #ff0000;\n" +
+                         "            font-size: 2em;\n" +
+                         "            margin-bottom: 15px;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        p {\n" +
+                         "            font-size: 1.2em;\n" +
+                         "            margin-bottom: 10px;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        @media (max-width: 768px) {\n" +
+                         "            h2 {\n" +
+                         "                font-size: 2em;\n" +
+                         "            }\n" +
+                         "\n" +
+                         "            h3 {\n" +
+                         "                font-size: 1.5em;\n" +
+                         "            }\n" +
+                         "\n" +
+                         "            p {\n" +
+                         "                font-size: 1em;\n" +
+                         "            }\n" +
+                         "\n" +
+                         "            .container {\n" +
+                         "                padding: 20% 5%;\n" +
+                         "            }\n" +
+                         "        }\n" +
+                         "    </style>\n" +
+                         "</head>\n" +
+                         "\n" +
+                         "<body>\n" +
+                         "    <div class=\"container\">\n" +
+                         "        <h2>Confirmation code!</h2>\n" +
+                         "        <h2>ПРИВЕТ! "+fullName+"</h2>\n" +
+                         "        <h3>Код подтверждения: "+randomCode+"</h3>\n" +
+                         "        <p>НИКОМУ НЕ СООБЩАЙТЕ ЭТОТ КОД!</p>\n" +
+                         "        <p>Это код для регистрации в Peak Space</p>\n" +
+                         "        <p>Этот код действителен только 5 минут!</p>\n" +
+                         "    </div>\n" +
+                         "</body>\n" +
+                         "\n" +
+                         "</html>\n";
+        mimeMessageHelper.setText(message, true);
+        mimeMessageHelper.setSubject("Код Подтверждение!");
+        javaMailSender.send(mimeMessage);
+        return "Успешно отправленно код подтверждение на вашем емайл: " + email;
+    }
+
+    private String generatorConfirmationCode(int length) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+        String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
+            sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
+        }
+        return sb.toString();
+    }
+
+    private String generatorDefaultPassword(int minLength, int maxLength) {
+        Random random = new Random();
+        int length = +random.nextInt(maxLength - minLength + 1);
+        StringBuilder sb = new StringBuilder(length);
+        String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
+            sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
+        }
+        return sb.toString();
+    }
+
     private void sendDefaultPasswordToEmail(User user) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -167,14 +256,17 @@ public class UserServiceImpl implements UserService {
             mimeMessageHelper.setTo(user.getEmail());
             mimeMessageHelper.setText("""
                                               Hi """ + user.getUsername() + """
+                                              
+                                                """
+                                                +
+                                                user.getPassword()
+                                                +
+                                                """
+                                              
                                               НИКОМУ НЕ ГОВОРИТЕ КОД!
                                               Это пароль по умолчанию для Peakspace.
                                               Важно изменить этот пароль в целях вашей безопасности.
-                                              """
-                                      +
-                                      user.getPassword()
-                                      +
-                                      """
+                                                                               
                                               Welcome to Peakspace!
                                               """);
             mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
@@ -261,7 +353,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
+    public SimpleResponse sendFriends(Long foundUserId, String nameChapter) {
 
         User currentUser = getCurrentUser();
 
@@ -291,9 +383,9 @@ public class UserServiceImpl implements UserService {
                 }
             }
 
-            if (chapter.getGroupName().equals(nameChapter)){
+            if (chapter.getGroupName().equals(nameChapter)) {
                 chapter.setFriends(updatedFriends);
-            }else throw new NotFoundException(" Нет такой раздел " + nameChapter);
+            } else throw new NotFoundException(" Нет такой раздел " + nameChapter);
 
             messages = (removed) ? "Удачно отписался!" : "Удачно подписались!";
         }
@@ -315,7 +407,8 @@ public class UserServiceImpl implements UserService {
         throw new MessagingException("");
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
         User currentUser = getCurrentUser();
         Chapter chapter = new Chapter();
@@ -327,6 +420,7 @@ public class UserServiceImpl implements UserService {
                 .message(" Удачно сохранился раздел !")
                 .build();
     }
+
     @Override
     public List<SearchHashtagsResponse> searchHashtags(String keyword) {
         getCurrentUser();
@@ -337,7 +431,7 @@ public class UserServiceImpl implements UserService {
     public List<SearchResponse> searchMyFriends(Long chapterId, String userName) {
         getCurrentUser();
         Chapter chapter = chapterRepository.findByID(chapterId);
-        if (chapter.getId().equals(chapterId)){
+        if (chapter.getId().equals(chapterId)) {
             if (userName == null || userName.trim().isEmpty()) {
                 return userRepository.findAllSearchEmpty();
             } else {
@@ -357,7 +451,7 @@ public class UserServiceImpl implements UserService {
         long pablicSize = 0L;
         User founUser = userRepository.findById(foundUserId).orElseThrow(() -> new NotFoundException("Нет такой пользователь !"));
         for (Chapter chapter : founUser.getChapters()) {
-            friendSize +=getFriendsSize(chapter.getId());
+            friendSize += getFriendsSize(chapter.getId());
         }
 
         for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
@@ -368,7 +462,7 @@ public class UserServiceImpl implements UserService {
         List<PublicationResponse> friendsFavorite = userRepository.findFavorite(foundUserId);
         List<PublicationResponse> friendTagWithMe = userRepository.findTagWithMe(foundUserId);
 
-                 ProfileFriendsResponse response = ProfileFriendsResponse.builder()
+        ProfileFriendsResponse response = ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
                 .avatar(friendsResponse.getAvatar())
                 .cover(friendsResponse.getCover())
@@ -380,14 +474,15 @@ public class UserServiceImpl implements UserService {
                 .friendsFavoritesPublications(friendsFavorite)
                 .friendsWitMePublications(friendTagWithMe)
                 .build();
-                 return response;
+        return response;
     }
 
-    private long getFriendsSize(Long foundUserID){
+    private long getFriendsSize(Long foundUserID) {
         Chapter chapter = chapterRepository.findByID(foundUserID);
         return chapter.getFriends().size();
     }
-    private long getFriendsPublicSize(Long foundUserID){
+
+    private long getFriendsPublicSize(Long foundUserID) {
         PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
         return pablicProfile.getPublications().size();
     }
