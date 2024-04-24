@@ -1,30 +1,36 @@
 package peakspace.service.impl;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseToken;
 import org.springframework.web.client.RestTemplate;
+import peakspace.dto.request.ChapterRequest;
+import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.response.*;
+import peakspace.entities.*;
+import peakspace.enums.Role;
+import peakspace.exception.*;
+import peakspace.exception.IllegalArgumentException;
+import peakspace.repository.ChapterRepository;
+import peakspace.repository.PablicProfileRepository;
+import peakspace.repository.PublicationRepository;
+import peakspace.repository.UserRepository;
+import peakspace.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Service;
 import peakspace.config.jwt.JwtService;
-import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.dto.response.ResponseWithGoogle;
-import peakspace.entities.Profile;
-import peakspace.exception.InvalidConfirmationCode;
-import peakspace.exception.SmsSendingException;
+
 import peakspace.repository.ProfileRepository;
 import peakspace.entities.User;
-import peakspace.enums.Role;
-import peakspace.exception.FirebaseAuthException;
-import peakspace.exception.NotActiveException;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
 import jakarta.transaction.Transactional;
@@ -32,7 +38,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
-import java.util.Locale;
 import java.util.Random;
 
 @Service
@@ -44,10 +49,11 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private String userName;
     private int randomCode;
+    private final ChapterRepository chapterRepository;
+    private final PablicProfileRepository pablicProfileRepository;
+    private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-    @Value("${http://smspro.nikita.kg/api/message}")
-    private String apiURL;
 
     @Override
     @Transactional
@@ -60,7 +66,7 @@ public class UserServiceImpl implements UserService {
             if (b) {
                 User user = userRepository.getReferenceByEmail(email);
                 return ResponseWithGoogle.builder()
-                        .id(user.getId())
+                        .idUser(user.getId())
                         .token(jwtService.createToken(user))
                         .build();
             }
@@ -74,8 +80,7 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(passwordEncoder.encode(defaultPassword));
                 user.setEmail(email);
                 user.setPhoneNumber(phoneNumber);
-                String maskedPhoneNumber = maskPhoneNumber(phoneNumber);
-                sendSms(phoneNumber, userRepository.generatorDefaultPassword(6, 6));
+                sendConfirmationCodeToEmail(user, userRepository.generatorDefaultPassword(6, 6));
                 user.setBlockAccount(true);
                 profile.setAvatar(picture);
                 profile.setUser(user);
@@ -95,20 +100,47 @@ public class UserServiceImpl implements UserService {
                 String username = user.getProfile().getLastName();
                 while (!user.getUsername().isEmpty()) {
                     if (!userRepository.existsByUserName(username)) {
-                        user.setUserName(user.getProfile().getLastName().toLowerCase(Locale.ROOT));
+                        user.setUserName(user.getProfile().getLastName().toLowerCase());
                     }else{
                         username = username + new Random().nextInt(1, userRepository.findAll().size()*2);
                     }
 
                 }
                 return ResponseWithGoogle.builder()
-                        .id(user.getId())
-                        .description(maskedPhoneNumber)
+                        .idUser(user.getId())
+                        .description(email)
                         .build();
             }
             throw new NotActiveException();
         } catch (com.google.firebase.auth.FirebaseAuthException e) {
             throw new FirebaseAuthException();
+        }
+    }
+
+    private void sendConfirmationCodeToEmail(User user, String s) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
+            mimeMessageHelper.setTo(user.getEmail());
+            mimeMessageHelper.setText("""
+                                    Привет, """ + user.getProfile().getFirstName() + " " + user.getProfile().getLastName() + "!"+"""
+                                    
+                                    НИКОМУ НЕ СООБЩАЙТЕ ЭТОТ КОД!
+                                    Это код для регистрации в Peak Space.
+                                    Этот код действителен только 5 минут!
+                                    """
+                                      +
+                                      user.getPassword()
+                                      +
+                                      """
+                                              Welcome to Peakspace!
+                                              """);
+            mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
+            javaMailSender.send(mimeMessage);
+            System.out.println("Mail sent to " + user.getEmail());
+        } catch (MessagingException e) {
+            throw new NotActiveException();
         }
     }
 
@@ -121,9 +153,8 @@ public class UserServiceImpl implements UserService {
             user.setIsBlock(false);
             sendDefaultPasswordToEmail(user);
             return ResponseWithGoogle.builder()
-                    .id(user.getId())
+                    .idUser(user.getId())
                     .token(jwtService.createToken(user)).build();
-
         }
         throw new InvalidConfirmationCode();
     }
@@ -152,7 +183,6 @@ public class UserServiceImpl implements UserService {
         } catch (MessagingException e) {
             throw new NotActiveException();
         }
-
     }
 
     @Override
@@ -223,40 +253,151 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return UpdatePasswordResponse.builder()
                 .id(user.getId())
-                .userName(user.getUsername())
                 .email(user.getEmail())
                 .token(jwtService.createToken(user))
                 .build();
     }
 
-    private String maskPhoneNumber(String phoneNumber) {
-        int length = phoneNumber.length();
-        StringBuilder masked = new StringBuilder();
-        for (int i = 3; i < length - 2; i++) {
-            masked.append("*");
+
+    @Override
+    @Transactional
+    public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
+
+        User currentUser = getCurrentUser();
+
+        if (currentUser.getId().equals(foundUserId)) {
+            throw new IllegalArgumentException(" Нельзя подписатся самого себя !");
         }
-        masked.append(phoneNumber.substring(length - 2));
-        return masked.toString();
+        List<Chapter> chapters = currentUser.getChapters();
+        boolean removed = false;
+        String messages = "";
+
+        for (Chapter chapter : chapters) {
+            List<User> currentUserFriends = chapter.getFriends();
+            List<User> updatedFriends = new ArrayList<>(currentUserFriends);
+
+            for (User currentUserFriend : currentUserFriends) {
+                if (currentUserFriend.getId().equals(foundUserId)) {
+                    updatedFriends.remove(currentUserFriend);
+                    removed = true;
+                    break;
+                }
+            }
+
+            if (!removed) {
+                User foundUser = userRepository.findById(foundUserId).orElse(null);
+                if (foundUser != null) {
+                    updatedFriends.add(foundUser);
+                }
+            }
+
+            if (chapter.getGroupName().equals(nameChapter)){
+                chapter.setFriends(updatedFriends);
+            }else throw new NotFoundException(" Нет такой раздел " + nameChapter);
+
+            messages = (removed) ? "Удачно отписался!" : "Удачно подписались!";
+        }
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(messages)
+                .build();
     }
 
     @Override
-    public ResponseEntity<String> sendSms(String phoneNumberGetter, String verificationCode) {
-        RestTemplate restTemplate = new RestTemplate();
+    public List<SearchResponse> searchFriends(String sample, String keyWord) throws MessagingException {
+        getCurrentUser();
+        if (sample.equals("Пользователь")) {
+            return userRepository.findAllSearch(keyWord);
+        }
+        if (sample.equals("Группы")) {
+            return pablicProfileRepository.findAllPablic(keyWord);
+        }
+        throw new MessagingException("");
+    }
 
-        String requestBody = String.format("{\"phone\": \"%s\", \"message\": \"%s\"}", "996771900091", "156481");
+    @Override @Transactional
+    public SimpleResponse createChapter(ChapterRequest chapterRequest) {
+        User currentUser = getCurrentUser();
+        Chapter chapter = new Chapter();
+        chapter.setGroupName(chapterRequest.getGroupName());
+        chapterRepository.save(chapter);
+        chapter.setUser(currentUser);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(" Удачно сохранился раздел !")
+                .build();
+    }
+    @Override
+    public List<SearchHashtagsResponse> searchHashtags(String keyword) {
+        getCurrentUser();
+        return publicationRepository.findAllHashtags(keyword);
+    }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        ResponseEntity<String> response = restTemplate.postForEntity(apiURL, entity, String.class);
-
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response;
+    @Override
+    public List<SearchResponse> searchMyFriends(Long chapterId, String userName) {
+        getCurrentUser();
+        Chapter chapter = chapterRepository.findByID(chapterId);
+        if (chapter.getId().equals(chapterId)){
+            if (userName == null || userName.trim().isEmpty()) {
+                return userRepository.findAllSearchEmpty();
+            } else {
+                return userRepository.findAllSearch(userName);
+            }
         } else {
-            throw new SmsSendingException();
+            throw new BadRequestException("Плохой запрос");
         }
     }
 
+    @Override
+    public ProfileFriendsResponse findFriendsProfile(Long foundUserId) {
+
+        User currentUser = getCurrentUser();
+        ProfileFriendsResponse friendsResponse = userRepository.getId(foundUserId);
+        long friendSize = 0L;
+        long pablicSize = 0L;
+        User founUser = userRepository.findById(foundUserId).orElseThrow(() -> new NotFoundException("Нет такой пользователь !"));
+        for (Chapter chapter : founUser.getChapters()) {
+            friendSize +=getFriendsSize(chapter.getId());
+        }
+
+        for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
+            pablicSize += getFriendsPublicSize(pablicProfile.getId());
+        }
+
+        List<PublicationResponse> friendsPublic = userRepository.findFriendsPublic(foundUserId);
+        List<PublicationResponse> friendsFavorite = userRepository.findFavorite(foundUserId);
+        List<PublicationResponse> friendTagWithMe = userRepository.findTagWithMe(foundUserId);
+
+                 ProfileFriendsResponse response = ProfileFriendsResponse.builder()
+                .id(friendsResponse.getId())
+                .avatar(friendsResponse.getAvatar())
+                .cover(friendsResponse.getCover())
+                .aboutYourSelf(friendsResponse.getAboutYourSelf())
+                .profession(friendsResponse.getProfession())
+                .friendsSize(friendSize)
+                .pablicationsSize(pablicSize)
+                .friendsPublications(friendsPublic)
+                .friendsFavoritesPublications(friendsFavorite)
+                .friendsWitMePublications(friendTagWithMe)
+                .build();
+                 return response;
+    }
+
+    private long getFriendsSize(Long foundUserID){
+        Chapter chapter = chapterRepository.findByID(foundUserID);
+        return chapter.getFriends().size();
+    }
+    private long getFriendsPublicSize(Long foundUserID){
+        PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
+        return pablicProfile.getPublications().size();
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User current = userRepository.getByEmail(email);
+        if (current.getRole().equals(Role.USER))
+            return current;
+        else throw new AccessDeniedException("Forbidden 403");
+    }
 }
+

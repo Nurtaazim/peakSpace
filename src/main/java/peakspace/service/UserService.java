@@ -1,18 +1,13 @@
 package peakspace.service;
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
-import org.springframework.http.ResponseEntity;
+import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.ResponseWithGoogle;
+import peakspace.dto.response.*;
+
+import java.util.List;
 
 public interface UserService {
-
-    ResponseWithGoogle verifyToken(String tokenFromGoogle);
-
-    ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest tokenFromGoogle);
 
     SimpleResponse forgot(String email) throws MessagingException;
 
@@ -20,5 +15,20 @@ public interface UserService {
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 
-    ResponseEntity<String> sendSms(String phoneNumberGetter, String verificationCode);
+    SimpleResponse sendFriends(Long foundUserId,String nameChapter);
+
+    List<SearchResponse> searchFriends(String sample, String keyWord) throws MessagingException;
+
+    SimpleResponse createChapter(ChapterRequest chapterRequest);
+
+    List<SearchHashtagsResponse> searchHashtags(String keyWord);
+
+    List<SearchResponse> searchMyFriends(Long chapterId, String userName);
+
+    ProfileFriendsResponse findFriendsProfile(Long foundUserId);
+
+    ResponseWithGoogle verifyToken(String tokenFromGoogle);
+
+    ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest registerWithGoogle);
+
 }

@@ -60,7 +60,6 @@ public class User implements UserDetails {
     public String getThisUserName() {
         return this.userName;
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);
