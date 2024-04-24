@@ -1,4 +1,5 @@
 package peakspace.api;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.ChapterRequest;
@@ -22,7 +23,7 @@ public class UserAPI {
     }
 
     @GetMapping("/search")
-    public List<SearchResponse> search(@RequestParam String sample, @RequestParam  String keyWord) {
+    public List<SearchResponse> search(@RequestParam String sample, @RequestParam  String keyWord) throws MessagingException {
         return userService.searchFriends(sample,keyWord);
     }
     @PostMapping("/createChapter")

@@ -17,7 +17,7 @@ public interface UserService {
 
     SimpleResponse sendFriends(Long foundUserId,String nameChapter);
 
-    List<SearchResponse> searchFriends(String sample, String keyWord);
+    List<SearchResponse> searchFriends(String sample, String keyWord) throws MessagingException;
 
     SimpleResponse createChapter(ChapterRequest chapterRequest);
 
