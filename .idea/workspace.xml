@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/dependencies-accessors/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/8.7/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/peak-space-b12.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/PublicationAPI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/previous-compilation-data.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/resourceHashesCache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_17_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/AddEducationRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Chapter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Chat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Comment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/CommentRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/CommentResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Country.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Education.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/GetAllPostsResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/InnerCommentResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Like.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Link_Publication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/MessageContent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/MyPostResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Notification.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/PablicProfile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/PasswordRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/PeakSpaceB12Application.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Profile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Publication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/PublicationAPI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/SimpleResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Story.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/Tematica.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/UpdatePasswordResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/UserInfoRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/UserInfoResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/UserRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/previous-compilation-data.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/resourceHashesCache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/AddEducationRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Chapter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Chat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Comment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/CommentRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/CommentResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Country.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Education.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/GetAllPostsResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/InnerCommentResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Like.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Link_Publication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/MessageContent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/MyPostResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Notification.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/PablicProfile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/PasswordRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/PeakSpaceB12Application.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Profile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Publication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/PublicationAPI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/SimpleResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Story.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/Tematica.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/UpdatePasswordResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/UserInfoRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/UserInfoResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/UserRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/previous-compilation-data.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/resourceHashesCache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24,_12_22_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24__12_17__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HELP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/PeakSpaceB12Application.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/AuthAPI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/PostApi.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/PublicationAPI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/UserInfoApi.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/amazonS3/StorageAPI.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/amazonS3/StorageService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/amazonS3/Storageconfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/jwt/JwtFilter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/jwt/JwtService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/security/SecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/security/StorageConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/swagger/SwaggerConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/AddEducationRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PasswordRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostRequest$PostRequestBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostUpdateRequest$PostUpdateRequestBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostUpdateRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/UserInfoRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse$CommentResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/GetAllPostsResponse$GetAllPostsResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/GetAllPostsResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/InnerCommentResponse$InnerCommentResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/InnerCommentResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/LinkPublicationResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse$MyPostResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/PostResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/SimpleResponse$SimpleResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/SimpleResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UpdatePasswordResponse$UpdatePasswordResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UpdatePasswordResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UserInfoResponse$UserInfoResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UserInfoResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Chapter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Chat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Comment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Education.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Like.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Link_Publication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/MessageContent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Notification.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/PablicProfile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Profile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Publication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Story.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/enums/Country.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/enums/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/enums/Tematica.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/FirebaseAuthException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/ForbiddenException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/InvalidConfirmationCode.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/MessagingException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/NotActiveException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/NotFoundException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/SmsSendingException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/handler/GlobalHandlerException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/response/ExceptionResponse$ExceptionResponseBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/response/ExceptionResponse.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/CommentRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/EducationRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/LinkPublicationRepo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/ProfileRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/PublicationRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/UserRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/PostService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/PublicationService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/UserInfoService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/UserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/PostServiceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/PublicationServiceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/UserInfoServiceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/UserServiceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/test/peakspace/PeakSpaceB12ApplicationTests.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/reports/tests/test/classes/peakspace.PeakSpaceB12ApplicationTests.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/reports/tests/test/css/base-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/reports/tests/test/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/reports/tests/test/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/reports/tests/test/js/report.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/reports/tests/test/packages/peakspace.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/resources/main/application-dev.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/resources/main/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/resources/main/dataInit/dataInit.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/test-results/test/TEST-peakspace.PeakSpaceB12ApplicationTests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/test-results/test/binary/output.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/test-results/test/binary/output.bin.idx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Chapter.class.uniqueId3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Chat.class.uniqueId4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Comment.class.uniqueId10" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepository.class.uniqueId20" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Education.class.uniqueId22" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/JwtFilter.class.uniqueId6" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/JwtService.class.uniqueId15" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Like.class.uniqueId12" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/MessageContent.class.uniqueId13" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Notification.class.uniqueId18" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/PablicProfile.class.uniqueId2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/PostServiceImpl.class.uniqueId0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Profile.class.uniqueId11" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/ProfileRepository.class.uniqueId9" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Publication.class.uniqueId14" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/PublicationAPI.class.uniqueId19" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/PublicationRepository.class.uniqueId5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/PublicationServiceImpl.class.uniqueId7" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId17" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Story.class.uniqueId8" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/Studies.class.uniqueId21" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/User.class.uniqueId1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/UserRepository.class.uniqueId16" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/UserServiceImpl.class.uniqueId0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileTestJava/previous-compilation-data.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/AuthAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/PostApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/UserAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/UserInfoApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageAPI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/Storageconfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/security/StorageConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/AddEducationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/ChapterRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/PostRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/PostUpdateRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/UserInfoRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/LinkPublicationResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/PostResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/ProfileFriendsResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/PublicationResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/SearchHashtagsResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/SearchResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/SubscriptionResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/UserInfoResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/enums/Country.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/exception/BadRequestException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/exception/IllegalArgumentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/exception/InvalidConfirmationCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/exception/SmsSendingException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/ChapterRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/EducationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/LinkPublicationRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/PablicProfileRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/PostService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/UserInfoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PostServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserInfoServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/PeakSpaceB12Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/PeakSpaceB12Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicationAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicationAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/swagger/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/PasswordRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/PasswordRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/ResponseWithGoogle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/SimpleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/SimpleResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/UpdatePasswordResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/UpdatePasswordResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/entities/Chapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/entities/Chapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/entities/Education.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/entities/Education.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/entities/Publication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/entities/Publication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/enums/Studies.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/exception/handler/GlobalHandlerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/exception/handler/GlobalHandlerException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/exception/response/ExceptionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/exception/response/ExceptionResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/repository/ProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/ProfileRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/repository/PublicationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/PublicationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/dataInit/dataInit.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/dataInit/dataInit.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="peak-space-b12" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Record" />
+        <option value="com.haulmont.jpb.JpaRepository" />
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="feature/auth_with_google" />
+                <branch-info repo="$PROJECT_DIR$" source="feature/regst_with_google" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/regst_with_google" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+    &quot;associatedIndex&quot;: 8
+    }</component>
+  <component name="ProjectId" id="2eoWm57RI11Wtwf3CkfFJOrcFJH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Gradle.Build peak-space-b12.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.PeakSpaceB12Application.executor": "Coverage",
+    "git-widget-placeholder": "Merging main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/DELLG/IdeaProjects/peak-space-b12/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="peakspace.dto.response" />
+      <recent name="peakspace.exception" />
+      <recent name="peakspace.dto.request" />
+      <recent name="peakspace.repository" />
+      <recent name="peakspace.service" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DELLG\IdeaProjects\peak-space-b12\src\main\resources" />
+      <recent name="C:\Users\DELLG\IdeaProjects\peak-space-b12\src\main\java\peakspace\config" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="peakspace.config" />
+      <recent name="peakspace.exceptions" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="PeakSpaceB12Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" value="dev" />
+      <module name="peak-space-b12.main" />
+      <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="peakspace.PeakSpaceB12Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-f644763e9732-f98dd351" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-322ed176" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-f644763e9732-c0c073db" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="" />
+      <created>1712571566972</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712571566972</updated>
+      <workItem from="1712571568499" duration="3670000" />
+      <workItem from="1712663513812" duration="4112000" />
+      <workItem from="1712814905020" duration="4040000" />
+      <workItem from="1712825998371" duration="6518000" />
+      <workItem from="1712833003564" duration="4573000" />
+      <workItem from="1712837935305" duration="8794000" />
+      <workItem from="1712902525205" duration="7393000" />
+      <workItem from="1713013219562" duration="6643000" />
+      <workItem from="1713157595427" duration="42425000" />
+      <workItem from="1713764049163" duration="5438000" />
+      <workItem from="1713851817178" duration="673000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/peak_space_b12$PeakSpaceB12Application.ic" NAME="PeakSpaceB12Application Coverage Results" MODIFIED="1713864745796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

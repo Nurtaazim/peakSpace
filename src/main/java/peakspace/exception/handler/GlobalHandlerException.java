@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
-import peakspace.exception.ForbiddenException;
-import peakspace.exception.MessagingException;
-import peakspace.exception.NotFoundException;
+import peakspace.exception.*;
+import peakspace.exception.IllegalArgumentException;
+
 import peakspace.exception.response.ExceptionResponse;
-import peakspace.exception.FirebaseAuthException;
-import peakspace.exception.NotActiveException;
 
 @RestControllerAdvice
 @Slf4j
@@ -39,12 +37,22 @@ public class GlobalHandlerException {
                 .message(forbiddenException.getMessage())
                 .build();
     }
-
-    @ExceptionHandler(HttpClientErrorException.BadRequest.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse badReq(HttpClientErrorException.BadRequest e){
+    public ExceptionResponse badRequest(IllegalArgumentException illegalArgumentException){
+        log.error(illegalArgumentException.getMessage());
         return ExceptionResponse.builder()
-                .httpStatus(HttpStatus.FORBIDDEN)
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .exceptionClassName(illegalArgumentException.getClass().getSimpleName())
+                .message(illegalArgumentException.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse badReq(BadRequestException e){
+        return ExceptionResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(e.getClass().getSimpleName())
                 .message(e.getMessage())
                 .build();
@@ -90,14 +98,34 @@ public class GlobalHandlerException {
                 .message(notActiveException.getMessage())
                 .build();
     }
+
     @ExceptionHandler(FirebaseAuthException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public peakspace.exception.response.ExceptionResponse notFound(FirebaseAuthException notActiveException){
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public peakspace.exception.response.ExceptionResponse firebaseAuth(FirebaseAuthException notActiveException){
         return peakspace.exception.response.ExceptionResponse.builder()
-                .httpStatus(HttpStatus.NOT_FOUND)
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(notActiveException.getClass().getSimpleName())
                 .message(notActiveException.getMessage())
                 .build();
     }
 
+    @ExceptionHandler(InvalidConfirmationCode.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public peakspace.exception.response.ExceptionResponse BadRequest(InvalidConfirmationCode invalidConfirmationCode){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .exceptionClassName(invalidConfirmationCode.getClass().getSimpleName())
+                .message(invalidConfirmationCode.getMessage() + "Неправильный код!")
+                .build();
+    }
+
+    @ExceptionHandler(SmsSendingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public peakspace.exception.response.ExceptionResponse BadRequest(SmsSendingException smsSendingException){
+        return peakspace.exception.response.ExceptionResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .exceptionClassName(smsSendingException.getClass().getSimpleName())
+                .message(smsSendingException.getMessage() + "Не удалось отправить СМС!")
+                .build();
+    }
 }
