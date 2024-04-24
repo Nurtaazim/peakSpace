@@ -8,11 +8,11 @@ group = 'peakspace'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '17'
+    sourceCompatibility = '21'
 }
 
 repositories {
-    mavenCentral()
+    mavenCentral()  // Добавлено решение для зависимости lombok
 }
 
 dependencies {
@@ -23,15 +23,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
     testImplementation 'org.springframework.security:spring-security-test'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.2.0'
-    implementation 'com.twilio.sdk:twilio:10.1.0'
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
+    implementation 'com.google.firebase:firebase-auth:21.0.1' // Убедитесь, что версия соответствует вашей
 }
+
 tasks.named('test') {
     useJUnitPlatform()
 }
