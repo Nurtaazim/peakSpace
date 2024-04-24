@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
+import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Publication;
@@ -15,10 +16,11 @@ import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PostService;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -125,6 +127,50 @@ public class PostServiceImpl implements PostService {
         return SimpleResponse.builder()
                 .message("Successfully deleted!")
                 .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse addFavorite(Long postId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        Publication post = publicationRepo.findPostById(postId);
+        if(user.getProfile().getFavorites().contains(post.getId())){
+            user.getProfile().getFavorites().remove(post.getId());
+            System.out.println("contains");
+        }else {
+            user.getProfile().getFavorites().add(post.getId());
+            System.out.println("not contains");
+        }
+        return SimpleResponse.builder()
+                .message("Successfully !")
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    @Override
+    public GetAllPostsResponse favorites() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+        List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
+
+        Map<Long, String> publics = allById.stream()
+                .collect(Collectors.toMap(
+                        Publication::getId,
+                        publication -> publication.getLinkPublications().getFirst().getLink()
+                ));
+
+        return GetAllPostsResponse.builder()
+                .cover(user.getProfile().getCover())
+                .avatar(user.getProfile().getAvatar())
+                .userName(user.getUsername())
+                .aboutMe(user.getProfile().getAboutYourSelf())
+                .major(user.getProfile().getProfession())
+                .countFriends(user.getChapters().size())
+                .countPablics(user.getPablicProfiles().size())
+                .publications(publics)
                 .build();
     }
 }

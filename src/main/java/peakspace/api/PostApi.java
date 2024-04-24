@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
+import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
 
@@ -31,6 +32,16 @@ public class PostApi {
     @PostMapping("/deleteLink/{linkId}/{postId}")
     public SimpleResponse deleteLink(@PathVariable Long linkId, @PathVariable Long postId) {
         return postService.deleteLinkFromPost(linkId, postId);
+    }
+
+    @PostMapping("/addToFavorite/{postId}")
+    public SimpleResponse addFavorite(@PathVariable Long postId) {
+        return postService.addFavorite(postId);
+    }
+
+    @GetMapping("/getAllFavoritePost")
+    public GetAllPostsResponse favorite(){
+        return postService.favorites();
     }
 
 }

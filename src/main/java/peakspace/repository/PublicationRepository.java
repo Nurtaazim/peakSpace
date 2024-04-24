@@ -1,14 +1,17 @@
 package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.Publication;
 import java.util.List;
+import java.util.Optional;
 
 
- @Repository
+@Repository
  public interface PublicationRepository extends JpaRepository<Publication,Long> {
   
   @Query("SELECT new peakspace.dto.response.SearchHashtagsResponse(p.id, l) FROM Publication p INNER JOIN p.linkPublications l WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
@@ -35,4 +38,7 @@ import java.util.List;
     @Query(value = "delete from publications_likes where publication_id =:postId",nativeQuery = true)
     void deleteLike(Long postId);
 
-}
+
+    @Query("select p from Publication p where p.id =:postId")
+     Publication findPostById(Long postId);
+ }
