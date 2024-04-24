@@ -1,6 +1,7 @@
 package peakspace.api;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -16,7 +17,6 @@ import peakspace.repository.ChatRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.ChatService;
 import peakspace.service.UserService;
-
 import java.util.List;
 
 @RestController
@@ -46,31 +46,31 @@ public class ChatAPI {
         }
 
     @GetMapping("/findById/{currentUserId}/{foundUserId}")
-    @ApiOperation("Send friends to a specific user in a chapter")
+    @Operation(summary = "Send friends to a specific user in a chapter")
     public ChatResponse findById(@PathVariable Long currentUserId,@PathVariable Long foundUserId) {
         return chatService.findChatId(currentUserId,foundUserId);
     }
 
     @GetMapping("/findAllChat/")
-    @ApiOperation(value = "Все чаты текущего пользователя")
+    @Operation(summary = "Все чаты текущего пользователя")
     public List<UserChatResponse> findAllChat() {
         return chatService.findAllBy();
     }
 
     @PostMapping("/delete/{chatId}")
-    @ApiOperation(value = "Удаление чат ")
+    @Operation(summary = "Удаление чат ")
     public SimpleResponse deleteChatId(@PathVariable Long chatId) {
             return chatService.deleteChatId(chatId);
     }
 
     @DeleteMapping("/delete/message/{messageId}")
-    @ApiOperation(value = "Удалить сообщение !")
+    @Operation(summary = "Удалить сообщение !")
     public SimpleResponse deleteMessage(@PathVariable Long messageId) {
             return chatService.deleteMessageId(messageId);
     }
 
     @PutMapping("/edit/message/{messageId}")
-    @ApiOperation(value = "Изменение  сообщение !")
+    @Operation(summary = "Изменение  сообщение !")
     public SimpleResponse editMessage(@PathVariable Long messageId, @RequestBody String newContent) {
             return chatService.edit(messageId,newContent);
     }

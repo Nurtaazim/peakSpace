@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import peakspace.dto.response.LinkPublicationResponse;
 import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
@@ -42,4 +43,5 @@ import java.util.List;
 
      @Query("select p from Publication p join p.owner o where o = :owner and p.id = :postId")
      Publication findByIdAndOwner(Long postId, User owner);
+
  }

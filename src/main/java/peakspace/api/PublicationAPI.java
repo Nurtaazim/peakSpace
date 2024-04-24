@@ -1,6 +1,7 @@
 package peakspace.api;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class PublicationAPI {
 
         }
     @GetMapping("/photoWithMe/{foundUserId}")
-    @ApiOperation(value = " Фото с вами !")
+    @Operation(summary = " Фото с вами !")
     public List<PublicationWithYouResponse> withPhoto(@PathVariable Long foundUserId) {
         return publicationService.withPhoto(foundUserId);
     }
@@ -41,15 +42,21 @@ public class PublicationAPI {
     }
 
     @GetMapping("/findAll/{friendId}")
-    @ApiOperation(value = " Все публикации друга ! ")
+    @Operation(summary = " Все публикации друга ! ")
     public List<PublicationResponse> findAllPublic(@PathVariable Long friendId) {
         return publicationService.findAllPublic(friendId);
     }
 
     @GetMapping("/profileFriends/{foundUserId}")
-    @ApiOperation(value = " Профиль ", notes = "Профиль страница друга  !")
+    @Operation(summary = " Профиль ", description = "Профиль страница друга  !")
     public ProfileFriendsResponse findByIdFriends(@PathVariable Long foundUserId){
         return userService.findFriendsProfile(foundUserId);
+    }
+
+    @GetMapping("/findAllPublicMyFriends")
+    @Operation(summary = "Главный страница текущего пользователя который друзья опубликовали !")
+    public List<HomePageResponse> homePageResponses(){
+        return publicationService.homePage();
     }
 
 

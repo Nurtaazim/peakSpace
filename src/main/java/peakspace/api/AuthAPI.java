@@ -1,5 +1,6 @@
 package peakspace.api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -17,19 +18,19 @@ public class AuthAPI {
     private final UserService userService;
 
     @PostMapping("/forgot")
-    @ApiOperation(value = "Отправление сообщение код  !")
+    @Operation(summary = "Отправление сообщение код  !")
     public SimpleResponse forgotPassword(@RequestParam("email") String email) throws MessagingException {
         return userService.forgot(email);
     }
 
     @PostMapping("/code")
-    @ApiOperation(value = " Сравнивание кода правильности !")
+    @Operation(summary = " Сравнивание кода правильности !")
     public SimpleResponse code(@RequestParam("code") int codeRequest) throws BadRequestException, MessagingException {
         return userService.randomCode(codeRequest);
     }
 
     @PostMapping("/newPassword")
-    @ApiOperation(value = " Изменение пароля  !")
+    @Operation(summary = " Изменение пароля  !")
     public UpdatePasswordResponse newPassword(@RequestBody PasswordRequest passwordRequest) throws MessagingException {
         return userService.updatePassword(passwordRequest);
     }

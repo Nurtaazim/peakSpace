@@ -4,25 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.response.LinkPublicationResponse;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.PublicationWithYouResponse;
-import peakspace.dto.response.CommentResponse;
-import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.MyPostResponse;
-import peakspace.entities.Link_Publication;
+import peakspace.dto.response.*;
+import peakspace.entities.*;
 import peakspace.repository.CommentRepository;
-import peakspace.entities.Publication;
-import peakspace.entities.User;
 import peakspace.enums.Role;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -118,6 +109,45 @@ public class PublicationServiceImpl implements PublicationService {
             allPublications.add(publicationResponse);
         }
         return allPublications;
+    }
+
+    @Override
+    public List<HomePageResponse> homePage() {
+        User currentUser = getCurrentUser();
+        List<HomePageResponse> homePages = new ArrayList<>();
+        List<Publication> allPublications = new ArrayList<>();
+
+        allPublications.addAll(currentUser.getPublications());
+
+        for (Chapter chapter : currentUser.getChapters()) {
+            allPublications.addAll(chapter.getFriends().stream()
+                    .flatMap(friend -> friend.getPublications().stream())
+                    .collect(Collectors.toList()));
+        }
+
+        allPublications.sort(Comparator.comparing(Publication::getCreatedAt).reversed());
+
+        for (Publication publication : allPublications) {
+            List<LinkPublicationResponse> linkPublicationResponses = new ArrayList<>();
+            for (Link_Publication linkPublication : publication.getLinkPublications()) {
+                linkPublicationResponses.add(new LinkPublicationResponse(linkPublication.getId(), linkPublication.getLink()));
+            }
+            HomePageResponse homePageResponse = HomePageResponse.builder()
+                    .id(publication.getOwner().getId())
+                    .avatar(publication.getOwner().getProfile().getAvatar())
+                    .username(publication.getOwner().getUsername())
+                    .location(publication.getLocation())
+                    .postId(publication.getId())
+                    .description(publication.getDescription())
+                    .linkPublicationResponseList(linkPublicationResponses)
+                    .countLikes(publication.getLikes().size())
+                    .countComments(publication.getComments().size())
+                    .build();
+
+            homePages.add(homePageResponse);
+        }
+
+        return homePages;
     }
 
     public MyPostResponse getMyPost(Long postId) {

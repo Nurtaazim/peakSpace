@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
+    public SimpleResponse sendFriends(Long foundUserId,Long chapterId) {
 
             User currentUser = getCurrentUser();
 
@@ -129,19 +129,19 @@ public class UserServiceImpl implements UserService {
 
             Chapter targetChapter = null;
             for (Chapter chapter : currentUser.getChapters()) {
-                if (chapter.getGroupName().equals(nameChapter)) {
+                if (chapter.getId().equals(chapterId)) {
                     targetChapter = chapter;
                     break;
                 }
             }
 
             if (targetChapter == null) {
-                throw new NotFoundException("Нет такого раздела: " + nameChapter);
+                throw new NotFoundException("Нет такого раздела: " + chapterId);
             }
 
             List<Chapter> userChapters = currentUser.getChapters();
             for (Chapter chapter : userChapters) {
-                if (!chapter.getGroupName().equals(nameChapter) && chapter.getFriends().stream()
+                if (!chapter.getId().equals(chapterId) && chapter.getFriends().stream()
                         .anyMatch(user -> user.getId().equals(foundUserId))) {
                     throw new IllegalArgumentException("Пользователь уже добавлен в другой раздел: " + chapter.getGroupName());
                 }
@@ -188,17 +188,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchResponse> searchFriends(Choise sample, String keyWord) {
         getCurrentUser();
-        if (sample.equals(Choise.User)) {
+        if (sample.equals(Choise.User) || sample.equals(Choise.Пользователи)) {
             return userRepository.findAllSearch(keyWord);
-        } else if (sample.equals(Choise.Groups)) {
+        } else if (sample.equals(Choise.Groups)|| sample.equals(Choise.Группы)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new peakspace.exception.MessagingException("");
+        throw new BadRequestException("Пллохой запрос !");
     }
 
     @Override @Transactional
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
         User currentUser = getCurrentUser();
+        if (currentUser.getChapters().size() <= 5){
+            throw new BadRequestException(" Ограничение количество 5 не должен превышать !");
+        }
         Chapter chapter = new Chapter();
         for (Chapter currentUserChapter : currentUser.getChapters()) {
             if (currentUserChapter.getGroupName().equals(chapterRequest.getGroupName())) {
@@ -216,7 +219,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyword) throws MessagingException {
         getCurrentUser();
-        if (sample.equals(Choise.Hashtag)) {
+        if (sample.equals(Choise.Hashtag) || sample.equals(Choise.Хештеги)) {
             return publicationRepository.findAllHashtags(keyword);
         }throw new BadRequestException(" Плохой запрос !");
     }

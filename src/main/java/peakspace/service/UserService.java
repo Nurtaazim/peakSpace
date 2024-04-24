@@ -16,7 +16,7 @@ public interface UserService {
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 
-    SimpleResponse sendFriends(Long foundUserId,String nameChapter);
+    SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 
     List<SearchResponse> searchFriends(Choise sample, String keyWord);
 

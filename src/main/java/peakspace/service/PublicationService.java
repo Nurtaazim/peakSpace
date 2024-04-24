@@ -1,9 +1,6 @@
 package peakspace.service;
 
-import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.MyPostResponse;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.PublicationWithYouResponse;
+import peakspace.dto.response.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -14,4 +11,6 @@ public interface PublicationService {
 
     MyPostResponse getById(Long postId);
     List<PublicationResponse> findAllPublic(Long friendId);
+
+    List<HomePageResponse> homePage();
 }

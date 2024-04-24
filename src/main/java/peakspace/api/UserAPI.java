@@ -1,5 +1,6 @@
 package peakspace.api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,51 +19,53 @@ public class UserAPI {
 
 
     @GetMapping("/send/{foundUserId}")
-    @ApiOperation(value = "Send friends", notes = "Send friends to a specific chapter")
-    public SimpleResponse send(@PathVariable Long foundUserId,@RequestParam String nameChapter) {
-        return userService.sendFriends(foundUserId,nameChapter);
+    @Operation(summary = "Send friends", description = "Send friends to a specific chapter")
+    public SimpleResponse send(@PathVariable Long foundUserId,@RequestParam Long nameChapterId) {
+        return userService.sendFriends(foundUserId,nameChapterId);
     }
 
     @GetMapping("/searchChapter")
-    @ApiOperation(value = "Поиск по разделам !")
+    @Operation(summary = "Поиск  разделов  !")
     public List<ChapTerResponse> findSearch(@RequestParam String search){
         return userService.searchChapter(search);
     }
 
     @GetMapping("/search")
-    @ApiOperation(value = "Поискавик", notes = "Поиск по выборкам !")
+    @Operation( summary = "Поискавик", description = "Поиск по выборкам !")
     public List<SearchResponse> search(@RequestParam Choise sample, @RequestParam  String keyWord) {
         return userService.searchFriends(sample,keyWord);
     }
 
     @PostMapping("/createChapter")
-    @ApiOperation(value = "Создать раздел ")
+    @Operation(summary = "Создать раздел ")
     public SimpleResponse createChapter(@RequestBody ChapterRequest chapterRequest){
         return userService.createChapter(chapterRequest);
     }
 
     @GetMapping("/searchHashtags")
-    @ApiOperation(value = "Поискавик", notes = "Поиск по хештегам  !")
+    @Operation(summary = "Поискавик", description = "Поиск по хештегам  !")
     public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample,@RequestParam String keyWord) throws MessagingException {
         return userService.searchHashtags(sample,keyWord);
     }
     @GetMapping("/findAllChapter/{chapterId}")
-    @ApiOperation(value = "Все разделы !")
+    @Operation(summary = "Все разделы !")
     public List<SearchResponse> findAllChapter(@RequestParam(required = false)  String userName,@PathVariable Long chapterId) {
         return userService.searchMyFriends(chapterId,userName);
     }
 
     @GetMapping("/deleteUser/{chapterId}/{foundUserId}")
-    @ApiOperation(value = "Отписатся  пользователя из раздела !")
+    @Operation(summary = "Отписатся  пользователя из раздела !")
     public SimpleResponse unsubscribeUser(@PathVariable Long chapterId,@PathVariable Long foundUserId) {
         return userService.unsubscribeUser(chapterId,foundUserId);
     }
 
     @GetMapping("/searchHistory")
-    @ApiOperation(value = "Пользователи, которые введены в поисковике, сохранены! ")
+    @Operation(summary = "Пользователи, которые введены в поисковике, сохранены! ")
     public List<SubscriptionResponse> getAllSearchUserHistory(){
         return userService.getAllSearchUserHistory();
     }
+
+
 }
 
 

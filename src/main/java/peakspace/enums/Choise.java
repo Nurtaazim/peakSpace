@@ -4,5 +4,8 @@ public enum Choise {
     User,
     Groups,
     Hashtag,
+    Пользователи,
+    Группы,
+    Хештеги
 
 }
