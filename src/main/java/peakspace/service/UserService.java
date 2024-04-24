@@ -26,4 +26,8 @@ public interface UserService {
     List<SearchResponse> searchMyFriends(Long chapterId, String userName);
 
     ProfileFriendsResponse findFriendsProfile(Long foundUserId);
+
+    List<SearchUserResponse> globalSearch(String keyWord);
+
+
 }

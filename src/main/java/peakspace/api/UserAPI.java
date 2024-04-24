@@ -3,10 +3,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
 import peakspace.service.UserService;
 import java.util.List;
 
@@ -43,5 +40,10 @@ public class UserAPI {
     @GetMapping("/profileFriends/{foundUserId}")
     public ProfileFriendsResponse findByIdFriends(@PathVariable Long foundUserId){
         return userService.findFriendsProfile(foundUserId);
+    }
+
+    @GetMapping("/searchWithAll")
+    public List<SearchUserResponse> searchAll(@RequestParam String keyWord){
+        return userService.globalSearch(keyWord);
     }
 }

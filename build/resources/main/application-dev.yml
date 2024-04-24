@@ -1,8 +1,9 @@
+
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
-        password: yiman
-        url: jdbc:postgresql://localhost:5434/peakspace
+        password: 2020
+        url: jdbc:postgresql://localhost:5432/peak_space
         username: postgres
     mail:
         host: smtp.gmail.com
@@ -22,12 +23,13 @@ spring:
             mode: never
     jpa:
         hibernate:
-            ddl-auto: create
+            ddl-auto: update
         show-sql: true
 server:
     error:
         include-stacktrace: never
-    port: 8090
+        include-message:
+    port:
 app:
     jwt:
         secret: peak-space-java12

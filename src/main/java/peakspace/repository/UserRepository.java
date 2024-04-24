@@ -7,6 +7,7 @@ import peakspace.dto.response.ProfileFriendsResponse;
 import peakspace.dto.response.PublicationResponse;
 import peakspace.dto.response.SearchResponse;
 
+import peakspace.dto.response.SearchUserResponse;
 import peakspace.entities.Profile;
 
 import peakspace.entities.User;
@@ -73,4 +74,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   
     boolean existsByUserName(String userName);
 
+    @Query("select distinct new peakspace.dto.response.SearchUserResponse(u.id,u.userName,u.profile.firstName,u.profile.lastName,u.profile.cover,u.profile.avatar,u.profile.profession) from User u left join u.publications ups where u.userName ilike :keyWord OR ups.description ilike :keyWord OR u.profile.lastName ilike :keyWord OR u.profile.firstName ilike :keyWord OR u.profile.profession ilike :keyWord")
+    List<SearchUserResponse> findByAll(String keyWord);
 }

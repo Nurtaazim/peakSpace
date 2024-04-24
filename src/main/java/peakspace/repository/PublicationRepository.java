@@ -1,8 +1,10 @@
 package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.Publication;
 import java.util.List;
