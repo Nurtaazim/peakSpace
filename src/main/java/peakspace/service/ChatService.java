@@ -24,4 +24,6 @@ public interface ChatService {
     SimpleResponse deleteMessageId(Long messageId);
 
     SimpleResponse edit(Long messageId, String newContent);
+
+    ChatResponse findChatResponse(Long senderId, Long recipientId);
 }

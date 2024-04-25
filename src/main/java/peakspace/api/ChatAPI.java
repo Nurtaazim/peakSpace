@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.ChatRequest;
@@ -28,8 +29,10 @@ public class ChatAPI {
     private final ChatService chatService;
     private final UserService userService;
     private final JwtService jwtService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
-        @MessageMapping("/chat")
+
+    @MessageMapping("/chat")
         public void chat(@Payload ChatRequest chatRequest) {
             System.out.println("WebSocket chat method called.");
 
@@ -42,6 +45,9 @@ public class ChatAPI {
                     chat = chatService.createChatBetweenUsers(sender,recipient);
                 }
                 chatService.sendMessage(chat.getId(), sender, chatRequest.getContent());
+
+                ChatResponse chatResponse = chatService.findChatResponse(chatRequest.getSenderId(), chatRequest.getRecipientId());
+                simpMessagingTemplate.convertAndSendToUser(recipient.getId().toString(), "/queue/chat", chatResponse);
             }
         }
 

@@ -16,7 +16,7 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "chat_seq")
     @SequenceGenerator(name = "chat_seq", allocationSize = 1,initialValue = 21)
     private Long id;
-    @OneToMany(mappedBy = "chat",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chat",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
     @JsonIgnore
     private List<MessageContent>messageContents;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

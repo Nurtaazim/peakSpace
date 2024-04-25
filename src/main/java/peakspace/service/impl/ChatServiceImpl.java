@@ -91,6 +91,45 @@ public class ChatServiceImpl implements ChatService {
     }
 
 
+    public ChatResponse findChatResponse(Long currentUserId, Long foundUserId) {
+        // Получаем информацию о текущем пользователе и найденном пользователе
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        User foundUser = userRepository.findById(foundUserId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+
+        // Ищем чат между текущим пользователем и найденным пользователем
+        Chat chat = chatRepository.findByUsers(currentUser, foundUser);
+
+        // Если чат не найден, создаем новый чат
+        if (chat == null) {
+            chat = createChatBetweenUsers(currentUser, foundUser);
+        }
+
+        // Получаем все сообщения в чате
+        List<MessageContent> allMessages = chat.getMessageContents();
+
+        // Создаем список ответов с сообщениями чата
+        List<MessageResponse> messageResponses = new ArrayList<>();
+        for (MessageContent messageContent : allMessages) {
+            MessageResponse messageResponse = MessageResponse.builder()
+                    .id(messageContent.getId())
+                    .content(messageContent.getContent())
+                    .timestamp(messageContent.getTimestamp())
+                    .readOrNotRead(messageContent.isReadOrNotRead())
+                    .build();
+            messageResponses.add(messageResponse);
+        }
+
+        // Создаем и возвращаем объект ChatResponse с информацией о чате
+        return ChatResponse.builder()
+                .id(foundUser.getId())
+                .avatar(foundUser.getProfile().getAvatar())
+                .userName(foundUser.getUsername())
+                .aboutYourSelf(foundUser.getProfile().getAboutYourSelf())
+                .messageContents(messageResponses)
+                .build();
+    }
 
 
     @Override

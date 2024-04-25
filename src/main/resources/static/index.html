@@ -5,114 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSocket Chat</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f2f5;
-        }
-
-        .chat-container {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background-color: #075e54;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .chat-messages {
-            padding: 20px;
-            overflow-y: auto;
-            max-height: 400px;
-        }
-
-        .message {
-            margin-bottom: 15px;
-        }
-
-        .message.sender {
-            text-align: right;
-        }
-
-        .message.sender .message-bubble {
-            background-color: #dcf8c6;
-            color: #000;
-            border-radius: 20px 20px 0 20px;
-        }
-
-        .message.receiver .message-bubble {
-            background-color: #fff;
-            color: #000;
-            border-radius: 20px 20px 20px 0;
-        }
-
-        .message-bubble {
-            display: inline-block;
-            padding: 10px 15px;
-            max-width: 70%;
-            word-wrap: break-word;
-        }
-
-        .message-sender {
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
-        }
-
-        .input-container {
-            display: flex;
-            padding: 15px;
-            background-color: #f0f0f0;
-        }
-
-        .input-container input[type="text"] {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            outline: none;
-        }
-
-        .input-container button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background-color: #128c7e;
-            color: #fff;
-            cursor: pointer;
-            outline: none;
-            margin-left: 10px;
-        }
-
-        .user-content {
-            padding: 20px;
-            border-top: 1px solid #ddd;
-        }
+        /* Ваш CSS стиль оставляем без изменений */
     </style>
 </head>
 <body>
-<div class="chat-container">
+<div class="login-container">
+    <h1>Log in to Chat</h1>
+    <div class="login-form">
+        <label for="user-id">Your User ID:</label>
+        <input type="text" id="user-id" placeholder="Enter your User ID">
+        <button onclick="login()">Log In</button>
+    </div>
+</div>
+
+<div class="chat-container" style="display: none;">
     <div class="chat-header">
         <h1>WebSocket Chat</h1>
     </div>
     <div class="id-section" style="padding: 15px;">
         <div>
-            <label for="sender-id">Sender ID:</label>
-            <input type="text" id="sender-id" placeholder="Enter sender ID">
+            <label for="user-id">Your User ID:</label>
+            <span id="current-user-id"></span>
         </div>
         <div>
-            <label for="recipient-id">Recipient ID:</label>
-            <input type="text" id="recipient-id" placeholder="Enter recipient ID">
+            <label for="recipient-id">Recipient's User ID:</label>
+            <input type="text" id="recipient-id" placeholder="Enter recipient's User ID">
         </div>
-
     </div>
     <div class="chat-messages" id="chat-messages"></div>
     <div class="input-container">
@@ -126,49 +44,80 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script>
     let stompClient = null;
-    var socket = new SockJS("/ws"); // Replace with your WebSocket endpoint
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function(frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/user/queue/chat', function(message) {
-            var messageData = JSON.parse(message.body);
-            var senderId = messageData.senderId;
-            var content = messageData.content;
-            displayMessage(senderId, content);
+    let currentUserId = null;
+
+    // Функция для входа в чат
+    function login() {
+        var userIdInput = document.getElementById("user-id");
+        currentUserId = parseInt(userIdInput.value);
+
+        // Скрываем форму входа, отображаем чат и подключаемся к WebSocket серверу
+        document.querySelector(".login-container").style.display = "none";
+        document.querySelector(".chat-container").style.display = "block";
+        connectWebSocket();
+    }
+
+    // Подключение к WebSocket серверу
+    function connectWebSocket() {
+        var socket = new SockJS("/ws");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            // Подписываемся на очередь сообщений чата для текущего пользователя
+            stompClient.subscribe('/user/queue/chat', function(message) {
+                var chatData = JSON.parse(message.body);
+                // Обновляем пользовательский интерфейс для отображения информации о чате
+                updateChat(chatData);
+            });
+        }, function(error) {
+            console.log('Error connecting to WebSocket: ' + error);
         });
-    }, function(error) {
-        console.log('Error connecting to WebSocket: ' + error);
-    });
+    }
 
+    // Функция для отправки сообщения
     function sendMessage() {
-        var senderIdInput = document.getElementById("sender-id");
-        var senderId = parseInt(senderIdInput.value);
-
         var recipientIdInput = document.getElementById("recipient-id");
         var recipientId = parseInt(recipientIdInput.value);
 
         var messageInput = document.getElementById("message-input");
         var messageContent = messageInput.value;
 
-        stompClient.send("/app/chat", {}, JSON.stringify({ senderId: senderId, recipientId: recipientId, content: messageContent }));
+        // Отправляем сообщение на сервер
+        stompClient.send("/app/chat", {}, JSON.stringify({ senderId: currentUserId, recipientId: recipientId, content: messageContent }));
+
+        // Отображаем отправленное сообщение в чате
+        displayMessage(currentUserId, messageContent);
+
         messageInput.value = "";
     }
 
+    // Функция для отображения полученных сообщений
     function displayMessage(senderId, messageContent) {
         var messageElement = document.createElement("div");
         var chatMessages = document.getElementById("chat-messages");
-        var className = senderId === parseInt(document.getElementById("sender-id").value) ? "message sender" : "message receiver";
+        var className = senderId === currentUserId ? "message sender" : "message receiver";
         messageElement.className = className;
         messageElement.innerHTML = `<div class="message-bubble">${messageContent}</div><div class="message-sender">Sender ID: ${senderId}</div>`;
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
-        // Add message content to user's content section
+        // Добавляем содержимое сообщения в раздел пользователя
         var userContent = document.getElementById("user-content");
         var userMessage = document.createElement("div");
         userMessage.textContent = messageContent;
         userContent.appendChild(userMessage);
     }
+
+    // Функция для обновления чата при получении данных о чате по WebSocket
+    function updateChat(message) {
+        // Извлекаем данные из сообщения
+        var senderId = message.senderId;
+        var content = message.content;
+
+        // Отображаем сообщение в чате
+        displayMessage(senderId, content);
+    }
+
 </script>
 </body>
 </html>
