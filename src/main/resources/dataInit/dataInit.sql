@@ -1,25 +1,25 @@
 insert into users(id, user_name, email, password, is_block)
-values -- gotovo
+values
        (1, 'Aliaskar', 'aliaskar@gmail.com', '$2a$12$V3VQ8h4pfGBNNQYGlggXlOHf6.eFNH4VChm0bxKHPDMRv7te/GOvK',
-        false), --aliaskar1234
+        false),
        (2, 'Mirlan', 'mirlan@gmail.com', '$2a$12$nBn2dhJXXKXNLcx5LFH.LOrXKuDQSQUVGr5vh90Uo73XHSZ0YP636',
-        false), --mirlan1234
+        false),
        (3, 'Myrzaiym', 'myrzaiym@gmail.com', '$2a$12$bjn01purODRpvf714JFbj./91rXrvMRL5QgjCbgIEAYnQdeYoz68K',
-        false), --myrzaiym1234
+        false),
        (4, 'Nurtaazim', 'nurtaazim@gmail.com', '$2a$12$7w1javZANTDTW.PTHWoPMewNHO1WOPOpURSy5BGHOIcgc5V/gVv8S',
-        false), --nurtaazim1234
+        false),
        (5, 'Nurmukhammed', 'nurmukhammed@gmail.com', '$2a$12$7wuEoK1raMY0ACiHI0cpJOUB4q5MMAAbrJJdKpbdzyIKPCZ5o.fb2',
-        false), --nurmukhammed1234
+        false),
        (6, 'Nurkamil', 'nurkamil@gmail.com', '$2a$12$rDuM/7QHNuls7F/uSnYORehUR6RJOAkvHDpjLxO7WLjf1TheZfcXu',
-        false), --nurkamil1234
+        false),
        (7, 'Aiturgan', 'aiturgan@gmail.com', '$2a$12$gmRvdp9mjYsWvQomynXDV.QXkey69qZXogJcvh0wQLvHvCl0za6Oq',
-        false), --aiturgan1234
+        false),
        (8, 'Gulukan', 'gulumkan@gmail.com', '$2a$12$4kLeZzjyQxv.n/dwRk./GeVo54IG4b8F.hZGk2jEc0oqQzSYQAVOi',
-        false), --gulumkan1234
+        false),
        (9, 'Ajybek', 'ajybek@gmail.com', '$2a$12$lWjTBGDFDJecVBbmvEHAAeZOqL8VmGP2ESrGACr5xwfPJZUYirJMO',
-        false), --ajybek1234
+        false),
        (10, 'Nurislam', 'nurt@gmail.com', '$2a$12$t7nUpSW.BjMy2Fe2N2HTgOWY723XNMj6yC15piA9gTV2nkh5CLgNS',
-        false), --nurislam1234
+        false),
        (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false),
        (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false),
        (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false),
@@ -32,7 +32,7 @@ values -- gotovo
        (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false);
 
 insert into stories(id, owner_id, created_at)
-values --gotovo
+values
        (1, 1, '2024-10-10T00:00:00+00:00'),
        (2, 1, '2024-09-05T00:00:00+00:00'),
        (3, 2, '2024-08-10T00:00:00+00:00'),
@@ -55,7 +55,7 @@ values --gotovo
 
 insert into likes(id, user_id)
 values (1, 1),
-       (2, 2), --gotovo
+       (2, 2),
        (3, 3),
        (4, 4),
        (5, 5),
@@ -77,7 +77,7 @@ values (1, 1),
 
 INSERT INTO stories_likes(story_id, likes_id)
 VALUES (1, 1),
-       (1, 2), --gotovo
+       (1, 2),
        (2, 3),
        (2, 4),
        (3, 5),
@@ -99,7 +99,7 @@ VALUES (1, 1),
 
 
 insert into publications(id, owner_id, pablic_profile_id,is_block_comment, description, created_at, updated_at, location)
-values --gotovo
+values
        (1, 1, null,false, 'Summer time', '2024-10-10T00:00:00+00:00', '2024-11-01T00:00:00+00:00', 'Bishkek'),
        (2, 1, null,false, 'At the school', '2024-09-05T00:00:00+00:00', '2024-11-10T00:00:00+00:00', 'Naryn'),
        (3, 2, null,false, 'Happy times', '2024-08-10T00:00:00+00:00', '2024-10-01T00:00:00+00:00', 'Bishkek'),
@@ -123,7 +123,7 @@ values --gotovo
 
 
 insert into profiles(id, user_id,work_or_not, avatar, cover, about_your_self, last_name,first_name ,phone_number, profession)
-values --gotovo
+values
        (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', '996500500500', 'DataIng'),
        (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan', '996500500501', 'Backend dev'),
        (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', '996500500502', 'Java dev'),
@@ -146,34 +146,10 @@ values --gotovo
        (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy', '996500500519', 'Machine Learning Engineer');
 
 
-insert into chats(id, user_id)
-values (1, 1), --gotovo
-       (2, 1),
-       (3, 2),
-       (4, 2),
-       (5, 3),
-       (6, 3),
-       (7, 4),
-       (8, 5),
-       (9, 6),
-       (10, 6),
-       (11, 7),
-       (12, 7),
-       (13, 7),
-       (14, 11),
-       (15, 12),
-       (16, 12),
-       (17, 12),
-       (18, 15),
-       (19, 16),
-       (20, 16);
-
-
-
 INSERT INTO message_content(id, chat_id, content, timestamp, read_or_not_read)
 values (1, 1, 'Hello', '2024-04-09', false),
        (2, 1, 'Hello', '2024-04-10', true),
-       (3, 2, 'Hello', '2024-04-11', false), --gotovo
+       (3, 2, 'Hello', '2024-04-11', false),
        (4, 2, 'Hello', '2024-04-12', true),
        (5, 3, 'Hello', '2024-04-13', false),
        (6, 3, 'Hello', '2024-04-14', true),
@@ -194,7 +170,7 @@ values (1, 1, 'Hello', '2024-04-09', false),
 INSERT INTO pablic_profiles(id, user_id, cover, avatar, pablic_name, tematica)
 VALUES (1, 1, 'cover', 'avatar', 'Felisity', 'MOVIE'),
        (2, 2, 'cover', 'avatar', 'IT', 'IT'),
-       (3, 3, 'cover', 'avatar', 'Code your future', 'IT'), --gotovo
+       (3, 3, 'cover', 'avatar', 'Code your future', 'IT'),
        (4, 3, 'cover', 'avatar', 'Vakansy', 'IT'),
        (5, 5, 'cover', 'avatar', 'Apartment', 'IT'),
        (6, 5, 'cover', 'avatar', 'Today', 'MOVIE'),
@@ -215,7 +191,7 @@ VALUES (1, 1, 'cover', 'avatar', 'Felisity', 'MOVIE'),
 
 
 insert into chats(id, user_id)
-values (1, 1), --gotovo
+values (1, 1),
        (2, 1),
        (3, 2),
        (4, 2),
@@ -238,7 +214,7 @@ values (1, 1), --gotovo
 
 
 insert into link_publications(id, link)
-values (1, 'imageLink1'), --gotovo
+values (1, 'imageLink1'),
        (2, 'videoLink1'),
        (3, 'videoLink2'),
        (4, 'imageLink2'),
@@ -263,7 +239,7 @@ values (1, 'imageLink1'), --gotovo
 
 insert into educations(id, profile_id, country, location, educational_institution)
 values (1, 1, 'КЫРГЫЗСТАН', 'Karakol', 'KGTU'),
-       (2, 2, 'КЫРГЫЗСТАН', 'Bishkek', 'KGTU'), --gotovo
+       (2, 2, 'КЫРГЫЗСТАН', 'Bishkek', 'KGTU'),
        (3, 3, 'КЫРГЫЗСТАН', 'Naryn', 'PED'),
        (4, 4, 'КЫРГЫЗСТАН', 'Bishkek', 'AUSA'),
        (5, 5, 'КЫРГЫЗСТАН', 'Bishkek', 'MANAS'),
@@ -286,7 +262,7 @@ values (1, 1, 'КЫРГЫЗСТАН', 'Karakol', 'KGTU'),
 
 INSERT INTO comments(id, user_id, publication_id, message, created_at)
 values (1, 1, 1, 'is the best', '2024-10-10T00:00:00+00:00'),
-       (2, 1, 2, 'Great!', '2024-09-05T00:00:00+00:00'), -- gotovo
+       (2, 1, 2, 'Great!', '2024-09-05T00:00:00+00:00'),
        (3, 2, 2, 'Good photo', '2024-08-10T00:00:00+00:00'),
        (4, 3, 3, 'Beautiful', '2024-07-12T00:00:00+00:00'),
        (5, 3, 4, 'Cute!', '2024-01-12T00:00:00+00:00'),
@@ -305,11 +281,13 @@ values (1, 1, 1, 'is the best', '2024-10-10T00:00:00+00:00'),
        (18, 16, 3, 'Wonderful!', '2024-01-12T00:00:00+00:00'),
        (19, 16, 4, 'Marvelous!', '2024-01-12T00:00:00+00:00'),
        (20, 17, 5, 'Splendid!', '2024-01-12T00:00:00+00:00');
---
+
+
+
 
 insert into chapters(id, user_id, group_name)
 values (1, 1, 'Friends'),
-       (2, 1, 'Family'), --gotovo
+       (2, 1, 'Family'),
        (3, 2, 'Colleagues'),
        (4, 2, 'Neighbors'),
        (5, 3, 'Classmates'),
@@ -322,7 +300,7 @@ values (1, 1, 'Friends'),
 
 
 insert into stories_tag_fiends(story_id, tag_fiends_id)
-values (1, 2), --gotovo
+values (1, 2),
        (1, 3),
        (1, 4),
        (2, 1),
@@ -337,7 +315,7 @@ values (1, 2), --gotovo
 
 insert into stories_link_publications(link_publications_id, story_id)
 values (1, 1),
-       (2, 1), --gotovo
+       (2, 1),
        (3, 2),
        (1, 2),
        (5, 3),
@@ -354,7 +332,7 @@ values (1, 1),
 insert into publications_link_publications(publication_id, link_publications_id)
 values (1, 1),
        (1, 3),
-       (2, 1), --gotovo
+       (2, 1),
        (3, 4),
        (3, 5),
        (4, 2),
@@ -366,7 +344,7 @@ values (1, 1),
 
 insert into publications_tag_friends(publication_id, tag_friends_id)
 values (1, 1),
-       (1, 2), --gotovo
+       (1, 2),
        (2, 1),
        (3, 4),
        (3, 3),
@@ -377,7 +355,7 @@ values (1, 1),
 
 insert into publications_likes(publication_id, likes_id)
 values (1, 11),
-       (1, 12),        --gotovo
+       (1, 12),
        (1, 13),
        (2, 14),
        (2, 15),
@@ -391,7 +369,7 @@ values (1, 11),
 
 insert into pablic_profiles_users(users_id, pablic_profile_id)
 values (1, 1),
-       (1, 2), --gotovo
+       (1, 2),
        (1, 3),
        (2, 4),
        (2, 5),
@@ -402,7 +380,7 @@ values (1, 1),
 
 insert into notifications(id, like_id, user_notification_id, comment_id, seen, notification_message, created_at)
 values    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
-    (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'), --gotovo
+    (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'),
     (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
     (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
     (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
@@ -417,7 +395,7 @@ values    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
 insert into inner_comment(comment_id, inner_comments_id)
 values (1, 1),
        (1, 2),
-       (1, 3), --gotovo
+       (1, 3),
        (2, 4),
        (2, 5),
        (3, 6),
@@ -430,7 +408,7 @@ values (1, 1),
 
 
 insert into chats_link_publications(chat_id, link_publications_id)
-values (1, 1), --gotovo
+values (1, 1),
        (1, 2),
        (2, 3),
        (2, 4),
@@ -443,7 +421,7 @@ values (1, 1), --gotovo
 --
 insert into chapters_friends(chapter_id, friends_id)
 values (1, 3),
-       (1, 4), --gotovo
+       (1, 4),
        (2, 5),
        (2, 6),
        (2, 1),
@@ -454,7 +432,7 @@ values (1, 3),
        (5, 10);
 
 insert into profile_favorites(profile_id, favorites)
-values (1, 1), --gotovo
+values (1, 1),
        (1, 2),
        (1, 3),
        (1, 4),

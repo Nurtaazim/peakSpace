@@ -5,8 +5,8 @@ import peakspace.dto.request.UserInfoRequest;
 import peakspace.dto.response.SimpleResponse;
 
 public interface UserInfoService {
-    public SimpleResponse editProfile(UserInfoRequest userInfoRequest);
+     SimpleResponse editProfile(UserInfoRequest userInfoRequest);
 
-    public SimpleResponse addEducation(AddEducationRequest addEducationRequest);
+     SimpleResponse addEducation(AddEducationRequest addEducationRequest);
 
 }

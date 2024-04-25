@@ -39,13 +39,12 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
     private final JwtService jwtService;
-    private String userName;
-    private int randomCode;
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
-
     private final UserRepository userRepository;
+    private String userName;
+    private int randomCode;
 
     @Override
     public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
@@ -175,7 +174,7 @@ public class UserServiceImpl implements UserService {
         if (sample.equals("Группы")) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new MessagingException("");
+        throw new BadRequestException("");
     }
 
     @Override
@@ -252,17 +251,17 @@ public class UserServiceImpl implements UserService {
     public List<SearchUserResponse> globalSearch(String keyWord) {
         List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
         System.out.println(users.size());
-        List<SearchUserResponse> searchUserResponse = new ArrayList<>();
-        for (SearchUserResponse user : users) {
-            searchUserResponse.add(new SearchUserResponse(user.getId(),
-                    user.getUserName(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getCover(),
-                    user.getAvatar(),
-                    user.getProfession()));
-        }
-        return searchUserResponse;
+//        List<SearchUserResponse> searchUserResponse = new ArrayList<>();
+//        for (SearchUserResponse user : users) {
+//            searchUserResponse.add(new SearchUserResponse(user.getId(),
+//                    user.getUserName(),
+//                    user.getFirstName(),
+//                    user.getLastName(),
+//                    user.getCover(),
+//                    user.getAvatar(),
+//                    user.getProfession()));
+//        }
+        return users;
     }
 
     private long getFriendsSize(Long foundUserID) {

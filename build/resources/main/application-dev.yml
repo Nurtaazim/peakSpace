@@ -48,3 +48,4 @@ cloud:
 #        spring.jpa.defer-datasource-initialization=true
 #        spring.sql.init.data-locations=classpath:datainit/dataInit.sql
 #        spring.sql.init.mode=never
+#        git rm -r --cached
