@@ -1,6 +1,9 @@
 package peakspace.service.impl;
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,43 +12,27 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.config.security.jwt.JwtService;
+import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.*;
 import peakspace.entities.Chapter;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.User;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.ChapterRepository;
 import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Service;
-import peakspace.config.jwt.JwtService;
-
-import peakspace.repository.ProfileRepository;
-import peakspace.entities.User;
-import peakspace.repository.UserRepository;
-import peakspace.service.UserService;
-import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
 import java.util.Random;
+
 
 @Service
 @RequiredArgsConstructor
@@ -182,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<SearchResponse> searchFriends(String sample, String keyWord) {
+    public List<SearchResponse> searchFriends(String sample, String keyWord) throws MessagingException {
         getCurrentUser();
         if (sample.equals("Пользователь")) {
             return userRepository.findAllSearch(keyWord);
@@ -270,7 +257,7 @@ public class UserServiceImpl implements UserService {
         return pablicProfile.getPublications().size();
     }
 
-    private User getCurrentUser() {
+    public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
@@ -278,5 +265,5 @@ public class UserServiceImpl implements UserService {
         else throw new AccessDeniedException("Forbidden 403");
     }
 }
-}
+
 

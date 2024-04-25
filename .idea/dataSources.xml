@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-<<<<<<< HEAD
-    <data-source source="LOCAL" name="peakspace@localhost" uuid="40c70c10-ec37-48c6-a17a-e8ba6c283024">
-=======
-    <data-source source="LOCAL" name="peakspace@localhost" uuid="831f7958-9435-4a16-9da7-1a2d142ae452">
->>>>>>> 8bfc4b29a58acbb45dc39630705e9dd4d9aa4923
+    <data-source source="LOCAL" name="peakspace@localhost" uuid="50870e33-58af-4001-b98f-210ba02a5ba7">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
