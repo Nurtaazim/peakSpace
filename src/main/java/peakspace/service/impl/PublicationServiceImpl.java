@@ -4,16 +4,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.response.*;
-import peakspace.entities.*;
+import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.PublicationResponse;
+import peakspace.dto.response.PublicationWithYouResponse;
+import peakspace.dto.response.LinkPublicationResponse;
+import peakspace.dto.response.MyPostResponse;
+import peakspace.dto.response.CommentResponse;
+import peakspace.dto.response.HomePageResponse;
+import peakspace.entities.User;
+import peakspace.entities.Publication;
+import peakspace.entities.Link_Publication;
+import peakspace.entities.Chapter;
 import peakspace.repository.CommentRepository;
 import peakspace.enums.Role;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
-
-import java.util.*;
 import java.security.Principal;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,7 +116,7 @@ public class PublicationServiceImpl implements PublicationService {
                 linkPublicationResponse.setLink(linkPublication.getLink());
                 linkPublicationResponses.add(linkPublicationResponse);
             }
-//            publicationResponse.setLinkPublications(linkPublicationResponses);
+            publicationResponse.setLinkPublications(linkPublicationResponses);
             allPublications.add(publicationResponse);
         }
         return allPublications;
@@ -124,7 +135,6 @@ public class PublicationServiceImpl implements PublicationService {
                     .flatMap(friend -> friend.getPublications().stream())
                     .collect(Collectors.toList()));
         }
-
         allPublications.sort(Comparator.comparing(Publication::getCreatedAt).reversed());
 
         for (Publication publication : allPublications) {

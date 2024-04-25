@@ -3,12 +3,9 @@ package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-<<<<<<< HEAD
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
-=======
->>>>>>> origin/main
 import peakspace.dto.response.ProfileFriendsResponse;
 import peakspace.dto.response.PublicationResponse;
 import peakspace.dto.response.SearchResponse;
@@ -53,11 +50,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
-<<<<<<< HEAD
             "from User u left join u.profile p")
-=======
-           "from User u left join u.profile p ")
->>>>>>> origin/main
     List<SearchResponse> findAllSearchEmpty();
 
     default User findByIds(Long foundUserId) {

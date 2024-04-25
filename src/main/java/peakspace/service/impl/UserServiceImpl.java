@@ -11,21 +11,21 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.*;
-import peakspace.entities.*;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.ChapTerResponse;
+import peakspace.dto.response.SubscriptionResponse;
+import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.entities.User;
+import peakspace.entities.Notification;
 import peakspace.enums.Choise;
-=======
 import peakspace.config.jwt.JwtService;
-import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.*;
 import peakspace.entities.Chapter;
 import peakspace.entities.PablicProfile;
-import peakspace.entities.User;
->>>>>>> origin/main
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
@@ -35,19 +35,11 @@ import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
-<<<<<<< HEAD
 import java.time.ZonedDateTime;
-import java.util.*;
-
-import peakspace.config.jwt.JwtService;
-import peakspace.entities.User;
-import jakarta.transaction.Transactional;
-=======
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
->>>>>>> origin/main
 
 @Service
 @RequiredArgsConstructor
@@ -60,12 +52,9 @@ public class UserServiceImpl implements UserService {
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
-<<<<<<< HEAD
-=======
-    private final UserRepository userRepository;
     private String userName;
     private int randomCode;
->>>>>>> origin/main
+
 
     @Override
     public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
@@ -142,11 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-<<<<<<< HEAD
     public SimpleResponse sendFriends(Long foundUserId,Long chapterId) {
-=======
-    public SimpleResponse sendFriends(Long foundUserId, String nameChapter) {
->>>>>>> origin/main
 
             User currentUser = getCurrentUser();
 
@@ -192,15 +177,10 @@ public class UserServiceImpl implements UserService {
                 updatedFriends.add(foundUser);
             }
 
-<<<<<<< HEAD
-            targetChapter.setFriends(updatedFriends);
-=======
-            if (chapter.getGroupName().equals(nameChapter)) {
-                chapter.setFriends(updatedFriends);
-            } else throw new NotFoundException(" Нет такой раздел " + nameChapter);
->>>>>>> origin/main
+            if (targetChapter.getId().equals(chapterId)) {
+                targetChapter.setFriends(updatedFriends);
+            } else throw new NotFoundException(" Нет такой раздел " + chapterId);
 
-            // Уведомление по подписка друзей
 
             Notification notification = new Notification();
             notification.setNotificationMessage("Подписался !");
@@ -226,11 +206,8 @@ public class UserServiceImpl implements UserService {
         } else if (sample.equals(Choise.Groups)|| sample.equals(Choise.Группы)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-<<<<<<< HEAD
         throw new BadRequestException("Пллохой запрос !");
-=======
-        throw new BadRequestException("");
->>>>>>> origin/main
+
     }
 
     @Override
@@ -294,12 +271,10 @@ public class UserServiceImpl implements UserService {
         for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
             pablicSize += getFriendsPublicSize(pablicProfile.getId());
         }
-
-        //сохранение на истории поискавика
             List<Long> friends = currentUser.getSearchFriendsHistory();
             friends.add(foundUserId);
 
-        ProfileFriendsResponse response = ProfileFriendsResponse.builder()
+        return ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
                 .avatar(friendsResponse.getAvatar())
                 .cover(friendsResponse.getCover())
@@ -308,10 +283,8 @@ public class UserServiceImpl implements UserService {
                 .friendsSize(friendSize)
                 .pablicationsSize(pablicSize)
                 .build();
-        return response;
     }
 
-<<<<<<< HEAD
     @Override
     public List<ChapTerResponse> searchChapter(String search) {
         getCurrentUser();
@@ -370,9 +343,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private long getFriendsSize(Long foundUserID){
-=======
-    private long getFriendsSize(Long foundUserID) {
->>>>>>> origin/main
         Chapter chapter = chapterRepository.findByID(foundUserID);
         return chapter.getFriends().size();
     }
@@ -389,9 +359,5 @@ public class UserServiceImpl implements UserService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
 }
 

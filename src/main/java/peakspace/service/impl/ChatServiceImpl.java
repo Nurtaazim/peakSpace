@@ -23,7 +23,11 @@ import peakspace.repository.MessageContentRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.ChatService;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -92,24 +96,19 @@ public class ChatServiceImpl implements ChatService {
 
 
     public ChatResponse findChatResponse(Long currentUserId, Long foundUserId) {
-        // Получаем информацию о текущем пользователе и найденном пользователе
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
         User foundUser = userRepository.findById(foundUserId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
-        // Ищем чат между текущим пользователем и найденным пользователем
         Chat chat = chatRepository.findByUsers(currentUser, foundUser);
 
-        // Если чат не найден, создаем новый чат
         if (chat == null) {
             chat = createChatBetweenUsers(currentUser, foundUser);
         }
 
-        // Получаем все сообщения в чате
         List<MessageContent> allMessages = chat.getMessageContents();
 
-        // Создаем список ответов с сообщениями чата
         List<MessageResponse> messageResponses = new ArrayList<>();
         for (MessageContent messageContent : allMessages) {
             MessageResponse messageResponse = MessageResponse.builder()
@@ -121,7 +120,6 @@ public class ChatServiceImpl implements ChatService {
             messageResponses.add(messageResponse);
         }
 
-        // Создаем и возвращаем объект ChatResponse с информацией о чате
         return ChatResponse.builder()
                 .id(foundUser.getId())
                 .avatar(foundUser.getProfile().getAvatar())

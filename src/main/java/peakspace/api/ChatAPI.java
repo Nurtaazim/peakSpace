@@ -1,12 +1,18 @@
 package peakspace.api;
 
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.ChatRequest;
 import peakspace.dto.response.ChatResponse;
@@ -51,30 +57,35 @@ public class ChatAPI {
             }
         }
 
+    @Secured("USER")
     @GetMapping("/findById/{currentUserId}/{foundUserId}")
     @Operation(summary = "Send friends to a specific user in a chapter")
     public ChatResponse findById(@PathVariable Long currentUserId,@PathVariable Long foundUserId) {
         return chatService.findChatId(currentUserId,foundUserId);
     }
 
+    @Secured("USER")
     @GetMapping("/findAllChat/")
     @Operation(summary = "Все чаты текущего пользователя")
     public List<UserChatResponse> findAllChat() {
         return chatService.findAllBy();
     }
 
+    @Secured("USER")
     @PostMapping("/delete/{chatId}")
     @Operation(summary = "Удаление чат ")
     public SimpleResponse deleteChatId(@PathVariable Long chatId) {
             return chatService.deleteChatId(chatId);
     }
 
+    @Secured("USER")
     @DeleteMapping("/delete/message/{messageId}")
     @Operation(summary = "Удалить сообщение !")
     public SimpleResponse deleteMessage(@PathVariable Long messageId) {
             return chatService.deleteMessageId(messageId);
     }
 
+    @Secured("USER")
     @PutMapping("/edit/message/{messageId}")
     @Operation(summary = "Изменение  сообщение !")
     public SimpleResponse editMessage(@PathVariable Long messageId, @RequestBody String newContent) {
