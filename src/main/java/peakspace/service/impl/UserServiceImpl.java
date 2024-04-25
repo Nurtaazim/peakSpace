@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
+    public SimpleResponse forgot(String email) throws MessagingException {
         User user = userRepository.getByEmail(email);
         userName = user.getEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -233,7 +233,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword) throws MessagingException {
+    public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword){
         getCurrentUser();
         if (sample.equals(Choise.Hashtag) || sample.equals(Choise.Хештеги)) {
             return publicationRepository.findAllHashtags(keyword);
