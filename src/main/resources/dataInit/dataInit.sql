@@ -344,29 +344,6 @@ VALUES (1, 1, 'cover', 'avatar', 'Felisity', 'MOVIE'),
        (20, 20, 'cover', 'avatar', 'Robotics', 'IT');
 
 
-insert into chats(id, receiver_id,sender_id)
-values (1, 1), --gotovo
-       (2, 1),
-       (3, 2),
-       (4, 2),
-       (5, 3),
-       (6, 3),
-       (7, 4),
-       (8, 5),
-       (9, 6),
-       (10, 6),
-       (11, 7),
-       (12, 7),
-       (13, 7),
-       (14, 11),
-       (15, 12),
-       (16, 12),
-       (17, 12),
-       (18, 15),
-       (19, 16),
-       (20, 16);
-
-
 
 INSERT INTO message_content(id, chat_id, content, timestamp, read_or_not_read)
 values (1, 1, 'Hello', '2024-04-09', false),
@@ -415,28 +392,6 @@ values (1, 'imageLink1'), --gotovo
 
 
 
-insert into educations(id, profile_id, country, location, educational_institution)
-values (1, 1, 'КЫРГЫЗСТАН', 'Karakol', 'KGTU'),
-       (2, 2, 'КЫРГЫЗСТАН', 'Bishkek', 'KGTU'), --gotovo
-       (3, 3, 'КЫРГЫЗСТАН', 'Naryn', 'PED'),
-       (4, 4, 'КЫРГЫЗСТАН', 'Bishkek', 'AUSA'),
-       (5, 5, 'КЫРГЫЗСТАН', 'Bishkek', 'MANAS'),
-       (6, 6, 'КЫРГЫЗСТАН', 'Naryn', 'USA'),
-       (7, 7, 'КЫРГЫЗСТАН', 'Osh', 'OSHGU'),
-       (8, 8, 'КЫРГЫЗСТАН', 'Osh', 'OSHGU'),
-       (9, 9, 'КЫРГЫЗСТАН', 'Tokmok', 'KGTU'),
-       (10, 10, 'КЫРГЫЗСТАН', 'Talas', 'MANAS'),
-       (11, 11, 'КЫРГЫЗСТАН', 'Karakol', 'KGMA'),
-       (12, 12, 'КЫРГЫЗСТАН', 'Jalal-Abad', 'OSHGU'),
-       (13, 13, 'КЫРГЫЗСТАН', 'Bishkek', 'KSUCTA'),
-       (14, 14, 'КЫРГЫЗСТАН', 'Naryn', 'KNU'),
-       (15, 15, 'КЫРГЫЗСТАН', 'Bishkek', 'KRSU'),
-       (16, 16, 'КЫРГЫЗСТАН', 'Tashkent', 'TUIT'),
-       (17, 17, 'КЫРГЫЗСТАН', 'Osh', 'KSUCTA'),
-       (18, 18, 'КЫРГЫЗСТАН', 'Bishkek', 'KSTU'),
-       (19, 19, 'КЫРГЫЗСТАН', 'Bishkek', 'KNURE'),
-       (20, 20, 'КЫРГЫЗСТАН', 'Bishkek', 'KRSU');
-
 
 INSERT INTO comments(id, user_id, publication_id, message, created_at)
 values (1, 1, 1, 'is the best', '2024-10-10T00:00:00+00:00'),
@@ -459,7 +414,6 @@ values (1, 1, 1, 'is the best', '2024-10-10T00:00:00+00:00'),
        (18, 16, 3, 'Wonderful!', '2024-01-12T00:00:00+00:00'),
        (19, 16, 4, 'Marvelous!', '2024-01-12T00:00:00+00:00'),
        (20, 17, 5, 'Splendid!', '2024-01-12T00:00:00+00:00');
---
 
 insert into chapters(id, user_id, group_name)
 values (1, 1, 'Friends'),
@@ -556,15 +510,15 @@ values (1, 1),
 
 insert into notifications(id, like_id, user_notification_id, comment_id, seen, notification_message, created_at)
 values    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
-    (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'), --gotovo
-    (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
-    (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
-    (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
-    (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
-    (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
-    (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
-    (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
-    (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
+          (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'), --gotovo
+          (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
+          (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
+          (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
+          (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
+          (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
+          (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
+          (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
+          (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
 
 
 

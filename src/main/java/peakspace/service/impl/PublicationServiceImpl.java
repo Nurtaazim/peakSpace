@@ -105,7 +105,7 @@ public class PublicationServiceImpl implements PublicationService {
                 linkPublicationResponse.setLink(linkPublication.getLink());
                 linkPublicationResponses.add(linkPublicationResponse);
             }
-            publicationResponse.setLinkPublications(linkPublicationResponses);
+//            publicationResponse.setLinkPublications(linkPublicationResponses);
             allPublications.add(publicationResponse);
         }
         return allPublications;
