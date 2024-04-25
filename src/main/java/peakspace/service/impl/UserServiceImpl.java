@@ -131,79 +131,79 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SimpleResponse sendFriends(Long foundUserId,Long chapterId) {
+    public SimpleResponse sendFriends(Long foundUserId, Long chapterId) {
 
-            User currentUser = getCurrentUser();
+        User currentUser = getCurrentUser();
 
-            if (currentUser.getId().equals(foundUserId)) {
-                throw new IllegalArgumentException("Нельзя подписаться на самого себя!");
-            }
-
-            Chapter targetChapter = null;
-            for (Chapter chapter : currentUser.getChapters()) {
-                if (chapter.getId().equals(chapterId)) {
-                    targetChapter = chapter;
-                    break;
-                }
-            }
-
-            if (targetChapter == null) {
-                throw new NotFoundException("Нет такого раздела: " + chapterId);
-            }
-
-            List<Chapter> userChapters = currentUser.getChapters();
-            for (Chapter chapter : userChapters) {
-                if (!chapter.getId().equals(chapterId) && chapter.getFriends().stream()
-                        .anyMatch(user -> user.getId().equals(foundUserId))) {
-                    throw new IllegalArgumentException("Пользователь уже добавлен в другой раздел: " + chapter.getGroupName());
-                }
-            }
-
-            List<User> updatedFriends = new ArrayList<>(targetChapter.getFriends());
-            boolean removed = false;
-
-            for (User friend : updatedFriends) {
-                if (friend.getId().equals(foundUserId)) {
-                    updatedFriends.remove(friend);
-                    removed = true;
-                    break;
-                }
-            }
-
-            User foundUser = userRepository.findById(foundUserId)
-                    .orElseThrow(() -> new NotFoundException("Пользователь с id " + foundUserId + " не найден"));
-            if (!removed) {
-
-                updatedFriends.add(foundUser);
-            }
-
-            if (targetChapter.getId().equals(chapterId)) {
-                targetChapter.setFriends(updatedFriends);
-            } else throw new NotFoundException(" Нет такой раздел " + chapterId);
-
-
-            Notification notification = new Notification();
-            notification.setNotificationMessage("Подписался !");
-            notification.setUserNotification(foundUser);
-            notification.setSeen(false);
-            notification.setCreatedAt(ZonedDateTime.now());
-            notification.setSenderUserId(currentUser.getId());
-            foundUser.getNotifications().add(notification);
-
-
-            String message = removed ? "Удачно отписались!" : "Удачно подписались!";
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message(message)
-                    .build();
+        if (currentUser.getId().equals(foundUserId)) {
+            throw new IllegalArgumentException("Нельзя подписаться на самого себя!");
         }
+
+        Chapter targetChapter = null;
+        for (Chapter chapter : currentUser.getChapters()) {
+            if (chapter.getId().equals(chapterId)) {
+                targetChapter = chapter;
+                break;
+            }
+        }
+
+        if (targetChapter == null) {
+            throw new NotFoundException("Нет такого раздела: " + chapterId);
+        }
+
+        List<Chapter> userChapters = currentUser.getChapters();
+        for (Chapter chapter : userChapters) {
+            if (!chapter.getId().equals(chapterId) && chapter.getFriends().stream()
+                    .anyMatch(user -> user.getId().equals(foundUserId))) {
+                throw new IllegalArgumentException("Пользователь уже добавлен в другой раздел: " + chapter.getGroupName());
+            }
+        }
+
+        List<User> updatedFriends = new ArrayList<>(targetChapter.getFriends());
+        boolean removed = false;
+
+        for (User friend : updatedFriends) {
+            if (friend.getId().equals(foundUserId)) {
+                updatedFriends.remove(friend);
+                removed = true;
+                break;
+            }
+        }
+
+        User foundUser = userRepository.findById(foundUserId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id " + foundUserId + " не найден"));
+        if (!removed) {
+
+            updatedFriends.add(foundUser);
+        }
+
+        if (targetChapter.getId().equals(chapterId)) {
+            targetChapter.setFriends(updatedFriends);
+        } else throw new NotFoundException(" Нет такой раздел " + chapterId);
+
+
+        Notification notification = new Notification();
+        notification.setNotificationMessage("Подписался !");
+        notification.setUserNotification(foundUser);
+        notification.setSeen(false);
+        notification.setCreatedAt(ZonedDateTime.now());
+        notification.setSenderUserId(currentUser.getId());
+        foundUser.getNotifications().add(notification);
+
+
+        String message = removed ? "Удачно отписались!" : "Удачно подписались!";
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(message)
+                .build();
+    }
 
     @Override
     public List<SearchResponse> searchFriends(Choise sample, String keyWord) {
         getCurrentUser();
         if (sample.equals(Choise.User) || sample.equals(Choise.Пользователи)) {
             return userRepository.findAllSearch(keyWord);
-        } else if (sample.equals(Choise.Groups)|| sample.equals(Choise.Группы)) {
+        } else if (sample.equals(Choise.Groups) || sample.equals(Choise.Группы)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
         throw new BadRequestException("Пллохой запрос !");
@@ -214,13 +214,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
         User currentUser = getCurrentUser();
-        if (currentUser.getChapters().size() <= 5){
+        if (currentUser.getChapters().size() <= 5) {
             throw new BadRequestException(" Ограничение количество 5 не должен превышать !");
         }
         Chapter chapter = new Chapter();
         for (Chapter currentUserChapter : currentUser.getChapters()) {
             if (currentUserChapter.getGroupName().equals(chapterRequest.getGroupName())) {
-               throw new IllegalArgumentException(" Уже есть такой раздел !");
+                throw new IllegalArgumentException(" Уже есть такой раздел !");
             }
             chapter.setGroupName(chapterRequest.getGroupName());
             chapterRepository.save(chapter);
@@ -233,11 +233,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyword) throws MessagingException {
+    public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword) throws MessagingException {
         getCurrentUser();
         if (sample.equals(Choise.Hashtag) || sample.equals(Choise.Хештеги)) {
             return publicationRepository.findAllHashtags(keyword);
-        }throw new BadRequestException(" Плохой запрос !");
+        }
+        throw new BadRequestException(" Плохой запрос !");
     }
 
     @Override
@@ -271,8 +272,8 @@ public class UserServiceImpl implements UserService {
         for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
             pablicSize += getFriendsPublicSize(pablicProfile.getId());
         }
-            List<Long> friends = currentUser.getSearchFriendsHistory();
-            friends.add(foundUserId);
+        List<Long> friends = currentUser.getSearchFriendsHistory();
+        friends.add(foundUserId);
 
         return ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
@@ -311,7 +312,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        String message = foundUserInFriends ? "Удачно отписано !" :" Удачно подписались !";
+        String message = foundUserInFriends ? "Удачно отписано !" : " Удачно подписались !";
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
@@ -342,7 +343,7 @@ public class UserServiceImpl implements UserService {
         return searchUserResponses;
     }
 
-    private long getFriendsSize(Long foundUserID){
+    private long getFriendsSize(Long foundUserID) {
         Chapter chapter = chapterRepository.findByID(foundUserID);
         return chapter.getFriends().size();
     }
