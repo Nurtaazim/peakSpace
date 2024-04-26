@@ -3,6 +3,8 @@ import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.request.SignInRequest;
+import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.response.*;
 import peakspace.enums.Choise;
 
@@ -33,4 +35,10 @@ public interface UserService {
     SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId);
 
     List<SubscriptionResponse> getAllSearchUserHistory();
+
+    SignInResponse signIn(SignInRequest signInRequest) throws MessagingException;
+
+    String signUp(SignUpRequest signUpRequest) throws MessagingException;
+
+    SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 }
