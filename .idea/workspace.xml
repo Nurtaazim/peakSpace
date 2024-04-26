@@ -5,103 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/peak-space-b12.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/peak-space-b12.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24__12_17__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24__12_17__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/PeakSpaceB12Application.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/AuthAPI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/PostApi.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/PublicationAPI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/UserInfoApi.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/amazonS3/StorageAPI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/amazonS3/StorageService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/amazonS3/Storageconfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/jwt/JwtFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/jwt/JwtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/security/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/security/StorageConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/config/swagger/SwaggerConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/AddEducationRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PasswordRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostRequest$PostRequestBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostUpdateRequest$PostUpdateRequestBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/PostUpdateRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/request/UserInfoRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse$CommentResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/GetAllPostsResponse$GetAllPostsResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/GetAllPostsResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/InnerCommentResponse$InnerCommentResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/InnerCommentResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/LinkPublicationResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse$MyPostResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/PostResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/SimpleResponse$SimpleResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/SimpleResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UpdatePasswordResponse$UpdatePasswordResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UpdatePasswordResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UserInfoResponse$UserInfoResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/UserInfoResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Chapter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Chat.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Comment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Education.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Like.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Link_Publication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/MessageContent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Notification.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/PablicProfile.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Profile.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Publication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Story.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/enums/Country.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/enums/Role.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/enums/Tematica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/FirebaseAuthException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/ForbiddenException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/InvalidConfirmationCode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/MessagingException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/NotActiveException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/NotFoundException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/SmsSendingException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/handler/GlobalHandlerException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/response/ExceptionResponse$ExceptionResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/exception/response/ExceptionResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/CommentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/EducationRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/LinkPublicationRepo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/ProfileRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/PublicationRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/PostService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/PublicationService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/UserInfoService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/PostServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/PublicationServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/UserInfoServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/UserServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/api/UserAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/UserAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/dataInit/dataInit.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/dataInit/dataInit.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +121,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.PeakSpaceB12Application.executor": "Coverage",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "feature/search",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Applications/peak-space-b12/src/main/resources",
     "node.js.detected.package.eslint": "true",
@@ -257,7 +162,7 @@
   <component name="RunManager">
     <configuration name="PeakSpaceB12Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="ACTIVE_PROFILES" value="aiturgan" />
-      <module name="peak-space-b12.main" />
+      <module name="peakspace.peak-space-b12.main" />
       <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="peakspace.PeakSpaceB12Application" />
       <method v="2">
