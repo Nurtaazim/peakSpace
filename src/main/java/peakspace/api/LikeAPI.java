@@ -16,4 +16,13 @@ public class LikeAPI {
     void addLikeToPost(@PathVariable Long postId){
         likeService.addLikeToPost(postId);
     }
+    @PostMapping("/addLikeToComment/{commentId}")
+    void  addLikeToComment(@PathVariable Long commentId){
+        likeService.addLikeToComment(commentId);
+    }
+    @PostMapping("/addLikeToStory/{storyId}")
+    void addLikeToStory(@PathVariable Long storyId){
+        likeService.addLikeToStory(storyId);
+    }
+
 }
