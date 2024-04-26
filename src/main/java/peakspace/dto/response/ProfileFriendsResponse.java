@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import peakspace.entities.Publication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @AllArgsConstructor
-public class ProfileFriendsResponse{
+public class ProfileFriendsResponse {
     private Long id;
     private String avatar;
     private String cover;
@@ -22,10 +21,6 @@ public class ProfileFriendsResponse{
 
     private Long friendsSize;
     private Long pablicationsSize;
-
-    private List<PublicationResponse> friendsPublications = new ArrayList<>();
-    private List<PublicationResponse> friendsFavoritesPublications = new ArrayList<>();
-    private List<PublicationResponse> friendsWitMePublications = new ArrayList<>();
 
     public ProfileFriendsResponse(Long id, String avatar, String cover, String aboutYourSelf, String profession) {
         this.id = id;

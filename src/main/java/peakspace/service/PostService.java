@@ -1,15 +1,22 @@
 package peakspace.service;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.PostResponse;
 import peakspace.dto.response.SimpleResponse;
+
+import java.util.List;
 
 public interface PostService {
 
-    public SimpleResponse savePost(PostRequest postRequest);
-     public SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest);
-    public SimpleResponse delete(Long postId);
-    public SimpleResponse deleteLinkFromPost(Long linkId,Long postId);
+    SimpleResponse savePost(PostRequest postRequest);
+
+    SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest);
+
+    SimpleResponse delete(Long postId);
+
+    SimpleResponse deleteLinkFromPost(Long linkId, Long postId);
 
 
+     SimpleResponse notationFriend(Long postId,List<Long> foundUserId);
+
+     SimpleResponse removeNotation(List<Long> friendsId);
 }
