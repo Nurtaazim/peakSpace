@@ -3,10 +3,7 @@ package peakspace.service.impl;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
-<<<<<<< HEAD
 import lombok.NoArgsConstructor;
-=======
->>>>>>> 64dcca136d8481fb8a17185e9ea30bc53cc90377
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -270,8 +267,5 @@ public class UserServiceImpl implements UserService {
         else throw new AccessDeniedException("Forbidden 403");
     }
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 64dcca136d8481fb8a17185e9ea30bc53cc90377
 
