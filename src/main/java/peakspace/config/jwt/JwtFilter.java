@@ -1,4 +1,5 @@
 package peakspace.config.jwt;
+
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.NonNull;
 import peakspace.entities.User;

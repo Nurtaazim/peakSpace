@@ -1,4 +1,5 @@
 package peakspace.config.jwt;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -20,7 +21,7 @@ public class JwtService {
                 .withClaim("role", user.getRole().name())
                 .withClaim("id", user.getId())
                 .withIssuedAt(ZonedDateTime.now().toInstant())
-                .withExpiresAt(ZonedDateTime.now().plusHours(1).toInstant())
+                .withExpiresAt(ZonedDateTime.now().plusHours(12).toInstant())
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
@@ -29,5 +30,4 @@ public class JwtService {
         DecodedJWT decodedJWT = jwtVerify.verify(token);
         return decodedJWT.getClaim("email").asString();
     }
-
 }
