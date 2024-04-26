@@ -3,7 +3,10 @@ package peakspace.service.impl;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
+<<<<<<< HEAD
 import lombok.NoArgsConstructor;
+=======
+>>>>>>> 64dcca136d8481fb8a17185e9ea30bc53cc90377
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -41,13 +44,12 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
     private final JwtService jwtService;
-    private String userName;
-    private int randomCode;
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
-
     private final UserRepository userRepository;
+    private String userName;
+    private int randomCode;
 
     @Override
     public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
@@ -125,7 +127,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SimpleResponse sendFriends(Long foundUserId,String nameChapter) {
+    public SimpleResponse sendFriends(Long foundUserId, String nameChapter) {
 
         User currentUser = getCurrentUser();
 
@@ -155,9 +157,9 @@ public class UserServiceImpl implements UserService {
                 }
             }
 
-            if (chapter.getGroupName().equals(nameChapter)){
+            if (chapter.getGroupName().equals(nameChapter)) {
                 chapter.setFriends(updatedFriends);
-            }else throw new NotFoundException(" Нет такой раздел " + nameChapter);
+            } else throw new NotFoundException(" Нет такой раздел " + nameChapter);
 
             messages = (removed) ? "Удачно отписался!" : "Удачно подписались!";
         }
@@ -177,10 +179,11 @@ public class UserServiceImpl implements UserService {
         if (sample.equals("Группы")) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new MessagingException("");
+        throw new BadRequestException("");
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
         User currentUser = getCurrentUser();
         Chapter chapter = new Chapter();
@@ -192,6 +195,7 @@ public class UserServiceImpl implements UserService {
                 .message(" Удачно сохранился раздел !")
                 .build();
     }
+
     @Override
     public List<SearchHashtagsResponse> searchHashtags(String keyword) {
         getCurrentUser();
@@ -202,7 +206,7 @@ public class UserServiceImpl implements UserService {
     public List<SearchResponse> searchMyFriends(Long chapterId, String userName) {
         getCurrentUser();
         Chapter chapter = chapterRepository.findByID(chapterId);
-        if (chapter.getId().equals(chapterId)){
+        if (chapter.getId().equals(chapterId)) {
             if (userName == null || userName.trim().isEmpty()) {
                 return userRepository.findAllSearchEmpty();
             } else {
@@ -222,7 +226,7 @@ public class UserServiceImpl implements UserService {
         long pablicSize = 0L;
         User founUser = userRepository.findById(foundUserId).orElseThrow(() -> new NotFoundException("Нет такой пользователь !"));
         for (Chapter chapter : founUser.getChapters()) {
-            friendSize +=getFriendsSize(chapter.getId());
+            friendSize += getFriendsSize(chapter.getId());
         }
 
         for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
@@ -233,7 +237,7 @@ public class UserServiceImpl implements UserService {
         List<PublicationResponse> friendsFavorite = userRepository.findFavorite(foundUserId);
         List<PublicationResponse> friendTagWithMe = userRepository.findTagWithMe(foundUserId);
 
-                 ProfileFriendsResponse response = ProfileFriendsResponse.builder()
+        ProfileFriendsResponse response = ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
                 .avatar(friendsResponse.getAvatar())
                 .cover(friendsResponse.getCover())
@@ -245,14 +249,15 @@ public class UserServiceImpl implements UserService {
                 .friendsFavoritesPublications(friendsFavorite)
                 .friendsWitMePublications(friendTagWithMe)
                 .build();
-                 return response;
+        return response;
     }
 
-    private long getFriendsSize(Long foundUserID){
+    private long getFriendsSize(Long foundUserID) {
         Chapter chapter = chapterRepository.findByID(foundUserID);
         return chapter.getFriends().size();
     }
-    private long getFriendsPublicSize(Long foundUserID){
+
+    private long getFriendsPublicSize(Long foundUserID) {
         PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
         return pablicProfile.getPublications().size();
     }
@@ -265,5 +270,8 @@ public class UserServiceImpl implements UserService {
         else throw new AccessDeniedException("Forbidden 403");
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 64dcca136d8481fb8a17185e9ea30bc53cc90377
 

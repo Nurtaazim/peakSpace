@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Storageconfig {
+public class StorageConfig {
 
     @Value("${cloud.aws.accessKey}")
     private String accessKey;
