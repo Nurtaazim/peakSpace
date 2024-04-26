@@ -1,4 +1,5 @@
 package peakspace.entities;
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -17,8 +18,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import peakspace.enums.Role;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -46,7 +49,7 @@ public class User implements UserDetails {
     private List<Story> stories;
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Chapter> chapters;
-    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "sender",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Chat> chats;
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Comment> comments;
@@ -54,8 +57,10 @@ public class User implements UserDetails {
     private List<PablicProfile> pablicProfiles;
     @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Publication> publications;
-    @OneToOne(mappedBy = "userNotification",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private Notification notification;
+    @OneToMany(mappedBy = "userNotification",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Notification> notifications;
+    @ElementCollection
+    private List<Long> searchFriendsHistory;
 
     public String getThisUserName() {
         return this.userName;
@@ -65,13 +70,15 @@ public class User implements UserDetails {
         return List.of(role);
     }
     @Override
-    public String getUsername() {
-        return this.email;
-    }
-    @Override
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return false;
@@ -87,6 +94,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public List<User> getFriendsWithChats() {
+        List<User> friends = new ArrayList<>();
+        for (Chat chat : chats) {
+            if (chat.getSender().equals(this)) {
+                friends.add(chat.getReceiver());
+            } else {
+                friends.add(chat.getSender());
+            }
+        }
+        return friends.stream().distinct().collect(Collectors.toList());
     }
 
 }
