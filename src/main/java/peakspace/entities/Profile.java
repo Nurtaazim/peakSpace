@@ -29,7 +29,6 @@ public class Profile {
     private String firstName;
     private String lastName;
     private String patronymicName;
-    private String phoneNumber;
     private String profession;
     private boolean workOrNot;
     @ElementCollection

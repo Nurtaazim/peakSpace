@@ -251,16 +251,6 @@ public class UserServiceImpl implements UserService {
     public List<SearchUserResponse> globalSearch(String keyWord) {
         List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
         System.out.println(users.size());
-//        List<SearchUserResponse> searchUserResponse = new ArrayList<>();
-//        for (SearchUserResponse user : users) {
-//            searchUserResponse.add(new SearchUserResponse(user.getId(),
-//                    user.getUserName(),
-//                    user.getFirstName(),
-//                    user.getLastName(),
-//                    user.getCover(),
-//                    user.getAvatar(),
-//                    user.getProfession()));
-//        }
         return users;
     }
 

@@ -35,6 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.setUserName(userInfoRequest.getUserName());
         user.getProfile().setFirstName(userInfoRequest.getFirstName());
         user.getProfile().setLastName(userInfoRequest.getLastName());
+        user.getProfile().setPatronymicName(userInfoRequest.getPatronymicName());
         user.getProfile().setAboutYourSelf(userInfoRequest.getAboutYourSelf());
         user.getProfile().setProfession(userInfoRequest.getProfession());
         user.getProfile().setWorkOrNot(userInfoRequest.isWorkOrNot());

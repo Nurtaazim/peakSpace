@@ -72,6 +72,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select p from Profile p where  p.id=:id")
     Profile findBYProfile(Long id);
 
-    @Query("select distinct new peakspace.dto.response.SearchUserResponse(u.id,u.userName,u.profile.firstName,u.profile.lastName,u.profile.cover,u.profile.avatar,u.profile.profession) from User u left join u.publications ups where u.userName ilike :keyWord OR ups.description ilike :keyWord OR u.profile.lastName ilike :keyWord OR u.profile.firstName ilike :keyWord OR u.profile.profession ilike :keyWord")
+    @Query("select distinct new peakspace.dto.response.SearchUserResponse(u.id,u.userName,u.profile.firstName,u.profile.lastName,u.profile.cover,u.profile.avatar,u.profile.profession) from User u left join u.publications ups where u.userName ilike :keyWord OR u.profile.lastName ilike :keyWord OR u.profile.firstName ilike :keyWord OR u.profile.patronymicName ilike :keyWord OR u.profile.profession ilike :keyWord")
     List<SearchUserResponse> findByAll(String keyWord);
 }

@@ -24,11 +24,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-<<<<<<< HEAD
-    implementation 'com.google.maps:google-maps-services:0.15.0'
-=======
 
->>>>>>> 64dcca136d8481fb8a17185e9ea30bc53cc90377
+    implementation 'com.google.maps:google-maps-services:0.15.0'
+
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     testImplementation 'org.springframework.security:spring-security-test'
     compileOnly 'org.projectlombok:lombok'
