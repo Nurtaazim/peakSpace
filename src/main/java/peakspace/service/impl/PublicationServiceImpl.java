@@ -174,7 +174,6 @@ public class PublicationServiceImpl implements PublicationService {
                 .location(publication.getLocation())
                 .commentResponses(commentForResponse)
                 .build();
-
     }
 
     private User getCurrentUser() {
@@ -184,5 +183,4 @@ public class PublicationServiceImpl implements PublicationService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
-
 }
