@@ -13,12 +13,9 @@
     <content url="file://$MODULE_DIR$/../../src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
     </content>
-    <content url="file://$MODULE_DIR$/../../src/test">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
-    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="peakspace.peak-space-b12.main" />
+    <orderEntry type="module" module-name="peak-space-b12.main" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-validation:3.2.3" level="project" />
     <orderEntry type="library" name="Gradle: org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0" level="project" />
     <orderEntry type="library" name="Gradle: com.auth0:java-jwt:4.4.0" level="project" />
@@ -26,6 +23,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:3.2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-security:3.2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-mail:3.2.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.maps:google-maps-services:0.15.0" level="project" />
     <orderEntry type="library" name="Gradle: com.twilio.sdk:twilio:10.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk:1.12.701" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE" level="project" />
@@ -52,6 +50,9 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:6.1.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context-support:6.1.5" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.angus:jakarta.mail:2.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:4.12.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.10.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.opencensus:opencensus-api:0.25.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.4" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.4" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.15.4" level="project" />
@@ -494,6 +495,8 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-expression:6.1.5" level="project" />
     <orderEntry type="library" name="Gradle: io.micrometer:micrometer-observation:1.12.4" level="project" />
     <orderEntry type="library" name="Gradle: jakarta.activation:jakarta.activation-api:2.1.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.23" level="project" />
+    <orderEntry type="library" name="Gradle: io.grpc:grpc-context:1.25.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.woodstox:woodstox-core:6.5.1" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.woodstox:stax2-api:4.2.1" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
@@ -520,6 +523,9 @@
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:2.0.12" level="project" />
     <orderEntry type="library" name="Gradle: io.swagger.core.v3:swagger-core-jakarta:2.2.19" level="project" />
     <orderEntry type="library" name="Gradle: io.micrometer:micrometer-commons:1.12.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-jvm:3.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.23" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.9.23" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.1.107.Final" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.107.Final" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.107.Final" level="project" />
@@ -537,6 +543,7 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.13.0" level="project" />
     <orderEntry type="library" name="Gradle: io.swagger.core.v3:swagger-annotations-jakarta:2.2.19" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.postgresql:postgresql:42.6.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.jsonwebtoken:jjwt-impl:0.11.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: software.amazon.awssdk:apache-client:2.17.81" level="project" />
