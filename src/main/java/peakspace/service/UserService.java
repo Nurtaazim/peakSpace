@@ -3,12 +3,8 @@ import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.request.SignInRequest;
-import peakspace.dto.request.SignUpRequest;
-import peakspace.dto.response.SignInResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
 import peakspace.dto.response.*;
+import peakspace.enums.Choise;
 
 import java.util.List;
 
@@ -20,20 +16,21 @@ public interface UserService {
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 
-    SignInResponse signIn(SignInRequest signInRequest) throws MessagingException;
+    SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 
-    String signUp(SignUpRequest signUpRequest) throws MessagingException;
-
-    SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
-    SimpleResponse sendFriends(Long foundUserId,String nameChapter);
-
-    List<SearchResponse> searchFriends(String sample, String keyWord);
+    List<SearchResponse> searchFriends(Choise sample, String keyWord);
 
     SimpleResponse createChapter(ChapterRequest chapterRequest);
 
-    List<SearchHashtagsResponse> searchHashtags(String keyWord);
+    List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyWord) throws MessagingException;
 
     List<SearchResponse> searchMyFriends(Long chapterId, String userName);
 
     ProfileFriendsResponse findFriendsProfile(Long foundUserId);
+
+    List<ChapTerResponse> searchChapter(String search);
+
+    SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId);
+
+    List<SubscriptionResponse> getAllSearchUserHistory();
 }

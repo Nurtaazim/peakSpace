@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: 1234
-    url: jdbc:postgresql://localhost:5432/peakspace
-    username: postgres
+    password:
+    url:
+    username:
   mail:
     host: smtp.gmail.com
     port: 587
@@ -39,9 +39,3 @@ cloud:
   s3:
     bucketName: peakspacebucket
 
-      #When you will click 'create' you shout click to 'always'! from Myrzaiym
-
-      #  #DATA-INIT
-#        spring.jpa.defer-datasource-initialization=true
-#        spring.sql.init.data-locations=classpath:datainit/dataInit.sql
-#        spring.sql.init.mode=never

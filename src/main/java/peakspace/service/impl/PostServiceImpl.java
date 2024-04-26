@@ -2,20 +2,25 @@ package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UserMarkResponse;
 import peakspace.entities.Link_Publication;
+import peakspace.entities.Notification;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
+import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
+import peakspace.exception.NotFoundException;
 import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PostService;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,4 +132,66 @@ public class PostServiceImpl implements PostService {
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
+
+    @Override
+    public SimpleResponse notationFriend(Long postId,List<Long> foundUserId) {
+        User owner = getCurrentUser();
+        List<UserMarkResponse> foundUsers = userRepository.findFoundUserId(foundUserId);
+        if (foundUserId.contains(owner.getId())){
+            throw new BadRequestException("Нельзя отмечать себя!");
+        }
+
+        Publication publication = publicationRepo.findByIdAndOwner(postId, owner);
+        if (publication == null) {
+            throw new NotFoundException(" Нет такой публикации !");
+        }
+        for (UserMarkResponse userMarkResponse : foundUsers) {
+            User markUser = userRepository.findById(userMarkResponse.id()).orElseThrow(() -> new NotFoundException("Пользователь не найден!"));
+            if (publication.getTagFriends().contains(markUser)){
+                throw new BadRequestException("Уже отмечали друга " + markUser.getThisUserName());
+            }
+            publication.getTagFriends().add(markUser);
+
+            Notification notification = new Notification();
+            notification.setNotificationMessage("Хочет выложить фото с вами!");
+            notification.setUserNotification(markUser);
+            notification.setSeen(false);
+            notification.setCreatedAt(ZonedDateTime.now());
+            notification.setSenderUserId(owner.getId());
+            markUser.getNotifications().add(notification);
+        }
+        publicationRepo.save(publication);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Друзья успешно отмечены!")
+                .build();
+    }
+
+    @Override
+    public SimpleResponse removeNotation(List<Long> friendsId) {
+        User owner = getCurrentUser();
+        List<UserMarkResponse> foundUser = userRepository.findFoundUserId(friendsId);
+
+        for (Publication publication : owner.getPublications()) {
+            for (UserMarkResponse userMarkResponse : foundUser) {
+                User markUser = userRepository.findById(userMarkResponse.id()).orElse(null);
+                publication.getTagFriends().remove(markUser);
+            }
+        }
+        publicationRepo.saveAll(owner.getPublications());
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Друзья успешно удален из отметки !")
+                .build();
+    }
+
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User current = userRepository.getByEmail(email);
+        if (current.getRole().equals(Role.USER))
+            return current;
+        else throw new AccessDeniedException("Forbidden 403");
+    }
+
 }
