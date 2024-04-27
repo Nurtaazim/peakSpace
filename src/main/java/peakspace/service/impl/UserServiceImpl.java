@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
 import peakspace.dto.response.SearchHashtagsResponse;
@@ -23,20 +24,26 @@ import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.ChapTerResponse;
 import peakspace.dto.response.SubscriptionResponse;
 import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.ResponseWithGoogle;
 import peakspace.entities.User;
 import peakspace.entities.Notification;
 import peakspace.enums.Choise;
 import peakspace.config.jwt.JwtService;
 import peakspace.entities.Chapter;
 import peakspace.entities.PablicProfile;
+import peakspace.entities.Profile;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.NotFoundException;
+import peakspace.exception.NotActiveException;
+import peakspace.exception.FirebaseAuthException;
+import peakspace.exception.InvalidConfirmationCode;
 import peakspace.repository.ChapterRepository;
 import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
+import peakspace.repository.ProfileRepository;
 import peakspace.service.UserService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -55,11 +62,9 @@ public class UserServiceImpl implements UserService {
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
+    private final ProfileRepository profileRepository;
     private String userName;
     private int randomCode;
-
-    private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
 
     @Override
     @Transactional
