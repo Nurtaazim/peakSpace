@@ -16,5 +16,9 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
+    <data-source name="peak_space@localhost" uuid="a25baf3d-a5d8-4662-ae6b-9b841890ca68">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" exact-version="0" />
+      <schema-mapping />
+    </data-source>
   </component>
 </project>

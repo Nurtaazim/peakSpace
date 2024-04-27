@@ -11,13 +11,21 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.*;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.ChapTerResponse;
+import peakspace.dto.response.SubscriptionResponse;
+import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.entities.User;
+import peakspace.entities.Notification;
+import peakspace.enums.Choise;
+import peakspace.config.jwt.JwtService;
 import peakspace.entities.Chapter;
 import peakspace.entities.PablicProfile;
-import peakspace.entities.User;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
@@ -27,8 +35,9 @@ import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserService;
-
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -36,19 +45,20 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
     private final JwtService jwtService;
-    private String userName;
-    private int randomCode;
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
+    private String userName;
+    private int randomCode;
 
-    private final UserRepository userRepository;
+
 
     @Override
-    public SimpleResponse forgot(String email) throws MessagingException, jakarta.mail.MessagingException {
+    public SimpleResponse forgot(String email) throws MessagingException {
         User user = userRepository.getByEmail(email);
         userName = user.getEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -120,72 +130,103 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-
     @Override
     @Transactional
-    public SimpleResponse sendFriends(Long foundUserId, String nameChapter) {
+    public SimpleResponse sendFriends(Long foundUserId, Long chapterId) {
 
         User currentUser = getCurrentUser();
 
         if (currentUser.getId().equals(foundUserId)) {
-            throw new IllegalArgumentException(" Нельзя подписатся самого себя !");
+            throw new IllegalArgumentException("Нельзя подписаться на самого себя!");
         }
-        List<Chapter> chapters = currentUser.getChapters();
+
+        Chapter targetChapter = null;
+        for (Chapter chapter : currentUser.getChapters()) {
+            if (chapter.getId().equals(chapterId)) {
+                targetChapter = chapter;
+                break;
+            }
+        }
+
+        if (targetChapter == null) {
+            throw new NotFoundException("Нет такого раздела: " + chapterId);
+        }
+
+        List<Chapter> userChapters = currentUser.getChapters();
+        for (Chapter chapter : userChapters) {
+            if (!chapter.getId().equals(chapterId) && chapter.getFriends().stream()
+                    .anyMatch(user -> user.getId().equals(foundUserId))) {
+                throw new IllegalArgumentException("Пользователь уже добавлен в другой раздел: " + chapter.getGroupName());
+            }
+        }
+
+        List<User> updatedFriends = new ArrayList<>(targetChapter.getFriends());
         boolean removed = false;
-        String messages = "";
 
-        for (Chapter chapter : chapters) {
-            List<User> currentUserFriends = chapter.getFriends();
-            List<User> updatedFriends = new ArrayList<>(currentUserFriends);
-
-            for (User currentUserFriend : currentUserFriends) {
-                if (currentUserFriend.getId().equals(foundUserId)) {
-                    updatedFriends.remove(currentUserFriend);
-                    removed = true;
-                    break;
-                }
+        for (User friend : updatedFriends) {
+            if (friend.getId().equals(foundUserId)) {
+                updatedFriends.remove(friend);
+                removed = true;
+                break;
             }
-
-            if (!removed) {
-                User foundUser = userRepository.findById(foundUserId).orElse(null);
-                if (foundUser != null) {
-                    updatedFriends.add(foundUser);
-                }
-            }
-
-            if (chapter.getGroupName().equals(nameChapter)) {
-                chapter.setFriends(updatedFriends);
-            } else throw new NotFoundException(" Нет такой раздел " + nameChapter);
-
-            messages = (removed) ? "Удачно отписался!" : "Удачно подписались!";
         }
+
+        User foundUser = userRepository.findById(foundUserId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id " + foundUserId + " не найден"));
+        if (!removed) {
+
+            updatedFriends.add(foundUser);
+        }
+
+        if (targetChapter.getId().equals(chapterId)) {
+            targetChapter.setFriends(updatedFriends);
+        } else throw new NotFoundException(" Нет такой раздел " + chapterId);
+
+
+        Notification notification = new Notification();
+        notification.setNotificationMessage("Подписался !");
+        notification.setUserNotification(foundUser);
+        notification.setSeen(false);
+        notification.setCreatedAt(ZonedDateTime.now());
+        notification.setSenderUserId(currentUser.getId());
+        foundUser.getNotifications().add(notification);
+
+
+        String message = removed ? "Удачно отписались!" : "Удачно подписались!";
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(messages)
+                .message(message)
                 .build();
     }
 
-
     @Override
-    public List<SearchResponse> searchFriends(String sample, String keyWord) throws MessagingException {
+    public List<SearchResponse> searchFriends(Choise sample, String keyWord) {
         getCurrentUser();
-        if (sample.equals("Пользователь")) {
+        if (sample.equals(Choise.User) || sample.equals(Choise.Пользователи)) {
             return userRepository.findAllSearch(keyWord);
-        }
-        if (sample.equals("Группы")) {
+        } else if (sample.equals(Choise.Groups) || sample.equals(Choise.Группы)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new MessagingException("");
+        throw new BadRequestException("Пллохой запрос !");
+
     }
 
     @Override
     @Transactional
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
         User currentUser = getCurrentUser();
+        if (currentUser.getChapters().size() <= 5) {
+            throw new BadRequestException(" Ограничение количество 5 не должен превышать !");
+        }
         Chapter chapter = new Chapter();
-        chapter.setGroupName(chapterRequest.getGroupName());
-        chapterRepository.save(chapter);
-        chapter.setUser(currentUser);
+        for (Chapter currentUserChapter : currentUser.getChapters()) {
+            if (currentUserChapter.getGroupName().equals(chapterRequest.getGroupName())) {
+                throw new IllegalArgumentException(" Уже есть такой раздел !");
+            }
+            chapter.setGroupName(chapterRequest.getGroupName());
+            chapterRepository.save(chapter);
+            chapter.setUser(currentUser);
+        }
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Удачно сохранился раздел !")
@@ -193,9 +234,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SearchHashtagsResponse> searchHashtags(String keyword) {
+    public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword){
         getCurrentUser();
-        return publicationRepository.findAllHashtags(keyword);
+        if (sample.equals(Choise.Hashtag) || sample.equals(Choise.Хештеги)) {
+            return publicationRepository.findAllHashtags(keyword);
+        }
+        throw new BadRequestException(" Плохой запрос !");
     }
 
     @Override
@@ -214,6 +258,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ProfileFriendsResponse findFriendsProfile(Long foundUserId) {
 
         User currentUser = getCurrentUser();
@@ -228,12 +273,10 @@ public class UserServiceImpl implements UserService {
         for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
             pablicSize += getFriendsPublicSize(pablicProfile.getId());
         }
+        List<Long> friends = currentUser.getSearchFriendsHistory();
+        friends.add(foundUserId);
 
-        List<PublicationResponse> friendsPublic = userRepository.findFriendsPublic(foundUserId);
-        List<PublicationResponse> friendsFavorite = userRepository.findFavorite(foundUserId);
-        List<PublicationResponse> friendTagWithMe = userRepository.findTagWithMe(foundUserId);
-
-        ProfileFriendsResponse response = ProfileFriendsResponse.builder()
+        return ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
                 .avatar(friendsResponse.getAvatar())
                 .cover(friendsResponse.getCover())
@@ -241,11 +284,64 @@ public class UserServiceImpl implements UserService {
                 .profession(friendsResponse.getProfession())
                 .friendsSize(friendSize)
                 .pablicationsSize(pablicSize)
-                .friendsPublications(friendsPublic)
-                .friendsFavoritesPublications(friendsFavorite)
-                .friendsWitMePublications(friendTagWithMe)
                 .build();
-        return response;
+    }
+
+    @Override
+    public List<ChapTerResponse> searchChapter(String search) {
+        getCurrentUser();
+        return userRepository.searchChapter(search);
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId) {
+        User currentUser = getCurrentUser();
+        User foundUser = userRepository.findByIds(foundUserId);
+        boolean foundUserInFriends = false;
+
+        for (Chapter chapter : currentUser.getChapters()) {
+            if (chapter.getId().equals(chapterId)) {
+                List<User> friends = chapter.getFriends();
+                if (friends.contains(foundUser)) {
+                    friends.remove(foundUser);
+                    foundUserInFriends = true;
+                } else {
+                    friends.add(foundUser);
+                }
+                break;
+            }
+        }
+
+        String message = foundUserInFriends ? "Удачно отписано !" : " Удачно подписались !";
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(message)
+                .build();
+    }
+
+    @Override
+    public List<SubscriptionResponse> getAllSearchUserHistory() {
+        User currentUser = getCurrentUser();
+        List<Long> searchFriendsHistory = currentUser.getSearchFriendsHistory();
+        List<SubscriptionResponse> searchUserResponses = new ArrayList<>();
+
+        for (Long userId : searchFriendsHistory) {
+            User foundUser = userRepository.findById(userId).orElse(null);
+            if (foundUser != null) {
+                SubscriptionResponse response = new SubscriptionResponse(
+                        foundUser.getId(),
+                        foundUser.getUsername(),
+                        foundUser.getProfile().getAvatar(),
+                        foundUser.getProfile().getAboutYourSelf()
+                );
+                searchUserResponses.add(response);
+            }
+        }
+        Collections.reverse(searchUserResponses);
+
+        return searchUserResponses;
     }
 
     private long getFriendsSize(Long foundUserID) {

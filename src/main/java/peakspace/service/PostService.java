@@ -6,15 +6,24 @@ import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.PostResponse;
 import peakspace.dto.response.SimpleResponse;
 
+import java.util.List;
+
 public interface PostService {
 
-    public SimpleResponse savePost(PostRequest postRequest);
-     public SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest);
-    public SimpleResponse delete(Long postId);
-    public SimpleResponse deleteLinkFromPost(Long linkId,Long postId);
-    public SimpleResponse addFavorite(Long postId);
+    SimpleResponse savePost(PostRequest postRequest);
 
-    public GetAllPostsResponse favorites();
+    SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest);
+
+    SimpleResponse delete(Long postId);
+
+    SimpleResponse deleteLinkFromPost(Long linkId, Long postId);
+
+    SimpleResponse addFavorite(Long postId);
+
+    GetAllPostsResponse favorites();
 
 
+     SimpleResponse notationFriend(Long postId,List<Long> foundUserId);
+
+     SimpleResponse removeNotation(List<Long> friendsId);
 }
