@@ -136,11 +136,12 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
+
     @Override
-    public SimpleResponse notationFriend(Long postId,List<Long> foundUserId) {
+    public SimpleResponse notationFriend(Long postId, List<Long> foundUserId) {
         User owner = getCurrentUser();
         List<UserMarkResponse> foundUsers = userRepository.findFoundUserId(foundUserId);
-        if (foundUserId.contains(owner.getId())){
+        if (foundUserId.contains(owner.getId())) {
             throw new BadRequestException("Нельзя отмечать себя!");
         }
 
@@ -150,7 +151,7 @@ public class PostServiceImpl implements PostService {
         }
         for (UserMarkResponse userMarkResponse : foundUsers) {
             User markUser = userRepository.findById(userMarkResponse.id()).orElseThrow(() -> new NotFoundException("Пользователь не найден!"));
-            if (publication.getTagFriends().contains(markUser)){
+            if (publication.getTagFriends().contains(markUser)) {
                 throw new BadRequestException("Уже отмечали друга " + markUser.getThisUserName());
             }
             publication.getTagFriends().add(markUser);
@@ -205,10 +206,10 @@ public class PostServiceImpl implements PostService {
         User user = userRepository.getByEmail(email);
 
         Publication post = publicationRepo.findPostById(postId);
-        if(user.getProfile().getFavorites().contains(post.getId())){
+        if (user.getProfile().getFavorites().contains(post.getId())) {
             user.getProfile().getFavorites().remove(post.getId());
             System.out.println("contains");
-        }else {
+        } else {
             user.getProfile().getFavorites().add(post.getId());
             System.out.println("not contains");
         }

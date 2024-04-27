@@ -6,12 +6,12 @@ server:
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
-        password: 1234
-        url: jdbc:postgresql://localhost:5432/peak_space
+        password: 2020
+        url: jdbc:postgresql://localhost:5432/postgres
         username: postgres
     jpa:
         hibernate:
-            ddl-auto:  update
+            ddl-auto:  create
         show-sql: true
     mail:
         host: smtp.gmail.com
@@ -28,7 +28,7 @@ spring:
     sql:
         init:
             data-locations: classpath:dataInit/dataInit.sql
-            mode: always
+            mode: never
 
 cloud:
     aws:
@@ -37,3 +37,4 @@ cloud:
         secretKey: q8YvKp5zotyi27B63H+0ZQYPPKFFuDOO06lcvuRD
     s3:
         bucketName: peakspacebucket
+

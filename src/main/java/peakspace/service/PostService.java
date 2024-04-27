@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface PostService {
 
+
     SimpleResponse savePost(PostRequest postRequest);
 
     SimpleResponse update(Long postId, PostUpdateRequest postUpdateRequest);
@@ -21,7 +22,6 @@ public interface PostService {
     SimpleResponse addFavorite(Long postId);
 
     GetAllPostsResponse favorites();
-
 
      SimpleResponse notationFriend(Long postId,List<Long> foundUserId);
 

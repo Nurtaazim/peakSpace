@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
     private int randomCode;
 
 
-
     @Override
     public SimpleResponse forgot(String email) throws MessagingException {
         User user = userRepository.getByEmail(email);
