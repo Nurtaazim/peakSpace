@@ -11,6 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import peakspace.dto.response.FriendsPageResponse;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SimpleResponse;
@@ -34,6 +35,7 @@ import peakspace.repository.ChapterRepository;
 import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
+import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.UserService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -52,9 +54,9 @@ public class UserServiceImpl implements UserService {
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
+    private final SearchFriends searchFriends;
     private String userName;
     private int randomCode;
-
 
     @Override
     public SimpleResponse forgot(String email) throws MessagingException {
@@ -341,6 +343,15 @@ public class UserServiceImpl implements UserService {
         Collections.reverse(searchUserResponses);
 
         return searchUserResponses;
+    }
+
+    @Override
+    public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
+        return FriendsPageResponse.builder()
+                .userId(userId)
+                .chapters(chapterRepository.getChaptersById(userId))
+                .friendsResponsesList(searchFriends.getAllFriendsWithJDBCTemplate(userId, chapterId, search))
+                .build();
     }
 
     private long getFriendsSize(Long foundUserID) {

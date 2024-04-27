@@ -1,9 +1,16 @@
 package peakspace.service;
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
+import peakspace.dto.response.ChapTerResponse;
+import peakspace.dto.response.FriendsPageResponse;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.*;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.SubscriptionResponse;
+import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.enums.Choise;
 
 import java.util.List;
@@ -33,4 +40,7 @@ public interface UserService {
     SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId);
 
     List<SubscriptionResponse> getAllSearchUserHistory();
+
+    FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search);
+
 }

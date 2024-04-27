@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.FriendsPageResponse;
 import peakspace.dto.response.SubscriptionResponse;
 import peakspace.enums.Choise;
 import peakspace.service.UserService;
@@ -59,7 +60,7 @@ public class UserAPI {
     @Secured("USER")
     @GetMapping("/searchHashtags")
     @Operation(summary = "Поискавик", description = "Поиск по хештегам  !")
-    public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample,@RequestParam String keyWord) throws MessagingException {
+    public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample, @RequestParam String keyWord) throws MessagingException {
         return userService.searchHashtags(sample,keyWord);
     }
 
@@ -83,8 +84,13 @@ public class UserAPI {
     public List<SubscriptionResponse> getAllSearchUserHistory(){
         return userService.getAllSearchUserHistory();
     }
+
+    @GetMapping("/searchFiends/{userId}/{chapterId}")
+    @Operation(summary = "Получить друзья пользователя и поиск по имени пользователя и ФИО! ")
+    public FriendsPageResponse getAllFriends(@PathVariable Long userId,
+                                             @PathVariable Long chapterId,
+                                             @RequestParam(required = false) String search){
+        return userService.searchAllFriendsByChapter(userId, chapterId, search);
+    }
+
 }
-
-
-
-
