@@ -4,46 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode">
-      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/CommentAPI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/CommentRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/CommentInnerResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/CommentResponseByPost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/CommentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/CommentServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/peak-space-b12.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/peak-space-b12.test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/AuthAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/AuthAPI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse$CommentResponseBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse$CommentResponseBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/CommentResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse$MyPostResponseBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse$MyPostResponseBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/MyPostResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Comment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/entities/Comment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/CommentRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/CommentRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/PublicationServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/PublicationServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/application-aliaskar.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application-aliaskar.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/api/AuthAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/AuthAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/CommentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/CommentResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/InnerCommentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/InnerCommentResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/MyPostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/MyPostResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/entities/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/entities/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/CommentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PostServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PostServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PublicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PublicationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-aliaskar.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-aliaskar.yml" afterDir="false" />
-    </list>
+    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +78,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/regst_with_google" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -154,35 +115,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Gradle.Build peak-space-b12.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.PeakSpaceB12Application.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/add-comment&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Applications/peak-space-b12/src/main/resources&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Gradle.Build peak-space-b12.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.PeakSpaceB12Application.executor": "Run",
+    "git-widget-placeholder": "#34 on feature/add-comment",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Applications/peak-space-b12/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="peakspace.dto.response" />
