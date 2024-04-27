@@ -52,20 +52,6 @@ public class PostApi {
     }
 
     @Secured("USER")
-    @PutMapping("/addNotationFriends/{postId}/{foundUsersId}")
-    @Operation(summary = " Отметка друзей в публикации !")
-    public SimpleResponse notationFriends(@PathVariable Long postId,@PathVariable List<Long> foundUsersId) {
-        return postService.notationFriend(postId,foundUsersId);
-    }
-
-    @Secured("USER")
-    @PutMapping("/removeNotationFriends/{friendsId}")
-    @Operation(summary = " Удалить друзей из отметки !")
-    public SimpleResponse removeNotationFriends(@PathVariable List<Long> friendsId) {
-        return postService.removeNotation(friendsId);
-    }
-
-    @Secured("USER")
     @Operation(summary = " Добавление поста на избранный !")
     @PostMapping("/addToFavorite/{postId}")
     public SimpleResponse addFavorite(@PathVariable Long postId) {
