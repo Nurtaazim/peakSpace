@@ -1,12 +1,5 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.ZonedDateTime;
@@ -26,8 +19,9 @@ public class Notification {
     private String notificationMessage;
     @OneToOne
     private Like like;
-    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
-    private User userNotification;
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    private User userNotification;   // получатель
+    private Long senderUserId;       // отправитель
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private Comment comment;
 
