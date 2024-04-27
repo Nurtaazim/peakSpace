@@ -1,5 +1,7 @@
 package peakspace.config.jwt;
+
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import lombok.NonNull;
 import peakspace.entities.User;
 import peakspace.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -23,8 +25,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String headerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         String bearer = "Bearer ";

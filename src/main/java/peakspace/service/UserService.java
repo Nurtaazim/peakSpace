@@ -6,6 +6,8 @@ import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.*;
+import peakspace.enums.Choise;
+
 import java.util.List;
 
 public interface UserService {
@@ -16,17 +18,23 @@ public interface UserService {
 
     UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
 
-    SimpleResponse sendFriends(Long foundUserId,String nameChapter);
+    SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 
-    List<SearchResponse> searchFriends(String sample, String keyWord) throws MessagingException;
+    List<SearchResponse> searchFriends(Choise sample, String keyWord);
 
     SimpleResponse createChapter(ChapterRequest chapterRequest);
 
-    List<SearchHashtagsResponse> searchHashtags(String keyWord);
+    List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyWord) throws MessagingException;
 
     List<SearchResponse> searchMyFriends(Long chapterId, String userName);
 
     ProfileFriendsResponse findFriendsProfile(Long foundUserId);
+
+    List<ChapTerResponse> searchChapter(String search);
+
+    SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId);
+
+    List<SubscriptionResponse> getAllSearchUserHistory();
 
     ResponseWithGoogle verifyToken(String tokenFromGoogle);
 
