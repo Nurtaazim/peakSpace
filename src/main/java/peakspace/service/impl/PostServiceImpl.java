@@ -153,7 +153,7 @@ public class PostServiceImpl implements PostService {
             publication.getTagFriends().add(markUser);
 
             Notification notification = new Notification();
-            notification.setNotificationMessage("Хочет выложить фото с вами!");
+            notification.setNotificationMessage(" Хочет выложить фото с вами!");
             notification.setUserNotification(markUser);
             notification.setSeen(false);
             notification.setCreatedAt(ZonedDateTime.now());

@@ -2,7 +2,7 @@ app:
     jwt:
         secret: Java12
 server:
-    port: 8082
+    port: 8080
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
@@ -28,7 +28,7 @@ spring:
     sql:
         init:
             data-locations: classpath:dataInit/dataInit.sql
-            mode: always
+            mode: never
 
 cloud:
     aws:
