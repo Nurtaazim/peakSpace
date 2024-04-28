@@ -1,6 +1,5 @@
 package peakspace.service.impl;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
