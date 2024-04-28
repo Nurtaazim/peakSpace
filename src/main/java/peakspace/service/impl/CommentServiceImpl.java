@@ -87,7 +87,7 @@ public class CommentServiceImpl implements CommentService {
         editComment.setMessage(comment.getMessage());
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Комментарий успешно обновлен. !")
+                .message(" Комментарий успешно обновлен !")
                 .build();
     }
 
