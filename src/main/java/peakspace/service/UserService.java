@@ -1,10 +1,12 @@
 package peakspace.service;
+
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.*;
 import peakspace.enums.Choise;
 
@@ -36,9 +38,17 @@ public interface UserService {
 
     List<SubscriptionResponse> getAllSearchUserHistory();
 
+    ResponseWithGoogle verifyToken(String tokenFromGoogle);
+
+    ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest registerWithGoogle);
+
+    String sendConfirmationCode(String email) throws MessagingException;
+
     SignInResponse signIn(SignInRequest signInRequest) throws MessagingException;
 
     String signUp(SignUpRequest signUpRequest) throws MessagingException;
 
     SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
+}
+
 }

@@ -2,6 +2,7 @@ package peakspace.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,6 +85,7 @@ public class UserAPI {
         return userService.getAllSearchUserHistory();
     }
 }
+
 
 
 
