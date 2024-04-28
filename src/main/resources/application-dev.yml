@@ -6,8 +6,8 @@ server:
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
-        password: 2020
-        url: jdbc:postgresql://localhost:5432/peak_space
+        password: yiman
+        url: jdbc:postgresql://localhost:5434/postgres
         username: postgres
     jpa:
         hibernate:
