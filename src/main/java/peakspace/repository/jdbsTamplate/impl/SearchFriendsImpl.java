@@ -16,12 +16,11 @@ public class SearchFriendsImpl implements SearchFriends {
 
     @Override
     public List<FriendsResponse> getAllFriendsWithJDBCTemplate(Long userId, Long chapterId, String search) {
-        String str = "";
-        List<Object> params = new ArrayList<>();
 
+        String str = "";
         if (search != null) {
-            str = " and u.user_name ilike CONCAT('%"+search+"%') " +
-                  "or CONCAT(up.first_name, up.last_name, up.patronymic_name) ilike CONCAT('%"+search+"%')";
+            str = " and (u.user_name ilike CONCAT('%"+search+"%') " +
+                  "or CONCAT(up.first_name, up.last_name, up.patronymic_name) ilike CONCAT('%"+search+"%'))";
         }
 
         String sql = """
@@ -32,12 +31,12 @@ public class SearchFriendsImpl implements SearchFriends {
                              FROM chapters_friends chf
                              INNER JOIN users u ON u.id = chf.friends_id
                              INNER JOIN profiles up ON up.user_id = u.id
-                             WHERE chf.chapter_id = ?
+                             INNER JOIN chapters ch ON ch.id = chf.chapter_id
+                             WHERE chf.chapter_id = """+chapterId+ """  
+                             \sand ch.user_id = """+userId+"""
                              """ + str;
 
-        params.add(chapterId);
-
-        return jdbcTemplate.query(sql, params.toArray(), (rs, rowNum) -> FriendsResponse.builder()
+        return jdbcTemplate.query(sql, (rs, rowNum) -> FriendsResponse.builder()
                 .userId(rs.getLong("id"))
                 .avatar(rs.getString("avatar"))
                 .userName(rs.getString("user_name"))

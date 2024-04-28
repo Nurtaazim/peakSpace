@@ -20,6 +20,7 @@ import peakspace.dto.response.FriendsPageResponse;
 import peakspace.dto.response.SubscriptionResponse;
 import peakspace.enums.Choise;
 import peakspace.service.UserService;
+
 import java.util.List;
 
 @RestController
@@ -85,6 +86,7 @@ public class UserAPI {
         return userService.getAllSearchUserHistory();
     }
 
+    @Secured("USER")
     @GetMapping("/searchFiends/{userId}/{chapterId}")
     @Operation(summary = "Получить друзья пользователя и поиск по имени пользователя и ФИО! ")
     public FriendsPageResponse getAllFriends(@PathVariable Long userId,
