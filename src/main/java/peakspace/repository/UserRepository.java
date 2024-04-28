@@ -43,6 +43,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findByEmail(email).orElseThrow(() ->
                 new NotFoundException("Нет такой : " + email + " в базе !"));
     }
+    @Query("select u from  User u where u.userName like :email")
+    Optional<User> getByUserName(String email);
+
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
            "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")
@@ -57,9 +60,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findById(foundUserId).orElseThrow(() -> new NotFoundException(" Нет такой ползователь !" + foundUserId));
     }
 
-    @Query("SELECT new peakspace.dto.response.ProfileFriendsResponse(u.id, COALESCE(p.avatar, ''), COALESCE(p.cover, ''), COALESCE(p.aboutYourSelf, ''), COALESCE(p.profession, '')) " +
-           "FROM User u LEFT JOIN u.profile p " +
-           "WHERE u.id = :foundUserId")
+    @Query("select new peakspace.dto.response.ProfileFriendsResponse(u.id, COALESCE(p.avatar, ''), COALESCE(p.cover, ''), COALESCE(p.aboutYourSelf, ''), COALESCE(p.profession, '')) " +
+           "from User u left join u.profile p " +
+           "where u.id = :foundUserId")
     ProfileFriendsResponse getId(Long foundUserId);
 
     @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.owner.profile pr where pr.id = :foundUserId and p.id in (select f from Profile pf join pf.favorites f where pf.id = :foundUserId)")

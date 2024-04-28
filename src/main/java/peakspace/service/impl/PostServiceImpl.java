@@ -157,7 +157,7 @@ public class PostServiceImpl implements PostService {
             publication.getTagFriends().add(markUser);
 
             Notification notification = new Notification();
-            notification.setNotificationMessage("Хочет выложить фото с вами!");
+            notification.setNotificationMessage(" Хочет выложить фото с вами!");
             notification.setUserNotification(markUser);
             notification.setSeen(false);
             notification.setCreatedAt(ZonedDateTime.now());
@@ -208,10 +208,8 @@ public class PostServiceImpl implements PostService {
         Publication post = publicationRepo.findPostById(postId);
         if (user.getProfile().getFavorites().contains(post.getId())) {
             user.getProfile().getFavorites().remove(post.getId());
-            System.out.println("contains");
         } else {
             user.getProfile().getFavorites().add(post.getId());
-            System.out.println("not contains");
         }
         return SimpleResponse.builder()
                 .message("Successfully !")

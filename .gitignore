@@ -37,3 +37,5 @@ out/
 .vscode/
 src/main/resources/application-aliaskar.yml
 src/main/resources/application-mika.yml
+src/main/resources/application-nurtaazim.yml
+

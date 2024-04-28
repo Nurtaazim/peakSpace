@@ -82,5 +82,4 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .message("Successfully saved!")
                 .build();
     }
-
 }
