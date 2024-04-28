@@ -114,7 +114,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/regst_with_google" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -274,7 +274,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714056501460</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add public and edit relationship PublicProfile User OneToOne , correction method !!!">
+      <option name="closed" value="true" />
+      <created>1714298480347</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1714298480347</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -293,7 +301,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="HomePage + cleanCode" />
-    <option name="LAST_COMMIT_MESSAGE" value="HomePage + cleanCode" />
+    <MESSAGE value="Merge branch 'main' of https://github.com/peaksoft-school/peak-space-b12 into feature/pablic&#10;&#10;# Conflicts:&#10;#&#9;.gradle/8.7/fileHashes/fileHashes.bin&#10;#&#9;.gradle/8.7/fileHashes/fileHashes.lock&#10;#&#9;.idea/dataSources.local.xml&#10;#&#9;.idea/workspace.xml" />
+    <MESSAGE value="add public and edit relationship PublicProfile User OneToOne , correction method !!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="add public and edit relationship PublicProfile User OneToOne , correction method !!!" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/peak_space_b12$PeakSpaceB12Application.ic" NAME="PeakSpaceB12Application Coverage Results" MODIFIED="1713864745796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
