@@ -52,12 +52,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+        <option value="Interface" />
+        <option value="Record" />
         <option value="com.haulmont.jpb.JpaRepository" />
         <option value="JavaScript File" />
         <option value="HTML File" />
         <option value="Interface" />
-        <option value="Class" />
-        <option value="Record" />
       </list>
     </option>
   </component>
@@ -117,7 +117,6 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "DefaultHtmlFileTemplate": "HTML File",
     "Gradle.Build peak-space-b12.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
@@ -147,8 +146,8 @@
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="peakspace.dto.response" />
-      <recent name="peakspace.dto.request" />
       <recent name="peakspace.exception" />
+      <recent name="peakspace.dto.request" />
       <recent name="peakspace.repository" />
       <recent name="peakspace.service" />
     </key>
@@ -165,7 +164,7 @@
   <component name="RunManager">
     <configuration name="PeakSpaceB12Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="ACTIVE_PROFILES" value="aliaskar" />
-      <module name="peakspace.peak-space-b12.main" />
+      <module name="peak-space-b12.main" />
       <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="peakspace.PeakSpaceB12Application" />
       <method v="2">

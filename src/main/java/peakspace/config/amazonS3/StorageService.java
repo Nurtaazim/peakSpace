@@ -18,7 +18,6 @@ import java.io.IOException;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-
 public class StorageService {
 
     @Value("${cloud.s3.bucketName}")
@@ -33,19 +32,16 @@ public class StorageService {
         return "File uploaded : " + fileName;
     }
 
-
     public byte[] downloadFile(String fileName) {
         S3Object s3Object = s3Client.getObject(bucketName, fileName);
         S3ObjectInputStream inputStream = s3Object.getObjectContent();
         try {
-            byte[] content = IOUtils.toByteArray(inputStream);
-            return content;
+            return IOUtils.toByteArray(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
-
 
     public String deleteFile(String fileName) {
         String[] split = fileName.split("com/");
@@ -53,7 +49,6 @@ public class StorageService {
         s3Client.deleteObject(bucketName, split[1]);
         return fileName + " removed ...";
     }
-
 
     private File convertMultiPartFileToFile(MultipartFile file) {
         File convertedFile = new File(file.getOriginalFilename());
@@ -68,4 +63,5 @@ public class StorageService {
     public String getUrl(String key) {
       return s3Client.getUrl(bucketName,key).toString();
     }
+
 }

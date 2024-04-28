@@ -1,5 +1,8 @@
 package peakspace.service.impl;
 
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
 import peakspace.dto.response.SearchHashtagsResponse;
@@ -20,20 +24,26 @@ import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.ChapTerResponse;
 import peakspace.dto.response.SubscriptionResponse;
 import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.ResponseWithGoogle;
 import peakspace.entities.User;
 import peakspace.entities.Notification;
 import peakspace.enums.Choise;
 import peakspace.config.jwt.JwtService;
 import peakspace.entities.Chapter;
 import peakspace.entities.PablicProfile;
+import peakspace.entities.Profile;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.NotFoundException;
+import peakspace.exception.NotActiveException;
+import peakspace.exception.FirebaseAuthException;
+import peakspace.exception.InvalidConfirmationCode;
 import peakspace.repository.ChapterRepository;
 import peakspace.repository.PablicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
+import peakspace.repository.ProfileRepository;
 import peakspace.service.UserService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -52,6 +62,231 @@ public class UserServiceImpl implements UserService {
     private final ChapterRepository chapterRepository;
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
+    private final ProfileRepository profileRepository;
+    private String userName;
+    private int randomCode;
+
+    @Override
+    @Transactional
+    public ResponseWithGoogle verifyToken(String tokenFromGoogle) {
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
+            String email = decodedToken.getEmail();
+            String phoneNumber = (String) decodedToken.getClaims().get("phone_number");
+            boolean b = userRepository.existsByEmail(email);
+            if (b) {
+                User user = userRepository.getReferenceByEmail(email);
+                return ResponseWithGoogle.builder()
+                        .idUser(user.getId())
+                        .token(jwtService.createToken(user))
+                        .build();
+            } else if (phoneNumber != null && phoneNumber.length() > 2) {
+                String fullName = decodedToken.getName();
+                User user = new User();
+                Profile profile = new Profile();
+                String picture = decodedToken.getPicture();
+                String defaultPassword = generatorDefaultPassword(8, 8);
+                user.setRole(Role.USER);
+                user.setPassword(passwordEncoder.encode(defaultPassword));
+                user.setEmail(email);
+                user.setPhoneNumber(phoneNumber);
+                try {
+                    sendConfirmationCode(email);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
+                user.setBlockAccount(true);
+                profile.setAvatar(picture);
+                profile.setUser(user);
+                profileRepository.save(profile);
+                userRepository.save(user);
+                user.setProfile(profile);
+                String[] parts = fullName.split(" ");
+                if (parts.length >= 1) {
+                    profile.setLastName(parts[0]);
+                }
+                if (parts.length >= 2) {
+                    profile.setFirstName(parts[1]);
+                }
+                if (parts.length >= 3) {
+                    profile.setPatronymicName(parts[2]);
+                }
+                String username = user.getProfile().getLastName();
+                while (!user.getUsername().isEmpty()) {
+                    if (!userRepository.existsByUserName(username)) {
+                        user.setUserName(user.getProfile().getLastName().toLowerCase());
+                    } else {
+                        username = username + new Random().nextInt(1, userRepository.findAll().size() * 2);
+                    }
+
+                }
+                return ResponseWithGoogle.builder()
+                        .idUser(user.getId())
+                        .description(email)
+                        .build();
+            }
+            throw new NotActiveException();
+        } catch (com.google.firebase.auth.FirebaseAuthException e) {
+            throw new FirebaseAuthException();
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest tokenFromGoogle) {
+        User userForVerifier = userRepository.getReferenceById(tokenFromGoogle.idVerifierUser());
+        if (userForVerifier.getPassword().equals(tokenFromGoogle.confirmationCode())) {
+            User user = userRepository.getReferenceById(userForVerifier.getId());
+            user.setIsBlock(false);
+            sendDefaultPasswordToEmail(user);
+            return ResponseWithGoogle.builder()
+                    .idUser(user.getId())
+                    .token(jwtService.createToken(user)).build();
+        }
+        throw new InvalidConfirmationCode();
+    }
+
+    @Override
+    @Transactional
+    public String sendConfirmationCode(String email) throws MessagingException {
+        User user = userRepository.getByEmail(email);
+        userName = user.getEmail();
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
+        mimeMessageHelper.setTo(email);
+        String randomCode = generatorConfirmationCode(6);
+        user.setConfirmationCode(randomCode);
+        String fullName = user.getThisUserName();
+        String message = "<!DOCTYPE html>\n" +
+                         "<html lang=\"en\">\n" +
+                         "\n" +
+                         "<head>\n" +
+                         "    <meta charset=\"UTF-8\">\n" +
+                         "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                         "    <title>Confirmation Code</title>\n" +
+                         "    <style>\n" +
+                         "        body {\n" +
+                         "            background-image: url('https://files.slack.com/files-pri/T023L1WBFLH-F06TT7FAU0J/img_2536.jpg');\n" +
+                         "            background-size: cover;\n" +
+                         "            background-position: center;\n" +
+                         "            color: #ffffff;\n" +
+                         "            font-family: Arial, sans-serif;\n" +
+                         "            margin: 0;\n" +
+                         "            padding: 0;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        .container {\n" +
+                         "            text-align: center;\n" +
+                         "            padding: 10% 5%;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        h2 {\n" +
+                         "            color: #ffcc00;\n" +
+                         "            font-size: 2.5em;\n" +
+                         "            margin-bottom: 20px;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        h3 {\n" +
+                         "            color: #ff0000;\n" +
+                         "            font-size: 2em;\n" +
+                         "            margin-bottom: 15px;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        p {\n" +
+                         "            font-size: 1.2em;\n" +
+                         "            margin-bottom: 10px;\n" +
+                         "        }\n" +
+                         "\n" +
+                         "        @media (max-width: 768px) {\n" +
+                         "            h2 {\n" +
+                         "                font-size: 2em;\n" +
+                         "            }\n" +
+                         "\n" +
+                         "            h3 {\n" +
+                         "                font-size: 1.5em;\n" +
+                         "            }\n" +
+                         "\n" +
+                         "            p {\n" +
+                         "                font-size: 1em;\n" +
+                         "            }\n" +
+                         "\n" +
+                         "            .container {\n" +
+                         "                padding: 20% 5%;\n" +
+                         "            }\n" +
+                         "        }\n" +
+                         "    </style>\n" +
+                         "</head>\n" +
+                         "\n" +
+                         "<body>\n" +
+                         "    <div class=\"container\">\n" +
+                         "        <h2>Confirmation code!</h2>\n" +
+                         "        <h2>ПРИВЕТ! "+fullName+"</h2>\n" +
+                         "        <h3>Код подтверждения: "+randomCode+"</h3>\n" +
+                         "        <p>НИКОМУ НЕ СООБЩАЙТЕ ЭТОТ КОД!</p>\n" +
+                         "        <p>Это код для регистрации в Peak Space</p>\n" +
+                         "        <p>Этот код действителен только 5 минут!</p>\n" +
+                         "    </div>\n" +
+                         "</body>\n" +
+                         "\n" +
+                         "</html>\n";
+        mimeMessageHelper.setText(message, true);
+        mimeMessageHelper.setSubject("Код Подтверждение!");
+        javaMailSender.send(mimeMessage);
+        return "Успешно отправленно код подтверждение на вашем емайл: " + email;
+    }
+
+    private String generatorConfirmationCode(int length) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+        String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
+            sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
+        }
+        return sb.toString();
+    }
+
+    private String generatorDefaultPassword(int minLength, int maxLength) {
+        Random random = new Random();
+        int length = +random.nextInt(maxLength - minLength + 1);
+        StringBuilder sb = new StringBuilder(length);
+        String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
+            sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
+        }
+        return sb.toString();
+    }
+
+    private void sendDefaultPasswordToEmail(User user) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
+            mimeMessageHelper.setTo(user.getEmail());
+            mimeMessageHelper.setText("""
+                                              Hi """ + user.getUsername() + """
+                                              
+                                                """
+                                                +
+                                                user.getPassword()
+                                                +
+                                                """
+                                              
+                                              НИКОМУ НЕ ГОВОРИТЕ КОД!
+                                              Это пароль по умолчанию для Peakspace.
+                                              Важно изменить этот пароль в целях вашей безопасности.
+                                                                               
+                                              Welcome to Peakspace!
+                                              """);
+            mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
+            javaMailSender.send(mimeMessage);
+            System.out.println("Mail sent to " + user.getEmail());
+        } catch (MessagingException e) {
+            throw new NotActiveException();
+        }
+    }
 
         @Override
         public SimpleResponse forgot(String email) throws MessagingException {

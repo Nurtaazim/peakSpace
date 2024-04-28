@@ -12,7 +12,6 @@ import peakspace.entities.User;
 
 import java.util.List;
 
-
  @Repository
  public interface PublicationRepository extends JpaRepository<Publication,Long> {
 
