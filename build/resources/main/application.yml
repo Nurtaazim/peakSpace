@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: mirlan001m.
+    password: 1234
     url: jdbc:postgresql://localhost:5432/peakspace
     username: postgres
   mail:

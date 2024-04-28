@@ -43,6 +43,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findByEmail(email).orElseThrow(() ->
                 new NotFoundException("Нет такой : " + email + " в базе !"));
     }
+    @Query("select u from  User u where u.userName like :email")
+    Optional<User> getByUserName(String email);
+
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
            "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")
