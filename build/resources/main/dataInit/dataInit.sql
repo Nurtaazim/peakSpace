@@ -25,7 +25,7 @@ values
     (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false),
     (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false),
     (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false),
-    (15, 'JamesJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false),
+    (15, 'JamedssJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false),
     (16, 'OliviaGarcia', 'olivia.garcia@example.com', '$2a$12$encodedPassword6', false),
     (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false),
     (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false),
