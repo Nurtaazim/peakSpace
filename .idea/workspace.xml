@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="remove empty lines2">
-      <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/NotificationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/peak-space-b12.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/peak-space-b12.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/peak-space-b12.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/peak-space-b12.test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/peakspace.peak-space-b12.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/peakspace.peak-space-b12.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/LikeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/LikeServiceImpl.java" afterDir="false" />
-    </list>
+    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="remove empty lines2" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
