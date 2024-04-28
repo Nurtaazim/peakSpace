@@ -236,7 +236,7 @@ public class PostServiceImpl implements PostService {
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
                 .countFriends(user.getChapters().size())
-                .countPablics(user.getPablicProfiles().size())
+                .countPablics(user.getPublications().size())
                 .publications(publics)
                 .build();
     }

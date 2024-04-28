@@ -35,7 +35,10 @@ public class PublicationServiceImpl implements PublicationService {
         Map<Long, String> publics = user.getPublications().stream()
                 .collect(Collectors.toMap(
                         Publication::getId,
-                        publication -> publication.getLinkPublications().getFirst().getLink()
+                        publication -> {
+                            List<Link_Publication> linkPublications = publication.getLinkPublications();
+                            return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
+                        }
                 ));
         return GetAllPostsResponse.builder()
                 .cover(user.getProfile().getCover())
@@ -44,7 +47,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
                 .countFriends(user.getChapters().size())
-                .countPablics(user.getPablicProfiles().size())
+                .countPablics(user.getPablicProfiles().getUsers().size())
                 .publications(publics)
                 .build();
 

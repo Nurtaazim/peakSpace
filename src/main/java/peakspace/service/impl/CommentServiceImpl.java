@@ -119,5 +119,4 @@ public class CommentServiceImpl implements CommentService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
-
 }
