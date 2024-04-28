@@ -4,11 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.entities.Publication;
-import peakspace.entities.Like;
-import peakspace.entities.User;
-import peakspace.entities.Comment;
-import peakspace.entities.Story;
+import peakspace.entities.*;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.LikeRepository;
@@ -37,6 +33,11 @@ public class LikeServiceImpl implements LikeService {
         for (Like like : likes) {
             if (Objects.equals(like.getUser().getId(), currentUser.getId())){
                 likeRepository.delete(like);
+                for (Notification notification : publication.getOwner().getNotifications()) {
+                    if (notification.getLike().getUser().getId().equals(currentUser.getId())){
+
+                    }
+                }
                 return;
             }
         }
@@ -44,6 +45,10 @@ public class LikeServiceImpl implements LikeService {
         like.setUser(currentUser);
         likeRepository.save(like);
         publication.getLikes().add(like);
+        Notification notification = new Notification();
+        notification.setLike(like);
+        notification.setUserNotification(currentUser);
+        notification.setSenderUserId(publication.getOwner().getId());
     }
 
     @Override
