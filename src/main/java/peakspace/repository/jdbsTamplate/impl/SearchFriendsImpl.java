@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import peakspace.dto.response.FriendsResponse;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
