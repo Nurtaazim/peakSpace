@@ -295,16 +295,55 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public SimpleResponse forgot(String email) throws MessagingException {
-        User user = userRepository.getByEmail(email);
-        userName = user.getEmail();
+        @Override
+        public SimpleResponse forgot(String email) throws MessagingException {
+            userRepository.getByEmail(email);
+            int randomCode = generateRandomCode();
+            sendVerificationEmail(email, randomCode);
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Код подтверждения был отправлен на вашу почту.")
+                    .build();
+        }
+
+        @Override
+        public SimpleResponse randomCode(int codeRequest, String email){
+            int randomCode = getGeneratedCode(email);
+            if (randomCode != codeRequest) {
+                throw new BadRequestException("Неправильный код !!!");
+            }
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Код правильный !!!")
+                    .build();
+        }
+
+        @Override
+        @Transactional
+        public UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest, String email){
+            if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())) {
+                throw new BadRequestException(" Пароль не корректный !");
+            }
+            User user = userRepository.getByEmail(email);
+            user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
+            userRepository.save(user);
+            return UpdatePasswordResponse.builder()
+                    .id(user.getId())
+                    .email(user.getEmail())
+                    .token(jwtService.createToken(user))
+                    .build();
+        }
+
+    private int generateRandomCode() {
+        Random random = new Random();
+        return random.nextInt(9000) + 1000;
+    }
+
+    private void sendVerificationEmail(String email, int randomCode) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
         mimeMessageHelper.setTo(email);
-        Random random = new Random();
-        randomCode = random.nextInt(9000) + 1000; // генерация случайного числа от 1000 до 9999
         String message = "<html>"
                 + "<head>"
                 + "<style>"
@@ -335,38 +374,16 @@ public class UserServiceImpl implements UserService {
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Забыли пароль?");
         javaMailSender.send(mimeMessage);
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message("Код подтверждения был отправлен на вашу почту.")
-                .build();
     }
 
-    @Override
-    public SimpleResponse randomCode(int codeRequest) throws MessagingException {
-        if (randomCode != codeRequest) {
-            throw new MessagingException("Не правильный код !!!");
+    private int getGeneratedCode(String email) {
+        User user = userRepository.getByEmail(email);
+        if (user == null) {
+            throw new NotFoundException("Пользователь с указанным email не найден");
         }
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message("Код правильный !!!")
-                .build();
+        return generateRandomCode();
     }
 
-    @Override
-    @Transactional
-    public UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException {
-        if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())) {
-            throw new MessagingException("Пароль не корректный !");
-        }
-        User user = userRepository.getByEmail(userName);
-        user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
-        userRepository.save(user);
-        return UpdatePasswordResponse.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .token(jwtService.createToken(user))
-                .build();
-    }
 
     @Override
     @Transactional

@@ -16,9 +16,9 @@ public interface UserService {
 
     SimpleResponse forgot(String email) throws MessagingException;
 
-    SimpleResponse randomCode(int codeRequest) throws BadRequestException, MessagingException;
+    SimpleResponse randomCode(int codeRequest,String email) throws BadRequestException;
 
-    UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
+    UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest,String email);
 
     SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 

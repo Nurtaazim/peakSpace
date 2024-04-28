@@ -8,7 +8,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Builder
-@AllArgsConstructor
 @Getter
 @Setter
 public class CommentResponse{
@@ -20,7 +19,6 @@ public class CommentResponse{
     private String comment;
     private long countLike;
     private ZonedDateTime createdAt;
-    private List<InnerCommentResponse> innerComments;
 
     public CommentResponse(Long id, Long userId, String avatar, String userName, String comment, long countLike, ZonedDateTime createdAt) {
         this.id = id;
