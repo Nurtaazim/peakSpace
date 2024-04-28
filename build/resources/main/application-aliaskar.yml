@@ -28,7 +28,7 @@ spring:
     sql:
         init:
             data-locations: classpath:dataInit/dataInit.sql
-            mode: always
+            mode: never
 
 cloud:
     aws:
