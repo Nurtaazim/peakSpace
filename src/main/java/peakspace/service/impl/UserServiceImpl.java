@@ -14,41 +14,17 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.request.SignInRequest;
-import peakspace.dto.request.SignUpRequest;
+import peakspace.config.jwt.JwtService;
+import peakspace.dto.request.*;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
-import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.SubscriptionResponse;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.ResponseWithGoogle;
-import peakspace.entities.User;
-import peakspace.entities.Notification;
 import peakspace.enums.Choise;
-import peakspace.config.jwt.JwtService;
-import peakspace.entities.Chapter;
-import peakspace.entities.PablicProfile;
-import peakspace.entities.Profile;
 import peakspace.enums.Role;
-import peakspace.exception.BadRequestException;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.NotFoundException;
-import peakspace.exception.NotActiveException;
-import peakspace.exception.FirebaseAuthException;
-import peakspace.exception.InvalidConfirmationCode;
-import peakspace.repository.ChapterRepository;
-import peakspace.repository.PablicProfileRepository;
-import peakspace.repository.PublicationRepository;
-import peakspace.repository.UserRepository;
-import peakspace.repository.ProfileRepository;
+import peakspace.exception.*;
+import peakspace.repository.*;
 import peakspace.service.UserService;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -228,8 +204,8 @@ public class UserServiceImpl implements UserService {
                          "<body>\n" +
                          "    <div class=\"container\">\n" +
                          "        <h2>Confirmation code!</h2>\n" +
-                         "        <h2>ПРИВЕТ! "+fullName+"</h2>\n" +
-                         "        <h3>Код подтверждения: "+randomCode+"</h3>\n" +
+                         "        <h2>ПРИВЕТ! " + fullName + "</h2>\n" +
+                         "        <h3>Код подтверждения: " + randomCode + "</h3>\n" +
                          "        <p>НИКОМУ НЕ СООБЩАЙТЕ ЭТОТ КОД!</p>\n" +
                          "        <p>Это код для регистрации в Peak Space</p>\n" +
                          "        <p>Этот код действителен только 5 минут!</p>\n" +
@@ -274,13 +250,13 @@ public class UserServiceImpl implements UserService {
             mimeMessageHelper.setTo(user.getEmail());
             mimeMessageHelper.setText("""
                                               Hi """ + user.getUsername() + """
-                                              
-                                                """
-                                                +
-                                                user.getPassword()
-                                                +
-                                                """
-                                              
+                                                                                            
+                                              """
+                                      +
+                                      user.getPassword()
+                                      +
+                                      """
+                                                                                            
                                               НИКОМУ НЕ ГОВОРИТЕ КОД!
                                               Это пароль по умолчанию для Peakspace.
                                               Важно изменить этот пароль в целях вашей безопасности.
@@ -295,44 +271,44 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-        @Override
-        public SimpleResponse forgot(String email) throws MessagingException {
-            userRepository.getByEmail(email);
-            int randomCode = generateRandomCode();
-            sendVerificationEmail(email, randomCode);
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message("Код подтверждения был отправлен на вашу почту.")
-                    .build();
-        }
+    @Override
+    public SimpleResponse forgot(String email) throws MessagingException {
+        userRepository.getByEmail(email);
+        int randomCode = generateRandomCode();
+        sendVerificationEmail(email, randomCode);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Код подтверждения был отправлен на вашу почту.")
+                .build();
+    }
 
-        @Override
-        public SimpleResponse randomCode(int codeRequest, String email){
-            int randomCode = getGeneratedCode(email);
-            if (randomCode != codeRequest) {
-                throw new BadRequestException("Неправильный код !!!");
-            }
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message("Код правильный !!!")
-                    .build();
+    @Override
+    public SimpleResponse randomCode(int codeRequest, String email) {
+        int randomCode = getGeneratedCode(email);
+        if (randomCode != codeRequest) {
+            throw new BadRequestException("Неправильный код !!!");
         }
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Код правильный !!!")
+                .build();
+    }
 
-        @Override
-        @Transactional
-        public UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest, String email){
-            if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())) {
-                throw new BadRequestException(" Пароль не корректный !");
-            }
-            User user = userRepository.getByEmail(email);
-            user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
-            userRepository.save(user);
-            return UpdatePasswordResponse.builder()
-                    .id(user.getId())
-                    .email(user.getEmail())
-                    .token(jwtService.createToken(user))
-                    .build();
+    @Override
+    @Transactional
+    public UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest, String email) {
+        if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())) {
+            throw new BadRequestException(" Пароль не корректный !");
         }
+        User user = userRepository.getByEmail(email);
+        user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
+        userRepository.save(user);
+        return UpdatePasswordResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .token(jwtService.createToken(user))
+                .build();
+    }
 
     private int generateRandomCode() {
         Random random = new Random();
@@ -345,32 +321,32 @@ public class UserServiceImpl implements UserService {
         mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
         mimeMessageHelper.setTo(email);
         String message = "<html>"
-                + "<head>"
-                + "<style>"
-                + "body {"
-                + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
-                + "    background-size: cover;"
-                + "    background-position: center;"
-                + "    color: #ffffff;"
-                + "    font-family: Arial, sans-serif;"
-                + "}"
-                + "h2 {"
-                + "    color: #ffcc00;"
-                + "}"
-                + "h3 {"
-                + "    color: #ff0000;"
-                + "}"
-                + "</style>"
-                + "</head>"
-                + "<body>"
-                + "<div style=\"text-align: center; padding: 50px;\">"
-                + "<h2>Забыли пароль?</h2>"
-                + "<p>Вы запросили сброс пароля для учетной записи на сайте. Ваш код подтверждения:</p>"
-                + "<h3>Код подтверждения: " + randomCode + "</h3>"
-                + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
+                         + "<head>"
+                         + "<style>"
+                         + "body {"
+                         + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
+                         + "    background-size: cover;"
+                         + "    background-position: center;"
+                         + "    color: #ffffff;"
+                         + "    font-family: Arial, sans-serif;"
+                         + "}"
+                         + "h2 {"
+                         + "    color: #ffcc00;"
+                         + "}"
+                         + "h3 {"
+                         + "    color: #ff0000;"
+                         + "}"
+                         + "</style>"
+                         + "</head>"
+                         + "<body>"
+                         + "<div style=\"text-align: center; padding: 50px;\">"
+                         + "<h2>Забыли пароль?</h2>"
+                         + "<p>Вы запросили сброс пароля для учетной записи на сайте. Ваш код подтверждения:</p>"
+                         + "<h3>Код подтверждения: " + randomCode + "</h3>"
+                         + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
+                         + "</div>"
+                         + "</body>"
+                         + "</html>";
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Забыли пароль?");
         javaMailSender.send(mimeMessage);
@@ -489,7 +465,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword){
+    public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword) {
         getCurrentUser();
         if (sample.equals(Choise.Hashtag) || sample.equals(Choise.Хештеги)) {
             return publicationRepository.findAllHashtags(keyword);
@@ -616,6 +592,7 @@ public class UserServiceImpl implements UserService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
+
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws MessagingException {
         User user;
@@ -648,32 +625,32 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(ZonedDateTime.now());
         user.setBlockAccount(true);
         String message = "<html>"
-                + "<head>"
-                + "<style>"
-                + "body {"
-                + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
-                + "    background-size: cover;"
-                + "    background-position: center;"
-                + "    color: #ffffff;"
-                + "    font-family: Arial, sans-serif;"
-                + "}"
-                + "h2 {"
-                + "    color: #ffcc00;"
-                + "}"
-                + "h3 {"
-                + "    color: #ff0000;"
-                + "}"
-                + "</style>"
-                + "</head>"
-                + "<body>"
-                + "<div style=\"text-align: center; padding: 50px;\">"
-                + "<h2>Sign Up</h2>"
-                + "<p>Ваш код подтверждения для регистрации:</p>"
-                + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
-                + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
+                         + "<head>"
+                         + "<style>"
+                         + "body {"
+                         + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
+                         + "    background-size: cover;"
+                         + "    background-position: center;"
+                         + "    color: #ffffff;"
+                         + "    font-family: Arial, sans-serif;"
+                         + "}"
+                         + "h2 {"
+                         + "    color: #ffcc00;"
+                         + "}"
+                         + "h3 {"
+                         + "    color: #ff0000;"
+                         + "}"
+                         + "</style>"
+                         + "</head>"
+                         + "<body>"
+                         + "<div style=\"text-align: center; padding: 50px;\">"
+                         + "<h2>Sign Up</h2>"
+                         + "<p>Ваш код подтверждения для регистрации:</p>"
+                         + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
+                         + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
+                         + "</div>"
+                         + "</body>"
+                         + "</html>";
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
@@ -682,7 +659,8 @@ public class UserServiceImpl implements UserService {
         return "Код подтверждения был отправлен на вашу почту.";
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
         User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("\"Время истекло попробуйте снова!\""));
         if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
@@ -692,9 +670,9 @@ public class UserServiceImpl implements UserService {
                     .httpStatus(HttpStatus.OK)
                     .message("Вы успешно зарегистрировались!")
                     .build();
-        }
-        else throw new MessagingException("Не правильный код!");
+        } else throw new MessagingException("Не правильный код!");
     }
+
     public void startTask() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
