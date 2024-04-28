@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode" />
+    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode">
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,6 +20,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -33,15 +38,11 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="peak-space-b12" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="peak-space-b12" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="compileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
               </path>
             </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -55,9 +56,13 @@
         <option value="com.haulmont.jpb.JpaRepository" />
         <option value="JavaScript File" />
         <option value="HTML File" />
+<<<<<<< HEAD
         <option value="Record" />
         <option value="Interface" />
         <option value="Class" />
+=======
+        <option value="Interface" />
+>>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
       </list>
     </option>
   </component>
@@ -78,7 +83,11 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/regst_with_google" />
+<<<<<<< HEAD
+        <entry key="$PROJECT_DIR$" value="favorite" />
+=======
+        <entry key="$PROJECT_DIR$" value="main" />
+>>>>>>> 4a88e6b2952b1014c72ca67fa30606fd87b1318d
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -99,8 +108,8 @@
     <option name="isToolWindowVisible" value="false" />
   </component>
   <component name="KubernetesApiProvider">{
-  &quot;isMigrated&quot;: true
-}</component>
+    &quot;isMigrated&quot;: true
+    }</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -150,8 +159,13 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+<<<<<<< HEAD
     "Spring Boot.PeakSpaceB12Application.executor": "Run",
-    "git-widget-placeholder": "feature/with__google",
+    "git-widget-placeholder": "#34 on feature/add-comment",
+=======
+    "Spring Boot.PeakSpaceB12Application.executor": "Coverage",
+    "git-widget-placeholder": "feature/page-main",
+>>>>>>> aa7ed06c4eee7986523df9125f133abf68702b88
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Applications/peak-space-b12/src/main/resources",
     "node.js.detected.package.eslint": "true",
@@ -159,8 +173,36 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
+<<<<<<< HEAD
 >>>>>>> 7d1f1292bf39e1e4e9c54e887a8efd51509aa2ee
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build peak-space-b12.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.PeakSpaceB12Application.executor&quot;: &quot;Coverage&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/favoriiite&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/DELLG/IdeaProjects/peak-space-b12/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+>>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
   },
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
@@ -192,8 +234,12 @@
       <option name="ACTIVE_PROFILES" value="mirlan" />
 =======
       <option name="ACTIVE_PROFILES" value="aliaskar" />
+<<<<<<< HEAD
 >>>>>>> 7d1f1292bf39e1e4e9c54e887a8efd51509aa2ee
       <module name="peak-space-b12.main" />
+=======
+      <module name="peakspace.peak-space-b12.main" />
+>>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
       <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="peakspace.PeakSpaceB12Application" />
       <method v="2">
@@ -245,7 +291,12 @@
       <workItem from="1713956195057" duration="1314000" />
       <workItem from="1714055148394" duration="768000" />
       <workItem from="1714056391842" duration="300000" />
+<<<<<<< HEAD
       <workItem from="1714295339136" duration="3163000" />
+=======
+      <workItem from="1714206404139" duration="9306000" />
+      <workItem from="1714216616585" duration="7211000" />
+>>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
     </task>
     <task id="LOCAL-00001" summary="HomePage + cleanCode">
       <option name="closed" value="true" />
@@ -255,7 +306,31 @@
       <option name="project" value="LOCAL" />
       <updated>1714056501460</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="HomePage + cleanCode">
+      <option name="closed" value="true" />
+      <created>1714113691337</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1714113691337</updated>
+    </task>
+    <task id="LOCAL-00003" summary="remove empty lines">
+      <option name="closed" value="true" />
+      <created>1714114860007</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1714114860008</updated>
+    </task>
+    <task id="LOCAL-00004" summary="remove empty lines2">
+      <option name="closed" value="true" />
+      <created>1714114920314</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1714114920314</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,8 +348,40 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="r" />
     <MESSAGE value="HomePage + cleanCode" />
-    <option name="LAST_COMMIT_MESSAGE" value="HomePage + cleanCode" />
+<<<<<<< HEAD
+    <MESSAGE value="Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/../peak-space-b12/src/main/java/peakspace/service/UserService.java</url>
+          <line>35</line>
+          <properties class="peakspace.service.UserService">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Ts" />
+    <MESSAGE value="main have some changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="main have some changes" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+=======
+    <MESSAGE value="remove empty lines" />
+    <MESSAGE value="remove empty lines2" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove empty lines2" />
+>>>>>>> 4a88e6b2952b1014c72ca67fa30606fd87b1318d
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/peak_space_b12$PeakSpaceB12Application.ic" NAME="PeakSpaceB12Application Coverage Results" MODIFIED="1713864745796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
