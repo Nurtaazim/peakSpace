@@ -4,13 +4,19 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.entities.*;
+import peakspace.entities.Publication;
+import peakspace.entities.User;
+import peakspace.entities.Like;
+import peakspace.entities.Notification;
+import peakspace.entities.Comment;
+import peakspace.entities.Story;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.LikeRepository;
 import peakspace.repository.UserRepository;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.StoryRepository;
+import peakspace.repository.NotificationRepository;
 import peakspace.service.LikeService;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +29,7 @@ public class LikeServiceImpl implements LikeService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final StoryRepository storyRepository;
+    private final NotificationRepository notificationRepository;
     @Override
     @Transactional
     public void addLikeToPost(Long postId) {
@@ -35,7 +42,7 @@ public class LikeServiceImpl implements LikeService {
                 likeRepository.delete(like);
                 for (Notification notification : publication.getOwner().getNotifications()) {
                     if (notification.getLike().getUser().getId().equals(currentUser.getId())){
-
+                        notificationRepository.delete(notification);
                     }
                 }
                 return;
@@ -46,6 +53,7 @@ public class LikeServiceImpl implements LikeService {
         likeRepository.save(like);
         publication.getLikes().add(like);
         Notification notification = new Notification();
+        notificationRepository.save(notification);
         notification.setLike(like);
         notification.setUserNotification(currentUser);
         notification.setSenderUserId(publication.getOwner().getId());
@@ -61,6 +69,11 @@ public class LikeServiceImpl implements LikeService {
         for (Like like : likes) {
             if (Objects.equals(like.getUser().getId(), currentUser.getId())){
                 likeRepository.delete(like);
+                for (Notification notification : comment.getUser().getNotifications()) {
+                    if (notification.getLike().getUser().getId().equals(currentUser.getId())){
+                        notificationRepository.delete(notification);
+                    }
+                }
                 return;
             }
         }
@@ -68,6 +81,11 @@ public class LikeServiceImpl implements LikeService {
         like.setUser(currentUser);
         likeRepository.save(like);
         comment.getLikes().add(like);
+        Notification notification = new Notification();
+        notificationRepository.save(notification);
+        notification.setLike(like);
+        notification.setUserNotification(currentUser);
+        notification.setSenderUserId(comment.getUser().getId());
     }
 
     @Override
@@ -80,6 +98,11 @@ public class LikeServiceImpl implements LikeService {
         for (Like like : likes) {
             if (Objects.equals(like.getUser().getId(), currentUser.getId())){
                 likeRepository.delete(like);
+                for (Notification notification : story.getOwner().getNotifications()) {
+                    if (notification.getLike().getUser().getId().equals(currentUser.getId())){
+                        notificationRepository.delete(notification);
+                    }
+                }
                 return;
             }
         }
@@ -87,6 +110,11 @@ public class LikeServiceImpl implements LikeService {
         like.setUser(currentUser);
         likeRepository.save(like);
         story.getLikes().add(like);
+        Notification notification = new Notification();
+        notificationRepository.save(notification);
+        notification.setLike(like);
+        notification.setUserNotification(currentUser);
+        notification.setSenderUserId(story.getOwner().getId());
     }
 
 }
