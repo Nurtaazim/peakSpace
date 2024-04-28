@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
 @Slf4j
-
 public class StorageAPI {
     private final StorageService service;
 
@@ -31,7 +29,6 @@ public class StorageAPI {
         log.error(service.getUrl(key));
         return new ResponseEntity<>(service.uploadFile(file,key), HttpStatus.OK);
     }
-
 
     @GetMapping("/download/{fileName}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
@@ -49,4 +46,5 @@ public class StorageAPI {
     public ResponseEntity<String> deleteFile(@RequestParam String fileName) {
         return new ResponseEntity<>(service.deleteFile(fileName), HttpStatus.OK);
     }
+
 }
