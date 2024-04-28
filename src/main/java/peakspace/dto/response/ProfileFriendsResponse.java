@@ -19,8 +19,8 @@ public class ProfileFriendsResponse {
     private String aboutYourSelf;
     private String profession;
 
-    private Long friendsSize;
-    private Long pablicationsSize;
+    private int friendsSize;
+    private int pablicationsSize;
 
     public ProfileFriendsResponse(Long id, String avatar, String cover, String aboutYourSelf, String profession) {
         this.id = id;

@@ -39,10 +39,10 @@ import peakspace.exception.NotFoundException;
 import peakspace.exception.NotActiveException;
 import peakspace.exception.FirebaseAuthException;
 import peakspace.exception.InvalidConfirmationCode;
-import peakspace.repository.ChapterRepository;
-import peakspace.repository.PablicProfileRepository;
-import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
+import peakspace.repository.PublicProfileRepository;
+import peakspace.repository.ChapterRepository;
+import peakspace.repository.PublicationRepository;
 import peakspace.repository.ProfileRepository;
 import peakspace.service.UserService;
 import java.time.ZonedDateTime;
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     private final JavaMailSender javaMailSender;
     private final JwtService jwtService;
     private final ChapterRepository chapterRepository;
-    private final PablicProfileRepository pablicProfileRepository;
+    private final PublicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
     private String userName;
@@ -494,18 +494,17 @@ public class UserServiceImpl implements UserService {
 
         User currentUser = getCurrentUser();
         ProfileFriendsResponse friendsResponse = userRepository.getId(foundUserId);
-        long friendSize = 0L;
-        long pablicSize = 0L;
-        User founUser = userRepository.findById(foundUserId).orElseThrow(() -> new NotFoundException("Нет такой пользователь !"));
-        for (Chapter chapter : founUser.getChapters()) {
-            friendSize += getFriendsSize(chapter.getId());
-        }
 
-        for (PablicProfile pablicProfile : founUser.getPablicProfiles()) {
-            pablicSize += getFriendsPublicSize(pablicProfile.getId());
-        }
+        User foundUser = userRepository.findById(foundUserId)
+                .orElseThrow(() -> new NotFoundException("Нет такого пользователя!"));
+
         List<Long> friends = currentUser.getSearchFriendsHistory();
         friends.add(foundUserId);
+
+        int pablicationsSize = 0;
+        if (foundUser.getPablicProfiles() != null && foundUser.getPablicProfiles().getUsers() != null) {
+            pablicationsSize = foundUser.getPablicProfiles().getUsers().size();
+        }
 
         return ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
@@ -513,8 +512,8 @@ public class UserServiceImpl implements UserService {
                 .cover(friendsResponse.getCover())
                 .aboutYourSelf(friendsResponse.getAboutYourSelf())
                 .profession(friendsResponse.getProfession())
-                .friendsSize(friendSize)
-                .pablicationsSize(pablicSize)
+                .friendsSize(foundUser.getChapters().size())
+                .pablicationsSize(pablicationsSize)
                 .build();
     }
 
@@ -573,16 +572,6 @@ public class UserServiceImpl implements UserService {
         Collections.reverse(searchUserResponses);
 
         return searchUserResponses;
-    }
-
-    private long getFriendsSize(Long foundUserID) {
-        Chapter chapter = chapterRepository.findByID(foundUserID);
-        return chapter.getFriends().size();
-    }
-
-    private long getFriendsPublicSize(Long foundUserID) {
-        PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
-        return pablicProfile.getPublications().size();
     }
 
     private User getCurrentUser() {

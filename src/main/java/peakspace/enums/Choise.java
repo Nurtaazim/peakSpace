@@ -6,6 +6,10 @@ public enum Choise {
     Hashtag,
     Пользователи,
     Группы,
-    Хештеги
+    Хештеги,
+    Video,
+    Photo,
+    Фотографии,
+    Видео
 
 }

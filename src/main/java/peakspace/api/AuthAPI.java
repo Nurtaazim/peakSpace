@@ -22,21 +22,21 @@ public class AuthAPI {
 
     private final UserService userService;
 
-    @Secured("USER")
+//    @Secured("USER")
     @PostMapping("/forgot")
     @Operation(summary = "Отправление сообщение код  !")
     public SimpleResponse forgotPassword(@RequestParam("email") String email) throws MessagingException {
         return userService.forgot(email);
     }
 
-    @Secured("USER")
+//    @Secured("USER")
     @PostMapping("/code")
     @Operation(summary = " Сравнивание кода правильности !")
     public SimpleResponse code(@RequestParam("code") int codeRequest) throws BadRequestException, MessagingException {
         return userService.randomCode(codeRequest);
     }
 
-    @Secured("USER")
+//    @Secured("USER")
     @PostMapping("/newPassword")
     @Operation(summary = " Изменение пароля  !")
     public UpdatePasswordResponse newPassword(@RequestBody PasswordRequest passwordRequest) throws MessagingException {
