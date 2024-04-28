@@ -3,7 +3,6 @@ package peakspace.service;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.PostResponse;
 import peakspace.dto.response.SimpleResponse;
 
 import java.util.List;

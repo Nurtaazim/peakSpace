@@ -1,6 +1,7 @@
 package peakspace.service.impl;
 
 
+import com.amazonaws.services.chimesdkmessaging.model.BadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
@@ -15,14 +16,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.config.jwt.JwtService;
+
 import peakspace.dto.request.*;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
-import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.*;
-import peakspace.repository.*;
+
+import peakspace.exception.IllegalArgumentException;
+import peakspace.repository.UserRepository;
+import peakspace.repository.ChapterRepository;
+import peakspace.repository.PablicProfileRepository;
+import peakspace.repository.PublicationRepository;
+import peakspace.repository.ProfileRepository;
+import peakspace.repository.jdbsTamplate.SearchFriends;
+import peakspace.service.ChapterService;
 import peakspace.service.UserService;
 
 import java.time.ZonedDateTime;
@@ -33,6 +42,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +56,8 @@ public class UserServiceImpl implements UserService {
     private final PablicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
+    private final SearchFriends searchFriends;
+    private final ChapterService chapterService;
     private String userName;
     private int randomCode;
 
@@ -573,6 +585,15 @@ public class UserServiceImpl implements UserService {
         Collections.reverse(searchUserResponses);
 
         return searchUserResponses;
+    }
+
+    @Override
+    public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
+        return FriendsPageResponse.builder()
+                .userId(userId)
+                .chapters(chapterService.getAllChaptersByUserId(userId))
+                .friendsResponsesList(searchFriends.getAllFriendsWithJDBCTemplate(userId, chapterId, search))
+                .build();
     }
 
     private long getFriendsSize(Long foundUserID) {
