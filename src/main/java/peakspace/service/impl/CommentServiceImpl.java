@@ -20,7 +20,6 @@ import peakspace.repository.UserRepository;
 import peakspace.service.CommentService;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,7 +87,7 @@ public class CommentServiceImpl implements CommentService {
         editComment.setMessage(comment.getMessage());
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Удачно изменено сообщение !")
+                .message(" Комментарий успешно обновлен. !")
                 .build();
     }
 
@@ -98,7 +97,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.delete(deleteComment);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Удачно удалено сообщение !")
+                .message(" Комментарий успешно удален !")
                 .build();
     }
 
