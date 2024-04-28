@@ -349,7 +349,7 @@ public class UserServiceImpl implements UserService {
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
         return FriendsPageResponse.builder()
                 .userId(userId)
-                .chapters(chapterRepository.getChaptersById(userId))
+//                .chapters(chapterRepository.getChaptersById(userId))
                 .friendsResponsesList(searchFriends.getAllFriendsWithJDBCTemplate(userId, chapterId, search))
                 .build();
     }

@@ -20,9 +20,8 @@ public class SearchFriendsImpl implements SearchFriends {
         List<Object> params = new ArrayList<>();
 
         if (search != null) {
-            str = " AND u.user_name LIKE CONCAT('%', ?::text, '%') OR CONCAT(up.first_name, up.last_name, up.patronymic_name) LIKE CONCAT('%', ?::text, '%'))";
-            params.add(search);
-            params.add(search);
+            str = " and u.user_name ilike CONCAT('%"+search+"%') " +
+                  "or CONCAT(up.first_name, up.last_name, up.patronymic_name) ilike CONCAT('%"+search+"%')";
         }
 
         String sql = """
@@ -45,6 +44,5 @@ public class SearchFriendsImpl implements SearchFriends {
                 .aboutMe(rs.getString("about_your_self"))
                 .build());
     }
-
 
 }
