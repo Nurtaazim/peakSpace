@@ -11,8 +11,7 @@ import peakspace.entities.User;
 
 import java.util.List;
 
-
-@Repository
+ @Repository
  public interface PublicationRepository extends JpaRepository<Publication,Long> {
 
   @Query("SELECT new peakspace.dto.response.SearchHashtagsResponse(p.id, l) FROM Publication p INNER JOIN p.linkPublications l WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
