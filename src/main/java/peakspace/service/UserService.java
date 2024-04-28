@@ -51,4 +51,3 @@ public interface UserService {
     SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 }
 
-}
