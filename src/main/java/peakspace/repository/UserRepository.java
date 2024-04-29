@@ -15,7 +15,6 @@ import peakspace.entities.User;
 import peakspace.exception.NotFoundException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -24,25 +23,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getReferenceByEmail(String email);
 
-    default String generatorDefaultPassword(int minLength, int maxLength) {
-        Random random = new Random();
-        int length = +random.nextInt(maxLength - minLength + 1);
-        StringBuilder sb = new StringBuilder(length);
-        String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
-            sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
-        }
-        return sb.toString();
-    }
 
     @Query("select u from User u where u.email =:email")
     Optional<User> findByEmail(String email);
 
     default User getByEmail(String email) {
         return findByEmail(email).orElseThrow(() ->
-                new NotFoundException("Нет такой : " + email + " в базе !"));
+                new NotFoundException("Пользователь с email '" + email + "' не найден в базе!"));
     }
+    @Query("select u from  User u where u.userName like :email")
+    Optional<User> getByUserName(String email);
+
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
            "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")

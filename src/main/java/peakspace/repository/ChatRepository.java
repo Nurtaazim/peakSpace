@@ -8,6 +8,7 @@ import peakspace.dto.response.ChatResponse;
 import peakspace.entities.Chat;
 import peakspace.entities.MessageContent;
 import peakspace.entities.User;
+
 import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
@@ -36,7 +37,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 
     @Query("select mc from Chat c " +
             "join c.messageContents mc " +
-            "where (c.sender = :user1 AND c.receiver = :user2) or" +
+            "where (c.sender = :user1 and c.receiver = :user2) or " +
             "(c.sender = :user2 and c.receiver = :user1)")
     List<MessageContent> findMessagesBetweenUsers(User user1, User user2);
 

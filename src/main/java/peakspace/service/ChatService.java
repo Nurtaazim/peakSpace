@@ -1,6 +1,5 @@
 package peakspace.service;
 
-import peakspace.dto.request.ChatRequest;
 import peakspace.dto.response.ChatResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UserChatResponse;
@@ -11,13 +10,13 @@ import java.util.List;
 
 public interface ChatService {
 
-    Chat createChatBetweenUsers(User currentUser,User userReceiver);
+    Chat createChatBetweenUsers(User currentUser, User userReceiver);
 
-    void sendMessage(Long chatId,User sender, String content);
+    void sendMessage(Long chatId, User sender, String content);
 
     List<UserChatResponse> findAllBy();
 
-    ChatResponse findChatId(Long currentUserId,Long foundUserId);
+    ChatResponse findChatId(Long currentUserId, Long foundUserId);
 
     SimpleResponse deleteChatId(Long chatId);
 

@@ -47,7 +47,6 @@ public class PublicationAPI {
         return publicationService.getById(postId);
     }
 
-
     @Secured({"USER"})
     @GetMapping("/findAll/{friendId}")
     @Operation(summary = " Все публикации друга ! ")
@@ -68,8 +67,5 @@ public class PublicationAPI {
     public List<HomePageResponse> homePageResponses(){
         return publicationService.homePage();
     }
-
-
-
 
 }
