@@ -1,5 +1,17 @@
 package peakspace.entities;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.CascadeType;
 import lombok.Getter;
 import lombok.Setter;
 import peakspace.enums.Tematica;
@@ -18,9 +30,10 @@ public class PablicProfile {
     private String cover;
     private String avatar;
     private String pablicName;
+    private String descriptionPublic;
     @Enumerated(EnumType.STRING)
     private Tematica tematica;
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST}) //ManyToOne
     private User user;
     @ManyToMany
     private List<User> users;
