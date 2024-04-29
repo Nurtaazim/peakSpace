@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
+import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @RestController
@@ -47,6 +49,20 @@ public class PostApi {
     @Operation(summary = " Удаление фото из публикации !")
     public SimpleResponse deleteLink(@PathVariable Long linkId, @PathVariable Long postId) {
         return postService.deleteLinkFromPost(linkId, postId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Добавление поста на избранный !")
+    @PostMapping("/addToFavorite/{postId}")
+    public SimpleResponse addFavorite(@PathVariable Long postId) {
+        return postService.addFavorite(postId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Все избранные текущего пользователя !")
+    @GetMapping("/getAllFavoritePost")
+    public GetAllPostsResponse favorite(){
+        return postService.favorites();
     }
 
     @Secured("USER")

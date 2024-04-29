@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
+import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UserMarkResponse;
 import peakspace.entities.Link_Publication;
@@ -24,6 +25,8 @@ import peakspace.service.PostService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -133,11 +136,12 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
+
     @Override
-    public SimpleResponse notationFriend(Long postId,List<Long> foundUserId) {
+    public SimpleResponse notationFriend(Long postId, List<Long> foundUserId) {
         User owner = getCurrentUser();
         List<UserMarkResponse> foundUsers = userRepository.findFoundUserId(foundUserId);
-        if (foundUserId.contains(owner.getId())){
+        if (foundUserId.contains(owner.getId())) {
             throw new BadRequestException("Нельзя отмечать себя!");
         }
 
@@ -147,13 +151,13 @@ public class PostServiceImpl implements PostService {
         }
         for (UserMarkResponse userMarkResponse : foundUsers) {
             User markUser = userRepository.findById(userMarkResponse.id()).orElseThrow(() -> new NotFoundException("Пользователь не найден!"));
-            if (publication.getTagFriends().contains(markUser)){
+            if (publication.getTagFriends().contains(markUser)) {
                 throw new BadRequestException("Уже отмечали друга " + markUser.getThisUserName());
             }
             publication.getTagFriends().add(markUser);
 
             Notification notification = new Notification();
-            notification.setNotificationMessage("Хочет выложить фото с вами!");
+            notification.setNotificationMessage(" Хочет выложить фото с вами!");
             notification.setUserNotification(markUser);
             notification.setSeen(false);
             notification.setCreatedAt(ZonedDateTime.now());
@@ -194,4 +198,46 @@ public class PostServiceImpl implements PostService {
         else throw new AccessDeniedException("Forbidden 403");
     }
 
+
+    @Override
+    @Transactional
+    public SimpleResponse addFavorite(Long postId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        Publication post = publicationRepo.findPostById(postId);
+        if (user.getProfile().getFavorites().contains(post.getId())) {
+            user.getProfile().getFavorites().remove(post.getId());
+        } else {
+            user.getProfile().getFavorites().add(post.getId());
+        }
+        return SimpleResponse.builder()
+                .message("Successfully !")
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    @Override
+    public GetAllPostsResponse favorites() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+        List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
+
+        Map<Long, String> publics = allById.stream()
+                .collect(Collectors.toMap(
+                        Publication::getId,
+                        publication -> publication.getLinkPublications().getFirst().getLink()
+                ));
+
+        return GetAllPostsResponse.builder()
+                .cover(user.getProfile().getCover())
+                .avatar(user.getProfile().getAvatar())
+                .userName(user.getUsername())
+                .aboutMe(user.getProfile().getAboutYourSelf())
+                .major(user.getProfile().getProfession())
+                .countFriends(user.getChapters().size())
+                .countPablics(user.getPublications().size())
+                .publications(publics)
+                .build();
+    }
 }
