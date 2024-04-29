@@ -439,9 +439,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchResponse> searchFriends(Choise sample, String keyWord) {
         getCurrentUser();
-        if (sample.equals(Choise.User) || sample.equals(Choise.Пользователи)) {
+        if (sample.equals(Choise.User)) {
             return userRepository.findAllSearch(keyWord);
-        } else if (sample.equals(Choise.Groups) || sample.equals(Choise.Группы)) {
+        } else if (sample.equals(Choise.Groups)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
         throw new BadRequestException("Пллохой запрос !");
@@ -473,7 +473,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword) {
         getCurrentUser();
-        if (sample.equals(Choise.Hashtag) || sample.equals(Choise.Хештеги)) {
+        if (sample.equals(Choise.Hashtag)) {
             return publicationRepository.findAllHashtags(keyword);
         }
         throw new BadRequestException(" Плохой запрос !");

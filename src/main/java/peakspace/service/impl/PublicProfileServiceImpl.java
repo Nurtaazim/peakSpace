@@ -36,6 +36,12 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public SimpleResponse save(PublicRequest publicRequest) {
         User currentUser = getCurrentUser();
+        if (currentUser.getPablicProfiles() != null){
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message(" Профиль уже существует для данного пользователя !")
+                    .build();
+        }
         PablicProfile newPublic = new PablicProfile();
         newPublic.setCover(publicRequest.getCover());
         newPublic.setAvatar(publicRequest.getAvatar());
@@ -95,28 +101,31 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     @Override
     public List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise) {
-        User currentUser = getCurrentUser(); // Replace this with your logic to get the current user
+        User currentUser = getCurrentUser();
         Map<Long, String> publics;
 
-        switch (choise) {
-            case Photo:
-            case Фотографии:
-            case Video:
-            case Видео:
-                publics = currentUser.getPablicProfiles().getPublications().stream()
-                        .filter(publication -> {
-                            List<String> links = publication.getLinkPublications().stream()
-                                    .map(Link_Publication::getLink)
-                                    .collect(Collectors.toList()).reversed();
-                            return (choise == Choise.Photo || choise == Choise.Фотографии) && links.stream()
-                                    .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
-                                    || (choise == Choise.Video || choise == Choise.Видео) && links.stream()
-                                    .anyMatch(link -> link.endsWith(".mp4") || link.endsWith(".webm") || link.endsWith(".ogg"));
-                        })
-                        .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
-                break;
-            default:
-                publics = new HashMap<>();
+        if (currentUser.getPablicProfiles() != null) {
+            switch (choise) {
+                case Photos:
+                case Videos:
+
+                    publics = currentUser.getPablicProfiles().getPublications().stream()
+                            .filter(publication -> {
+                                List<String> links = publication.getLinkPublications().stream()
+                                        .map(Link_Publication::getLink)
+                                        .collect(Collectors.toList()).reversed();
+                                return (choise == Choise.Photos) && links.stream()
+                                        .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
+                                        || (choise == Choise.Videos) && links.stream()
+                                        .anyMatch(link -> link.endsWith(".mp4") || link.endsWith(".webm") || link.endsWith(".ogg"));
+                            })
+                            .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
+                    break;
+                default:
+                    publics = new HashMap<>();
+            }
+        } else {
+            publics = new HashMap<>();
         }
         return List.of(PublicPhotoAndVideoResponse.builder()
                 .publicationsPublic(publics)
