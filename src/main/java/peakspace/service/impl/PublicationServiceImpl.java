@@ -4,7 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.response.*;
+import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.PublicationResponse;
+import peakspace.dto.response.PublicationWithYouResponse;
+import peakspace.dto.response.LinkPublicationResponse;
+import peakspace.dto.response.MyPostResponse;
+import peakspace.dto.response.HomePageResponse;
+import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.CommentResponse;
 import peakspace.entities.User;
 import peakspace.entities.Publication;
 import peakspace.entities.Link_Publication;
@@ -40,6 +47,11 @@ public class PublicationServiceImpl implements PublicationService {
                             return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
                         }
                 ));
+
+        int countPablics = 0;
+        if (user.getPablicProfiles() != null) {
+            countPablics = user.getPablicProfiles().getUsers().size();
+        }
         return GetAllPostsResponse.builder()
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
@@ -47,7 +59,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
                 .countFriends(user.getChapters().size())
-                .countPablics(user.getPablicProfiles().getUsers().size())
+                .countPablics(countPablics)
                 .publications(publics)
                 .build();
 
