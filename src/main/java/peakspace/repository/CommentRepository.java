@@ -1,6 +1,8 @@
 package peakspace.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import peakspace.dto.response.CommentInnerResponse;
 import peakspace.dto.response.CommentResponse;
@@ -34,4 +36,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("select new peakspace.dto.response.CommentInnerResponse(c.id,c.user.id,c.user.profile.avatar,c.user.userName,c.message,(select count(l.id) from c.likes l),c.createdAt) from Comment c where c.id =:commentId")
     CommentInnerResponse getCommentResponseInner(Long commentId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from inner_comment where inner_comments_id =:innerCommentId",nativeQuery = true)
+    void deleteInnerComment(Long innerCommentId);
 }

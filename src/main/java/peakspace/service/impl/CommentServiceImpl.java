@@ -18,8 +18,8 @@ import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.CommentService;
-
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
 
         Notification notification = new Notification();
         notification.setSeen(false);
-        notification.setNotificationMessage(" Понравилась ваша сообщение ! ");
+        notification.setNotificationMessage(" Ответил  на вашу публикации  ! ");
         notification.setCreatedAt(ZonedDateTime.now());
         newComment.setNotification(notification);
         notification.setComment(newComment);
@@ -110,6 +110,94 @@ public class CommentServiceImpl implements CommentService {
             throw new NotFoundException(" Нет такой комментарии !");
         }
         return commentInnerResponse;
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse saveInnerComment(Long commentId, CommentRequest commentRequest) {
+        User currentUser = getCurrentUser();
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException(" Нет такой комментарии ! "));
+
+        Comment innerComment = new Comment();
+        innerComment.setMessage(commentRequest.getMessage());
+        innerComment.setPublication(comment.getPublication());
+        innerComment.setUser(currentUser);
+        commentRepository.save(innerComment);
+        comment.getInnerComments().add(innerComment);
+
+        Notification notification = new Notification();
+        notification.setSeen(false);
+        notification.setNotificationMessage(" Ответила на ваш комментарий ваша сообщение ! ");
+        notification.setCreatedAt(ZonedDateTime.now());
+        innerComment.setNotification(notification);
+        notification.setComment(innerComment);
+        notification.setUserNotification(comment.getUser());
+        notification.setSenderUserId(currentUser.getId());
+        comment.getUser().getNotifications().add(notification);
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(" Успешно доставлено комментарии !")
+                .build();
+    }
+
+    @Override @Transactional
+    public SimpleResponse editInnerComment(Long innerCommentId, CommentRequest commentRequest) {
+        User currentUser = getCurrentUser();
+        Comment innerComment = commentRepository.findById(innerCommentId).orElseThrow(() -> new NotFoundException(" Нет такой innerComment !"));
+        innerComment.setMessage(commentRequest.getMessage());
+        innerComment.setUser(currentUser);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(" Успешно изменено комментарии !")
+                .build();
+    }
+
+    @Override @Transactional
+    public SimpleResponse removeInnerComment(Long innerCommentId) {
+        commentRepository.deleteInnerComment(innerCommentId);
+        deleteComment(innerCommentId);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(" Успешно удалено комментарии !")
+                .build();
+    }
+
+    @Override
+    public InnerCommentResponse findInnerComment(Long innerCommentId) {
+        Comment innerComment = commentRepository.findById(innerCommentId)
+                .orElseThrow(() -> new NotFoundException("Нет такого inner комментария!"));
+        return InnerCommentResponse.builder()
+                .innerCommentId(innerComment.getId())
+                .userId(innerComment.getUser().getId())
+                .avatar(innerComment.getUser().getProfile().getAvatar())
+                .userName(innerComment.getUser().getUsername())
+                .comment(innerComment.getMessage())
+                .countLike(innerComment.getLikes().size())
+                .createdAt(innerComment.getCreatedAt())
+                .build();
+    }
+
+    @Override
+    public List<InnerCommentResponse> getAllInnerComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(" Нет такой комментарии ! "));
+
+        List<InnerCommentResponse> innerCommentResponses = new ArrayList<>();
+        for (Comment innerComment : comment.getInnerComments()) {
+            InnerCommentResponse innerCommentResponse = InnerCommentResponse.builder()
+                    .innerCommentId(innerComment.getId())
+                    .userId(innerComment.getUser().getId())
+                    .avatar(innerComment.getUser().getProfile().getAvatar())
+                    .userName(innerComment.getUser().getUsername())
+                    .comment(innerComment.getMessage())
+                    .countLike(innerComment.getLikes().size())
+                    .createdAt(innerComment.getCreatedAt())
+                    .build();
+            innerCommentResponses.add(innerCommentResponse);
+        }
+        return innerCommentResponses;
+
     }
 
     private User getCurrentUser() {
