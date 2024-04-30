@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import peakspace.entities.Chapter;
 import peakspace.repository.UserRepository;
 import peakspace.service.ChapterService;
-
 import java.util.Map;
 import java.util.stream.Collectors;
 
