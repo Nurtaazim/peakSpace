@@ -7,7 +7,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.request.CommentRequest;
-import peakspace.dto.response.*;
+import peakspace.dto.response.CommentResponse;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.CommentInnerResponse;
+import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.InnerCommentResponse;
+import peakspace.dto.response.CommentResponseByPost;
 import peakspace.entities.Comment;
 import peakspace.entities.Notification;
 import peakspace.entities.Publication;
@@ -93,8 +98,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public SimpleResponse deleteComment(Long commentId) {
-        Comment deleteComment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Нет такой комментарии" + commentId));
-        commentRepository.delete(deleteComment);
+        commentRepository.deleteNotification(commentId);
+        commentRepository.deleteByIds(commentId);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Комментарий успешно удален !")
@@ -155,6 +160,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override @Transactional
     public SimpleResponse removeInnerComment(Long innerCommentId) {
+        commentRepository.deleteLikes(innerCommentId);
         commentRepository.deleteInnerComment(innerCommentId);
         deleteComment(innerCommentId);
         return SimpleResponse.builder()
