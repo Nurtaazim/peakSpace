@@ -9,8 +9,9 @@ import peakspace.dto.response.PublicationResponse;
 import peakspace.dto.response.PublicationWithYouResponse;
 import peakspace.dto.response.LinkPublicationResponse;
 import peakspace.dto.response.MyPostResponse;
-import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.HomePageResponse;
+import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.CommentResponse;
 import peakspace.entities.User;
 import peakspace.entities.Publication;
 import peakspace.entities.Link_Publication;
@@ -41,8 +42,16 @@ public class PublicationServiceImpl implements PublicationService {
         Map<Long, String> publics = user.getPublications().stream()
                 .collect(Collectors.toMap(
                         Publication::getId,
-                        publication -> publication.getLinkPublications().getFirst().getLink()
+                        publication -> {
+                            List<Link_Publication> linkPublications = publication.getLinkPublications();
+                            return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
+                        }
                 ));
+
+        int countPablics = 0;
+        if (user.getPablicProfiles() != null) {
+            countPablics = user.getPablicProfiles().getUsers().size();
+        }
         return GetAllPostsResponse.builder()
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
@@ -50,7 +59,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
                 .countFriends(user.getChapters().size())
-                .countPablics(user.getPablicProfiles().size())
+                .countPablics(countPablics)
                 .publications(publics)
                 .build();
 
@@ -92,9 +101,6 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public MyPostResponse getById(Long postId) {
         MyPostResponse myPost = getMyPost(postId);
-        for (CommentResponse commentResponse : myPost.commentResponses()) {
-            commentResponse.setInnerComments(commentRepository.getInnerComments(commentResponse.getId()));
-        }
         return myPost;
     }
 
@@ -131,9 +137,13 @@ public class PublicationServiceImpl implements PublicationService {
         allPublications.addAll(currentUser.getPublications());
 
         for (Chapter chapter : currentUser.getChapters()) {
-            allPublications.addAll(chapter.getFriends().stream()
+            for (Publication friendPublication : chapter.getFriends().stream()
                     .flatMap(friend -> friend.getPublications().stream())
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList())) {
+                if (!allPublications.contains(friendPublication)) {
+                    allPublications.add(friendPublication);
+                }
+            }
         }
         allPublications.sort(Comparator.comparing(Publication::getCreatedAt).reversed());
 
@@ -164,17 +174,21 @@ public class PublicationServiceImpl implements PublicationService {
         Publication publication = publicationRepository.getReferenceById(postId);
         List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
         commentForResponse.reversed();
+
+        List<LinkResponse> links = publication.getLinkPublications().stream()
+                .map(link -> new LinkResponse(link.getId(), link.getLink()))
+                .collect(Collectors.toList());
+
         return MyPostResponse.builder()
                 .id(publication.getId())
                 .userId(publication.getOwner().getId())
-                .links(publication.getLinkPublications().stream().map(Link_Publication::getLink).collect(Collectors.toList()))
-                .countLikes(publication.getLikes().size())
                 .avatar(publication.getOwner().getProfile().getAvatar())
                 .userName(publication.getOwner().getThisUserName())
                 .location(publication.getLocation())
+                .countLikes(publication.getLikes().size())
+                .links(links)
                 .commentResponses(commentForResponse)
                 .build();
-
     }
 
     private User getCurrentUser() {
@@ -184,5 +198,4 @@ public class PublicationServiceImpl implements PublicationService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
-
 }

@@ -4,7 +4,7 @@ import lombok.Builder;
 import java.time.ZonedDateTime;
 
 @Builder
-public record InnerCommentResponse(Long id,
+public record InnerCommentResponse(Long innerCommentId,
                                    Long userId,
                                    String avatar,
                                    String userName,
