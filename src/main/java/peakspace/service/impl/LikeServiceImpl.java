@@ -11,12 +11,7 @@ import peakspace.entities.Notification;
 import peakspace.entities.Comment;
 import peakspace.entities.Story;
 import peakspace.exception.NotFoundException;
-import peakspace.repository.PublicationRepository;
-import peakspace.repository.LikeRepository;
-import peakspace.repository.UserRepository;
-import peakspace.repository.CommentRepository;
-import peakspace.repository.StoryRepository;
-import peakspace.repository.NotificationRepository;
+import peakspace.repository.*;
 import peakspace.service.LikeService;
 import java.util.List;
 import java.util.Objects;
@@ -33,88 +28,54 @@ public class LikeServiceImpl implements LikeService {
     @Override
     @Transactional
     public void addLikeToPost(Long postId) {
-        Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post with this id not found!"));
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userRepository.getByEmail(email);
-        List<Like> likes = publication.getLikes();
-        for (Like like : likes) {
-            if (Objects.equals(like.getUser().getId(), currentUser.getId())){
-                likeRepository.delete(like);
-                for (Notification notification : publication.getOwner().getNotifications()) {
-                    if (notification.getLike().getUser().getId().equals(currentUser.getId())){
-                        notificationRepository.delete(notification);
-                    }
-                }
-                return;
-            }
+        Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException("Пост с такой id не существует!"));
+        if (isLike(publication.getLikes())){
+            Like like = createLike(publication.getOwner());
+            like.setPublication(publication);
         }
-        Like like = new Like();
-        like.setUser(currentUser);
-        likeRepository.save(like);
-        publication.getLikes().add(like);
-        Notification notification = new Notification();
-        notificationRepository.save(notification);
-        notification.setLike(like);
-        notification.setUserNotification(currentUser);
-        notification.setSenderUserId(publication.getOwner().getId());
     }
 
     @Override
     @Transactional
     public void addLikeToComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Comment with this id not found!"));
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userRepository.getByEmail(email);
-        List<Like> likes = comment.getLikes();
-        for (Like like : likes) {
-            if (Objects.equals(like.getUser().getId(), currentUser.getId())){
-                likeRepository.delete(like);
-                for (Notification notification : comment.getUser().getNotifications()) {
-                    if (notification.getLike().getUser().getId().equals(currentUser.getId())){
-                        notificationRepository.delete(notification);
-                    }
-                }
-                return;
-            }
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Комментарий с такой id не существует!"));
+        if (isLike(comment.getLikes())){
+            Like like = createLike(comment.getUser());
+            like.setComment(comment);
         }
-        Like like = new Like();
-        like.setUser(currentUser);
-        likeRepository.save(like);
-        comment.getLikes().add(like);
-        Notification notification = new Notification();
-        notificationRepository.save(notification);
-        notification.setLike(like);
-        notification.setUserNotification(currentUser);
-        notification.setSenderUserId(comment.getUser().getId());
     }
 
     @Override
     @Transactional
     public void addLikeToStory(Long storyId) {
-        Story story = storyRepository.findById(storyId).orElseThrow(() -> new NotFoundException("Story with this id not found!"));
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userRepository.getByEmail(email);
-        List<Like> likes = story.getLikes();
-        for (Like like : likes) {
-            if (Objects.equals(like.getUser().getId(), currentUser.getId())){
-                likeRepository.delete(like);
-                for (Notification notification : story.getOwner().getNotifications()) {
-                    if (notification.getLike().getUser().getId().equals(currentUser.getId())){
-                        notificationRepository.delete(notification);
-                    }
-                }
-                return;
-            }
+        Story story = storyRepository.findById(storyId).orElseThrow(() -> new NotFoundException("Сторис с такой id не существует!"));
+        if (!isLike(story.getLikes())){
+            Like like = createLike(story.getOwner());
+            like.setStory(story);
         }
+    }
+    private User currentUser (){
+        return userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+    @Transactional
+    protected boolean isLike(List<Like> likes){
+        for (Like like : likes) {
+            if (currentUser().getId().equals(like.getUser().getId()) ){
+                likeRepository.delete(like.getId());
+                notificationRepository.deleteByid(like.getNotification().getId());
+                return true;
+            }
+
+        }
+        return false;
+    }
+    @Transactional
+    protected Like createLike(User recipientOfTheLike){
         Like like = new Like();
-        like.setUser(currentUser);
-        likeRepository.save(like);
-        story.getLikes().add(like);
-        Notification notification = new Notification();
-        notificationRepository.save(notification);
-        notification.setLike(like);
-        notification.setUserNotification(currentUser);
-        notification.setSenderUserId(story.getOwner().getId());
+        like.setNotification(new Notification(like, recipientOfTheLike, currentUser().getId()));
+        Like save = likeRepository.save(like);
+        like.setUser(currentUser());
+        return save;
     }
 
 }

@@ -633,7 +633,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
+        mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
         user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
         user.setCreatedAt(ZonedDateTime.now());
