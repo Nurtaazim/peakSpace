@@ -44,12 +44,12 @@ public class AuthAPI {
     }
 
     @GetMapping("/signIn")
-    SignInResponse signIn(@Valid @RequestBody SignInRequest signInRequest) throws MessagingException {
+    SignInResponse signIn( @RequestBody @Valid SignInRequest signInRequest) throws MessagingException {
         return userService.signIn(signInRequest);
     }
 
     @GetMapping("/signUp")
-    String signUp(@Valid @RequestBody SignUpRequest signUpRequest) throws MessagingException {
+    String signUp( @RequestBody @Valid SignUpRequest signUpRequest) throws MessagingException {
         return userService.signUp(signUpRequest);
     }
 
