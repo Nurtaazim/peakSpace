@@ -4,7 +4,6 @@ import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
-
 import java.util.List;
 
 public interface PostService {
@@ -25,4 +24,12 @@ public interface PostService {
      SimpleResponse notationFriend(Long postId,List<Long> foundUserId);
 
      SimpleResponse removeNotation(List<Long> friendsId);
+
+    SimpleResponse savePostPublic(PostRequest postRequest);
+
+    SimpleResponse editPostPublic(Long postId, PostUpdateRequest postUpdateRequest);
+
+    SimpleResponse deletePostPublic(Long postId);
+
+    SimpleResponse deleteLinkFromPostPublic(Long linkId, Long postId);
 }

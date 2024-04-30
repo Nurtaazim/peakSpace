@@ -1,7 +1,6 @@
 package peakspace.service.impl;
 
 
-import com.amazonaws.services.chimesdkmessaging.model.BadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
@@ -16,8 +15,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.config.jwt.JwtService;
-import peakspace.dto.request.*;
-import peakspace.dto.response.*;
+import peakspace.dto.request.RegisterWithGoogleRequest;
+import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.request.SignUpRequest;
+import peakspace.dto.request.SignInRequest;
+import peakspace.dto.request.ChapterRequest;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.SignInResponse;
+import peakspace.dto.response.ResponseWithGoogle;
+import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.ChapTerResponse;
+import peakspace.dto.response.SubscriptionResponse;
+import peakspace.dto.response.FriendsPageResponse;
 import peakspace.entities.*;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
@@ -27,7 +39,6 @@ import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -444,7 +455,7 @@ public class UserServiceImpl implements UserService {
         } else if (sample.equals(Choise.Groups)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new BadRequestException("Пллохой запрос !");
+        throw new BadRequestException(" Пллохой запрос !");
 
     }
 
