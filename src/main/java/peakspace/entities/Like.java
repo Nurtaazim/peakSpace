@@ -24,4 +24,6 @@ public class Like {
     @ManyToOne(cascade = CascadeType.DETACH)
     private Comment comment;
 
+
+
 }

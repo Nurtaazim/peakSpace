@@ -12,17 +12,21 @@ import peakspace.service.LikeService;
 @RequiredArgsConstructor
 @RequestMapping("/like")
 public class LikeAPI {
+
     private final LikeService likeService;
+
     @PostMapping("/addLikeToPost/{postId}")
     @Operation(description = "Поставить лайк на пост")
     void addLikeToPost(@PathVariable Long postId){
         likeService.addLikeToPost(postId);
     }
+
     @PostMapping("/addLikeToComment/{commentId}")
     @Operation(description = "Поставить лайк на комментарий")
     void  addLikeToComment(@PathVariable Long commentId){
         likeService.addLikeToComment(commentId);
     }
+
     @PostMapping("/addLikeToStory/{storyId}")
     @Operation(description = "Поставить лайк на сторис")
     void addLikeToStory(@PathVariable Long storyId){
