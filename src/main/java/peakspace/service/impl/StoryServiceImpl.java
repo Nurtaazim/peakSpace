@@ -44,7 +44,7 @@ public class StoryServiceImpl implements StoryService {
         }
         story.setTagFiends(tagFriends);
         story.setLikes(new ArrayList<>());
-//        story.setLinkPublications(storyRequest.PhotoUrlOrVideoUrl());
+
         storyRepository.save(story);
         return SimpleResponse.builder()
                 .message("Story success added!")
