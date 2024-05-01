@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.FavoritePostResponse;
-import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UserMarkResponse;
 import peakspace.entities.Link_Publication;
