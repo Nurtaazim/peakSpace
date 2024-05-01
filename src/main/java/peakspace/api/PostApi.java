@@ -75,10 +75,10 @@ public class PostApi {
     }
 
     @Secured("USER")
-    @PostMapping("/savePostPublic")
+    @PostMapping("/savePostPublic/{publicId}/{userId}")
     @Operation(summary = " Для добавление пост на Паблике !")
-    public SimpleResponse savePostPublic(@RequestBody PostRequest postRequest){
-        return postService.savePostPublic(postRequest);
+    public SimpleResponse savePostPublic(@PathVariable Long publicId,@PathVariable Long userId,@RequestBody PostRequest postRequest){
+        return postService.savePostPublic(publicId,userId,postRequest);
     }
 
     @Secured("USER")

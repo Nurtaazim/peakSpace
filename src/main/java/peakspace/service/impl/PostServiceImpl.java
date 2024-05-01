@@ -235,10 +235,10 @@ public class PostServiceImpl implements PostService {
 
 
     @Override @Transactional
-    public SimpleResponse savePostPublic(PostRequest postRequest) {
-        User currentUser = getCurrentUser();
-        PablicProfile publicProfile = Optional.ofNullable(currentUser.getPablicProfiles())
-                .orElseThrow(() -> new NotFoundException(" Нету паблик у вас!"));
+    public SimpleResponse savePostPublic(Long publicId,Long userId,PostRequest postRequest) {
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(" Нет такой Пользоваетль !"));
+
+        PablicProfile publicProfile =  publicationRepo.findByIdPublic(publicId);
 
         List<Link_Publication> linkPublications = postRequest.getLinks().stream()
                 .map(link -> {

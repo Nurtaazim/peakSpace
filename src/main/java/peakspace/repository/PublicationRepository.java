@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
 
@@ -59,4 +60,7 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
     @Transactional
     @Query(value = "delete from publications_link_publications where publication_id = :postId and link_publications_id = :linkId", nativeQuery = true)
     void deletePublicationLink(Long postId, Long linkId);
+
+    @Query("select p from PablicProfile p where p.id =:publicId")
+    PablicProfile findByIdPublic(Long publicId);
 }
