@@ -1,23 +1,15 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.PublicationWithYouResponse;
-import peakspace.dto.response.LinkPublicationResponse;
-import peakspace.dto.response.MyPostResponse;
-import peakspace.dto.response.HomePageResponse;
-import peakspace.dto.response.LinkResponse;
-import peakspace.dto.response.CommentResponse;
-import peakspace.entities.User;
-import peakspace.entities.Publication;
-import peakspace.entities.Link_Publication;
-import peakspace.entities.Chapter;
+import peakspace.dto.response.*;
+import peakspace.entities.*;
 import peakspace.repository.CommentRepository;
 import peakspace.enums.Role;
+import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
@@ -35,6 +27,7 @@ public class PublicationServiceImpl implements PublicationService {
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -198,4 +191,18 @@ public class PublicationServiceImpl implements PublicationService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
+
+    @Override
+    public SimpleResponse saveComplainToPost(Long postId, String complain) {
+        Publication publication = publicationRepository.getReferenceById(postId);
+        publication.getComplains().put(getCurrentUser().getId(), complain);
+        Notification notification = new Notification();
+        notification.setNotificationMessage("оставил(-а) этот пост жалоб: "+complain);
+        notificationRepository.save(notification);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Successfully saved complain!")
+                .build();
+    }
+
 }
