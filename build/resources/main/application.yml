@@ -27,6 +27,7 @@ spring:
 server:
   error:
     include-stacktrace: always
+  port: 2023
 app:
   jwt:
     secret: peak-space-java12
