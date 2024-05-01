@@ -7,14 +7,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.AddEducationRequest;
 import peakspace.dto.request.UserInfoRequest;
+import peakspace.dto.response.BlockAccountsResponse;
+import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.entities.Education;
 import peakspace.entities.Profile;
+import peakspace.entities.Publication;
 import peakspace.entities.User;
+import peakspace.exception.NotFoundException;
 import peakspace.repository.EducationRepository;
 import peakspace.repository.ProfileRepository;
+import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserInfoService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +34,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserRepository userRepository;
     private final EducationRepository educationRepo;
     private final ProfileRepository profileRepo;
+    private final PublicationRepository publicationRepo;
 
     @Transactional
     @Override
@@ -80,6 +92,52 @@ public class UserInfoServiceImpl implements UserInfoService {
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully saved!")
+                .build();
+    }
+
+    @Override
+    public SimpleResponse blockAccount(Long userId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        User foundUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found!"));
+        if(user.getBlockAccounts().contains(foundUser.getId())){
+            user.getBlockAccounts().remove(foundUser.getId());
+            foundUser.setBlockAccount(false);
+        }else {
+            user.getBlockAccounts().add(foundUser.getId());
+            foundUser.setBlockAccount(true);
+        }
+        return null;
+    }
+
+    @Override
+    public List<BlockAccountsResponse> getBlockAccounts() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        List<BlockAccountsResponse> accounts = new ArrayList<>();
+        List<Long> blockAccounts = user.getBlockAccounts();
+
+        for (Long blockAccount : blockAccounts) {
+            User user1 = userRepository.getReferenceById(blockAccount);
+
+        }
+      return null;
+    }
+
+    @Override
+    public SimpleResponse closeAccount() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+        if(user.getIsBlock().equals(false)){
+            user.setBlockAccount(true);
+        }else{
+            user.setIsBlock(false);
+        }
+        return SimpleResponse.builder()
+                .message("Successfully saved!")
+                .httpStatus(HttpStatus.OK)
                 .build();
     }
 }

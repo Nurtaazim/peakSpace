@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
                 user.setRole(Role.USER);
                 user.setPassword(passwordEncoder.encode(defaultPassword));
                 user.setEmail(email);
-                user.setPhoneNumber(phoneNumber);
+
                 try {
                     sendConfirmationCode(email);
                 } catch (MessagingException e) {
