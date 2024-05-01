@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
     private final ProfileRepository profileRepository;
     private final SearchFriends searchFriends;
     private final ChapterService chapterService;
+    private final StoryRepository storyRepository;
     private String userName;
     private int randomCode;
 
@@ -698,6 +699,12 @@ public class UserServiceImpl implements UserService {
         for (User user1 : all) {
             if (ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()) {
                 userRepository.delete(user1);
+            }
+        }
+        List<Story> all1 = storyRepository.findAll();
+        for (Story story : all1) {
+            if (ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))){
+                storyRepository.delete(story);
             }
         }
     }
