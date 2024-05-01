@@ -13,16 +13,8 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "likes_seq")
     @SequenceGenerator(name = "likes_seq", allocationSize = 1,initialValue = 21)
     private Long id;
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @OneToOne(cascade = CascadeType.DETACH)
     private User user;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Notification notification;
-    @ManyToOne(cascade = {CascadeType.DETACH})
-    private Story story;
-    @ManyToOne(cascade = CascadeType.DETACH)
-    private Publication publication;
-    @ManyToOne(cascade = CascadeType.DETACH)
-    private Comment comment;
 
 
 

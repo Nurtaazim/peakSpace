@@ -22,7 +22,7 @@ spring:
       mode: never
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 server:
   error:

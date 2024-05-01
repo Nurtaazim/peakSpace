@@ -35,10 +35,9 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public void addLikeToPost(Long postId) {
         Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException("Пост с такой id не существует!"));
-        if (isLike(publication.getLikes())){
-            Like like = createLike(publication.getOwner());
-            like.setPublication(publication);
-            like.getNotification().setNotificationMessage("Ваш пост понравился пользователю " + like.getUser().getThisUserName());
+        if (removeLike(publication.getLikes())){
+            publication.getLikes().add(createLike());
+
         }
     }
 
@@ -46,10 +45,9 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public void addLikeToComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Комментарий с такой id не существует!"));
-        if (isLike(comment.getLikes())){
-            Like like = createLike(comment.getUser());
-            like.setComment(comment);
-            like.getNotification().setNotificationMessage("Ваш комментарий понравился пользователю " + like.getUser().getThisUserName());
+        if (removeLike(comment.getLikes())){
+            comment.getLikes().add(createLike());
+
         }
     }
 
@@ -57,10 +55,10 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public void addLikeToStory(Long storyId) {
         Story story  = storyRepository.findById(storyId).orElseThrow(() -> new NotFoundException("Сторис с такой id не существует!"));
-        if (!isLike(story.getLikes())){
-            Like like = createLike(story.getOwner());
-            like.setStory(story);
-            like.getNotification().setNotificationMessage("Ваш сторис понравился пользователю " + like.getUser().getThisUserName());
+        if (removeLike(story.getLikes())){
+            Like like = createLike();
+            story.getLikes().add(like);
+            createNotification(like, "Ваш сторис понравился пользователю " + currentUser().getThisUserName(), story.getOwner());
         }
     }
     private User currentUser (){
@@ -68,25 +66,41 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Transactional
-    protected boolean isLike(List<Like> likes){
+    protected boolean removeLike(List<Like> likes){
         for (Like like : likes) {
             if (currentUser().getId().equals(like.getUser().getId()) ){
-                likeRepository.delete(like.getId());
-                notificationRepository.deleteByid(like.getNotification().getId());
-                return true;
+                likes.remove(like);
+                deleteNotificationByLikeId(like.getId());
+                return false;
             }
 
         }
-        return false;
+        return true;
+    }
+    @Transactional
+    protected Like createLike(){
+        Like likeByUserId = likeRepository.getLikeByUserId(currentUser().getId());
+        if(likeByUserId == null) {
+            likeByUserId = new Like();
+            likeRepository.save(likeByUserId);
+            likeByUserId.setUser(currentUser());
+        }
+        return likeByUserId;
+    }
+    private void deleteNotificationByLikeId(long likeId){
+        Notification notification = notificationRepository.findByLikeId(likeId).orElseThrow(() -> new NotFoundException("Такое уведомление не существует!"));
+        notificationRepository.deleteById(notification.getId());
+    }
+    private void createNotification(Like like, String forNotificationMassage, User userNotification){
+        Notification n = new Notification();
+        n.setLike(like);
+        n.setSenderUserId(currentUser().getId());
+        n.setNotificationMessage(forNotificationMassage);
+        n.setUserNotification(userNotification);
+        notificationRepository.save(n);
     }
 
-    @Transactional
-    protected Like createLike(User recipientOfTheLike){
-        Like like = new Like();
-        like.setNotification(new Notification(like, recipientOfTheLike, currentUser().getId()));
-        Like save = likeRepository.save(like);
-        like.setUser(currentUser());
-        return save;
-    }
+
+
 
 }
