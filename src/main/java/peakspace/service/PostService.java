@@ -2,6 +2,7 @@ package peakspace.service;
 
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
+import peakspace.dto.response.FavoritePostResponse;
 import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 
@@ -20,7 +21,7 @@ public interface PostService {
 
     SimpleResponse addFavorite(Long postId);
 
-    GetAllPostsResponse favorites();
+    FavoritePostResponse favorites();
 
      SimpleResponse notationFriend(Long postId,List<Long> foundUserId);
 

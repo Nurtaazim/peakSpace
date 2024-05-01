@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
+import peakspace.dto.response.FavoritePostResponse;
 import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UserMarkResponse;
@@ -99,7 +100,7 @@ public class PostServiceImpl implements PostService {
                     publicationRepo.deleteLink(postId);
                     publicationRepo.deleteTag(postId);
                     publicationRepo.deleteLike(postId);
-                    publicationRepo.delete(publication);
+                    publicationRepo.deletePublic(publication.getId());
                 }
             }
         }
@@ -218,7 +219,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public GetAllPostsResponse favorites() {
+    public FavoritePostResponse favorites() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
         List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
@@ -229,14 +230,7 @@ public class PostServiceImpl implements PostService {
                         publication -> publication.getLinkPublications().getFirst().getLink()
                 ));
 
-        return GetAllPostsResponse.builder()
-                .cover(user.getProfile().getCover())
-                .avatar(user.getProfile().getAvatar())
-                .userName(user.getUsername())
-                .aboutMe(user.getProfile().getAboutYourSelf())
-                .major(user.getProfile().getProfession())
-                .countFriends(user.getChapters().size())
-                .countPablics(user.getPublications().size())
+        return FavoritePostResponse.builder()
                 .publications(publics)
                 .build();
     }
