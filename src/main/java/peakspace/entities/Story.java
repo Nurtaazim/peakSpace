@@ -16,10 +16,11 @@ public class Story {
     @SequenceGenerator(name = "story_seq", allocationSize = 1,initialValue = 19)
     private Long id;
     private ZonedDateTime createdAt;
+    private String text;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User owner;
     @ManyToMany
-    private List<User> tagFiends;
+    private List<User> tagFriends;
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Like> likes;
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

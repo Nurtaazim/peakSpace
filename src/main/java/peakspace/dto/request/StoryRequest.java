@@ -6,8 +6,9 @@ import java.util.List;
 
 @Builder
 public record StoryRequest(
-        List <String> PhotoUrlOrVideoUrl,
-        String description
+        List <String> photoUrlOrVideoUrl,
+        String description,
+        List <Long> idsOfTaggedPeople
 ) {
 
 }
