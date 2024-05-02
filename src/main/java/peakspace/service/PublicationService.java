@@ -14,5 +14,4 @@ public interface PublicationService {
 
     List<HomePageResponse> homePage();
 
-    SimpleResponse saveComplainToPost(Long postId, String complain);
 }

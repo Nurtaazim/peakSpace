@@ -1,7 +1,6 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -190,19 +189,6 @@ public class PublicationServiceImpl implements PublicationService {
         if (current.getRole().equals(Role.USER))
             return current;
         else throw new AccessDeniedException("Forbidden 403");
-    }
-
-    @Override
-    public SimpleResponse saveComplainToPost(Long postId, String complain) {
-        Publication publication = publicationRepository.getReferenceById(postId);
-        publication.getComplains().put(getCurrentUser().getId(), complain);
-        Notification notification = new Notification();
-        notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: "+complain);
-        notificationRepository.save(notification);
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message("Successfully saved complain!")
-                .build();
     }
 
 }
