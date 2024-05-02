@@ -16,7 +16,7 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
-    <data-source name="peakspace@localhost" uuid="a9ad6deb-5a8d-4f34-b6c6-2036b3253c45">
+    <data-source name="peakspace@localhost" uuid="b1b4dcca-5800-4562-8dce-57606d4a29c7">
       <database-info product="PostgreSQL" version="16.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="16.1" exact-driver-version="42.6">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>

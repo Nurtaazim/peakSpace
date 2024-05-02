@@ -1,6 +1,5 @@
 package peakspace.service.impl;
 
-
 import com.amazonaws.services.chimesdkmessaging.model.BadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
@@ -16,18 +15,41 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.config.jwt.JwtService;
-import peakspace.dto.request.*;
-import peakspace.dto.response.*;
-import peakspace.entities.*;
+import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.response.SearchResponse;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UpdatePasswordResponse;
+import peakspace.dto.response.SearchHashtagsResponse;
+import peakspace.dto.response.ProfileFriendsResponse;
+import peakspace.dto.response.ChapTerResponse;
+import peakspace.dto.response.SubscriptionResponse;
+import peakspace.dto.response.FriendsPageResponse;
+import peakspace.dto.response.SignInResponse;
+import peakspace.dto.response.ResponseWithGoogle;
+import peakspace.dto.request.SignInRequest;
+import peakspace.dto.request.SignUpRequest;
+import peakspace.dto.request.ChapterRequest;
+import peakspace.dto.request.RegisterWithGoogleRequest;
+import peakspace.entities.Chapter;
+import peakspace.entities.Notification;
+import peakspace.entities.PablicProfile;
+import peakspace.entities.Profile;
+import peakspace.entities.User;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
+import peakspace.exception.FirebaseAuthException;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.*;
-import peakspace.repository.*;
+import peakspace.exception.InvalidConfirmationCode;
+import peakspace.exception.NotActiveException;
+import peakspace.exception.NotFoundException;
+import peakspace.repository.ChapterRepository;
+import peakspace.repository.PublicProfileRepository;
+import peakspace.repository.PublicationRepository;
+import peakspace.repository.ProfileRepository;
+import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -611,12 +633,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws MessagingException {
         User user;
-        if (signInRequest.email().endsWith("@gmail.com")) {
-            user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
+        if (signInRequest.getEmail().endsWith("@gmail.com")) {
+            user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
         } else {
-            user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
+            user = userRepository.getByUserName(signInRequest.getEmail()).orElseThrow(() -> new NotFoundException("Such user not found!"));
         }
-        if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
+        if (passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
             return SignInResponse.builder()
                     .id(user.getId())
                     .token(jwtService.createToken(user))
@@ -626,6 +648,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String signUp(SignUpRequest signUpRequest) throws MessagingException {
+        if (userRepository.existsByEmail(signUpRequest.email())){
+            throw new peakspace.exception.MessagingException("Пользователь с таким email уже существует!");
+        }
+        if (userRepository.existsByUserName(signUpRequest.userName())){
+            throw new peakspace.exception.MessagingException("Пользователь с таким user name уже существует!");
+        }
         User user = new User();
         user.setUserName(signUpRequest.userName());
         user.setEmail(signUpRequest.email());
@@ -634,7 +662,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
+        mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
         user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
         user.setCreatedAt(ZonedDateTime.now());

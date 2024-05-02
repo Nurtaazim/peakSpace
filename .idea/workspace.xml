@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode">
 <<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
+=======
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicAPI.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/PublicRequest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/PublicPhotoAndVideoResponse.java" afterDir="false" />
@@ -44,6 +47,10 @@
 =======
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
 >>>>>>> 0da131773b37293b62aefee805291aec9551f60f
+<<<<<<< HEAD
+=======
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
+>>>>>>> 0ac0315f4a1cff4c0c42d3bfc6dea882ccb42689
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,12 +98,19 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+<<<<<<< HEAD
+        <option value="Record" />
+=======
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
         <option value="com.haulmont.jpb.JpaRepository" />
         <option value="JavaScript File" />
         <option value="HTML File" />
 <<<<<<< HEAD
         <option value="Interface" />
         <option value="Class" />
+<<<<<<< HEAD
+        <option value="Interface" />
+=======
         <option value="Record" />
 =======
 <<<<<<< HEAD
@@ -107,6 +121,7 @@
         <option value="Interface" />
 >>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
 >>>>>>> 0da131773b37293b62aefee805291aec9551f60f
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
       </list>
     </option>
   </component>
@@ -152,6 +167,9 @@
     &quot;accountId&quot;: &quot;5a94a1f5-1f79-46ad-bd85-97591a4fcdb4&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/peakspace/service/impl/LikeServiceImpl.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="JpbToolWindowState">
     <option name="isToolWindowVisible" value="false" />
   </component>
@@ -162,7 +180,11 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
+<<<<<<< HEAD
+    <option name="selectedTabId" value="CurrentFile" />
+=======
     <option name="selectedTabId" value="ProjectErrors" />
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
   </component>
   <component name="ProjectColorInfo">{
     &quot;associatedIndex&quot;: 8
@@ -218,12 +240,17 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
 <<<<<<< HEAD
+    "Spring Boot.PeakSpaceB12Application.executor": "Coverage",
+    "git-widget-placeholder": "feature/page-main",
+=======
+<<<<<<< HEAD
     "Spring Boot.PeakSpaceB12Application.executor": "Run",
     "git-widget-placeholder": "#34 on feature/add-comment",
 =======
     "Spring Boot.PeakSpaceB12Application.executor": "Coverage",
     "git-widget-placeholder": "feature/page-main",
 >>>>>>> aa7ed06c4eee7986523df9125f133abf68702b88
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Applications/peak-space-b12/src/main/resources",
     "node.js.detected.package.eslint": "true",
@@ -291,6 +318,52 @@
       <recent name="peakspace.exceptions" />
     </key>
   </component>
+<<<<<<< HEAD
+  <component name="RunManager" selected="Spring Boot.PeakSpaceB12Application">
+    <configuration name="peak-space-b12 [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="peak-space-b12 [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+=======
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="peak-space-b12.test" />
@@ -304,6 +377,7 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
     </configuration>
     <configuration name="PeakSpaceB12Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
 <<<<<<< HEAD
@@ -315,12 +389,16 @@
 =======
       <option name="ACTIVE_PROFILES" value="aliaskar" />
 <<<<<<< HEAD
+      <module name="peakspace.peak-space-b12.main" />
+=======
+<<<<<<< HEAD
 >>>>>>> 7d1f1292bf39e1e4e9c54e887a8efd51509aa2ee
       <module name="peak-space-b12.main" />
 =======
       <module name="peakspace.peak-space-b12.main" />
 >>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
 >>>>>>> 0da131773b37293b62aefee805291aec9551f60f
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
       <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="peakspace.PeakSpaceB12Application" />
       <method v="2">
@@ -333,11 +411,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Gradle.peak-space-b12 [build]" />
+      <item itemvalue="Gradle.peak-space-b12 [clean]" />
+      <item itemvalue="Spring Boot.PeakSpaceB12Application" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.peak-space-b12 [build]" />
+        <item itemvalue="Gradle.peak-space-b12 [clean]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
         <option value="jdk-21.0.1-openjdk-21.0.1-f644763e9732-f98dd351" />
+<<<<<<< HEAD
+        <option value="jdk-21.0.2-openjdk-21.0.2-f644763e9732-c0c073db" />
+=======
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
       </set>
     </attachedChunks>
   </component>
@@ -373,11 +466,16 @@
       <workItem from="1714055148394" duration="768000" />
       <workItem from="1714056391842" duration="300000" />
 <<<<<<< HEAD
+      <workItem from="1714106550178" duration="5979000" />
+      <workItem from="1714292304231" duration="1853000" />
+=======
+<<<<<<< HEAD
       <workItem from="1714295339136" duration="3163000" />
 =======
       <workItem from="1714206404139" duration="9306000" />
       <workItem from="1714216616585" duration="7211000" />
 >>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
+>>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
     </task>
     <task id="LOCAL-00001" summary="HomePage + cleanCode">
       <option name="closed" value="true" />
