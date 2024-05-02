@@ -20,7 +20,7 @@ public class Story {
     private User owner;
     @ManyToMany
     private List<User> tagFiends;
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToMany()
     private List<Like> likes;
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Link_Publication> linkPublications;

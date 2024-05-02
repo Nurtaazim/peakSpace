@@ -53,8 +53,8 @@ public class User implements UserDetails {
     private List<Chat> chats;
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private List<Comment> comments;
-    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
-    private List<PablicProfile> pablicProfiles;
+    @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    private PablicProfile pablicProfiles;
     @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Publication> publications;
     @OneToMany(mappedBy = "userNotification",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})

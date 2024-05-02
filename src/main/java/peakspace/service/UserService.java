@@ -1,9 +1,13 @@
 package peakspace.service;
+
 import jakarta.mail.MessagingException;
 import org.apache.coyote.BadRequestException;
+import peakspace.dto.response.*;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.*;
+import peakspace.dto.request.SignInRequest;
+import peakspace.dto.request.SignUpRequest;
+import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.enums.Choise;
 
 import java.util.List;
@@ -12,9 +16,9 @@ public interface UserService {
 
     SimpleResponse forgot(String email) throws MessagingException;
 
-    SimpleResponse randomCode(int codeRequest) throws BadRequestException, MessagingException;
+    SimpleResponse randomCode(int codeRequest,String email) throws BadRequestException;
 
-    UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest) throws MessagingException;
+    UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest,String email);
 
     SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 
@@ -34,7 +38,24 @@ public interface UserService {
 
     List<SubscriptionResponse> getAllSearchUserHistory();
 
+
     List<SearchUserResponse> globalSearch(String keyWord);
 
 
+
+    FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search);
+
+    ResponseWithGoogle verifyToken(String tokenFromGoogle);
+
+    ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest registerWithGoogle);
+
+    String sendConfirmationCode(String email) throws MessagingException;
+
+    SignInResponse signIn(SignInRequest signInRequest) throws MessagingException;
+
+    String signUp(SignUpRequest signUpRequest) throws MessagingException;
+
+    SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 }
+
+

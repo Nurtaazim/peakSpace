@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "profiles")
+@NoArgsConstructor
 public class Profile {
 
     @Id
@@ -35,7 +37,12 @@ public class Profile {
     private List<Long> favorites;
     @OneToMany(mappedBy = "profile",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Education> educations;
-    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToOne
     private User user;
 
+    public Profile(String firstName, String lastName, User user) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.user = user;
+    }
 }

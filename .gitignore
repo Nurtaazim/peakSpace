@@ -35,5 +35,15 @@ out/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
 src/main/resources/application-mika.yml
 src/main/resources/application-aliaskar.yml
+=======
+
+# Local application.yml
+src/main/resources/application-aliaskar.yml
+src/main/resources/application-mika.yml
+src/main/resources/application-nurtaazim.yml
+
+
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a

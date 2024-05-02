@@ -11,12 +11,11 @@ import peakspace.entities.Publication;
 import peakspace.entities.User;
 import java.util.List;
 
+@Repository
+public interface PublicationRepository extends JpaRepository<Publication, Long> {
 
- @Repository
- public interface PublicationRepository extends JpaRepository<Publication,Long> {
-
-  @Query("SELECT new peakspace.dto.response.SearchHashtagsResponse(p.id, l) FROM Publication p INNER JOIN p.linkPublications l WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-  List<SearchHashtagsResponse> findAllHashtags(@Param("keyword") String keyword);
+    @Query("SELECT new peakspace.dto.response.SearchHashtagsResponse(p.id, l) FROM Publication p INNER JOIN p.linkPublications l WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<SearchHashtagsResponse> findAllHashtags(@Param("keyword") String keyword);
 
 
     @Modifying
@@ -39,8 +38,10 @@ import java.util.List;
     @Query(value = "delete from publications_likes where publication_id =:postId", nativeQuery = true)
     void deleteLike(Long postId);
 
+    @Query("select p from Publication p where p.id =:postId")
+     Publication findPostById(Long postId);
 
      @Query("select p from Publication p join p.owner o where o = :owner and p.id = :postId")
      Publication findByIdAndOwner(Long postId, User owner);
 
- }
+}
