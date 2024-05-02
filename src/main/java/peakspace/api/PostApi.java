@@ -3,21 +3,14 @@ package peakspace.api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.FavoritePostResponse;
-import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -47,7 +40,7 @@ public class PostApi {
     }
 
     @Secured("USER")
-    @PostMapping("/deleteLink/{linkId}/{postId}")
+    @PostMapping("/deleteLink/{postId}/{linkId}")
     @Operation(summary = " Удаление фото из публикации !")
     public SimpleResponse deleteLink(@PathVariable Long linkId, @PathVariable Long postId) {
         return postService.deleteLinkFromPost(linkId, postId);
@@ -79,6 +72,35 @@ public class PostApi {
     @Operation(summary = " Удалить друзей из отметки !")
     public SimpleResponse removeNotationFriends(@PathVariable List<Long> friendsId) {
         return postService.removeNotation(friendsId);
+    }
+
+    @Secured("USER")
+    @PostMapping("/savePostPublic/{publicId}/{userId}")
+    @Operation(summary = " Для добавление пост на Паблике !")
+    public SimpleResponse savePostPublic(@PathVariable Long publicId,@PathVariable Long userId,@RequestBody PostRequest postRequest){
+        return postService.savePostPublic(publicId,userId,postRequest);
+    }
+
+    @Secured("USER")
+    @PostMapping("/editPostPublic/{postId}")
+    @Operation(summary = " Изменение поста на паблике !")
+    public SimpleResponse editPostPublic(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
+        return postService.editPostPublic(postId, postUpdateRequest);
+    }
+
+
+    @Secured("USER")
+    @DeleteMapping("/deletePostPublic/{postId}")
+    @Operation(summary = " Удаление пост на паблике !")
+    public SimpleResponse deletePostPublic(@PathVariable Long postId) {
+        return postService.deletePostPublic(postId);
+    }
+
+    @Secured("USER")
+    @DeleteMapping("/deleteLinkPublic/{postId}/{linkId}")
+    @Operation(summary = " Удаление фото из публикации в паблике !")
+    public SimpleResponse deleteLinkPublic(@PathVariable Long linkId, @PathVariable Long postId) {
+        return postService.deleteLinkFromPostPublic(linkId, postId);
     }
 
 }
