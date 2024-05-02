@@ -1,36 +1,36 @@
 
-insert into users(id, user_name, email, password, is_block)
+insert into users(id, user_name, email, password, is_block,role)
 values
     (1, 'Aliaskar', 'aliaskar@gmail.com', '$2a$12$V3VQ8h4pfGBNNQYGlggXlOHf6.eFNH4VChm0bxKHPDMRv7te/GOvK',
-     false),
+     false,'USER'),
     (2, 'Mirlan', 'mirlan@gmail.com', '$2a$12$nBn2dhJXXKXNLcx5LFH.LOrXKuDQSQUVGr5vh90Uo73XHSZ0YP636',
-     false),
+     false,'USER'),
     (3, 'Myrzaiym', 'myrzaiym@gmail.com', '$2a$12$bjn01purODRpvf714JFbj./91rXrvMRL5QgjCbgIEAYnQdeYoz68K',
-     false),
+     false,'USER'),
     (4, 'Nurtaazim', 'nurtaazim@gmail.com', '$2a$12$7w1javZANTDTW.PTHWoPMewNHO1WOPOpURSy5BGHOIcgc5V/gVv8S',
-     false),
+     false,'USER'),
     (5, 'Nurmukhammed', 'nurmukhammed@gmail.com', '$2a$12$7wuEoK1raMY0ACiHI0cpJOUB4q5MMAAbrJJdKpbdzyIKPCZ5o.fb2',
-     false),
+     false,'USER'),
     (6, 'Nurkamil', 'nurkamil@gmail.com', '$2a$12$rDuM/7QHNuls7F/uSnYORehUR6RJOAkvHDpjLxO7WLjf1TheZfcXu',
-     false),
+     false,'USER'),
     (7, 'Aiturgan', 'aiturgan@gmail.com', '$2a$12$gmRvdp9mjYsWvQomynXDV.QXkey69qZXogJcvh0wQLvHvCl0za6Oq',
-     false),
+     false,'USER'),
     (8, 'Gulukan', 'gulumkan@gmail.com', '$2a$12$4kLeZzjyQxv.n/dwRk./GeVo54IG4b8F.hZGk2jEc0oqQzSYQAVOi',
-     false),
+     false,'USER'),
     (9, 'Ajybek', 'ajybek@gmail.com', '$2a$12$lWjTBGDFDJecVBbmvEHAAeZOqL8VmGP2ESrGACr5xwfPJZUYirJMO',
-     false),
+     false,'USER'),
     (10, 'Nurislam', 'nurt@gmail.com', '$2a$12$t7nUpSW.BjMy2Fe2N2HTgOWY723XNMj6yC15piA9gTV2nkh5CLgNS',
-     false),
-    (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false),
-    (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false),
-    (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false),
-    (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false),
-    (15, 'JamedssJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false),
-    (16, 'OliviaGarcia', 'olivia.garcia@example.com', '$2a$12$encodedPassword6', false),
-    (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false),
-    (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false),
-    (19, 'BenjaminClark', 'benjamin.clark@example.com', '$2a$12$encodedPassword9', false),
-    (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false);
+     false,'USER'),
+    (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false,'USER'),
+    (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false,'USER'),
+    (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false,'USER'),
+    (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false,'USER'),
+    (15, 'JamedssJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false,'USER'),
+    (16, 'OliviaGarcia', 'olivia.garcia@example.com', '$2a$12$encodedPassword6', false,'USER'),
+    (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false,'USER'),
+    (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false,'USER'),
+    (19, 'BenjaminClark', 'benjamin.clark@example.com', '$2a$12$encodedPassword9', false,'USER'),
+    (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false,'USER');
 
 
 insert into stories(id, owner_id, created_at)
@@ -239,26 +239,26 @@ values (1, 'imageLink1'),
 
 
 insert into educations(id, profile_id, country, location, educational_institution)
-values (1, 1, 'КЫРГЫЗСТАН', 'Karakol', 'KGTU'),
-       (2, 2, 'КЫРГЫЗСТАН', 'Bishkek', 'KGTU'),
-       (3, 3, 'КЫРГЫЗСТАН', 'Naryn', 'PED'),
-       (4, 4, 'КЫРГЫЗСТАН', 'Bishkek', 'AUSA'),
-       (5, 5, 'КЫРГЫЗСТАН', 'Bishkek', 'MANAS'),
-       (6, 6, 'КЫРГЫЗСТАН', 'Naryn', 'USA'),
-       (7, 7, 'КЫРГЫЗСТАН', 'Osh', 'OSHGU'),
-       (8, 8, 'КЫРГЫЗСТАН', 'Osh', 'OSHGU'),
-       (9, 9, 'КЫРГЫЗСТАН', 'Tokmok', 'KGTU'),
-       (10, 10, 'КЫРГЫЗСТАН', 'Talas', 'MANAS'),
-       (11, 11, 'КЫРГЫЗСТАН', 'Karakol', 'KGMA'),
-       (12, 12, 'КЫРГЫЗСТАН', 'Jalal-Abad', 'OSHGU'),
-       (13, 13, 'КЫРГЫЗСТАН', 'Bishkek', 'KSUCTA'),
-       (14, 14, 'КЫРГЫЗСТАН', 'Naryn', 'KNU'),
-       (15, 15, 'КЫРГЫЗСТАН', 'Bishkek', 'KRSU'),
-       (16, 16, 'КЫРГЫЗСТАН', 'Tashkent', 'TUIT'),
-       (17, 17, 'КЫРГЫЗСТАН', 'Osh', 'KSUCTA'),
-       (18, 18, 'КЫРГЫЗСТАН', 'Bishkek', 'KSTU'),
-       (19, 19, 'КЫРГЫЗСТАН', 'Bishkek', 'KNURE'),
-       (20, 20, 'КЫРГЫЗСТАН', 'Bishkek', 'KRSU');
+values (1, 1, 'KAZAKHSTAN', 'Karakol', 'KGTU'),
+       (2, 1, 'KAZAKHSTAN', 'Bishkek', 'KGTU'),
+       (3, 2, 'KAZAKHSTAN', 'Naryn', 'PED'),
+       (4, 2, 'KAZAKHSTAN', 'Bishkek', 'AUSA'),
+       (5, 3, 'KAZAKHSTAN', 'Bishkek', 'MANAS'),
+       (6, 4, 'KAZAKHSTAN', 'Naryn', 'USA'),
+       (7, 4, 'KAZAKHSTAN', 'Osh', 'OSHGU'),
+       (8, 5, 'KAZAKHSTAN', 'Osh', 'OSHGU'),
+       (9, 6, 'KAZAKHSTAN', 'Tokmok', 'KGTU'),
+       (10, 7, 'KAZAKHSTAN', 'Talas', 'MANAS'),
+       (11, 7, 'KAZAKHSTAN', 'Karakol', 'KGMA'),
+       (12, 8, 'KAZAKHSTAN', 'Jalal-Abad', 'OSHGU'),
+       (13, 8, 'KAZAKHSTAN', 'Bishkek', 'KSUCTA'),
+       (14, 9, 'KAZAKHSTAN', 'Naryn', 'KNU'),
+       (15, 9, 'KAZAKHSTAN', 'Bishkek', 'KRSU'),
+       (16, 10, 'KAZAKHSTAN', 'Tashkent', 'TUIT'),
+       (17, 11, 'KAZAKHSTAN', 'Osh', 'KSUCTA'),
+       (18, 12, 'KAZAKHSTAN', 'Bishkek', 'KSTU'),
+       (19, 13, 'KAZAKHSTAN', 'Bishkek', 'KNURE'),
+       (20, 14, 'KAZAKHSTAN', 'Bishkek', 'KRSU');
 
 
 INSERT INTO comments(id, user_id, publication_id, message, created_at)
@@ -440,3 +440,31 @@ values (1, 1),
        (3, 5),
        (4, 6),
        (5, 6);
+
+
+insert into user_search_friends_history(search_friends_history, user_id)
+values
+    (1,1),
+    (1,2),
+    (1,3),
+    (2,1),
+    (3,4),
+    (4,3),
+    (4,5),
+    (6,2),
+    (7,8),
+    (7,9);
+
+
+insert into comments_likes(comment_id, likes_id)
+values
+    (1,1),
+    (1,2),
+    (1,3),
+    (2,4),
+    (2,5),
+    (2,6),
+    (3,7),
+    (3,8),
+    (4,9),
+    (4,10);
