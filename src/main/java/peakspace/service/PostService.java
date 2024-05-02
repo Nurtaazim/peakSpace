@@ -7,6 +7,7 @@ import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.SimpleResponse;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PostService {
 

@@ -222,11 +222,13 @@ public class PostServiceImpl implements PostService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
         List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
-
         Map<Long, String> publics = allById.stream()
                 .collect(Collectors.toMap(
                         Publication::getId,
-                        publication -> publication.getLinkPublications().getFirst().getLink()
+                        publication -> {
+                            List<Link_Publication> linkPublications = publication.getLinkPublications();
+                            return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
+                        }
                 ));
 
         return FavoritePostResponse.builder()
