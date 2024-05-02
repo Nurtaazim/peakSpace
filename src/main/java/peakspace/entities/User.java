@@ -36,7 +36,6 @@ public class User implements UserDetails {
     private String userName;
     private String email;
     private String password;
-    private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isBlock;

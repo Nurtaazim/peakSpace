@@ -8,10 +8,7 @@
     <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="bug fix dataInit">
 =======
     <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode">
-<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
-=======
-<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicAPI.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/PublicRequest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/PublicPhotoAndVideoResponse.java" afterDir="false" />
@@ -64,8 +61,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/repository/PablicProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/repository/PublicProfileRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PublicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PublicationServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" afterDir="false" />
-=======
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
+    </list>
 >>>>>>> 0da131773b37293b62aefee805291aec9551f60f
 >>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
 >>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
@@ -116,32 +113,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-<<<<<<< HEAD
         <option value="Record" />
-=======
->>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
         <option value="com.haulmont.jpb.JpaRepository" />
         <option value="JavaScript File" />
         <option value="HTML File" />
-<<<<<<< HEAD
         <option value="Interface" />
         <option value="Class" />
-<<<<<<< HEAD
         <option value="Interface" />
-=======
         <option value="Record" />
-=======
-<<<<<<< HEAD
-        <option value="Record" />
-        <option value="Interface" />
-        <option value="Class" />
-=======
-        <option value="Interface" />
->>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
->>>>>>> 0da131773b37293b62aefee805291aec9551f60f
->>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
       </list>
-    </option>
+   </option>
   </component>
   <component name="Git.Settings">
     <favorite-branches>
@@ -165,10 +146,7 @@
 =======
 <<<<<<< HEAD
         <entry key="$PROJECT_DIR$" value="main" />
-=======
-<<<<<<< HEAD
         <entry key="$PROJECT_DIR$" value="favorite" />
-=======
         <entry key="$PROJECT_DIR$" value="main" />
 >>>>>>> 4a88e6b2952b1014c72ca67fa30606fd87b1318d
 >>>>>>> 0da131773b37293b62aefee805291aec9551f60f
@@ -196,7 +174,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/peakspace/service/impl/LikeServiceImpl.java" root0="SKIP_INSPECTION" />
   </component>
->>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
   <component name="JpbToolWindowState">
     <option name="isToolWindowVisible" value="false" />
   </component>
@@ -207,11 +184,8 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-<<<<<<< HEAD
     <option name="selectedTabId" value="CurrentFile" />
-=======
     <option name="selectedTabId" value="ProjectErrors" />
->>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
   </component>
   <component name="ProjectColorInfo">{
     &quot;associatedIndex&quot;: 8
@@ -224,13 +198,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 0da131773b37293b62aefee805291aec9551f60f
-  <component name="PropertiesComponent">{
+ <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;Gradle.Build peak-space-b12.executor&quot;: &quot;Run&quot;,
@@ -240,13 +208,8 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-<<<<<<< HEAD
     &quot;Spring Boot.PeakSpaceB12Application.executor&quot;: &quot;Coverage&quot;,
     &quot;git-widget-placeholder&quot;: &quot;feature/pablic&quot;,
-=======
-    &quot;Spring Boot.PeakSpaceB12Application.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/friends&quot;,
->>>>>>> 0da131773b37293b62aefee805291aec9551f60f
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Applications/peak-space-b12/src/main/resources&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -255,9 +218,6 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-<<<<<<< HEAD
-=======
-=======
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
@@ -268,19 +228,17 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-<<<<<<< HEAD
-    "Spring Boot.PeakSpaceB12Application.executor": "Coverage",
-    "git-widget-placeholder": "feature/page-main",
-=======
-<<<<<<< HEAD
     "Spring Boot.PeakSpaceB12Application.executor": "Run",
-    "git-widget-placeholder": "#34 on feature/add-comment",
-=======
+<<<<<<< HEAD
     "Spring Boot.PeakSpaceB12Application.executor": "Coverage",
     "git-widget-placeholder": "feature/page-main",
+=======
+<<<<<<< HEAD
+    "git-widget-placeholder": "#34 on feature/add-comment",
+    "kotlin-language-version-configured": "true",
 >>>>>>> aa7ed06c4eee7986523df9125f133abf68702b88
 >>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
-    "kotlin-language-version-configured": "true",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Applications/peak-space-b12/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -289,6 +247,7 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
+     <component name="PropertiesComponent">{
 <<<<<<< HEAD
 >>>>>>> 7d1f1292bf39e1e4e9c54e887a8efd51509aa2ee
 =======
@@ -340,12 +299,9 @@
     <key name="CreateClassDialog.RecentsKey">
       <recent name="peakspace.dto.request" />
       <recent name="peakspace.dto.response" />
-<<<<<<< HEAD
       <recent name="peakspace.dto.request" />
-=======
       <recent name="peakspace.api" />
->>>>>>> 0da131773b37293b62aefee805291aec9551f60f
-      <recent name="peakspace.exception" />
+     <recent name="peakspace.exception" />
       <recent name="peakspace.repository" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
