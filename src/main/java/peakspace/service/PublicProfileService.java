@@ -22,4 +22,6 @@ public interface PublicProfileService {
     PublicPostResponse findPostPublic(Long postId);
 
     SimpleResponse removeUser(Long friendId);
+
+    SimpleResponse sendPublic(Long publicId);
 }

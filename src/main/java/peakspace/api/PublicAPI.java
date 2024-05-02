@@ -77,5 +77,12 @@ public class PublicAPI {
         return publicService.removeUser(friendId);
     }
 
+    @Secured("USER")
+    @Operation(summary = " Для кнопка присоединится на паблик канал ! ")
+    @PutMapping("/sendJoinPublic/{publicId}")
+    public SimpleResponse sendJoinPublic(@PathVariable Long publicId){
+        return publicService.sendPublic(publicId);
+    }
+
 
 }

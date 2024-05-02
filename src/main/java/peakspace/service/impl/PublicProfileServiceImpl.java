@@ -176,6 +176,28 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         }
     }
 
+    @Override @Transactional
+    public SimpleResponse sendPublic(Long publicId) {
+        PablicProfile publicProfile = publicProfileRepository.findById(publicId)
+                .orElseThrow(() -> new NotFoundException("Паблик не найден!"));
+
+        User currentUser = getCurrentUser();
+        String message = null;
+        List<User> users = publicProfile.getUsers();
+        if (users.contains(currentUser)) {
+            users.remove(currentUser);
+            message = "Пользователь успешно отписано!";
+        } else {
+            users.add(currentUser);
+            message = "Пользователь успешно присоединились !";
+        }
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(message)
+                .build();
+    }
+
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User current = userRepository.getByEmail(email);
