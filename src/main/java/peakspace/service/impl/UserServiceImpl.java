@@ -27,6 +27,7 @@ import peakspace.dto.response.SubscriptionResponse;
 import peakspace.dto.response.FriendsPageResponse;
 import peakspace.dto.response.SignInResponse;
 import peakspace.dto.response.ResponseWithGoogle;
+import peakspace.dto.response.SignUpResponse;
 import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.request.ChapterRequest;
@@ -97,12 +98,12 @@ public class UserServiceImpl implements UserService {
                 String fullName = decodedToken.getName();
                 User user = new User();
                 Profile profile = new Profile();
+                profile.setPhoneNumber(phoneNumber);
                 String picture = decodedToken.getPicture();
                 String defaultPassword = generatorDefaultPassword(8, 8);
                 user.setRole(Role.USER);
                 user.setPassword(passwordEncoder.encode(defaultPassword));
                 user.setEmail(email);
-                user.setPhoneNumber(phoneNumber);
                 try {
                     sendConfirmationCode(email);
                 } catch (MessagingException e) {
@@ -734,5 +735,5 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
-}
 
+}
