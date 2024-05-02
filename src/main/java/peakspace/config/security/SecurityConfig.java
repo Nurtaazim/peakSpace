@@ -47,7 +47,6 @@ public class SecurityConfig {
     }
     @Bean
     public UserDetailsService userDetailsService() {
-        System.err.println("User method");
         return email -> userRepository.findByEmail(email).orElseThrow(() ->
                 new UsernameNotFoundException("User with email: " +email+ " not exists"));
     }

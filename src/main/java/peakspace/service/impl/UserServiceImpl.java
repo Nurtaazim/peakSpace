@@ -691,7 +691,7 @@ public class UserServiceImpl implements UserService {
     public void startTask() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
-        executor.scheduleAtFixedRate(this::yourMethod, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::yourMethod, 0, 1, TimeUnit.MINUTES);
     }
 
     private void yourMethod() {
