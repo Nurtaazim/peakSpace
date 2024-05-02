@@ -48,7 +48,7 @@ public class UserAPI {
 
     @Secured("USER")
     @GetMapping("/search")
-    @Operation( summary = "Поискавик", description = "Поиск по выборкам !")
+    @Operation( summary = "Поискавик по выборкам группы и пользователь !")
     public List<SearchResponse> search(@RequestParam Choise sample, @RequestParam  String keyWord) {
         return userService.searchFriends(sample,keyWord);
     }
@@ -56,14 +56,14 @@ public class UserAPI {
 
     @Secured("USER")
     @PostMapping("/createChapter")
-    @Operation(summary = "Создать раздел ")
+    @Operation(summary = " Создать раздел !")
     public SimpleResponse createChapter(@RequestBody ChapterRequest chapterRequest){
         return userService.createChapter(chapterRequest);
     }
 
     @Secured("USER")
     @GetMapping("/searchHashtags")
-    @Operation(summary = "Поискавик", description = "Поиск по хештегам  !")
+    @Operation(summary = " Поискавик по хештегам !")
     public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample, @RequestParam String keyWord) throws MessagingException {
         return userService.searchHashtags(sample,keyWord);
     }
