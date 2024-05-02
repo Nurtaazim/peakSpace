@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import peakspace.dto.response.SearchResponse;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.response.ChapTerResponse;
+import peakspace.dto.response.SearchUserResponse;
 import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.dto.response.SearchResponse;
 import peakspace.dto.response.SimpleResponse;
@@ -51,6 +53,7 @@ public class UserAPI {
         return userService.searchFriends(sample,keyWord);
     }
 
+
     @Secured("USER")
     @PostMapping("/createChapter")
     @Operation(summary = " Создать раздел !")
@@ -85,6 +88,15 @@ public class UserAPI {
     public List<SubscriptionResponse> getAllSearchUserHistory(){
         return userService.getAllSearchUserHistory();
     }
+
+
+    @Secured("USER")
+    @GetMapping("/searchWithAll")
+    @Operation(summary = "Поиск пользователей со всеми! ")
+    public List<SearchUserResponse> searchAll(@RequestParam String keyWord){
+        return userService.globalSearch(keyWord);
+    }
+
 
     @Secured("USER")
     @GetMapping("/searchFiends/{userId}/{chapterId}")

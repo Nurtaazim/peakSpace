@@ -10,7 +10,6 @@ import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
-
 import java.util.List;
 
 @Repository
@@ -18,7 +17,6 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
 
     @Query("select new peakspace.dto.response.SearchHashtagsResponse(p.id, l) from Publication p inner join p.linkPublications l where lower(p.description) like lower(CONCAT('%', :keyword, '%')) ")
     List<SearchHashtagsResponse> findAllHashtags(@Param("keyword") String keyword);
-
 
     @Modifying
     @Transactional

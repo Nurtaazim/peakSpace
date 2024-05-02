@@ -19,6 +19,7 @@ import peakspace.entities.Chapter;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.enums.Role;
+import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
@@ -36,6 +37,7 @@ public class PublicationServiceImpl implements PublicationService {
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -209,4 +211,5 @@ public class PublicationServiceImpl implements PublicationService {
             return current;
         else throw new AccessDeniedException("Forbidden 403");
     }
+
 }
