@@ -4,18 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.PublicationWithYouResponse;
-import peakspace.dto.response.LinkPublicationResponse;
-import peakspace.dto.response.MyPostResponse;
-import peakspace.dto.response.HomePageResponse;
-import peakspace.dto.response.LinkResponse;
-import peakspace.dto.response.CommentResponse;
+import peakspace.dto.response.*;
 import peakspace.entities.User;
 import peakspace.entities.Publication;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Chapter;
+import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.enums.Role;
 import peakspace.repository.PublicationRepository;
@@ -170,6 +164,7 @@ public class PublicationServiceImpl implements PublicationService {
         return homePages;
     }
 
+
     public MyPostResponse getMyPost(Long postId) {
         Publication publication = publicationRepository.getReferenceById(postId);
         List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
@@ -188,6 +183,24 @@ public class PublicationServiceImpl implements PublicationService {
                 .countLikes(publication.getLikes().size())
                 .links(links)
                 .commentResponses(commentForResponse)
+                .build();
+    }
+
+
+
+    @Override
+    public PostLinkResponse findInnerPost(Long postId) {
+        Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой post !"));
+
+        List<LinkResponse> linkResponses = publication.getLinkPublications().stream()
+                .map(link -> new LinkResponse(link.getId(), link.getLink()))
+                .toList();
+
+        return PostLinkResponse.builder()
+                .postId(publication.getId())
+                .linkResponses(linkResponses)
+                .countLikes(publication.getLikes().size())
+                .countComments(publication.getComments().size())
                 .build();
     }
 
