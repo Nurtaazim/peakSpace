@@ -197,7 +197,7 @@ public class PublicationServiceImpl implements PublicationService {
         Publication publication = publicationRepository.getReferenceById(postId);
         publication.getComplains().put(getCurrentUser().getId(), complain);
         Notification notification = new Notification();
-        notification.setNotificationMessage("оставил(-а) этот пост жалоб: "+complain);
+        notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: "+complain);
         notificationRepository.save(notification);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)

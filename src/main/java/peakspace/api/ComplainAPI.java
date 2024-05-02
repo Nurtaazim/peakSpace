@@ -16,10 +16,11 @@ import peakspace.service.PublicationService;
 @RequestMapping("/complaint")
 @RequiredArgsConstructor
 public class ComplainAPI {
+
     private final PublicationService publicationService;
 
     @Secured("USER")
-    @Operation(summary = "Для оставление жалоб на пост!")
+    @Operation(summary = "Для оставления жалобы на пост")
     @PostMapping("/save/{postId}")
     public SimpleResponse save(@PathVariable Long postId, @RequestParam String complain) {
         return publicationService.saveComplainToPost(postId, complain);
