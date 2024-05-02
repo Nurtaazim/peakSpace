@@ -5,7 +5,14 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+<<<<<<< HEAD
+      <jdbc-url>jdbc:postgresql://localhost:5432/peak_space</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+      </jdbc-additional-properties>
+=======
       <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+>>>>>>> fdb45e1d3f12fa8e580b90304b5d77d80936a26a
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

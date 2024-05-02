@@ -60,6 +60,8 @@ public class User implements UserDetails {
     private List<Notification> notifications;
     @ElementCollection
     private List<Long> searchFriendsHistory;
+    @ElementCollection
+    private List<Long> blockAccounts;
 
     public String getThisUserName() {
         return this.userName;

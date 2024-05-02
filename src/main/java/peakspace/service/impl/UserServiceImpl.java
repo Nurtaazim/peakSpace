@@ -14,67 +14,19 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.PasswordRequest;
+import peakspace.config.jwt.JwtService;
+import peakspace.dto.request.*;
 import peakspace.dto.response.*;
-import peakspace.entities.User;
-import peakspace.entities.Notification;
-import peakspace.enums.Choise;
-import peakspace.config.jwt.JwtService;
-import peakspace.config.jwt.JwtService;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.SubscriptionResponse;
-import peakspace.dto.response.FriendsPageResponse;
-import peakspace.dto.response.SignInResponse;
-import peakspace.dto.response.ResponseWithGoogle;
-import peakspace.dto.response.SignUpResponse;
-import peakspace.dto.request.SignInRequest;
-import peakspace.dto.request.SignUpRequest;
-import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.entities.Chapter;
-import peakspace.entities.Notification;
-import peakspace.entities.PablicProfile;
-import peakspace.entities.Profile;
-import peakspace.entities.User;
-import peakspace.config.jwt.JwtService;
-import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.request.SignUpRequest;
-import peakspace.dto.request.SignInRequest;
-import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.SignInResponse;
-import peakspace.dto.response.ResponseWithGoogle;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.SubscriptionResponse;
-import peakspace.dto.response.FriendsPageResponse;
 import peakspace.entities.*;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
-import peakspace.exception.FirebaseAuthException;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.InvalidConfirmationCode;
-import peakspace.exception.NotActiveException;
-import peakspace.exception.NotFoundException;
-import peakspace.repository.ChapterRepository;
-import peakspace.repository.PublicProfileRepository;
-import peakspace.repository.PublicationRepository;
-import peakspace.repository.ProfileRepository;
-import peakspace.repository.UserRepository;
+import peakspace.exception.*;
+import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -126,6 +78,7 @@ public class UserServiceImpl implements UserService {
                 user.setRole(Role.USER);
                 user.setPassword(passwordEncoder.encode(defaultPassword));
                 user.setEmail(email);
+
                 try {
                     sendConfirmationCode(email);
                 } catch (MessagingException e) {
@@ -667,13 +620,12 @@ public class UserServiceImpl implements UserService {
         User user;
         if (signInRequest.email().endsWith("@gmail.com")) {
             user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
-        }
-        else if(signInRequest.email().startsWith("+")){
+        } else if (signInRequest.email().startsWith("+")) {
             Profile profile = profileRepository.findByPhoneNumber(signInRequest.email());
-            if( profile == null ) throw new NotFoundException("User with this phone number not found! " + signInRequest.email());
+            if (profile == null)
+                throw new NotFoundException("User with this phone number not found! " + signInRequest.email());
             user = profile.getUser();
-        }
-        else {
+        } else {
             user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
         }
         if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
@@ -740,15 +692,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
-            User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("с таким айди пользователь не существует!"));
-            if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
-                user.setBlockAccount(false);
-                user.setConfirmationCode(null);
-                return SignInResponse.builder()
-                        .id(user.getId())
-                        .token(jwtService.createToken(user))
-                        .build();
-            } else throw new MessagingException("Не правильный код!");
+        User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("с таким айди пользователь не существует!"));
+        if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
+            user.setBlockAccount(false);
+            user.setConfirmationCode(null);
+            return SignInResponse.builder()
+                    .id(user.getId())
+                    .token(jwtService.createToken(user))
+                    .build();
+        } else throw new MessagingException("Не правильный код!");
     }
 
     public void startTask() {

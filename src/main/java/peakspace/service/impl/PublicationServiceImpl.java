@@ -19,10 +19,10 @@ import peakspace.entities.Chapter;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.enums.Role;
-import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
+
 import java.security.Principal;
 import java.util.Map;
 import java.util.List;
@@ -37,7 +37,6 @@ public class PublicationServiceImpl implements PublicationService {
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final NotificationRepository notificationRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -104,9 +103,8 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public MyPostResponse getById(Long postId) {
-        publicationRepository.findById(postId).orElseThrow(()->new NotFoundException(" Нет такой пост !"));
-        MyPostResponse myPost = getMyPost(postId);
-        return myPost;
+        publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
+        return getMyPost(postId);
     }
 
     @Override
@@ -139,19 +137,18 @@ public class PublicationServiceImpl implements PublicationService {
     public List<HomePageResponse> homePage() {
         User currentUser = getCurrentUser();
         List<HomePageResponse> homePages = new ArrayList<>();
-        List<Publication> allPublications = new ArrayList<>();
 
         List<Publication> currentUserPublications = currentUser.getPublications().stream()
                 .filter(publication -> publication.getPablicProfile() == null)
-                .collect(Collectors.toList());
+                .toList();
 
-        allPublications.addAll(currentUserPublications);
+        List<Publication> allPublications = new ArrayList<>(currentUserPublications);
 
         for (Chapter chapter : currentUser.getChapters()) {
             for (Publication friendPublication : chapter.getFriends().stream()
                     .flatMap(friend -> friend.getPublications().stream())
                     .filter(publication -> publication.getPablicProfile() == null)
-                    .collect(Collectors.toList())) {
+                    .toList()) {
                 if (!allPublications.contains(friendPublication)) {
                     allPublications.add(friendPublication);
                 }

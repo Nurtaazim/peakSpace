@@ -32,6 +32,7 @@ public class Profile {
     private String lastName;
     private String patronymicName;
     private String profession;
+    private String phoneNumber;
     private boolean workOrNot;
     @ElementCollection
     private List<Long> favorites;

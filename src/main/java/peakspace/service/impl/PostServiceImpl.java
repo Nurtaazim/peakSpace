@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.FavoritePostResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UserMarkResponse;
 import peakspace.entities.User;
@@ -100,7 +100,12 @@ public class PostServiceImpl implements PostService {
                 if (publication.getId().equals(postId)) {
                     publicationRepo.deleteComNotifications(postId);
                     publicationRepo.deleteCom(postId);
+                    publicationRepo.deleteLink(postId);
+                    publicationRepo.deleteTag(postId);
+                    publicationRepo.deleteLike(postId);
+                    publicationRepo.deletePublic(publication.getId());
                     publicationRepo.deleteByIds(publication.getId());
+
                 }
             }
         }
@@ -210,29 +215,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public GetAllPostsResponse favorites() {
+    public FavoritePostResponse favorites() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
         List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
-
         Map<Long, String> publics = allById.stream()
                 .collect(Collectors.toMap(
                         Publication::getId,
-                        publication -> publication.getLinkPublications().getFirst().getLink()
+                        publication -> {
+                            List<Link_Publication> linkPublications = publication.getLinkPublications();
+                            return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
+                        }
                 ));
 
-        return GetAllPostsResponse.builder()
-                .cover(user.getProfile().getCover())
-                .avatar(user.getProfile().getAvatar())
-                .userName(user.getUsername())
-                .aboutMe(user.getProfile().getAboutYourSelf())
-                .major(user.getProfile().getProfession())
-                .countFriends(user.getChapters().size())
-                .countPablics(user.getPublications().size())
+        return FavoritePostResponse.builder()
                 .publications(publics)
                 .build();
     }
-
 
     @Override @Transactional
     public SimpleResponse savePostPublic(Long publicId,Long userId,PostRequest postRequest) {

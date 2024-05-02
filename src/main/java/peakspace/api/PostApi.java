@@ -6,7 +6,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.FavoritePostResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
 
@@ -56,7 +56,7 @@ public class PostApi {
     @Secured("USER")
     @Operation(summary = " Все избранные текущего пользователя !")
     @GetMapping("/getAllFavoritePost")
-    public GetAllPostsResponse favorite(){
+    public FavoritePostResponse favorite(){
         return postService.favorites();
     }
 
