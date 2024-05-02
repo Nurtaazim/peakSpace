@@ -1,58 +1,59 @@
 
-insert into users(id, user_name, email, password, is_block)
+insert into users(id, user_name, email, password, is_block,role)
 values
     (1, 'Aliaskar', 'aliaskar@gmail.com', '$2a$12$V3VQ8h4pfGBNNQYGlggXlOHf6.eFNH4VChm0bxKHPDMRv7te/GOvK',
-     false),
+     false,'USER'),
     (2, 'Mirlan', 'mirlan@gmail.com', '$2a$12$nBn2dhJXXKXNLcx5LFH.LOrXKuDQSQUVGr5vh90Uo73XHSZ0YP636',
-     false),
+     false,'USER'),
     (3, 'Myrzaiym', 'myrzaiym@gmail.com', '$2a$12$bjn01purODRpvf714JFbj./91rXrvMRL5QgjCbgIEAYnQdeYoz68K',
-     false),
+     false,'USER'),
     (4, 'Nurtaazim', 'nurtaazim@gmail.com', '$2a$12$7w1javZANTDTW.PTHWoPMewNHO1WOPOpURSy5BGHOIcgc5V/gVv8S',
-     false),
+     false,'USER'),
     (5, 'Nurmukhammed', 'nurmukhammed@gmail.com', '$2a$12$7wuEoK1raMY0ACiHI0cpJOUB4q5MMAAbrJJdKpbdzyIKPCZ5o.fb2',
-     false),
+     false,'USER'),
     (6, 'Nurkamil', 'nurkamil@gmail.com', '$2a$12$rDuM/7QHNuls7F/uSnYORehUR6RJOAkvHDpjLxO7WLjf1TheZfcXu',
-     false),
+     false,'USER'),
     (7, 'Aiturgan', 'aiturgan@gmail.com', '$2a$12$gmRvdp9mjYsWvQomynXDV.QXkey69qZXogJcvh0wQLvHvCl0za6Oq',
-     false),
+     false,'USER'),
     (8, 'Gulukan', 'gulumkan@gmail.com', '$2a$12$4kLeZzjyQxv.n/dwRk./GeVo54IG4b8F.hZGk2jEc0oqQzSYQAVOi',
-     false),
+     false,'USER'),
     (9, 'Ajybek', 'ajybek@gmail.com', '$2a$12$lWjTBGDFDJecVBbmvEHAAeZOqL8VmGP2ESrGACr5xwfPJZUYirJMO',
-     false),
+     false,'USER'),
     (10, 'Nurislam', 'nurt@gmail.com', '$2a$12$t7nUpSW.BjMy2Fe2N2HTgOWY723XNMj6yC15piA9gTV2nkh5CLgNS',
-     false),
-    (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false),
-    (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false),
-    (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false),
-    (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false),
-    (15, 'JamedssJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false),
-    (16, 'OliviaGarcia', 'olivia.garcia@example.com', '$2a$12$encodedPassword6', false),
-    (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false),
-    (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false),
-    (19, 'BenjaminClark', 'benjamin.clark@example.com', '$2a$12$encodedPassword9', false),
-    (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false);
+     false,'USER'),
+    (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false,'USER'),
+    (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false,'USER'),
+    (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false,'USER'),
+    (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false,'USER'),
+    (15, 'JamedssJones', 'james.jones@example.com', '$2a$12$encodedPassword5', false,'USER'),
+    (16, 'OliviaGarcia', 'olivia.garcia@example.com', '$2a$12$encodedPassword6', false,'USER'),
+    (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false,'USER'),
+    (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false,'USER'),
+    (19, 'BenjaminClark', 'benjamin.clark@example.com', '$2a$12$encodedPassword9', false,'USER'),
+    (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false,'USER');
 
 
 insert into stories(id, owner_id, created_at)
 values
-    (1, 1, '2024-10-10T00:00:00+00:00'),
-    (2, 1, '2024-09-05T00:00:00+00:00'),
-    (3, 2, '2024-08-10T00:00:00+00:00'),
-    (4, 3, '2024-07-12T00:00:00+00:00'),
-    (5, 3, '2024-07-12T00:00:00+00:00'),
-    (6, 4, '2024-07-12T00:00:00+00:00'),
-    (7, 5, '2024-07-12T00:00:00+00:00'),
-    (8, 6, '2024-07-12T00:00:00+00:00'),
-    (9, 7, '2024-07-12T00:00:00+00:00'),
-    (10, 8, '2024-07-12T00:00:00+00:00'),
-    (11, 9, '2024-07-12T00:00:00+00:00'),
-    (12, 10, '2024-07-12T00:00:00+00:00'),
-    (13, 11, '2024-07-12T00:00:00+00:00'),
-    (14, 12, '2024-07-12T00:00:00+00:00'),
-    (15, 13, '2024-07-12T00:00:00+00:00'),
-    (16, 14, '2024-07-12T00:00:00+00:00'),
-    (17, 15, '2024-07-12T00:00:00+00:00'),
-    (18, 16, '2024-07-12T00:00:00+00:00');
+       (1, 1, '2024-10-10T00:00:00+00:00'),
+       (2, 1, '2024-09-05T00:00:00+00:00'),
+       (3, 2, '2024-08-10T00:00:00+00:00'),
+       (4, 3, '2024-07-12T00:00:00+00:00'),
+       (5, 3, '2024-07-12T00:00:00+00:00'),
+       (6, 4, '2024-07-12T00:00:00+00:00'),
+       (7, 5, '2024-07-12T00:00:00+00:00'),
+       (8, 6, '2024-07-12T00:00:00+00:00'),
+       (9, 7, '2024-07-12T00:00:00+00:00'),
+       (10, 8, '2024-07-12T00:00:00+00:00'),
+       (11, 9, '2024-07-12T00:00:00+00:00'),
+       (12, 10, '2024-07-12T00:00:00+00:00'),
+       (13, 11, '2024-07-12T00:00:00+00:00'),
+       (14, 12, '2024-07-12T00:00:00+00:00'),
+       (15, 13, '2024-07-12T00:00:00+00:00'),
+       (16, 14, '2024-07-12T00:00:00+00:00'),
+       (17, 15, '2024-07-12T00:00:00+00:00'),
+       (18, 16, '2024-07-12T00:00:00+00:00');
+
 
 
 insert into likes(id, user_id)
@@ -101,50 +102,53 @@ VALUES (1, 1),
 
 insert into publications(id, owner_id, pablic_profile_id,is_block_comment, description, created_at, updated_at, location)
 values
-    (1, 1, null,false, 'Summer time', '2024-10-10T00:00:00+00:00', '2024-11-01T00:00:00+00:00', 'Bishkek'),
-    (2, 1, null,false, 'At the school', '2024-09-05T00:00:00+00:00', '2024-11-10T00:00:00+00:00', 'Naryn'),
-    (3, 2, null,false, 'Happy times', '2024-08-10T00:00:00+00:00', '2024-10-01T00:00:00+00:00', 'Bishkek'),
-    (4, 3, null,false,'Moments', '2024-07-12T00:00:00+00:00', '2024-09-01T00:00:00+00:00', 'Bishkek'),
-    (5, 3, null,false, 'Birthday', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
-    (6, 4, null,false, 'With family', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
-    (7, 5, null,false, 'Brothers', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
-    (8, 6, null,false, 'My vibe', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
-    (9, 6, null,false, 'Adventure in the Mountains', '2024-07-20T00:00:00+00:00', '2024-08-15T00:00:00+00:00', 'Issyk-Kul'),
-    (10, 8, null,false, 'Exploring the City', '2024-06-15T00:00:00+00:00', '2024-07-25T00:00:00+00:00', 'Karabalta'),
-    (11, 9, null,false, 'Family Picnic', '2024-07-30T00:00:00+00:00', '2024-08-05T00:00:00+00:00', 'Cholpon-Ata'),
-    (12, 9, null,false, 'Weekend Getaway', '2024-08-10T00:00:00+00:00', '2024-08-12T00:00:00+00:00', 'Talas'),
-    (13, 11, null,false, 'Beach Day', '2024-06-25T00:00:00+00:00', '2024-06-26T00:00:00+00:00', 'Issyk-Kul'),
-    (14, 12, null,false, 'Hiking in the Forest', '2024-07-05T00:00:00+00:00', '2024-07-06T00:00:00+00:00', 'Karakol'),
-    (15, 12, null,false, 'Celebrating Graduation', '2024-07-15T00:00:00+00:00', '2024-07-16T00:00:00+00:00', 'Naryn'),
-    (16, 14, null,false, 'Road Trip', '2024-08-20T00:00:00+00:00', '2024-08-25T00:00:00+00:00', 'Balykchy'),
-    (17, 15, null,false, 'Summer Festival', '2024-06-30T00:00:00+00:00', '2024-07-05T00:00:00+00:00', 'Talas'),
-    (18, 17, null,false, 'City Nightlife', '2024-08-05T00:00:00+00:00', '2024-08-10T00:00:00+00:00', 'Bishkek'),
-    (19, 17, null,false, 'Camping Trip', '2024-07-10T00:00:00+00:00', '2024-07-15T00:00:00+00:00', 'Issyk-Kul'),
-    (20, 17, null,false, 'Exploring Historical Sites', '2024-08-15T00:00:00+00:00', '2024-08-20T00:00:00+00:00', 'Osh');
+
+       (1, 1, null,false, 'Summer time', '2024-10-10T00:00:00+00:00', '2024-11-01T00:00:00+00:00', 'Bishkek'),
+       (2, 1, null,false, 'At the school', '2024-09-05T00:00:00+00:00', '2024-11-10T00:00:00+00:00', 'Naryn'),
+       (3, 2, null,false, 'Happy times', '2024-08-10T00:00:00+00:00', '2024-10-01T00:00:00+00:00', 'Bishkek'),
+       (4, 3, null,false,'Moments', '2024-07-12T00:00:00+00:00', '2024-09-01T00:00:00+00:00', 'Bishkek'),
+       (5, 3, null,false, 'Birthday', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
+       (6, 4, null,false, 'With family', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
+       (7, 5, null,false, 'Brothers', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
+       (8, 6, null,false, 'My vibe', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
+       (9, 6, null,false, 'Adventure in the Mountains', '2024-07-20T00:00:00+00:00', '2024-08-15T00:00:00+00:00', 'Issyk-Kul'),
+       (10, 8, null,false, 'Exploring the City', '2024-06-15T00:00:00+00:00', '2024-07-25T00:00:00+00:00', 'Karabalta'),
+       (11, 9, null,false, 'Family Picnic', '2024-07-30T00:00:00+00:00', '2024-08-05T00:00:00+00:00', 'Cholpon-Ata'),
+       (12, 9, null,false, 'Weekend Getaway', '2024-08-10T00:00:00+00:00', '2024-08-12T00:00:00+00:00', 'Talas'),
+       (13, 11, null,false, 'Beach Day', '2024-06-25T00:00:00+00:00', '2024-06-26T00:00:00+00:00', 'Issyk-Kul'),
+       (14, 12, null,false, 'Hiking in the Forest', '2024-07-05T00:00:00+00:00', '2024-07-06T00:00:00+00:00', 'Karakol'),
+       (15, 12, null,false, 'Celebrating Graduation', '2024-07-15T00:00:00+00:00', '2024-07-16T00:00:00+00:00', 'Naryn'),
+       (16, 14, null,false, 'Road Trip', '2024-08-20T00:00:00+00:00', '2024-08-25T00:00:00+00:00', 'Balykchy'),
+       (17, 15, null,false, 'Summer Festival', '2024-06-30T00:00:00+00:00', '2024-07-05T00:00:00+00:00', 'Talas'),
+       (18, 17, null,false, 'City Nightlife', '2024-08-05T00:00:00+00:00', '2024-08-10T00:00:00+00:00', 'Bishkek'),
+       (19, 17, null,false, 'Camping Trip', '2024-07-10T00:00:00+00:00', '2024-07-15T00:00:00+00:00', 'Issyk-Kul'),
+       (20, 17, null,false, 'Exploring Historical Sites', '2024-08-15T00:00:00+00:00', '2024-08-20T00:00:00+00:00', 'Osh');
+
 
 
 insert into profiles(id, user_id,work_or_not, avatar, cover, about_your_self, last_name,first_name,patronymic_name,profession)
 values
-    (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', 'Temirbekovich', 'DataIng'),
-    (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan','Arstanbekovich', 'Backend dev'),
-    (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', 'Keldibekovna','Java dev'),
-    (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', 'Universal','C# dev'),
-    (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed','Universal',  'C++ dev'),
-    (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', 'Universal','JS dev'),
-    (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', 'Universal','UX/UI'),
-    (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', 'Universal','UX/UI'),
-    (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', 'Universal', 'C++ dev'),
-    (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', 'Universal','Backend dev'),
-    (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', 'Universal','Full-stack dev'),
-    (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', 'Universal', 'Software Engineer'),
-    (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon',  'Universal','Frontend dev'),
-    (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan',  'Universal','Web Developer'),
-    (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', 'Universal','Mobile App Developer'),
-    (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', 'Universal','Software Developer'),
-    (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', 'Universal','Systems Analyst'),
-    (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', 'Universal','Database Administrator'),
-    (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat',  'Universal','Network Administrator'),
-    (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy',  'Universal','Machine Learning Engineer');
+
+       (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', 'Temirbekovich', 'DataIng'),
+       (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan','Arstanbekovich', 'Backend dev'),
+       (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', 'Keldibekovna','Java dev'),
+       (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', 'Universal','C# dev'),
+       (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed','Universal',  'C++ dev'),
+       (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', 'Universal','JS dev'),
+       (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', 'Universal','UX/UI'),
+       (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', 'Universal','UX/UI'),
+       (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', 'Universal', 'C++ dev'),
+       (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', 'Universal','Backend dev'),
+       (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', 'Universal','Full-stack dev'),
+       (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', 'Universal', 'Software Engineer'),
+       (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon',  'Universal','Frontend dev'),
+       (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan',  'Universal','Web Developer'),
+       (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', 'Universal','Mobile App Developer'),
+       (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', 'Universal','Software Developer'),
+       (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', 'Universal','Systems Analyst'),
+       (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', 'Universal','Database Administrator'),
+       (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat',  'Universal','Network Administrator'),
+       (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy',  'Universal','Machine Learning Engineer');
 
 
 insert into chats(id, sender_id, receiver_id)
@@ -168,7 +172,6 @@ values (1, 1, 2),
        (18, 15, 1),
        (19, 16, 2),
        (20, 16, 3);
-
 
 
 INSERT INTO message_content(id, chat_id, content, timestamp, read_or_not_read)
@@ -239,26 +242,26 @@ values (1, 'imageLink1'),
 
 
 insert into educations(id, profile_id, country, location, educational_institution)
-values (1, 1, 'КЫРГЫЗСТАН', 'Karakol', 'KGTU'),
-       (2, 2, 'КЫРГЫЗСТАН', 'Bishkek', 'KGTU'),
-       (3, 3, 'КЫРГЫЗСТАН', 'Naryn', 'PED'),
-       (4, 4, 'КЫРГЫЗСТАН', 'Bishkek', 'AUSA'),
-       (5, 5, 'КЫРГЫЗСТАН', 'Bishkek', 'MANAS'),
-       (6, 6, 'КЫРГЫЗСТАН', 'Naryn', 'USA'),
-       (7, 7, 'КЫРГЫЗСТАН', 'Osh', 'OSHGU'),
-       (8, 8, 'КЫРГЫЗСТАН', 'Osh', 'OSHGU'),
-       (9, 9, 'КЫРГЫЗСТАН', 'Tokmok', 'KGTU'),
-       (10, 10, 'КЫРГЫЗСТАН', 'Talas', 'MANAS'),
-       (11, 11, 'КЫРГЫЗСТАН', 'Karakol', 'KGMA'),
-       (12, 12, 'КЫРГЫЗСТАН', 'Jalal-Abad', 'OSHGU'),
-       (13, 13, 'КЫРГЫЗСТАН', 'Bishkek', 'KSUCTA'),
-       (14, 14, 'КЫРГЫЗСТАН', 'Naryn', 'KNU'),
-       (15, 15, 'КЫРГЫЗСТАН', 'Bishkek', 'KRSU'),
-       (16, 16, 'КЫРГЫЗСТАН', 'Tashkent', 'TUIT'),
-       (17, 17, 'КЫРГЫЗСТАН', 'Osh', 'KSUCTA'),
-       (18, 18, 'КЫРГЫЗСТАН', 'Bishkek', 'KSTU'),
-       (19, 19, 'КЫРГЫЗСТАН', 'Bishkek', 'KNURE'),
-       (20, 20, 'КЫРГЫЗСТАН', 'Bishkek', 'KRSU');
+values (1, 1, 'KAZAKHSTAN', 'Karakol', 'KGTU'),
+       (2, 1, 'KAZAKHSTAN', 'Bishkek', 'KGTU'),
+       (3, 2, 'KAZAKHSTAN', 'Naryn', 'PED'),
+       (4, 2, 'KAZAKHSTAN', 'Bishkek', 'AUSA'),
+       (5, 3, 'KAZAKHSTAN', 'Bishkek', 'MANAS'),
+       (6, 4, 'KAZAKHSTAN', 'Naryn', 'USA'),
+       (7, 4, 'KAZAKHSTAN', 'Osh', 'OSHGU'),
+       (8, 5, 'KAZAKHSTAN', 'Osh', 'OSHGU'),
+       (9, 6, 'KAZAKHSTAN', 'Tokmok', 'KGTU'),
+       (10, 7, 'KAZAKHSTAN', 'Talas', 'MANAS'),
+       (11, 7, 'KAZAKHSTAN', 'Karakol', 'KGMA'),
+       (12, 8, 'KAZAKHSTAN', 'Jalal-Abad', 'OSHGU'),
+       (13, 8, 'KAZAKHSTAN', 'Bishkek', 'KSUCTA'),
+       (14, 9, 'KAZAKHSTAN', 'Naryn', 'KNU'),
+       (15, 9, 'KAZAKHSTAN', 'Bishkek', 'KRSU'),
+       (16, 10, 'KAZAKHSTAN', 'Tashkent', 'TUIT'),
+       (17, 11, 'KAZAKHSTAN', 'Osh', 'KSUCTA'),
+       (18, 12, 'KAZAKHSTAN', 'Bishkek', 'KSTU'),
+       (19, 13, 'KAZAKHSTAN', 'Bishkek', 'KNURE'),
+       (20, 14, 'KAZAKHSTAN', 'Bishkek', 'KRSU');
 
 
 INSERT INTO comments(id, user_id, publication_id, message, created_at)
@@ -377,16 +380,17 @@ values (1, 1),
 
 
 insert into notifications(id, like_id, user_notification_id, comment_id, seen, notification_message, created_at)
-values    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
-          (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'),
-          (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
-          (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
-          (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
-          (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
-          (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
-          (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
-          (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
-          (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
+values
+    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
+    (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'),
+    (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
+    (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
+    (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
+    (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
+    (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
+    (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
+    (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
+    (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
 
 
 insert into inner_comment(comment_id, inner_comments_id)
@@ -440,3 +444,31 @@ values (1, 1),
        (3, 5),
        (4, 6),
        (5, 6);
+
+
+insert into user_search_friends_history(search_friends_history, user_id)
+values
+    (1,1),
+    (1,2),
+    (1,3),
+    (2,1),
+    (3,4),
+    (4,3),
+    (4,5),
+    (6,2),
+    (7,8),
+    (7,9);
+
+
+insert into comments_likes(comment_id, likes_id)
+values
+    (1,1),
+    (1,2),
+    (1,3),
+    (2,4),
+    (2,5),
+    (2,6),
+    (3,7),
+    (3,8),
+    (4,9),
+    (4,10);

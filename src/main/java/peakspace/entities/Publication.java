@@ -1,10 +1,25 @@
 package peakspace.entities;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -21,6 +36,8 @@ public class Publication {
     private ZonedDateTime updatedAt;
     private String location;
     private boolean isBlockComment;
+    @ElementCollection
+    private Map<Long, String> complains;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User owner;
     @ManyToMany
@@ -31,12 +48,14 @@ public class Publication {
     private List<Comment> comments;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private PablicProfile pablicProfile;
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToMany()
     private List<Like> likes;
+
     @PrePersist
     public void prePersist(){
         this.createdAt = ZonedDateTime.now();
     }
+
     @PreUpdate
     public void preUpdate(){
         this.createdAt = ZonedDateTime.now();
