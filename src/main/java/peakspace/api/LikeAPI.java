@@ -17,20 +17,20 @@ public class LikeAPI {
 
     @PostMapping("/addLikeToPost/{postId}")
     @Operation(description = "Поставить лайк на пост")
-    void addLikeToPost(@PathVariable Long postId){
-        likeService.addLikeToPost(postId);
+    boolean addLikeToPost(@PathVariable Long postId){
+       return likeService.addLikeToPost(postId);
     }
 
     @PostMapping("/addLikeToComment/{commentId}")
     @Operation(description = "Поставить лайк на комментарий")
-    void  addLikeToComment(@PathVariable Long commentId){
-        likeService.addLikeToComment(commentId);
+    boolean  addLikeToComment(@PathVariable Long commentId){
+       return likeService.addLikeToComment(commentId);
     }
 
     @PostMapping("/addLikeToStory/{storyId}")
     @Operation(description = "Поставить лайк на сторис")
-    void addLikeToStory(@PathVariable Long storyId){
-        likeService.addLikeToStory(storyId);
+    boolean addLikeToStory(@PathVariable Long storyId){
+       return likeService.addLikeToStory(storyId);
     }
 
 }

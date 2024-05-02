@@ -1,11 +1,12 @@
 package peakspace.service;
 
 public interface LikeService {
-    void addLikeToPost(Long postId);
 
-    void addLikeToComment(Long commentId);
+    boolean addLikeToPost(Long postId);
 
-    void addLikeToStory(Long storyId);
+    boolean addLikeToComment(Long commentId);
+
+    boolean addLikeToStory(Long storyId);
 
 
 }
