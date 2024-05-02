@@ -2,6 +2,7 @@ package peakspace.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bind.annotation.Pipe;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,6 +83,13 @@ public class PublicAPI {
     @PutMapping("/sendJoinPublic/{publicId}")
     public SimpleResponse sendJoinPublic(@PathVariable Long publicId){
         return publicService.sendPublic(publicId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Для удаление фото на паблика от имени Admin владелец паблика !")
+    @PutMapping("/removePost/{postId}")
+    public SimpleResponse removePostAdmin(@PathVariable Long postId){
+        return publicService.removePost(postId);
     }
 
 

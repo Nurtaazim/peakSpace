@@ -14,6 +14,7 @@ import peakspace.entities.Publication;
 import peakspace.entities.User;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicProfileRepository;
@@ -196,6 +197,23 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .httpStatus(HttpStatus.OK)
                 .message(message)
                 .build();
+    }
+
+    @Override @Transactional
+    public SimpleResponse removePost(Long postId) {
+        User currentUser = getCurrentUser();
+        List<Publication> publications = currentUser.getPablicProfiles().getPublications();
+
+        boolean removed = publications.removeIf(publication -> publication.getId().equals(postId));
+        publicationRepository.deleteById(postId);
+        if (removed) {
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Пост успешно удален!")
+                    .build();
+        } else {
+            throw new NotFoundException("Пост с id " + postId + " не найден!");
+        }
     }
 
     private User getCurrentUser() {
