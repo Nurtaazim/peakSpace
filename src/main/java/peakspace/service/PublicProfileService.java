@@ -20,4 +20,6 @@ public interface PublicProfileService {
     List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise,Long publicId,Long userId);
 
     PublicPostResponse findPostPublic(Long postId);
+
+    SimpleResponse removeUser(Long friendId);
 }

@@ -23,6 +23,7 @@ import peakspace.service.PublicProfileService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -151,6 +152,28 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 links,
                 commentForResponse
         );
+    }
+
+    @Override @Transactional
+    public SimpleResponse removeUser(Long friendId) {
+        User currentUser = getCurrentUser();
+        User friendUser = userRepository.findByIds(friendId);
+
+        PablicProfile publicProfile = currentUser.getPablicProfiles();
+        if (publicProfile == null) {
+            throw new NotFoundException(" Паблик текущего пользователя не найден!");
+        }
+
+        List<User> users = publicProfile.getUsers();
+        if (users.contains(friendUser)) {
+            users.remove(friendUser);
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Пользователь успешно удален из паблика !")
+                    .build();
+        } else {
+            throw new NotFoundException("Пользователь не является членом публичного профиля!");
+        }
     }
 
     private User getCurrentUser() {

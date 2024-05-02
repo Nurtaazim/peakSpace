@@ -70,5 +70,12 @@ public class PublicAPI {
         return publicService.findPostPublic(postId);
     }
 
+    @Secured("USER")
+    @Operation (summary = " Удаление пользователья в паблике ")
+    @PutMapping("/removeUser/{friendId}")
+    public SimpleResponse removeUserFromPublic(@PathVariable Long friendId){
+        return publicService.removeUser(friendId);
+    }
+
 
 }
