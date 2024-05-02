@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: ${POSTGRES_PASSWORD}
-    url: ${POSTGRES_DB}
-    username: ${POSTGRES_USER}
+    password: yiman
+    url: jdbc:postgresql://localhost:5434/postgres
+    username: postgres
   mail:
     host: smtp.gmail.com
     port: 587
@@ -27,7 +27,6 @@ spring:
 server:
   error:
     include-stacktrace: always
-  port: 2023
 app:
   jwt:
     secret: peak-space-java12
