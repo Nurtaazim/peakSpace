@@ -4,6 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="bug fix dataInit">
+=======
     <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode">
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicAPI.java" afterDir="false" />
@@ -12,12 +15,29 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/PublicProfileResponse.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/PublicProfileService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/PublicProfileServiceImpl.java" afterDir="false" />
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/peak-space-b12.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/peak-space-b12.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24__12_17__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_23_4_24__12_17__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/UserAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/api/UserAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/SearchResponse$SearchResponseBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/SearchResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/dto/response/SearchResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/repository/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/peakspace/service/impl/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/dataInit/dataInit.sql" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/dataInit/dataInit.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
@@ -45,6 +65,8 @@
     </list>
 >>>>>>> 0da131773b37293b62aefee805291aec9551f60f
 >>>>>>> 1f416b9d8c104f516d2c211f27d4b76401ee5c9e
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,11 +80,10 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
         <projects_view>
           <tree_state>
+<<<<<<< HEAD
+=======
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -80,6 +101,7 @@
                 <item name="build" type="c8890929:TasksNode$1" />
               </path>
             </expand>
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
             <expand />
             <select />
           </tree_state>
@@ -119,23 +141,34 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+<<<<<<< HEAD
+        <entry key="$PROJECT_DIR$" value="feature/regst_with_google" />
+=======
+<<<<<<< HEAD
         <entry key="$PROJECT_DIR$" value="main" />
         <entry key="$PROJECT_DIR$" value="favorite" />
         <entry key="$PROJECT_DIR$" value="main" />
+>>>>>>> 4a88e6b2952b1014c72ca67fa30606fd87b1318d
+>>>>>>> 0da131773b37293b62aefee805291aec9551f60f
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
+    &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
     &quot;assignee&quot;: &quot;TemirbekovAliaskar&quot;
-  }
-}</component>
+    }
+    }</component>
   <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/peaksoft-school/peak-space-b12.git&quot;,
     &quot;accountId&quot;: &quot;5a94a1f5-1f79-46ad-bd85-97591a4fcdb4&quot;
+<<<<<<< HEAD
+    }
+    }</component>
+=======
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -165,7 +198,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
+ <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;Gradle.Build peak-space-b12.executor&quot;: &quot;Run&quot;,
@@ -215,6 +248,11 @@
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
      <component name="PropertiesComponent">{
+<<<<<<< HEAD
+>>>>>>> 7d1f1292bf39e1e4e9c54e887a8efd51509aa2ee
+=======
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
+  <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;Gradle.Build peak-space-b12.executor&quot;: &quot;Run&quot;,
@@ -225,19 +263,31 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;Spring Boot.PeakSpaceB12Application.executor&quot;: &quot;Coverage&quot;,
+<<<<<<< HEAD
+    &quot;git-widget-placeholder&quot;: &quot;feature/search&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Applications/peak-space-b12/src/main/resources&quot;,
+=======
     &quot;git-widget-placeholder&quot;: &quot;feature/favoriiite&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/DELLG/IdeaProjects/peak-space-b12/src/main/resources&quot;,
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+<<<<<<< HEAD
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
     &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+>>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
+>>>>>>> 0da131773b37293b62aefee805291aec9551f60f
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
   },
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
@@ -327,6 +377,9 @@
     </configuration>
     <configuration name="PeakSpaceB12Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
       <option name="ACTIVE_PROFILES" value="mika" />
       <module name="peakspace.peak-space-b12.main" />
 =======
@@ -485,6 +538,11 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+<<<<<<< HEAD
+    <MESSAGE value="HomePage + cleanCode" />
+    <MESSAGE value="bug fix dataInit" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fix dataInit" />
+=======
     <MESSAGE value="r" />
     <MESSAGE value="HomePage + cleanCode" />
 <<<<<<< HEAD
@@ -525,6 +583,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="remove empty lines2" />
 >>>>>>> 4a88e6b2952b1014c72ca67fa30606fd87b1318d
 >>>>>>> 0da131773b37293b62aefee805291aec9551f60f
+>>>>>>> 8abfe1637af80270d1b7fbf6b89e063f95ed225a
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/peak_space_b12$PeakSpaceB12Application.ic" NAME="PeakSpaceB12Application Coverage Results" MODIFIED="1713864745796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

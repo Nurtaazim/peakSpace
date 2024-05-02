@@ -15,6 +15,13 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import peakspace.dto.request.ChapterRequest;
+import peakspace.dto.request.PasswordRequest;
+import peakspace.dto.response.*;
+import peakspace.entities.User;
+import peakspace.entities.Notification;
+import peakspace.enums.Choise;
+import peakspace.config.jwt.JwtService;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.response.SearchResponse;
@@ -532,6 +539,7 @@ public class UserServiceImpl implements UserService {
         List<Long> friends = currentUser.getSearchFriendsHistory();
         friends.add(foundUserId);
 
+
         int pablicationsSize = 0;
         if (foundUser.getPablicProfiles() != null && foundUser.getPablicProfiles().getUsers() != null) {
             pablicationsSize = foundUser.getPablicProfiles().getUsers().size();
@@ -606,6 +614,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<SearchUserResponse> globalSearch(String keyWord) {
+        List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
+        System.out.println(users.size());
+        return users;
+
+    }
+
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
         return FriendsPageResponse.builder()
                 .userId(userId)

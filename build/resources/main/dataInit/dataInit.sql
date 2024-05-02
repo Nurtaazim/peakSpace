@@ -35,24 +35,25 @@ values
 
 insert into stories(id, owner_id, created_at)
 values
-    (1, 1, '2024-10-10T00:00:00+00:00'),
-    (2, 1, '2024-09-05T00:00:00+00:00'),
-    (3, 2, '2024-08-10T00:00:00+00:00'),
-    (4, 3, '2024-07-12T00:00:00+00:00'),
-    (5, 3, '2024-07-12T00:00:00+00:00'),
-    (6, 4, '2024-07-12T00:00:00+00:00'),
-    (7, 5, '2024-07-12T00:00:00+00:00'),
-    (8, 6, '2024-07-12T00:00:00+00:00'),
-    (9, 7, '2024-07-12T00:00:00+00:00'),
-    (10, 8, '2024-07-12T00:00:00+00:00'),
-    (11, 9, '2024-07-12T00:00:00+00:00'),
-    (12, 10, '2024-07-12T00:00:00+00:00'),
-    (13, 11, '2024-07-12T00:00:00+00:00'),
-    (14, 12, '2024-07-12T00:00:00+00:00'),
-    (15, 13, '2024-07-12T00:00:00+00:00'),
-    (16, 14, '2024-07-12T00:00:00+00:00'),
-    (17, 15, '2024-07-12T00:00:00+00:00'),
-    (18, 16, '2024-07-12T00:00:00+00:00');
+       (1, 1, '2024-10-10T00:00:00+00:00'),
+       (2, 1, '2024-09-05T00:00:00+00:00'),
+       (3, 2, '2024-08-10T00:00:00+00:00'),
+       (4, 3, '2024-07-12T00:00:00+00:00'),
+       (5, 3, '2024-07-12T00:00:00+00:00'),
+       (6, 4, '2024-07-12T00:00:00+00:00'),
+       (7, 5, '2024-07-12T00:00:00+00:00'),
+       (8, 6, '2024-07-12T00:00:00+00:00'),
+       (9, 7, '2024-07-12T00:00:00+00:00'),
+       (10, 8, '2024-07-12T00:00:00+00:00'),
+       (11, 9, '2024-07-12T00:00:00+00:00'),
+       (12, 10, '2024-07-12T00:00:00+00:00'),
+       (13, 11, '2024-07-12T00:00:00+00:00'),
+       (14, 12, '2024-07-12T00:00:00+00:00'),
+       (15, 13, '2024-07-12T00:00:00+00:00'),
+       (16, 14, '2024-07-12T00:00:00+00:00'),
+       (17, 15, '2024-07-12T00:00:00+00:00'),
+       (18, 16, '2024-07-12T00:00:00+00:00');
+
 
 
 insert into likes(id, user_id)
@@ -101,50 +102,53 @@ VALUES (1, 1),
 
 insert into publications(id, owner_id, pablic_profile_id,is_block_comment, description, created_at, updated_at, location)
 values
-    (1, 1, null,false, 'Summer time', '2024-10-10T00:00:00+00:00', '2024-11-01T00:00:00+00:00', 'Bishkek'),
-    (2, 1, null,false, 'At the school', '2024-09-05T00:00:00+00:00', '2024-11-10T00:00:00+00:00', 'Naryn'),
-    (3, 2, null,false, 'Happy times', '2024-08-10T00:00:00+00:00', '2024-10-01T00:00:00+00:00', 'Bishkek'),
-    (4, 3, null,false,'Moments', '2024-07-12T00:00:00+00:00', '2024-09-01T00:00:00+00:00', 'Bishkek'),
-    (5, 3, null,false, 'Birthday', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
-    (6, 4, null,false, 'With family', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
-    (7, 5, null,false, 'Brothers', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
-    (8, 6, null,false, 'My vibe', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
-    (9, 6, null,false, 'Adventure in the Mountains', '2024-07-20T00:00:00+00:00', '2024-08-15T00:00:00+00:00', 'Issyk-Kul'),
-    (10, 8, null,false, 'Exploring the City', '2024-06-15T00:00:00+00:00', '2024-07-25T00:00:00+00:00', 'Karabalta'),
-    (11, 9, null,false, 'Family Picnic', '2024-07-30T00:00:00+00:00', '2024-08-05T00:00:00+00:00', 'Cholpon-Ata'),
-    (12, 9, null,false, 'Weekend Getaway', '2024-08-10T00:00:00+00:00', '2024-08-12T00:00:00+00:00', 'Talas'),
-    (13, 11, null,false, 'Beach Day', '2024-06-25T00:00:00+00:00', '2024-06-26T00:00:00+00:00', 'Issyk-Kul'),
-    (14, 12, null,false, 'Hiking in the Forest', '2024-07-05T00:00:00+00:00', '2024-07-06T00:00:00+00:00', 'Karakol'),
-    (15, 12, null,false, 'Celebrating Graduation', '2024-07-15T00:00:00+00:00', '2024-07-16T00:00:00+00:00', 'Naryn'),
-    (16, 14, null,false, 'Road Trip', '2024-08-20T00:00:00+00:00', '2024-08-25T00:00:00+00:00', 'Balykchy'),
-    (17, 15, null,false, 'Summer Festival', '2024-06-30T00:00:00+00:00', '2024-07-05T00:00:00+00:00', 'Talas'),
-    (18, 17, null,false, 'City Nightlife', '2024-08-05T00:00:00+00:00', '2024-08-10T00:00:00+00:00', 'Bishkek'),
-    (19, 17, null,false, 'Camping Trip', '2024-07-10T00:00:00+00:00', '2024-07-15T00:00:00+00:00', 'Issyk-Kul'),
-    (20, 17, null,false, 'Exploring Historical Sites', '2024-08-15T00:00:00+00:00', '2024-08-20T00:00:00+00:00', 'Osh');
+
+       (1, 1, null,false, 'Summer time', '2024-10-10T00:00:00+00:00', '2024-11-01T00:00:00+00:00', 'Bishkek'),
+       (2, 1, null,false, 'At the school', '2024-09-05T00:00:00+00:00', '2024-11-10T00:00:00+00:00', 'Naryn'),
+       (3, 2, null,false, 'Happy times', '2024-08-10T00:00:00+00:00', '2024-10-01T00:00:00+00:00', 'Bishkek'),
+       (4, 3, null,false,'Moments', '2024-07-12T00:00:00+00:00', '2024-09-01T00:00:00+00:00', 'Bishkek'),
+       (5, 3, null,false, 'Birthday', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
+       (6, 4, null,false, 'With family', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
+       (7, 5, null,false, 'Brothers', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'Bishkek'),
+       (8, 6, null,false, 'My vibe', '2024-05-12T00:00:00+00:00', '2024-08-01T00:00:00+00:00', 'OSH'),
+       (9, 6, null,false, 'Adventure in the Mountains', '2024-07-20T00:00:00+00:00', '2024-08-15T00:00:00+00:00', 'Issyk-Kul'),
+       (10, 8, null,false, 'Exploring the City', '2024-06-15T00:00:00+00:00', '2024-07-25T00:00:00+00:00', 'Karabalta'),
+       (11, 9, null,false, 'Family Picnic', '2024-07-30T00:00:00+00:00', '2024-08-05T00:00:00+00:00', 'Cholpon-Ata'),
+       (12, 9, null,false, 'Weekend Getaway', '2024-08-10T00:00:00+00:00', '2024-08-12T00:00:00+00:00', 'Talas'),
+       (13, 11, null,false, 'Beach Day', '2024-06-25T00:00:00+00:00', '2024-06-26T00:00:00+00:00', 'Issyk-Kul'),
+       (14, 12, null,false, 'Hiking in the Forest', '2024-07-05T00:00:00+00:00', '2024-07-06T00:00:00+00:00', 'Karakol'),
+       (15, 12, null,false, 'Celebrating Graduation', '2024-07-15T00:00:00+00:00', '2024-07-16T00:00:00+00:00', 'Naryn'),
+       (16, 14, null,false, 'Road Trip', '2024-08-20T00:00:00+00:00', '2024-08-25T00:00:00+00:00', 'Balykchy'),
+       (17, 15, null,false, 'Summer Festival', '2024-06-30T00:00:00+00:00', '2024-07-05T00:00:00+00:00', 'Talas'),
+       (18, 17, null,false, 'City Nightlife', '2024-08-05T00:00:00+00:00', '2024-08-10T00:00:00+00:00', 'Bishkek'),
+       (19, 17, null,false, 'Camping Trip', '2024-07-10T00:00:00+00:00', '2024-07-15T00:00:00+00:00', 'Issyk-Kul'),
+       (20, 17, null,false, 'Exploring Historical Sites', '2024-08-15T00:00:00+00:00', '2024-08-20T00:00:00+00:00', 'Osh');
+
 
 
 insert into profiles(id, user_id,work_or_not, avatar, cover, about_your_self, last_name,first_name,patronymic_name,profession)
 values
-    (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', 'Temirbekovich', 'DataIng'),
-    (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan','Arstanbekovich', 'Backend dev'),
-    (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', 'Keldibekovna','Java dev'),
-    (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', 'Universal','C# dev'),
-    (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed','Universal',  'C++ dev'),
-    (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', 'Universal','JS dev'),
-    (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', 'Universal','UX/UI'),
-    (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', 'Universal','UX/UI'),
-    (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', 'Universal', 'C++ dev'),
-    (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', 'Universal','Backend dev'),
-    (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', 'Universal','Full-stack dev'),
-    (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', 'Universal', 'Software Engineer'),
-    (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon',  'Universal','Frontend dev'),
-    (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan',  'Universal','Web Developer'),
-    (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', 'Universal','Mobile App Developer'),
-    (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', 'Universal','Software Developer'),
-    (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', 'Universal','Systems Analyst'),
-    (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', 'Universal','Database Administrator'),
-    (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat',  'Universal','Network Administrator'),
-    (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy',  'Universal','Machine Learning Engineer');
+
+       (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', 'Temirbekovich', 'DataIng'),
+       (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan','Arstanbekovich', 'Backend dev'),
+       (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', 'Keldibekovna','Java dev'),
+       (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', 'Universal','C# dev'),
+       (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed','Universal',  'C++ dev'),
+       (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', 'Universal','JS dev'),
+       (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', 'Universal','UX/UI'),
+       (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', 'Universal','UX/UI'),
+       (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', 'Universal', 'C++ dev'),
+       (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', 'Universal','Backend dev'),
+       (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', 'Universal','Full-stack dev'),
+       (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', 'Universal', 'Software Engineer'),
+       (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon',  'Universal','Frontend dev'),
+       (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan',  'Universal','Web Developer'),
+       (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', 'Universal','Mobile App Developer'),
+       (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', 'Universal','Software Developer'),
+       (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', 'Universal','Systems Analyst'),
+       (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', 'Universal','Database Administrator'),
+       (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat',  'Universal','Network Administrator'),
+       (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy',  'Universal','Machine Learning Engineer');
 
 
 insert into chats(id, sender_id, receiver_id)
@@ -168,7 +172,6 @@ values (1, 1, 2),
        (18, 15, 1),
        (19, 16, 2),
        (20, 16, 3);
-
 
 
 INSERT INTO message_content(id, chat_id, content, timestamp, read_or_not_read)
@@ -377,16 +380,17 @@ values (1, 1),
 
 
 insert into notifications(id, like_id, user_notification_id, comment_id, seen, notification_message, created_at)
-values    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
-          (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'),
-          (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
-          (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
-          (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
-          (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
-          (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
-          (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
-          (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
-          (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
+values
+    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
+    (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'),
+    (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
+    (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
+    (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
+    (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
+    (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
+    (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
+    (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
+    (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
 
 
 insert into inner_comment(comment_id, inner_comments_id)
