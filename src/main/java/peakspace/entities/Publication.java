@@ -31,7 +31,7 @@ public class Publication {
     private List<Comment> comments;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private PablicProfile pablicProfile;
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Like> likes;
     @PrePersist
     public void prePersist(){
