@@ -5,12 +5,12 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.response.SignInResponse;
+import peakspace.dto.response.SignUpResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UpdatePasswordResponse;
 import peakspace.service.UserService;
@@ -28,14 +28,11 @@ public class AuthAPI {
         return userService.forgot(email);
     }
 
-
-
     @PostMapping("/code")
     @Operation(summary = " Сравнивание кода правильности !")
     public SimpleResponse code(@RequestParam("code") int codeRequest, @RequestParam String email) throws BadRequestException {
         return userService.randomCode(codeRequest, email);
     }
-
 
     @PostMapping("/newPassword")
     @Operation(summary = " Изменение пароля  !")
@@ -43,18 +40,22 @@ public class AuthAPI {
         return userService.updatePassword(passwordRequest, email);
     }
 
-    @GetMapping("/signIn")
-    SignInResponse signIn( @RequestBody @Valid SignInRequest signInRequest) throws MessagingException {
+    @PostMapping("/signIn")
+    @Operation(summary = " Войти!")
+    public SignInResponse signIn(@RequestBody SignInRequest signInRequest) throws MessagingException {
         return userService.signIn(signInRequest);
     }
 
-    @GetMapping("/signUp")
-    String signUp( @RequestBody @Valid SignUpRequest signUpRequest) throws MessagingException {
+    @PostMapping("/signUp")
+    @Operation(summary = " Регистрация!")
+    public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest) throws MessagingException {
         return userService.signUp(signUpRequest);
     }
 
     @PostMapping("/confirmCodeByEmail")
-    SimpleResponse confirm(@RequestParam int codeInEmail, long id) throws MessagingException {
+    @Operation(summary = " Подтвердить регистрация через код!")
+    public SignInResponse confirm(@RequestParam int codeInEmail, long id) throws MessagingException {
         return userService.confirmToSignUp(codeInEmail, id);
     }
+
 }

@@ -48,9 +48,8 @@ public interface UserService {
 
     SignInResponse signIn(SignInRequest signInRequest) throws MessagingException;
 
-    String signUp(SignUpRequest signUpRequest) throws MessagingException;
+    SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException;
 
-    SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
+    SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
+
 }
-
-

@@ -38,6 +38,7 @@ out/
 
 # Local application.yml
 src/main/resources/application-aliaskar.yml
+src/main/resources/application-mirlan.yml
 src/main/resources/application-mika.yml
 src/main/resources/application-nurtaazim.yml
 
