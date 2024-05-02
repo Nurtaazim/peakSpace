@@ -1,12 +1,18 @@
 package peakspace.dto.request;
 
-import lombok.Builder;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import peakspace.validation.EmailValidation;
 
 @Builder
-public record SignInRequest(
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class SignInRequest{
         @EmailValidation
-        String email,
-        String password
-) {
+        String email;
+        @NotNull
+        String password;
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
-
 import java.util.List;
 
 @Repository

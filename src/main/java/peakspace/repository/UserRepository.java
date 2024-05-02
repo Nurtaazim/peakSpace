@@ -4,7 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import peakspace.dto.response.*;
+import peakspace.dto.response.ChapTerResponse;
+import peakspace.dto.response.UserMarkResponse;
 import peakspace.entities.Publication;
 import peakspace.dto.response.ProfileFriendsResponse;
 import peakspace.dto.response.PublicationResponse;
@@ -71,4 +72,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select new peakspace.dto.response.UserMarkResponse(u.id, u.userName) from User u where u.id in :foundUserId")
     List<UserMarkResponse> findFoundUserId(List<Long> foundUserId);
+
 }
