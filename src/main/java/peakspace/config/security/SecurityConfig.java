@@ -35,7 +35,7 @@ public class SecurityConfig {
                             "/**",
                             "/api/**",
                             "/swagger-ui/index.html/**",
-                            "http://smspro.nikita.kg/api/message"
+                            "/api/auth/**"
                     )
                     .permitAll()
                     .anyRequest()
@@ -55,6 +55,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();

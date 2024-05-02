@@ -4,11 +4,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
-@Getter
+
 @Builder
+@Getter
+@Setter
 public class SignInResponse {
-    private long id;
-    private String token;
+    long id;
+    String token;
 
 }
