@@ -632,12 +632,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws MessagingException {
         User user;
-        if (signInRequest.email().endsWith("@gmail.com")) {
-            user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
+        if (signInRequest.getEmail().endsWith("@gmail.com")) {
+            user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
         } else {
-            user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
+            user = userRepository.getByUserName(signInRequest.getEmail()).orElseThrow(() -> new NotFoundException("Such user not found!"));
         }
-        if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
+        if (passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
             return SignInResponse.builder()
                     .id(user.getId())
                     .token(jwtService.createToken(user))
@@ -647,6 +647,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String signUp(SignUpRequest signUpRequest) throws MessagingException {
+        if (userRepository.existsByEmail(signUpRequest.email())){
+            throw new peakspace.exception.MessagingException("Пользователь с таким email уже существует!");
+        }
+        if (userRepository.existsByUserName(signUpRequest.userName())){
+            throw new peakspace.exception.MessagingException("Пользователь с таким user name уже существует!");
+        }
         User user = new User();
         user.setUserName(signUpRequest.userName());
         user.setEmail(signUpRequest.email());
@@ -655,7 +661,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
+        mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
         user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
         user.setCreatedAt(ZonedDateTime.now());
