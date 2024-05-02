@@ -92,7 +92,7 @@ public class UserAPI {
 
     @Secured("USER")
     @GetMapping("/searchWithAll")
-    @Operation(summary = "Search users with all! ")
+    @Operation(summary = "Поиск пользователей со всеми! ")
     public List<SearchUserResponse> searchAll(@RequestParam String keyWord){
         return userService.globalSearch(keyWord);
     }
