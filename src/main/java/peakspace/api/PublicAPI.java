@@ -86,10 +86,17 @@ public class PublicAPI {
     }
 
     @Secured("USER")
-    @Operation(summary = " Для удаление фото на паблика от имени Admin владелец паблика !")
+    @Operation(summary = " Для удаление фото на паблика от имени Admin (владелец паблика) !")
     @PutMapping("/removePost/{postId}")
     public SimpleResponse removePostAdmin(@PathVariable Long postId){
         return publicService.removePost(postId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = "Для удаление комментарии от имени Admin (владелец паблика) !")
+    @PutMapping("/removeCommeent/{commentId}")
+    public SimpleResponse removeCommentAdmin(@PathVariable Long commentId){
+        return publicService.removeComment(commentId);
     }
 
 

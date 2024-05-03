@@ -26,4 +26,6 @@ public interface PublicProfileService {
     SimpleResponse sendPublic(Long publicId);
 
     SimpleResponse removePost(Long postId);
+
+    SimpleResponse removeComment(Long commentId);
 }

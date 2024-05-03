@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
-import peakspace.entities.Link_Publication;
-import peakspace.entities.PablicProfile;
-import peakspace.entities.Publication;
-import peakspace.entities.User;
+import peakspace.entities.*;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
@@ -214,6 +211,24 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         } else {
             throw new NotFoundException("Пост с id " + postId + " не найден!");
         }
+    }
+
+    @Override
+    public SimpleResponse removeComment(Long commentId) {
+        User currentUser = getCurrentUser();
+        List<Publication> publications = currentUser.getPablicProfiles().getPublications();
+
+        for (Publication publication : publications) {
+            List<Comment> comments = publication.getComments();
+            if (comments.removeIf(c -> c.getId().equals(commentId))) {
+                commentRepository.deleteById(commentId);
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.OK)
+                        .message("Комментарий успешно удален!")
+                        .build();
+            }
+        }
+        throw new NotFoundException("Комментарий с id " + commentId + " не найден!");
     }
 
     private User getCurrentUser() {
