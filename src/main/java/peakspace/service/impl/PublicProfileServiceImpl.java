@@ -7,11 +7,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PublicRequest;
-import peakspace.dto.response.*;
-import peakspace.entities.*;
+import peakspace.dto.response.PublicPhotoAndVideoResponse;
+import peakspace.dto.response.CommentResponse;
+import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.PublicPostResponse;
+import peakspace.dto.response.PublicProfileResponse;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.entities.Comment;
+import peakspace.entities.PablicProfile;
+import peakspace.entities.Publication;
+import peakspace.entities.User;
+import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
-import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicProfileRepository;
@@ -21,7 +29,6 @@ import peakspace.service.PublicProfileService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,7 +92,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     }
 
         @Override
-        public PublicProfileResponse findPublicProfile(Long publicId,Long userId) {
+        public PublicProfileResponse findPublicProfile(Long publicId, Long userId) {
             PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
             userRepository.findByIds(userId);
             return PublicProfileResponse.builder()
@@ -99,7 +106,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         }
 
     @Override
-    public List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise,Long publicId,Long userId) {
+    public List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise, Long publicId, Long userId) {
         PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
         userRepository.findByIds(userId);
 
@@ -202,7 +209,9 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<Publication> publications = currentUser.getPablicProfiles().getPublications();
 
         boolean removed = publications.removeIf(publication -> publication.getId().equals(postId));
-        publicationRepository.deleteById(postId);
+        publicationRepository.deleteComNotifications(postId);
+        publicationRepository.deleteCom(postId);
+        publicationRepository.deleteByIds(postId);
         if (removed) {
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)

@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: yiman
-    url: jdbc:postgresql://localhost:5434/postgres
-    username: postgres
+    password: ${POSTGRES_PASSWORD}
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USERNAME}
   mail:
     host: smtp.gmail.com
     port: 587
