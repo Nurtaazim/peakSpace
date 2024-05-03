@@ -10,7 +10,11 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/peakspace.peak-space-b12.main.iml" filepath="$PROJECT_DIR$/.idea/modules/peakspace.peak-space-b12.main.iml" />
 
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/peak-space-b12.main.iml" filepath="$PROJECT_DIR$/.idea/modules/peak-space-b12.main.iml" />
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/peakspace.peak-space-b12.main.iml" filepath="$PROJECT_DIR$/.idea/modules/peakspace.peak-space-b12.main.iml" />
+=======
 
+>>>>>>> fdb45e1d3f12fa8e580b90304b5d77d80936a26a
     </modules>
   </component>
 </project>

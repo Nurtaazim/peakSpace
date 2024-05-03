@@ -4,6 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.PublicationResponse;
+import peakspace.dto.response.PublicationWithYouResponse;
+import peakspace.dto.response.LinkPublicationResponse;
+import peakspace.dto.response.MyPostResponse;
+import peakspace.dto.response.HomePageResponse;
+import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.CommentResponse;
+import peakspace.entities.User;
+import peakspace.entities.Publication;
+import peakspace.entities.Link_Publication;
+import peakspace.entities.Chapter;
+import peakspace.exception.NotFoundException;
 import peakspace.dto.response.*;
 import peakspace.entities.User;
 import peakspace.entities.Publication;
@@ -14,10 +27,10 @@ import peakspace.dto.response.*;
 import peakspace.entities.*;
 import peakspace.repository.CommentRepository;
 import peakspace.enums.Role;
-import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
+
 import java.security.Principal;
 import java.util.Map;
 import java.util.List;
@@ -32,12 +45,12 @@ public class PublicationServiceImpl implements PublicationService {
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final NotificationRepository notificationRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
         User user = userRepository.getByEmail(principal.getName());
         Map<Long, String> publics = user.getPublications().stream()
+                .filter(publication -> publication.getPablicProfile() == null)
                 .collect(Collectors.toMap(
                         Publication::getId,
                         publication -> {
@@ -98,8 +111,8 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public MyPostResponse getById(Long postId) {
-        MyPostResponse myPost = getMyPost(postId);
-        return myPost;
+        publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
+        return getMyPost(postId);
     }
 
     @Override
@@ -108,20 +121,22 @@ public class PublicationServiceImpl implements PublicationService {
         List<Publication> friendsPublic = userRepository.findFriendsPub(friendId);
         List<PublicationResponse> allPublications = new ArrayList<>();
         for (Publication publication : friendsPublic) {
-            PublicationResponse publicationResponse = new PublicationResponse();
-            publicationResponse.setId(publication.getId());
+            if (publication.getPablicProfile() == null) {
+                PublicationResponse publicationResponse = new PublicationResponse();
+                publicationResponse.setId(publication.getId());
 
-            List<Link_Publication> linkPublications = publication.getLinkPublications();
-            List<LinkPublicationResponse> linkPublicationResponses = new ArrayList<>();
+                List<Link_Publication> linkPublications = publication.getLinkPublications();
+                List<LinkPublicationResponse> linkPublicationResponses = new ArrayList<>();
 
-            for (Link_Publication linkPublication : linkPublications) {
-                LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse();
-                linkPublicationResponse.setId(linkPublication.getId());
-                linkPublicationResponse.setLink(linkPublication.getLink());
-                linkPublicationResponses.add(linkPublicationResponse);
+                for (Link_Publication linkPublication : linkPublications) {
+                    LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse();
+                    linkPublicationResponse.setId(linkPublication.getId());
+                    linkPublicationResponse.setLink(linkPublication.getLink());
+                    linkPublicationResponses.add(linkPublicationResponse);
+                }
+                publicationResponse.setLinkPublications(linkPublicationResponses);
+                allPublications.add(publicationResponse);
             }
-            publicationResponse.setLinkPublications(linkPublicationResponses);
-            allPublications.add(publicationResponse);
         }
         return allPublications;
     }
@@ -130,19 +145,24 @@ public class PublicationServiceImpl implements PublicationService {
     public List<HomePageResponse> homePage() {
         User currentUser = getCurrentUser();
         List<HomePageResponse> homePages = new ArrayList<>();
-        List<Publication> allPublications = new ArrayList<>();
 
-        allPublications.addAll(currentUser.getPublications());
+        List<Publication> currentUserPublications = currentUser.getPublications().stream()
+                .filter(publication -> publication.getPablicProfile() == null)
+                .toList();
+
+        List<Publication> allPublications = new ArrayList<>(currentUserPublications);
 
         for (Chapter chapter : currentUser.getChapters()) {
             for (Publication friendPublication : chapter.getFriends().stream()
                     .flatMap(friend -> friend.getPublications().stream())
-                    .collect(Collectors.toList())) {
+                    .filter(publication -> publication.getPablicProfile() == null)
+                    .toList()) {
                 if (!allPublications.contains(friendPublication)) {
                     allPublications.add(friendPublication);
                 }
             }
         }
+
         allPublications.sort(Comparator.comparing(Publication::getCreatedAt).reversed());
 
         for (Publication publication : allPublications) {

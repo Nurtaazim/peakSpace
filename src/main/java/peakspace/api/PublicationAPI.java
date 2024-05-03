@@ -30,35 +30,35 @@ public class PublicationAPI {
 
     @Secured({"USER","ADMIN"})
     @GetMapping("/photoWithMe/{foundUserId}")
-    @Operation(summary = " Фото с вами !")
+    @Operation(summary = " Профиль друга Фото с вами !")
     public List<PublicationWithYouResponse> withPhoto(@PathVariable Long foundUserId) {
         return publicationService.withPhoto(foundUserId);
     }
 
     @Secured({"USER"})
     @GetMapping("/{postId}")
-    @Operation(summary = " Найти пост по  id ")
+    @Operation(summary = " Найти пост по id ")
     public MyPostResponse getById(@PathVariable Long postId) {
         return publicationService.getById(postId);
     }
 
     @Secured({"USER"})
     @GetMapping("/findAll/{friendId}")
-    @Operation(summary = " Все публикации друга ! ")
+    @Operation(summary = "Профиль друга все публикации друга ! ")
     public List<PublicationResponse> findAllPublic(@PathVariable Long friendId) {
         return publicationService.findAllPublic(friendId);
     }
 
     @Secured({"USER"})
     @GetMapping("/profileFriends/{foundUserId}")
-    @Operation(summary = " Профиль ", description = "Профиль страница друга  !")
+    @Operation(summary = " Профиль друга !", description = "Профиль страница друга  !")
     public ProfileFriendsResponse findByIdFriends(@PathVariable Long foundUserId){
         return userService.findFriendsProfile(foundUserId);
     }
 
     @Secured("USER")
     @GetMapping("/findAllPublicMyFriends")
-    @Operation(summary = "Главный страница текущего пользователя который друзья опубликовали !")
+    @Operation(summary = " Главный страница текущего пользователя который друзья опубликовали !")
     public List<HomePageResponse> homePageResponses(){
         return publicationService.homePage();
     }

@@ -7,14 +7,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.AddEducationRequest;
 import peakspace.dto.request.UserInfoRequest;
+import peakspace.dto.response.BlockAccountsResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.entities.Education;
 import peakspace.entities.Profile;
 import peakspace.entities.User;
+import peakspace.exception.NotFoundException;
 import peakspace.repository.EducationRepository;
 import peakspace.repository.ProfileRepository;
+import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserInfoService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +29,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserRepository userRepository;
     private final EducationRepository educationRepo;
     private final ProfileRepository profileRepo;
+    private final PublicationRepository publicationRepo;
 
     @Transactional
     @Override
@@ -81,6 +88,65 @@ public class UserInfoServiceImpl implements UserInfoService {
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully saved!")
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public SimpleResponse blockAccount(Long userId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        User foundUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found!"));
+
+        if (!user.getId().equals(foundUser.getId())) {
+         if (user.getBlockAccounts().contains(foundUser.getId())) {
+            user.getBlockAccounts().remove(foundUser.getId());
+            foundUser.setBlockAccount(false);
+         } else {
+            user.getBlockAccounts().add(foundUser.getId());
+            foundUser.setBlockAccount(true);
+         }
+    }else {
+            System.out.println("You cant blocked yourself!");
+        }
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Successfully blocked!")
+                .build();
+    }
+
+    @Override
+    public List<BlockAccountsResponse> getBlockAccounts() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+
+        List<BlockAccountsResponse> accounts = new ArrayList<>();
+        List<Long> blockAccounts = user.getBlockAccounts();
+
+        for (Long blockAccount : blockAccounts) {
+            User user1 = userRepository.getReferenceById(blockAccount);
+            accounts.add(BlockAccountsResponse.builder()
+                    .userName(user1.getThisUserName())
+                    .avatar(user1.getProfile().getAvatar())
+                    .cover(user1.getProfile().getCover())
+                    .aboutYourSelf(user1.getProfile().getAboutYourSelf())
+                    .firstName(user1.getProfile().getFirstName())
+                    .lastName(user1.getProfile().getLastName())
+                    .build());
+        }
+        return accounts;
+    }
+
+    @Transactional
+    @Override
+    public SimpleResponse closeAccount() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+        user.setIsBlock(!user.getIsBlock());
+        return SimpleResponse.builder()
+                .message("Successfully returned to close Account!")
+                .httpStatus(HttpStatus.OK)
                 .build();
     }
 }
