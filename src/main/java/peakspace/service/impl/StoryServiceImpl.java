@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import peakspace.config.amazonS3.StorageService;
 import peakspace.dto.request.StoryRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryResponse;
@@ -27,6 +28,7 @@ public class StoryServiceImpl implements StoryService {
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final LinkPublicationRepository linkPublicationRepository;
+    private final StorageService storageService;
 
     @Override
     @Transactional
@@ -65,6 +67,10 @@ public class StoryServiceImpl implements StoryService {
     public SimpleResponse delete(long id) {
         Story byId = storyRepository.findById(id).orElseThrow(()->new NotFoundException("Сторис с такой id не найдено!"));
         if (byId.getOwner().getId().equals(userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId())){
+            List<Link_Publication> linkPublications = byId.getLinkPublications();
+            for (Link_Publication linkPublication : linkPublications) {
+                storageService.deleteFile(linkPublication.getLink());
+            }
             storyRepository.delete(byId);
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
