@@ -1,36 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="peak_space@localhost" uuid="a25baf3d-a5d8-4662-ae6b-9b841890ca68">
+    <data-source source="LOCAL" name="postgres@localhost" uuid="c4e9201e-ed79-40ef-8220-230328afd4e4">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/peak_space</jdbc-url>
       <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
       </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-<<<<<<< HEAD
-    <data-source source="LOCAL" name="peakspace@localhost" uuid="a9ad6deb-5a8d-4f34-b6c6-2036b3253c45">
-=======
-    <data-source source="LOCAL" name="peakspace@localhost" uuid="b1b4dcca-5800-4562-8dce-57606d4a29c7">
->>>>>>> 0ac0315f4a1cff4c0c42d3bfc6dea882ccb42689
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/peakspace</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-<<<<<<< HEAD
-=======
-        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
->>>>>>> 0ac0315f4a1cff4c0c42d3bfc6dea882ccb42689
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
+      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

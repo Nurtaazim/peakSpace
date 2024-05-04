@@ -94,6 +94,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .cover(currentUser.getPablicProfiles().getCover())
                 .avatar(currentUser.getPablicProfiles().getAvatar())
                 .pablicName(currentUser.getPablicProfiles().getPablicName())
+                .descriptionPublic(currentUser.getPablicProfiles().getDescriptionPublic())
                 .tematica(currentUser.getPablicProfiles().getTematica())
                 .countFollower(currentUser.getPablicProfiles().getUsers().size())
                 .build();

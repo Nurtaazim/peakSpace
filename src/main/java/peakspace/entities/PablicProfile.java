@@ -37,7 +37,7 @@ public class PablicProfile {
     private User user;
     @ManyToMany
     private List<User> users;
-    @OneToMany(mappedBy = "pablicProfile",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "pablicProfile",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Publication> publications;
 
 }

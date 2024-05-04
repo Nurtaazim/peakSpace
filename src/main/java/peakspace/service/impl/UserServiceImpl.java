@@ -1,6 +1,6 @@
 package peakspace.service.impl;
 
-import com.amazonaws.services.chimesdkmessaging.model.BadRequestException;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
@@ -30,18 +30,26 @@ import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.entities.*;
+import peakspace.entities.Chapter;
+import peakspace.entities.Notification;
+import peakspace.entities.PablicProfile;
+import peakspace.entities.Profile;
+import peakspace.entities.User;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
-import peakspace.exception.FirebaseAuthException;
 import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.InvalidConfirmationCode;
 import peakspace.exception.NotActiveException;
 import peakspace.exception.NotFoundException;
-import peakspace.repository.*;
+import peakspace.repository.ChapterRepository;
+import peakspace.repository.PublicProfileRepository;
+import peakspace.repository.PublicationRepository;
+import peakspace.repository.ProfileRepository;
+import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,12 +96,13 @@ public class UserServiceImpl implements UserService {
                 String fullName = decodedToken.getName();
                 User user = new User();
                 Profile profile = new Profile();
+                profile.setPhoneNumber(phoneNumber);
                 String picture = decodedToken.getPicture();
                 String defaultPassword = generatorDefaultPassword(8, 8);
                 user.setRole(Role.USER);
                 user.setPassword(passwordEncoder.encode(defaultPassword));
                 user.setEmail(email);
-                user.setPhoneNumber(phoneNumber);
+
                 try {
                     sendConfirmationCode(email);
                 } catch (MessagingException e) {
@@ -596,6 +605,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<SearchUserResponse> globalSearch(String keyWord) {
+        List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
+        System.out.println(users.size());
+        return users;
+
+    }
+
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
         return FriendsPageResponse.builder()
                 .userId(userId)
@@ -625,12 +641,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws MessagingException {
         User user;
-        if (signInRequest.getEmail().endsWith("@gmail.com")) {
-            user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
+        if (signInRequest.email().endsWith("@gmail.com")) {
+            user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
+        } else if (signInRequest.email().startsWith("+")) {
+            Profile profile = profileRepository.findByPhoneNumber(signInRequest.email());
+            if (profile == null)
+                throw new NotFoundException("User with this phone number not found! " + signInRequest.email());
+            user = profile.getUser();
         } else {
-            user = userRepository.getByUserName(signInRequest.getEmail()).orElseThrow(() -> new NotFoundException("Such user not found!"));
+            user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
         }
-        if (passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
             return SignInResponse.builder()
                     .id(user.getId())
                     .token(jwtService.createToken(user))
@@ -639,18 +660,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String signUp(SignUpRequest signUpRequest) throws MessagingException {
-        if (userRepository.existsByEmail(signUpRequest.email())){
-            throw new peakspace.exception.MessagingException("Пользователь с таким email уже существует!");
-        }
-        if (userRepository.existsByUserName(signUpRequest.userName())){
-            throw new peakspace.exception.MessagingException("Пользователь с таким user name уже существует!");
-        }
+    public SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException {
         User user = new User();
         user.setUserName(signUpRequest.userName());
         user.setEmail(signUpRequest.email());
         user.setPassword(passwordEncoder.encode(signUpRequest.password()));
-        user.setProfile(new Profile(signUpRequest.name(), signUpRequest.surName(), user));
+        user.setProfile(new Profile(signUpRequest.firstName(), signUpRequest.lastName(), user));
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -691,19 +706,22 @@ public class UserServiceImpl implements UserService {
         javaMailSender.send(mimeMessage);
         userRepository.save(user);
         startTask();
-        return "Код подтверждения был отправлен на вашу почту.";
+        return SignUpResponse.builder()
+                .userId(user.getId())
+                .message("Код подтверждения был отправлен на вашу почту.")
+                .build();
     }
 
     @Override
     @Transactional
-    public SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
-        User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("\"Время истекло попробуйте снова!\""));
+    public SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
+        User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("с таким айди пользователь не существует!"));
         if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
             user.setBlockAccount(false);
             user.setConfirmationCode(null);
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message("Вы успешно зарегистрировались!")
+            return SignInResponse.builder()
+                    .id(user.getId())
+                    .token(jwtService.createToken(user))
                     .build();
         } else throw new MessagingException("Не правильный код!");
     }
