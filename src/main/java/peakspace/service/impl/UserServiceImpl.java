@@ -584,9 +584,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchUserResponse> globalSearch(String keyWord) {
         List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
-        System.out.println(users.size());
-        return users;
-
+        for (SearchUserResponse user : users) {
+            if(!getCurrentUser().getBlockAccounts().contains(user.getId())){
+                return users;
+            }
+        }
+        return null;
     }
 
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
