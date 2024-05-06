@@ -40,11 +40,11 @@ public class Publication {
     private Map<Long, String> complains;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private User owner;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     private List<User> tagFriends;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Link_Publication> linkPublications = new ArrayList<>();
-    @OneToMany(mappedBy = "publication",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "publication",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Comment> comments;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private PablicProfile pablicProfile;
