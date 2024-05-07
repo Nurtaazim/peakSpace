@@ -46,7 +46,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.getProfile().setAboutYourSelf(userInfoRequest.getAboutYourSelf());
         user.getProfile().setProfession(userInfoRequest.getProfession());
         user.getProfile().setWorkOrNot(userInfoRequest.isWorkOrNot());
-
         Education education = new Education();
         Profile profile = userRepository.findBYProfile(user.getProfile().getId());
 
