@@ -14,4 +14,6 @@ public interface PublicationService {
 
     List<HomePageResponse> homePage();
 
+    PostLinkResponse findInnerPost(Long postId);
+
 }
