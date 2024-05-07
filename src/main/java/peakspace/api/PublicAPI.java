@@ -97,6 +97,4 @@ public class PublicAPI {
     public SimpleResponse removeCommentAdmin(@PathVariable Long commentId){
         return publicService.removeComment(commentId);
     }
-
-
 }

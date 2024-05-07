@@ -4,7 +4,6 @@ import peakspace.dto.request.StoryRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryResponse;
 
-import java.beans.SimpleBeanInfo;
 import java.util.List;
 
 public interface StoryService  {

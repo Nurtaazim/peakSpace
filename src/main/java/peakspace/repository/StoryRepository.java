@@ -6,6 +6,4 @@ import peakspace.entities.Story;
 @Repository
 public interface StoryRepository extends JpaRepository<Story, Long> {
 
-
-
 }

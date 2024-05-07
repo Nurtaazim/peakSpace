@@ -7,10 +7,9 @@ import java.util.List;
 @Builder
 public record PostLinkResponse(
         Long postId,
-        List<LinkResponse>linkResponses,
+        List<LinkResponse> linkResponses,
         int countLikes,
-        int countComments,
-        int countForwards
+        int countComments
 
 ) {
 }
