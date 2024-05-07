@@ -2,8 +2,7 @@ package peakspace.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import peakspace.entities.Story;
+import peakspace.entities.Link_Publication;
 @Repository
-public interface StoryRepository extends JpaRepository<Story, Long> {
-
+public interface LinkPublicationRepository extends JpaRepository<Link_Publication, Long> {
 }

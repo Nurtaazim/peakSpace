@@ -8,16 +8,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.PublicPhotoAndVideoResponse;
+import peakspace.dto.response.CommentResponse;
+import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.PublicPostResponse;
 import peakspace.dto.response.PublicProfileResponse;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.entities.Link_Publication;
+import peakspace.entities.Comment;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
+import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.NotFoundException;
+import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicProfileRepository;
+import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicProfileService;
 import java.util.HashMap;
@@ -31,6 +37,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     private final PublicProfileRepository publicProfileRepository;
     private final UserRepository userRepository;
+    private final PublicationRepository publicationRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     @Transactional
@@ -83,38 +91,36 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build();
     }
 
-    @Override
-    public PublicProfileResponse findPublicProfile() {
-        User currentUser = getCurrentUser();
-        if (currentUser.getPablicProfiles() == null) {
-            throw new NotFoundException(" Not found public !");
+        @Override
+        public PublicProfileResponse findPublicProfile(Long publicId, Long userId) {
+            PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
+            userRepository.findByIds(userId);
+            return PublicProfileResponse.builder()
+                    .publicId(publicProfile.getId())
+                    .cover(publicProfile.getCover())
+                    .avatar(publicProfile.getAvatar())
+                    .pablicName(publicProfile.getPablicName())
+                    .tematica(publicProfile.getTematica())
+                    .countFollower(publicProfile.getUsers().size())
+                    .build();
         }
-        return PublicProfileResponse.builder()
-                .publicId(currentUser.getPablicProfiles().getId())
-                .cover(currentUser.getPablicProfiles().getCover())
-                .avatar(currentUser.getPablicProfiles().getAvatar())
-                .pablicName(currentUser.getPablicProfiles().getPablicName())
-                .descriptionPublic(currentUser.getPablicProfiles().getDescriptionPublic())
-                .tematica(currentUser.getPablicProfiles().getTematica())
-                .countFollower(currentUser.getPablicProfiles().getUsers().size())
-                .build();
-    }
 
     @Override
-    public List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise) {
-        User currentUser = getCurrentUser();
-        Map<Long, String> publics;
+    public List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise, Long publicId, Long userId) {
+        PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
+        userRepository.findByIds(userId);
 
-        if (currentUser.getPablicProfiles() != null) {
+        Map<Long, String> publics = new HashMap<>();
+
+        if (publicProfile != null) {
             switch (choise) {
                 case Photos:
                 case Videos:
-
-                    publics = currentUser.getPablicProfiles().getPublications().stream()
+                    publics = publicProfile.getPublications().stream()
                             .filter(publication -> {
                                 List<String> links = publication.getLinkPublications().stream()
                                         .map(Link_Publication::getLink)
-                                        .collect(Collectors.toList()).reversed();
+                                        .toList();
                                 return (choise == Choise.Photos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
                                         || (choise == Choise.Videos) && links.stream()
@@ -123,14 +129,115 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                             .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
                     break;
                 default:
-                    publics = new HashMap<>();
+                    break;
             }
-        } else {
-            publics = new HashMap<>();
         }
         return List.of(PublicPhotoAndVideoResponse.builder()
                 .publicationsPublic(publics)
                 .build());
+    }
+
+    @Override
+    public PublicPostResponse findPostPublic(Long postId) {
+        Publication publication = publicationRepository.findById(postId).orElseThrow(()->new NotFoundException(" Нет такой публикации !"));
+        List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
+        commentForResponse.reversed();
+
+        List<LinkResponse> links = publication.getLinkPublications().stream()
+                .map(link -> new LinkResponse(link.getId(), link.getLink()))
+                .collect(Collectors.toList());
+
+        return new PublicPostResponse(
+                publication.getId(),
+                publication.getOwner().getId(),
+                publication.getOwner().getProfile().getAvatar(),
+                publication.getOwner().getThisUserName(),
+                publication.getPablicProfile().getTematica(),
+                publication.getLikes().size(),
+                links,
+                commentForResponse
+        );
+    }
+
+    @Override @Transactional
+    public SimpleResponse removeUser(Long friendId) {
+        User currentUser = getCurrentUser();
+        User friendUser = userRepository.findByIds(friendId);
+
+        PablicProfile publicProfile = currentUser.getPablicProfiles();
+        if (publicProfile == null) {
+            throw new NotFoundException(" Паблик текущего пользователя не найден!");
+        }
+
+        List<User> users = publicProfile.getUsers();
+        if (users.contains(friendUser)) {
+            users.remove(friendUser);
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Пользователь успешно удален из паблика !")
+                    .build();
+        } else {
+            throw new NotFoundException("Пользователь не является членом публичного профиля!");
+        }
+    }
+
+    @Override @Transactional
+    public SimpleResponse sendPublic(Long publicId) {
+        PablicProfile publicProfile = publicProfileRepository.findById(publicId)
+                .orElseThrow(() -> new NotFoundException("Паблик не найден!"));
+
+        User currentUser = getCurrentUser();
+        String message = null;
+        List<User> users = publicProfile.getUsers();
+        if (users.contains(currentUser)) {
+            users.remove(currentUser);
+            message = "Пользователь успешно отписано!";
+        } else {
+            users.add(currentUser);
+            message = "Пользователь успешно присоединились !";
+        }
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(message)
+                .build();
+    }
+
+    @Override @Transactional
+    public SimpleResponse removePost(Long postId) {
+        User currentUser = getCurrentUser();
+        List<Publication> publications = currentUser.getPablicProfiles().getPublications();
+
+        boolean removed = publications.removeIf(publication -> publication.getId().equals(postId));
+        publicationRepository.deleteComNotifications(postId);
+        publicationRepository.deleteCom(postId);
+        publicationRepository.deleteByIds(postId);
+        if (removed) {
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Пост успешно удален!")
+                    .build();
+        } else {
+            throw new NotFoundException("Пост с id " + postId + " не найден!");
+        }
+    }
+
+    @Override
+    public SimpleResponse removeComment(Long commentId) {
+        User currentUser = getCurrentUser();
+        List<Publication> publications = currentUser.getPablicProfiles().getPublications();
+
+        for (Publication publication : publications) {
+            List<Comment> comments = publication.getComments();
+            if (comments.removeIf(c -> c.getId().equals(commentId))) {
+                commentRepository.deleteById(commentId);
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.OK)
+                        .message("Комментарий успешно удален!")
+                        .build();
+            }
+        }
+        throw new NotFoundException("Комментарий с id " + commentId + " не найден!");
     }
 
     private User getCurrentUser() {

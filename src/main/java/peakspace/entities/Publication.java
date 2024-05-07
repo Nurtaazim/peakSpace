@@ -46,7 +46,7 @@ public class Publication {
     private List<Link_Publication> linkPublications = new ArrayList<>();
     @OneToMany(mappedBy = "publication",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Comment> comments;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private PablicProfile pablicProfile;
     @ManyToMany()
     private List<Like> likes;

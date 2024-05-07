@@ -9,8 +9,6 @@
     <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="bug fix dataInit">
     <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode">
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
-    <list default="true" id="1859ced2-95f9-4419-9d4a-86b1dda4bc1a" name="Changes" comment="HomePage + cleanCode">
-      <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/api/PublicAPI.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/request/PublicRequest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/peakspace/dto/response/PublicPhotoAndVideoResponse.java" afterDir="false" />
@@ -52,6 +50,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/CommentServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/service/impl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/peakspace/config/amazonS3/StorageConfig.java" afterDir="false" />
+    </list>
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,10 +104,6 @@
         <option value="Class" />
         <option value="Interface" />
         <option value="Record" />
-        <option value="Record" />
-        <option value="Interface" />
-        <option value="Class" />
-        <option value="Interface" />
       </list>
    </option>
   </component>
@@ -133,13 +128,12 @@
       <map>
         <entry key="$PROJECT_DIR$" value="feature/regst_with_google" />
         <entry key="$PROJECT_DIR$" value="main" />
-        <entry key="$PROJECT_DIR$" value="main" />
         <entry key="$PROJECT_DIR$" value="favorite" />
         <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </project>
+  </component>
   <component name="GitHubPullRequestSearchHistory">{
     &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
@@ -152,7 +146,7 @@
     &quot;accountId&quot;: &quot;5a94a1f5-1f79-46ad-bd85-97591a4fcdb4&quot;
     }
     }</component>
-
+  }
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/peakspace/service/impl/LikeServiceImpl.java" root0="SKIP_INSPECTION" />
@@ -531,4 +525,4 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/peak_space_b12$PeakSpaceB12Application.ic" NAME="PeakSpaceB12Application Coverage Results" MODIFIED="1713864745796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
-</configuration>
+</project>

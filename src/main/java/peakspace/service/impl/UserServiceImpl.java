@@ -1,6 +1,5 @@
 package peakspace.service.impl;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
@@ -14,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import peakspace.config.amazonS3.StorageService;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.*;
 import peakspace.dto.response.*;
@@ -35,6 +35,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -51,6 +52,8 @@ public class UserServiceImpl implements UserService {
     private final ProfileRepository profileRepository;
     private final SearchFriends searchFriends;
     private final ChapterService chapterService;
+    private final StoryRepository storyRepository;
+    private final StorageService storageService;
     private String userName;
     private int randomCode;
 
@@ -444,7 +447,7 @@ public class UserServiceImpl implements UserService {
         } else if (sample.equals(Choise.Groups)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new BadRequestException(" Пллохой запрос !");
+        throw new BadRequestException("Пллохой запрос !");
 
     }
 
@@ -506,7 +509,6 @@ public class UserServiceImpl implements UserService {
 
         List<Long> friends = currentUser.getSearchFriendsHistory();
         friends.add(foundUserId);
-
 
         int pablicationsSize = 0;
         if (foundUser.getPablicProfiles() != null && foundUser.getPablicProfiles().getUsers() != null) {
@@ -584,9 +586,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchUserResponse> globalSearch(String keyWord) {
         List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
-        System.out.println(users.size());
-        return users;
-
+        return users.stream()
+                .filter(user -> !getCurrentUser().getBlockAccounts().contains(user.getId()))
+                .collect(Collectors.toList());
     }
 
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
@@ -716,6 +718,15 @@ public class UserServiceImpl implements UserService {
                 userRepository.delete(user1);
             }
         }
+        List<Story> all1 = storyRepository.findAll();
+        for (Story story : all1) {
+            if (ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))) {
+                for (Link_Publication linkPublication : story.getLinkPublications()) {
+                    storageService.deleteFile(linkPublication.getLink());
+                }
+                storyRepository.delete(story);
+            }
+        }
     }
-
 }
+
