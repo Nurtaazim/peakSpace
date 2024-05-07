@@ -13,7 +13,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import peakspace.config.amazonS3.StorageService;
 import peakspace.config.jwt.JwtService;
+import peakspace.dto.response.*;
+import peakspace.entities.*;
+import peakspace.exception.*;
+import peakspace.repository.*;
 import peakspace.dto.request.ChapterRequest;
 import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.SignInRequest;
@@ -76,6 +81,8 @@ public class UserServiceImpl implements UserService {
     private final ProfileRepository profileRepository;
     private final SearchFriends searchFriends;
     private final ChapterService chapterService;
+    private final StoryRepository storyRepository;
+    private final StorageService storageService;
     private String userName;
     private int randomCode;
 
@@ -469,7 +476,7 @@ public class UserServiceImpl implements UserService {
         } else if (sample.equals(Choise.Groups)) {
             return pablicProfileRepository.findAllPablic(keyWord);
         }
-        throw new BadRequestException(" Пллохой запрос !");
+        throw new BadRequestException("Пллохой запрос !");
 
     }
 
@@ -531,7 +538,6 @@ public class UserServiceImpl implements UserService {
 
         List<Long> friends = currentUser.getSearchFriendsHistory();
         friends.add(foundUserId);
-
 
         int pablicationsSize = 0;
         if (foundUser.getPablicProfiles() != null && foundUser.getPablicProfiles().getUsers() != null) {
@@ -741,6 +747,15 @@ public class UserServiceImpl implements UserService {
                 userRepository.delete(user1);
             }
         }
+        List<Story> all1 = storyRepository.findAll();
+        for (Story story : all1) {
+            if (ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))){
+                for (Link_Publication linkPublication : story.getLinkPublications()) {
+                    storageService.deleteFile(linkPublication.getLink());
+                }
+                storyRepository.delete(story);
+            }
+        }
     }
-
 }
+
