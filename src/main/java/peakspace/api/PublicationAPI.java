@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.PublicationWithYouResponse;
-import peakspace.dto.response.MyPostResponse;
 import peakspace.dto.response.PublicationResponse;
 import peakspace.dto.response.ProfileFriendsResponse;
 import peakspace.dto.response.HomePageResponse;
+import peakspace.dto.response.PostLinkResponse;
+import peakspace.dto.response.PublicationWithYouResponse;
+import peakspace.dto.response.MyPostResponse;
 import peakspace.service.PublicationService;
 import peakspace.service.UserService;
 import java.util.List;
@@ -66,6 +67,13 @@ public class PublicationAPI {
     @Operation(summary = " Главный страница текущего пользователя который друзья опубликовали !")
     public List<HomePageResponse> homePageResponses(){
         return publicationService.homePage();
+    }
+
+    @Secured("USER")
+    @GetMapping("/findInnerPostLink/{postId}")
+    @Operation(summary = " Это универсальный метод для поста который когда нажимает фото это страница отображется ! ")
+    public PostLinkResponse findPostInnerLink(@PathVariable Long postId){
+    return publicationService.findInnerPost(postId);
     }
 
 }
