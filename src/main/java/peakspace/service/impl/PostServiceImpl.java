@@ -8,13 +8,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.FavoritePostResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.UserMarkResponse;
-import peakspace.entities.Link_Publication;
-import peakspace.entities.Notification;
-import peakspace.entities.Publication;
 import peakspace.entities.User;
+import peakspace.entities.Link_Publication;
+import peakspace.entities.Publication;
+import peakspace.entities.Notification;
+import peakspace.entities.PablicProfile;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
@@ -26,6 +27,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -88,6 +90,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse delete(Long postId) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
@@ -95,11 +98,14 @@ public class PostServiceImpl implements PostService {
         for (Publication publication : user.getPublications()) {
             if (publication.getOwner().getId().equals(user.getId())) {
                 if (publication.getId().equals(postId)) {
+                    publicationRepo.deleteComNotifications(postId);
                     publicationRepo.deleteCom(postId);
                     publicationRepo.deleteLink(postId);
                     publicationRepo.deleteTag(postId);
                     publicationRepo.deleteLike(postId);
-                    publicationRepo.delete(publication);
+                    publicationRepo.deletePublic(publication.getId());
+                    publicationRepo.deleteByIds(publication.getId());
+
                 }
             }
         }
@@ -126,7 +132,8 @@ public class PostServiceImpl implements PostService {
                         }
                     }
                     publication.setLinkPublications(orig);
-                    linkPublicationRepo.deleteById(linkId);
+                    publicationRepo.deletePublicationLink(postId, linkId);
+
                 }
             }
         }
@@ -189,16 +196,6 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-
-    private User getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User current = userRepository.getByEmail(email);
-        if (current.getRole().equals(Role.USER))
-            return current;
-        else throw new AccessDeniedException("Forbidden 403");
-    }
-
-
     @Override
     @Transactional
     public SimpleResponse addFavorite(Long postId) {
@@ -218,26 +215,134 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public GetAllPostsResponse favorites() {
+    public FavoritePostResponse favorites() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
         List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
-
         Map<Long, String> publics = allById.stream()
                 .collect(Collectors.toMap(
                         Publication::getId,
-                        publication -> publication.getLinkPublications().getFirst().getLink()
+                        publication -> {
+                            List<Link_Publication> linkPublications = publication.getLinkPublications();
+                            return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
+                        }
                 ));
 
-        return GetAllPostsResponse.builder()
-                .cover(user.getProfile().getCover())
-                .avatar(user.getProfile().getAvatar())
-                .userName(user.getUsername())
-                .aboutMe(user.getProfile().getAboutYourSelf())
-                .major(user.getProfile().getProfession())
-                .countFriends(user.getChapters().size())
-                .countPablics(user.getPublications().size())
+        return FavoritePostResponse.builder()
                 .publications(publics)
                 .build();
+    }
+
+    @Override @Transactional
+    public SimpleResponse savePostPublic(Long publicId,Long userId,PostRequest postRequest) {
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(" Нет такой Пользоваетль !"));
+
+        PablicProfile publicProfile =  publicationRepo.findByIdPublic(publicId);
+
+        List<Link_Publication> linkPublications = postRequest.getLinks().stream()
+                .map(link -> {
+                    Link_Publication linkPublication = new Link_Publication();
+                    linkPublication.setLink(link);
+                    linkPublicationRepo.save(linkPublication);
+                    return linkPublication;
+                })
+                .collect(Collectors.toList());
+
+        Publication publication = new Publication();
+        publication.setDescription(postRequest.getDescription());
+        publication.setLocation(postRequest.getLocation());
+        publication.setBlockComment(postRequest.isBlockComment());
+        publication.setLinkPublications(linkPublications);
+        publication.setOwner(currentUser);
+        publication.setPablicProfile(publicProfile);
+        publicationRepo.save(publication);
+        currentUser.getPublications().add(publication);
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(" Успешно сохранен пост паблике !")
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse editPostPublic(Long postId, PostUpdateRequest postUpdateRequest) {
+        User currentUser = getCurrentUser();
+
+        Optional<Publication> publicationOptional = currentUser.getPublications().stream()
+                .filter(publication -> publication.getId().equals(postId))
+                .findFirst();
+
+        if (publicationOptional.isPresent()) {
+            Publication publication = publicationOptional.get();
+            publication.setDescription(postUpdateRequest.getDescription());
+            publication.setLocation(postUpdateRequest.getLocation());
+            publication.setBlockComment(postUpdateRequest.isBlockComment());
+            publication.setUpdatedAt(ZonedDateTime.now());
+            return SimpleResponse.builder()
+                    .message(" Успешно сохранен пост паблике!")
+                    .httpStatus(HttpStatus.OK)
+                    .build();
+        } else {
+            throw new NotFoundException(" Нет такой публикации на паблике !");
+        }
+    }
+
+    @Override @Transactional
+    public SimpleResponse deletePostPublic(Long postId) {
+        User currentUser = getCurrentUser();
+
+        Optional<Publication> publicationToRemove = currentUser.getPablicProfiles().getPublications().stream()
+                .filter(publication -> publication.getId().equals(postId))
+                .findFirst();
+
+        if (publicationToRemove.isPresent()) {
+            Publication publication = publicationToRemove.get();
+            publicationRepo.deleteComNotifications(postId);
+            publicationRepo.deleteCom(postId);
+            publicationRepo.deleteByIds(publication.getId());
+
+            System.err.println("Test");
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message(" Удачно удаление !")
+                    .build();
+        } else {
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message(" Нет такой публикации на паблике !")
+                    .build();
+        }
+    }
+
+    @Override @Transactional
+    public SimpleResponse deleteLinkFromPostPublic(Long linkId, Long postId) {
+        User currentUser = getCurrentUser();
+
+        currentUser.getPablicProfiles().getPublications().stream()
+                .filter(publication -> publication.getId().equals(postId))
+                .filter(publication -> publication.getOwner().getId().equals(currentUser.getId()))
+                .findFirst()
+                .ifPresent(publication -> {
+                    List<Link_Publication> links = publication.getLinkPublications().stream()
+                            .filter(link -> !link.getId().equals(linkId))
+                            .collect(Collectors.toList());
+                    publication.setLinkPublications(links);
+                    publicationRepo.deletePublicationLink(postId, linkId);
+
+                });
+
+        return SimpleResponse.builder()
+                .message("Successfully deleted!")
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User current = userRepository.getByEmail(email);
+        if (current.getRole().equals(Role.USER))
+            return current;
+        else throw new AccessDeniedException("Forbidden 403");
     }
 }

@@ -36,7 +36,6 @@ public class User implements UserDetails {
     private String userName;
     private String email;
     private String password;
-    private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean isBlock;
@@ -61,6 +60,8 @@ public class User implements UserDetails {
     private List<Notification> notifications;
     @ElementCollection
     private List<Long> searchFriendsHistory;
+    @ElementCollection
+    private List<Long> blockAccounts;
 
     public String getThisUserName() {
         return this.userName;

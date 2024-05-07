@@ -6,9 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.PublicationResponse;
-import peakspace.dto.response.SearchResponse;
 import peakspace.entities.Profile;
 import peakspace.entities.User;
 import peakspace.exception.NotFoundException;
@@ -71,4 +68,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select new peakspace.dto.response.UserMarkResponse(u.id, u.userName) from User u where u.id in :foundUserId")
     List<UserMarkResponse> findFoundUserId(List<Long> foundUserId);
+
+    @Query("select distinct new peakspace.dto.response.SearchUserResponse(u.id,u.userName,u.profile.firstName,u.profile.lastName,u.profile.cover,u.profile.avatar,u.profile.profession) from User u left join u.publications ups where u.userName ilike :keyWord OR u.profile.lastName ilike :keyWord OR u.profile.firstName ilike :keyWord OR u.profile.patronymicName ilike :keyWord OR u.profile.profession ilike :keyWord")
+    List<SearchUserResponse> findByAll(String keyWord);
+
+
 }
