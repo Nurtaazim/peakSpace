@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.PublicPhotoAndVideoResponse;
+import peakspace.dto.response.PublicPostResponse;
 import peakspace.dto.response.PublicProfileResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.enums.Choise;
@@ -50,15 +51,52 @@ public class PublicAPI {
 
     @Secured({"USER"})
     @Operation(summary = " Мой паблик !")
-    @GetMapping("/myPublic")
-    public PublicProfileResponse findPublic(){
-        return publicService.findPublicProfile();
+    @GetMapping("/myPublic/{publicId}/{userId}")
+    public PublicProfileResponse findPublic(@PathVariable Long publicId, @PathVariable Long userId){
+        return publicService.findPublicProfile(publicId,userId);
     }
 
     @Secured("USER")
     @Operation(summary = " Публикации моего паблика по выбором фото или видео !")
-    @GetMapping("/publicPhotoAndVideo")
-    public List<PublicPhotoAndVideoResponse> getMyPublic(@RequestParam Choise choise){
-        return publicService.getPublicPost(choise);
+    @GetMapping("/publicPhotoAndVideo/{publicId}/{userId}")
+    public List<PublicPhotoAndVideoResponse> getMyPublic(@RequestParam Choise choise,@PathVariable Long publicId,@PathVariable Long userId){
+        return publicService.getPublicPost(choise,publicId,userId);
     }
+
+    @Secured("USER")
+    @Operation(summary = " Страница одного поста полный вид findByPostId")
+    @GetMapping("/findPostPublic/{postId}")
+    public PublicPostResponse getByPost(@PathVariable Long postId){
+        return publicService.findPostPublic(postId);
+    }
+
+    @Secured("USER")
+    @Operation (summary = " Удаление пользователья в паблике ")
+    @PutMapping("/removeUser/{friendId}")
+    public SimpleResponse removeUserFromPublic(@PathVariable Long friendId){
+        return publicService.removeUser(friendId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Для кнопка присоединится на паблик канал ! ")
+    @PutMapping("/sendJoinPublic/{publicId}")
+    public SimpleResponse sendJoinPublic(@PathVariable Long publicId){
+        return publicService.sendPublic(publicId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Для удаление фото на паблика от имени Admin (владелец паблика) !")
+    @PutMapping("/removePost/{postId}")
+    public SimpleResponse removePostAdmin(@PathVariable Long postId){
+        return publicService.removePost(postId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = "Для удаление комментарии от имени Admin (владелец паблика) !")
+    @PutMapping("/removeCommeent/{commentId}")
+    public SimpleResponse removeCommentAdmin(@PathVariable Long commentId){
+        return publicService.removeComment(commentId);
+    }
+
+
 }
