@@ -51,4 +51,5 @@ public class UserInfoApi {
     public SimpleResponse closeAccount(){
         return userInfoService.closeAccount();
     }
+
 }
