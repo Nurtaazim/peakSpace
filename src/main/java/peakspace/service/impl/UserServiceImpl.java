@@ -35,6 +35,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -584,9 +585,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchUserResponse> globalSearch(String keyWord) {
         List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
-        System.out.println(users.size());
-        return users;
-
+        return users.stream()
+                .filter(user -> !getCurrentUser().getBlockAccounts().contains(user.getId()))
+                .collect(Collectors.toList());
     }
 
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
