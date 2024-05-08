@@ -3,14 +3,13 @@ package peakspace.api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.entities.Publication;
+import peakspace.service.LinkPublicationService;
 import peakspace.service.PublicationService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/complaint")
@@ -18,6 +17,7 @@ import peakspace.service.PublicationService;
 public class ComplainAPI {
 
     private final PublicationService publicationService;
+    private final LinkPublicationService linkPublicationService;
 
     @Secured("USER")
     @Operation(summary = "Для оставления жалобы на пост")
@@ -25,5 +25,13 @@ public class ComplainAPI {
     public SimpleResponse save(@PathVariable Long postId, @RequestParam String complain) {
         return publicationService.saveComplainToPost(postId, complain);
     }
+
+    @Secured("USER")
+    @Operation(summary = "Для анализ фото для жалоб на пост")
+    @PostMapping("/analyze/{photoId}")
+    public List<String> analyzePhoto(@PathVariable Long photoId) {
+        return linkPublicationService.analyzePhoto(photoId);
+    }
+
 
 }
