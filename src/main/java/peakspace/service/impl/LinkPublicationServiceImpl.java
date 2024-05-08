@@ -47,6 +47,21 @@ public class LinkPublicationServiceImpl implements LinkPublicationService {
             BatchAnnotateImagesResponse response = vision.batchAnnotateImages(ImmutableList.of(request));
 
             for (AnnotateImageResponse res : response.getResponsesList()) {
+                if (res.hasError()) {
+                    // Обработка ошибок, если таковые имеются
+                    System.err.println("Ошибка при анализе изображения: " + res.getError().getMessage());
+                } else {
+                    // Обработка аннотаций изображения
+                    for (EntityAnnotation annotation : res.getLabelAnnotationsList()) {
+                        // Обработка меток
+                        System.out.println("Метка: " + annotation.getDescription());
+                    }
+                    for (EntityAnnotation annotation : res.getTextAnnotationsList()) {
+                        // Обработка текста
+                        System.out.println("Текст: " + annotation.getDescription());
+                    }
+                    // Другие типы аннотаций и их обработка
+                }
                 for (EntityAnnotation annotation : res.getLabelAnnotationsList()) {
                     descriptions.add(annotation.getDescription());
                 }
