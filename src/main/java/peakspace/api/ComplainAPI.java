@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.entities.Publication;
 import peakspace.service.LinkPublicationService;
 import peakspace.service.PublicationService;
 
