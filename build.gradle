@@ -51,9 +51,6 @@ dependencies {
     // для cloud vision api (analyze photo)
     implementation group: 'com.google.cloud', name: 'google-cloud-vision', version: '3.35.0'
 
-//    implementation group: 'com.google.api.grpc', name: 'proto-google-cloud-vision-v1', version: '3.40.0'
-
-
 }
 tasks.named('test') {
     useJUnitPlatform()

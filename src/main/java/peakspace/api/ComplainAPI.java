@@ -32,5 +32,4 @@ public class ComplainAPI {
         return linkPublicationService.analyzePhoto(photoId);
     }
 
-
 }
