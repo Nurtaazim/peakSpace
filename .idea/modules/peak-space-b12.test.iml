@@ -4,9 +4,6 @@
     <content url="file://$MODULE_DIR$/../../src/test" dumb="true">
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
     </content>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="peak-space-b12.main" />
@@ -563,9 +560,6 @@
     <content url="file://$MODULE_DIR$/../../src/test" dumb="true">
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
     </content>
-=======
->>>>>>> 4a88e6b2952b1014c72ca67fa30606fd87b1318d
->>>>>>> 0c36e592fada710a23c1d970e29b24b09304b2e4
-  </component>
+    </component>
   <component name="TestModuleProperties" production-module="peak-space-b12.main" />
 </module>

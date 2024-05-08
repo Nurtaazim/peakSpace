@@ -1,6 +1,16 @@
 package peakspace.entities;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.ZonedDateTime;
 
@@ -8,6 +18,7 @@ import java.time.ZonedDateTime;
 @Setter
 @Entity
 @Table(name = "notifications")
+@NoArgsConstructor
 public class Notification {
 
     @Id
@@ -19,10 +30,19 @@ public class Notification {
     private String notificationMessage;
     @OneToOne
     private Like like;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.DETACH})
     private User userNotification;   // получатель
     private Long senderUserId;       // отправитель
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private Comment comment;
 
+    public Notification( Like like, User userNotification, Long senderUserId) {
+        this.like = like;
+        this.userNotification = userNotification;
+        this.senderUserId = senderUserId;
+    }
+    @PrePersist
+    void prePersist (){
+        this.createdAt = ZonedDateTime.now();
+    }
 }

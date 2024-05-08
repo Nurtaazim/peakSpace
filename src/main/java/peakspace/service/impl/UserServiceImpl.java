@@ -1,6 +1,5 @@
 package peakspace.service.impl;
 
-//import com.amazonaws.services.chimesdkmessaging.model.BadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.mail.MessagingException;
@@ -14,40 +13,16 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.dto.request.SignUpRequest;
-import peakspace.dto.request.SignInRequest;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.SubscriptionResponse;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.ResponseWithGoogle;
-import peakspace.dto.response.FriendsPageResponse;
-import peakspace.dto.response.SignInResponse;
+import peakspace.config.amazonS3.StorageService;
 import peakspace.config.jwt.JwtService;
-import peakspace.entities.Chapter;
-import peakspace.entities.PablicProfile;
-import peakspace.entities.Profile;
-import peakspace.entities.User;
-import peakspace.entities.Notification;
-import peakspace.enums.Role;
+import peakspace.dto.request.*;
+import peakspace.dto.response.*;
+import peakspace.entities.*;
 import peakspace.enums.Choise;
-import peakspace.exception.BadRequestException;
+import peakspace.enums.Role;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.NotFoundException;
-import peakspace.exception.NotActiveException;
-import peakspace.exception.FirebaseAuthException;
-import peakspace.exception.InvalidConfirmationCode;
-import peakspace.repository.ChapterRepository;
-import peakspace.repository.PublicProfileRepository;
-import peakspace.repository.PublicationRepository;
-import peakspace.repository.UserRepository;
-import peakspace.repository.ProfileRepository;
+import peakspace.exception.*;
+import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
@@ -60,6 +35,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -76,6 +52,8 @@ public class UserServiceImpl implements UserService {
     private final ProfileRepository profileRepository;
     private final SearchFriends searchFriends;
     private final ChapterService chapterService;
+    private final StoryRepository storyRepository;
+    private final StorageService storageService;
     private String userName;
     private int randomCode;
 
@@ -97,12 +75,13 @@ public class UserServiceImpl implements UserService {
                 String fullName = decodedToken.getName();
                 User user = new User();
                 Profile profile = new Profile();
+                profile.setPhoneNumber(phoneNumber);
                 String picture = decodedToken.getPicture();
                 String defaultPassword = generatorDefaultPassword(8, 8);
                 user.setRole(Role.USER);
                 user.setPassword(passwordEncoder.encode(defaultPassword));
                 user.setEmail(email);
-                user.setPhoneNumber(phoneNumber);
+
                 try {
                     sendConfirmationCode(email);
                 } catch (MessagingException e) {
@@ -605,6 +584,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<SearchUserResponse> globalSearch(String keyWord) {
+        List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
+        return users.stream()
+                .filter(user -> !getCurrentUser().getBlockAccounts().contains(user.getId()))
+                .collect(Collectors.toList());
+    }
+
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
         return FriendsPageResponse.builder()
                 .userId(userId)
@@ -636,6 +622,11 @@ public class UserServiceImpl implements UserService {
         User user;
         if (signInRequest.email().endsWith("@gmail.com")) {
             user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
+        } else if (signInRequest.email().startsWith("+")) {
+            Profile profile = profileRepository.findByPhoneNumber(signInRequest.email());
+            if (profile == null)
+                throw new NotFoundException("User with this phone number not found! " + signInRequest.email());
+            user = profile.getUser();
         } else {
             user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
         }
@@ -648,16 +639,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String signUp(SignUpRequest signUpRequest) throws MessagingException {
+    public SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException {
         User user = new User();
         user.setUserName(signUpRequest.userName());
         user.setEmail(signUpRequest.email());
         user.setPassword(passwordEncoder.encode(signUpRequest.password()));
-        user.setProfile(new Profile(signUpRequest.name(), signUpRequest.surName(), user));
+        user.setProfile(new Profile(signUpRequest.firstName(), signUpRequest.lastName(), user));
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
+        mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
         user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
         user.setCreatedAt(ZonedDateTime.now());
@@ -694,19 +685,22 @@ public class UserServiceImpl implements UserService {
         javaMailSender.send(mimeMessage);
         userRepository.save(user);
         startTask();
-        return "Код подтверждения был отправлен на вашу почту.";
+        return SignUpResponse.builder()
+                .userId(user.getId())
+                .message("Код подтверждения был отправлен на вашу почту.")
+                .build();
     }
 
     @Override
     @Transactional
-    public SimpleResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
-        User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("\"Время истекло попробуйте снова!\""));
+    public SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
+        User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("с таким айди пользователь не существует!"));
         if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
             user.setBlockAccount(false);
             user.setConfirmationCode(null);
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message("Вы успешно зарегистрировались!")
+            return SignInResponse.builder()
+                    .id(user.getId())
+                    .token(jwtService.createToken(user))
                     .build();
         } else throw new MessagingException("Не правильный код!");
     }
@@ -714,7 +708,7 @@ public class UserServiceImpl implements UserService {
     public void startTask() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
-        executor.scheduleAtFixedRate(this::yourMethod, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::yourMethod, 0, 1, TimeUnit.MINUTES);
     }
 
     private void yourMethod() {
@@ -722,6 +716,15 @@ public class UserServiceImpl implements UserService {
         for (User user1 : all) {
             if (ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()) {
                 userRepository.delete(user1);
+            }
+        }
+        List<Story> all1 = storyRepository.findAll();
+        for (Story story : all1) {
+            if (ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))) {
+                for (Link_Publication linkPublication : story.getLinkPublications()) {
+                    storageService.deleteFile(linkPublication.getLink());
+                }
+                storyRepository.delete(story);
             }
         }
     }

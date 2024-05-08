@@ -11,6 +11,7 @@ public class UserInfoRequest {
     private String userName;
     private String firstName;
     private String lastName;
+    private String patronymicName;
     private String aboutYourSelf;
     private Country country;
     private String location;

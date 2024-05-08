@@ -13,4 +13,7 @@ public interface PublicationService {
     List<PublicationResponse> findAllPublic(Long friendId);
 
     List<HomePageResponse> homePage();
+
+    PostLinkResponse findInnerPost(Long postId);
+
 }
