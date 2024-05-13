@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PublicationService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,7 @@ public class ComplainAPI {
     @Operation(summary = "Для анализ фото для жалоб на пост")
     @PostMapping("/analyze/{photoId}")
     public List<String> complains() {
-        return null;
+        return new ArrayList<>(Arrays.asList("Почему вы хотите пожаловаться на эту публикация?", "a;lskdf"));
     }
 
 }
