@@ -38,6 +38,11 @@ public interface UserService {
 
     List<SubscriptionResponse> getAllSearchUserHistory();
 
+
+    List<SearchUserResponse> globalSearch(String keyWord);
+
+
+
     FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search);
 
     ResponseWithGoogle verifyToken(String tokenFromGoogle);

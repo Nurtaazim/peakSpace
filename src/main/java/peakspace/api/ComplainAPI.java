@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.service.LinkPublicationService;
 import peakspace.service.PublicationService;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 public class ComplainAPI {
 
     private final PublicationService publicationService;
-    private final LinkPublicationService linkPublicationService;
 
     @Secured("USER")
     @Operation(summary = "Для оставления жалобы на пост")
@@ -28,8 +26,8 @@ public class ComplainAPI {
     @Secured("USER")
     @Operation(summary = "Для анализ фото для жалоб на пост")
     @PostMapping("/analyze/{photoId}")
-    public List<String> analyzePhoto(@PathVariable Long photoId) {
-        return linkPublicationService.analyzePhoto(photoId);
+    public List<String> complains() {
+        return null;
     }
 
 }

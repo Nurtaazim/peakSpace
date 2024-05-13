@@ -32,7 +32,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     // для отправки сообщение
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-
     // ?
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     // для подключение веб сокетов
@@ -48,8 +47,6 @@ dependencies {
     implementation group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.12.701'
     // для подключение firebase
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
-    // для cloud vision api (analyze photo)
-    implementation group: 'com.google.cloud', name: 'google-cloud-vision', version: '3.35.0'
 
 }
 tasks.named('test') {
