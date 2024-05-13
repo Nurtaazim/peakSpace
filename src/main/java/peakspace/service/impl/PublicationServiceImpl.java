@@ -195,9 +195,12 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public SimpleResponse saveComplainToPost(Long postId, String complain) {
         Publication publication = publicationRepository.getReferenceById(postId);
+
         publication.getComplains().put(getCurrentUser().getId(), complain);
+
         Notification notification = new Notification();
         notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: "+complain);
+
         notificationRepository.save(notification);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
