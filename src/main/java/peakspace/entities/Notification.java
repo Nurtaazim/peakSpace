@@ -33,8 +33,12 @@ public class Notification {
     @ManyToOne(cascade = {CascadeType.DETACH})
     private User userNotification;   // получатель
     private Long senderUserId;       // отправитель
-    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne
     private Comment comment;
+    @ManyToOne
+    private Publication publication;
+    @ManyToOne
+    private Story story;
 
     public Notification( Like like, User userNotification, Long senderUserId) {
         this.like = like;

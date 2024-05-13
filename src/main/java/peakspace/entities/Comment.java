@@ -20,8 +20,8 @@ public class Comment {
     private ZonedDateTime createdAt;
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     private User user;
-    @OneToOne(mappedBy = "comment",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private Notification notification;
+    @OneToMany
+    private List<Notification> notifications;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private Publication publication;
     @OneToMany
@@ -35,4 +35,7 @@ public class Comment {
         this.createdAt = ZonedDateTime.now();
     }
 
+    public void setNotification(Notification notification) {
+        this.notifications.add(notification);
+    }
 }
