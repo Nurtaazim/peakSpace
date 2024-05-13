@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.SimpleResponse;
+import peakspace.enums.Complains;
 import peakspace.service.PublicationService;
 
 import java.util.ArrayList;
@@ -21,15 +22,9 @@ public class ComplainAPI {
     @Secured("USER")
     @Operation(summary = "Для оставления жалобы на пост")
     @PostMapping("/save/{postId}")
-    public SimpleResponse save(@PathVariable Long postId, @RequestParam String complain) {
-        return publicationService.saveComplainToPost(postId, complain);
-    }
-
-    @Secured("USER")
-    @Operation(summary = "Для анализ фото для жалоб на пост")
-    @PostMapping("/analyze/{photoId}")
-    public List<String> complains() {
-        return new ArrayList<>(Arrays.asList("Почему вы хотите пожаловаться на эту публикация?", "a;lskdf"));
+    public SimpleResponse save(@PathVariable Long postId,
+                               @RequestParam Complains complain) {
+        return publicationService.saveComplainToPost(postId, complain.getRussianName());
     }
 
 }

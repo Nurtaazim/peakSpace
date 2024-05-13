@@ -1,5 +1,6 @@
 package peakspace.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -21,6 +22,7 @@ import peakspace.entities.Publication;
 import peakspace.entities.User;
 import peakspace.entities.Notification;
 import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.NotificationRepository;
@@ -232,15 +234,35 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse saveComplainToPost(Long postId, String complain) {
         Publication publication = publicationRepository.getReferenceById(postId);
 
+        if(publication.getComplains().containsKey(getCurrentUser().getId())){
+            throw new BadRequestException("Вы уже оставили жалобу!");
+        }
+        if(publication.getPablicProfile() == null){
+            throw new BadRequestException("Жалобу можно оставить только на публикации в паблике!");
+        }
         publication.getComplains().put(getCurrentUser().getId(), complain);
 
         Notification notification = new Notification();
+        notification.setSenderUserId(getCurrentUser().getId());
+        notification.setUserNotification(publication.getPablicProfile().getUser());
         notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: "+complain);
-
         notificationRepository.save(notification);
+
+        if(publication.getComplains().size() >= 10){
+            publicationRepository.save(publication);
+            Notification notification1 = new Notification();
+            notification1.setSenderUserId(publication.getPablicProfile().getUser().getId());
+            notification1.setUserNotification(publication.getOwner());
+            notification1.setNotificationMessage("Мы удалили вашу публикацию, потому что ее жаловали 10 раз!");
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Мы удалили публикацию, потому что ее жаловали 10 раз!")
+                    .build();
+        }
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Successfully saved complain!")
