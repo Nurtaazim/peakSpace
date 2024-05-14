@@ -22,4 +22,9 @@ public interface PublicProfileRepository extends JpaRepository<PablicProfile, Lo
     @Transactional
     @Query(value = "delete from pablic_profiles_users where pablic_profile_id = :publicId", nativeQuery = true)
     void deleteUsers(Long publicId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from pablic_profiles where id = :publicId", nativeQuery = true)
+    void deletePablicById(Long publicId);
 }

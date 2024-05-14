@@ -20,32 +20,10 @@ public class UserAPI {
     private final UserService userService;
 
     @Secured("USER")
-    @GetMapping("/send/{foundUserId}")
-    @Operation(summary = "Send friends", description = "Send friends to a specific chapter")
-    public SimpleResponse send(@PathVariable Long foundUserId, @RequestParam Long nameChapterId) {
-        return userService.sendFriends(foundUserId, nameChapterId);
-    }
-
-    @Secured("USER")
-    @GetMapping("/searchChapter")
-    @Operation(summary = "Поиск  разделов  !")
-    public List<ChapTerResponse> findSearch(@RequestParam String search) {
-        return userService.searchChapter(search);
-    }
-
-    @Secured("USER")
     @GetMapping("/search")
     @Operation(summary = "Поискавик по выборкам группы и пользователь !")
     public List<SearchResponse> search(@RequestParam Choise sample, @RequestParam String keyWord) {
         return userService.searchFriends(sample, keyWord);
-    }
-
-
-    @Secured("USER")
-    @PostMapping("/createChapter")
-    @Operation(summary = " Создать раздел !")
-    public SimpleResponse createChapter(@RequestBody ChapterRequest chapterRequest) {
-        return userService.createChapter(chapterRequest);
     }
 
     @Secured("USER")
@@ -53,13 +31,6 @@ public class UserAPI {
     @Operation(summary = " Поискавик по хештегам !")
     public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample, @RequestParam String keyWord) throws MessagingException {
         return userService.searchHashtags(sample, keyWord);
-    }
-
-    @Secured("USER")
-    @GetMapping("/findAllChapter/{chapterId}")
-    @Operation(summary = "Все разделы !")
-    public List<SearchResponse> findAllChapter(@RequestParam(required = false) String userName, @PathVariable Long chapterId) {
-        return userService.searchMyFriends(chapterId, userName);
     }
 
     @Secured("USER")
@@ -76,22 +47,11 @@ public class UserAPI {
         return userService.getAllSearchUserHistory();
     }
 
-
     @Secured("USER")
     @GetMapping("/searchWithAll")
     @Operation(summary = "Поиск пользователей со всеми! ")
     public List<SearchUserResponse> searchAll(@RequestParam String keyWord) {
         return userService.globalSearch(keyWord);
-    }
-
-
-    @Secured("USER")
-    @GetMapping("/searchFiends/{userId}/{chapterId}")
-    @Operation(summary = "Получить друзья пользователя и поиск по имени пользователя и ФИО! ")
-    public FriendsPageResponse getAllFriends(@PathVariable Long userId,
-                                             @PathVariable Long chapterId,
-                                             @RequestParam(required = false) String search) {
-        return userService.searchAllFriendsByChapter(userId, chapterId, search);
     }
 
 }

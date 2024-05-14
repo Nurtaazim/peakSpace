@@ -26,6 +26,7 @@ import peakspace.repository.PublicProfileRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicProfileService;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public SimpleResponse save(PublicRequest publicRequest) {
         User currentUser = getCurrentUser();
-        if (currentUser.getPablicProfiles() != null){
+        if (currentUser.getPablicProfiles() != null) {
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .message(" Профиль уже существует для данного пользователя !")
@@ -84,26 +85,26 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     public SimpleResponse delete(Long publicId) {
         publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !" + publicId));
         publicProfileRepository.deleteUsers(publicId);
-        publicProfileRepository.deleteById(publicId);
+        publicProfileRepository.deletePablicById(publicId);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Удачно удалено !")
                 .build();
     }
 
-        @Override
-        public PublicProfileResponse findPublicProfile(Long publicId, Long userId) {
-            PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
-            userRepository.findByIds(userId);
-            return PublicProfileResponse.builder()
-                    .publicId(publicProfile.getId())
-                    .cover(publicProfile.getCover())
-                    .avatar(publicProfile.getAvatar())
-                    .pablicName(publicProfile.getPablicName())
-                    .tematica(publicProfile.getTematica())
-                    .countFollower(publicProfile.getUsers().size())
-                    .build();
-        }
+    @Override
+    public PublicProfileResponse findPublicProfile(Long publicId, Long userId) {
+        PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
+        userRepository.findByIds(userId);
+        return PublicProfileResponse.builder()
+                .publicId(publicProfile.getId())
+                .cover(publicProfile.getCover())
+                .avatar(publicProfile.getAvatar())
+                .pablicName(publicProfile.getPablicName())
+                .tematica(publicProfile.getTematica())
+                .countFollower(publicProfile.getUsers().size())
+                .build();
+    }
 
     @Override
     public List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise, Long publicId, Long userId) {
@@ -123,7 +124,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                                         .toList();
                                 return (choise == Choise.Photos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
-                                        || (choise == Choise.Videos) && links.stream()
+                                       || (choise == Choise.Videos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".mp4") || link.endsWith(".webm") || link.endsWith(".ogg"));
                             })
                             .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
@@ -139,7 +140,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     @Override
     public PublicPostResponse findPostPublic(Long postId) {
-        Publication publication = publicationRepository.findById(postId).orElseThrow(()->new NotFoundException(" Нет такой публикации !"));
+        Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой публикации !"));
         List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
         commentForResponse.reversed();
 
@@ -159,7 +160,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         );
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse removeUser(Long friendId) {
         User currentUser = getCurrentUser();
         User friendUser = userRepository.findByIds(friendId);
@@ -181,7 +183,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         }
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse sendPublic(Long publicId) {
         PablicProfile publicProfile = publicProfileRepository.findById(publicId)
                 .orElseThrow(() -> new NotFoundException("Паблик не найден!"));
@@ -203,7 +206,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build();
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse removePost(Long postId) {
         User currentUser = getCurrentUser();
         List<Publication> publications = currentUser.getPablicProfiles().getPublications();

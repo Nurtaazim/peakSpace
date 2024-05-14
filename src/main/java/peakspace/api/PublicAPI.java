@@ -44,7 +44,7 @@ public class PublicAPI {
 
     @Secured({"USER"})
     @Operation(summary = " Удаление паблик !")
-    @DeleteMapping("/delete/{publicId}")
+    @DeleteMapping("/{publicId}")
     public SimpleResponse delete(@PathVariable Long publicId){
         return publicService.delete(publicId);
     }

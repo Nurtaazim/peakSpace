@@ -11,17 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.FavoritePostResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/post")
 @RequiredArgsConstructor
 public class PostApi {
+
     private final PostService postService;
 
     @Secured("USER")
@@ -32,7 +35,7 @@ public class PostApi {
     }
 
     @Secured("USER")
-    @PostMapping("/updatePost/{postId}")
+    @PatchMapping("/updatePost/{postId}")
     @Operation(summary = " Изменение поста !")
     public SimpleResponse updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
         return postService.update(postId, postUpdateRequest);
@@ -46,13 +49,6 @@ public class PostApi {
     }
 
     @Secured("USER")
-    @PostMapping("/deleteLink/{postId}/{linkId}")
-    @Operation(summary = " Удаление фото из публикации !")
-    public SimpleResponse deleteLink(@PathVariable Long linkId, @PathVariable Long postId) {
-        return postService.deleteLinkFromPost(linkId, postId);
-    }
-
-    @Secured("USER")
     @Operation(summary = " Добавление поста на избранный !")
     @PostMapping("/addToFavorite/{postId}")
     public SimpleResponse addFavorite(@PathVariable Long postId) {
@@ -62,15 +58,15 @@ public class PostApi {
     @Secured("USER")
     @Operation(summary = " Все избранные текущего пользователя !")
     @GetMapping("/getAllFavoritePost")
-    public FavoritePostResponse favorite(){
+    public FavoritePostResponse favorite() {
         return postService.favorites();
     }
 
     @Secured("USER")
     @PutMapping("/addNotationFriends/{postId}/{foundUsersId}")
     @Operation(summary = " Отметка друзей в публикации !")
-    public SimpleResponse notationFriends(@PathVariable Long postId,@PathVariable List<Long> foundUsersId) {
-        return postService.notationFriend(postId,foundUsersId);
+    public SimpleResponse notationFriends(@PathVariable Long postId, @PathVariable List<Long> foundUsersId) {
+        return postService.notationFriend(postId, foundUsersId);
     }
 
     @Secured("USER")
@@ -83,8 +79,8 @@ public class PostApi {
     @Secured("USER")
     @PostMapping("/savePostPublic/{publicId}/{userId}")
     @Operation(summary = " Для добавление пост на Паблике !")
-    public SimpleResponse savePostPublic(@PathVariable Long publicId,@PathVariable Long userId,@RequestBody PostRequest postRequest){
-        return postService.savePostPublic(publicId,userId,postRequest);
+    public SimpleResponse savePostPublic(@PathVariable Long publicId, @PathVariable Long userId, @RequestBody PostRequest postRequest) {
+        return postService.savePostPublic(publicId, userId, postRequest);
     }
 
     @Secured("USER")
@@ -94,19 +90,11 @@ public class PostApi {
         return postService.editPostPublic(postId, postUpdateRequest);
     }
 
-
     @Secured("USER")
     @DeleteMapping("/deletePostPublic/{postId}")
     @Operation(summary = " Удаление пост на паблике !")
     public SimpleResponse deletePostPublic(@PathVariable Long postId) {
         return postService.deletePostPublic(postId);
-    }
-
-    @Secured("USER")
-    @DeleteMapping("/deleteLinkPublic/{postId}/{linkId}")
-    @Operation(summary = " Удаление фото из публикации в паблике !")
-    public SimpleResponse deleteLinkPublic(@PathVariable Long linkId, @PathVariable Long postId) {
-        return postService.deleteLinkFromPostPublic(linkId, postId);
     }
 
 }
