@@ -20,8 +20,9 @@ public class ComplainAPI {
     private final PublicationService publicationService;
 
     @Secured("USER")
-    @Operation(summary = "Для оставления жалобы на пост")
-    @PostMapping("/save/{postId}")
+    @Operation(summary = "Метод для сохранения жалобы на пост.",
+            description = "Этот метод получает ID поста и жалобу на него, сохраняет жалобу и возвращает ответ о результате операции (SimpleResponse).")
+    @PostMapping("/{postId}")
     public SimpleResponse save(@PathVariable Long postId,
                                @RequestParam Complains complain) {
         return publicationService.saveComplainToPost(postId, complain.getRussianName());

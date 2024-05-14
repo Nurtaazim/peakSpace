@@ -44,7 +44,7 @@ public class PublicationServiceImpl implements PublicationService {
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private  final NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -217,7 +217,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .map(link -> new LinkResponse(link.getId(), link.getLink()))
                 .toList();
 
-       return PostLinkResponse.builder()
+        return PostLinkResponse.builder()
                 .postId(publication.getId())
                 .linkResponses(linkResponses)
                 .countLikes(publication.getLikes().size())
@@ -238,21 +238,19 @@ public class PublicationServiceImpl implements PublicationService {
     public SimpleResponse saveComplainToPost(Long postId, String complain) {
         Publication publication = publicationRepository.getReferenceById(postId);
 
-        if(publication.getComplains().containsKey(getCurrentUser().getId())){
+        if (publication.getComplains().containsKey(getCurrentUser().getId())) {
             throw new BadRequestException("Вы уже оставили жалобу!");
         }
-        if(publication.getPablicProfile() == null){
-            throw new BadRequestException("Жалобу можно оставить только на публикации в паблике!");
-        }
+
         publication.getComplains().put(getCurrentUser().getId(), complain);
 
         Notification notification = new Notification();
         notification.setSenderUserId(getCurrentUser().getId());
         notification.setUserNotification(publication.getPablicProfile().getUser());
-        notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: "+complain);
+        notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: " + complain);
         notificationRepository.save(notification);
 
-        if(publication.getComplains().size() >= 10){
+        if (publication.getComplains().size() >= 10) {
             publicationRepository.save(publication);
             Notification notification1 = new Notification();
             notification1.setSenderUserId(publication.getPablicProfile().getUser().getId());
