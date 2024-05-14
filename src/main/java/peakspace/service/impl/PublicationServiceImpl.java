@@ -1,17 +1,31 @@
 package peakspace.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.response.*;
+import peakspace.dto.response.GetAllPostsResponse;
+import peakspace.dto.response.LinkPublicationResponse;
+import peakspace.dto.response.MyPostResponse;
+import peakspace.dto.response.PublicationResponse;
+import peakspace.dto.response.HomePageResponse;
+import peakspace.dto.response.CommentResponse;
+import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.PostLinkResponse;
+import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.PublicationWithYouResponse;
 import peakspace.entities.Chapter;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
+import peakspace.entities.Notification;
 import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
+import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicationService;
@@ -30,6 +44,7 @@ public class PublicationServiceImpl implements PublicationService {
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -173,7 +188,6 @@ public class PublicationServiceImpl implements PublicationService {
         return homePages;
     }
 
-
     public MyPostResponse getMyPost(Long postId) {
         Publication publication = publicationRepository.getReferenceById(postId);
         List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
@@ -195,7 +209,6 @@ public class PublicationServiceImpl implements PublicationService {
                 .build();
     }
 
-
     @Override
     public PostLinkResponse findInnerPost(Long postId) {
         Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой post !"));
@@ -204,7 +217,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .map(link -> new LinkResponse(link.getId(), link.getLink()))
                 .toList();
 
-       return PostLinkResponse.builder()
+        return PostLinkResponse.builder()
                 .postId(publication.getId())
                 .linkResponses(linkResponses)
                 .countLikes(publication.getLikes().size())
@@ -218,6 +231,40 @@ public class PublicationServiceImpl implements PublicationService {
         if (current.getRole().equals(Role.USER))
             return current;
         else throw new AccessDeniedException("Forbidden 403");
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse saveComplainToPost(Long postId, String complain) {
+        Publication publication = publicationRepository.getReferenceById(postId);
+
+        if (publication.getComplains().containsKey(getCurrentUser().getId())) {
+            throw new BadRequestException("Вы уже оставили жалобу!");
+        }
+
+        publication.getComplains().put(getCurrentUser().getId(), complain);
+
+        Notification notification = new Notification();
+        notification.setSenderUserId(getCurrentUser().getId());
+        notification.setUserNotification(publication.getPablicProfile().getUser());
+        notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: " + complain);
+        notificationRepository.save(notification);
+
+        if (publication.getComplains().size() >= 10) {
+            publicationRepository.save(publication);
+            Notification notification1 = new Notification();
+            notification1.setSenderUserId(publication.getPablicProfile().getUser().getId());
+            notification1.setUserNotification(publication.getOwner());
+            notification1.setNotificationMessage("Мы удалили вашу публикацию, потому что ее жаловали 10 раз!");
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Мы удалили публикацию, потому что ее жаловали 10 раз!")
+                    .build();
+        }
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Successfully saved complain!")
+                .build();
     }
 
 }
