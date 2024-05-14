@@ -37,9 +37,9 @@ public class PublicAPI {
 
     @Secured("USER")
     @Operation(summary = " Изменение паблика !")
-    @PutMapping("/editPublic/{publicId}")
-    public SimpleResponse editPublic(@PathVariable Long publicId,@RequestBody PublicRequest publicRequest){
-        return publicService.edit(publicId,publicRequest);
+    @PutMapping("/editPublic")
+    public SimpleResponse editPublic(@RequestBody PublicRequest publicRequest){
+        return publicService.edit(publicRequest);
     }
 
     @Secured({"USER"})

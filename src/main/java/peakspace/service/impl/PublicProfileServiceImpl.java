@@ -66,8 +66,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     @Override
     @Transactional
-    public SimpleResponse edit(Long publicId, PublicRequest publicRequest) {
-        PablicProfile editPublic = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !" + publicId));
+    public SimpleResponse edit(PublicRequest publicRequest) {
+        PablicProfile editPublic = publicProfileRepository.findById(getCurrentUser().getPablicProfiles().getId()).orElseThrow(() -> new NotFoundException("У вас нет паблик !" + getCurrentUser().getUsername()));
         editPublic.setCover(publicRequest.getCover());
         editPublic.setAvatar(publicRequest.getAvatar());
         editPublic.setPablicName(publicRequest.getPablicName());
@@ -75,7 +75,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         editPublic.setTematica(publicRequest.getTematica());
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Удачно изменилась  !")
+                .message("Удачно изменилась !")
                 .build();
     }
 
