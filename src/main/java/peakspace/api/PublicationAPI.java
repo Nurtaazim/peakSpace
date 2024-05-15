@@ -42,7 +42,7 @@ public class PublicationAPI {
     }
 
     @Secured({"USER"})
-    @GetMapping("/{postId}")
+    @GetMapping("/find/{postId}")
     @Operation(summary = " Найти пост по id ")
     public MyPostResponse getById(@PathVariable Long postId) {
         return publicationService.getById(postId);

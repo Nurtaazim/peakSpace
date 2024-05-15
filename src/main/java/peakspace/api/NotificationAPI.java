@@ -17,7 +17,7 @@ public class NotificationAPI {
     private final NotificationService notificationService;
 
     @GetMapping
-    List<NotificationResponse> getNotifications(){
+    public List<NotificationResponse> getNotifications(){
        return notificationService.getAllNotifications();
     }
 

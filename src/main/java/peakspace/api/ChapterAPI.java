@@ -63,7 +63,7 @@ public class ChapterAPI {
     }
 
     @Secured("USER")
-    @GetMapping("/searchFiends/{userId}/{chapterId}")
+    @GetMapping("/search-friends/{userId}/{chapterId}")
     @Operation(summary = "Получить друзья пользователя и поиск по имени пользователя и ФИО! ")
     public FriendsPageResponse getAllFriends(@PathVariable Long userId,
                                              @PathVariable Long chapterId,

@@ -36,7 +36,6 @@ public class SecurityConfig {
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         var corsConfiguration = new CorsConfiguration();
-                        corsConfiguration.addAllowedOrigin("http://allowed-origin.com");
                         corsConfiguration.addAllowedOrigin("*");
                         corsConfiguration.addAllowedMethod("*");
                         corsConfiguration.addAllowedHeader("*");
@@ -49,7 +48,7 @@ public class SecurityConfig {
 
                             .requestMatchers(
                                     "/**",
-                                    "/api/auth/**",
+                                    "/auth/**",
                                     "/swagger-ui/index.html/**",
                                     "v3/api-docs/**"
                             )
