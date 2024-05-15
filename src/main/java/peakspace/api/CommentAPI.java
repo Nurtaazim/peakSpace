@@ -16,25 +16,28 @@ import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.CommentResponseByPost;
 import peakspace.dto.response.CommentInnerResponse;
 import peakspace.service.CommentService;
+import peakspace.service.PublicProfileService;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @RequiredArgsConstructor
 public class CommentAPI {
 
     private final CommentService commentService;
+    private final PublicProfileService publicService;
 
     @Secured("USER")
     @Operation(summary = "Для добавление коммментарии на пост !")
-    @PostMapping("/save/{postId}")
+    @PostMapping("/{postId}")
     public SimpleResponse save(@PathVariable Long postId, @RequestBody CommentRequest comment) {
-        return commentService.save(postId,comment);
+        return commentService.save(postId, comment);
     }
 
     @Secured({"USER"})
     @Operation(summary = " Все комментарии одного поста !")
-    @GetMapping("/getAllComment/{postId}")
+    @GetMapping("/{postId}")
     public List<CommentResponseByPost> getAllComment(@PathVariable Long postId) {
         return commentService.getAllComment(postId);
     }
@@ -42,22 +45,29 @@ public class CommentAPI {
     @Secured("USER")
     @Operation(summary = " Найти комментарии по id !")
     @GetMapping("/find/{commentId}")
-    public CommentInnerResponse findComment(@PathVariable Long commentId){
+    public CommentInnerResponse findComment(@PathVariable Long commentId) {
         return commentService.findComment(commentId);
     }
 
     @Secured("USER")
     @Operation(summary = " Для изменение комментарии !")
-    @PutMapping("/edit/{commentId}")
+    @PutMapping("/{commentId}")
     public SimpleResponse edit(@PathVariable Long commentId, @RequestBody CommentRequest comment) {
-        return commentService.editComment(commentId,comment);
+        return commentService.editComment(commentId, comment);
     }
 
     @Secured("USER")
     @Operation(summary = " Удалить комментарии !")
-    @DeleteMapping("/delete/{commentId}")
+    @DeleteMapping("/{commentId}")
     public SimpleResponse delete(@PathVariable Long commentId) {
         return commentService.deleteComment(commentId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = "Для удаление комментарии от имени Admin (владелец паблика) !")
+    @DeleteMapping("/remove-comment/{commentId}")
+    public SimpleResponse removeCommentAdmin(@PathVariable Long commentId) {
+        return publicService.removeComment(commentId);
     }
 
 }

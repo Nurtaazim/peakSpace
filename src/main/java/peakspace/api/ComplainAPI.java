@@ -13,7 +13,7 @@ import peakspace.enums.Complains;
 import peakspace.service.PublicationService;
 
 @RestController
-@RequestMapping("/complaint")
+@RequestMapping("/complains")
 @RequiredArgsConstructor
 public class ComplainAPI {
 

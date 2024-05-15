@@ -44,10 +44,6 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
     @Query("select p from Publication p join p.owner o where o = :owner and p.id = :postId")
     Publication findByIdAndOwner(Long postId, User owner);
 
-
-     @Query("delete from Publication p where p.id =:postId")
-    void deletePost(Long postId);
-
     @Modifying
     @Transactional
     @Query(value = "delete from publications p where p.id = :publicId", nativeQuery = true)

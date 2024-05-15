@@ -300,7 +300,7 @@ values (1, 1, 'Friends'),
        (10, 5, 'Project Group');
 
 
-insert into stories_tag_fiends(story_id, tag_fiends_id)
+insert into stories_tag_friends(story_id, tag_friends_id)
 values (1, 2),
        (1, 3),
        (1, 4),

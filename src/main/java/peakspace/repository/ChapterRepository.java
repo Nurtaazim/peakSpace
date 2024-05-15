@@ -15,7 +15,4 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
         return findById(id).orElseThrow(() -> new NotFoundException("Нет такого раздела с идентификатором: " + id));
     }
 
-    @Query("select c from Chapter c where c.groupName =:section")
-    Chapter getByGroupName(String section);
-
 }

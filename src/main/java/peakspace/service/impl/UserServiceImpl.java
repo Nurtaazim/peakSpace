@@ -599,16 +599,6 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private long getFriendsSize(Long foundUserID) {
-        Chapter chapter = chapterRepository.findByID(foundUserID);
-        return chapter.getFriends().size();
-    }
-
-    private long getFriendsPublicSize(Long foundUserID) {
-        PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
-        return pablicProfile.getPublications().size();
-    }
-
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User current = userRepository.getByEmail(email);
