@@ -9,5 +9,5 @@ public record BlockAccountsResponse(String userName,
                                     String aboutYourSelf,
                                     String firstName,
                                     String lastName
-){
+) {
 }

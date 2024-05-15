@@ -10,7 +10,8 @@ import peakspace.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(("/auth-with-google"))
+@RequestMapping("/auth-with-google")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthWithGoogleApi {
 
     private final UserService userService;

@@ -3,10 +3,7 @@ package peakspace.api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.GetAllPostsResponse;
 import peakspace.dto.response.PublicationResponse;
 import peakspace.dto.response.ProfileFriendsResponse;
@@ -23,6 +20,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/publics")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class PublicationAPI {
 
     private final UserService userService;

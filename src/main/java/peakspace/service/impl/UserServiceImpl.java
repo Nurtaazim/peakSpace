@@ -522,7 +522,7 @@ public class UserServiceImpl implements UserService {
                 .aboutYourSelf(friendsResponse.getAboutYourSelf())
                 .profession(friendsResponse.getProfession())
                 .friendsSize(foundUser.getChapters().size())
-                .pablicationsSize(pablicationsSize)
+                .publicationsSize(pablicationsSize)
                 .build();
     }
 

@@ -17,7 +17,8 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(("/chapters"))
+@RequestMapping("/chapters")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ChapterAPI {
 
     private final ChapterService chapterService;

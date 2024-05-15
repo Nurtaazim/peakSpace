@@ -1,7 +1,9 @@
 package peakspace.entities;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -12,8 +14,8 @@ import java.util.List;
 public class Story {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "story_seq")
-    @SequenceGenerator(name = "story_seq", allocationSize = 1,initialValue = 19)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "story_seq")
+    @SequenceGenerator(name = "story_seq", allocationSize = 1, initialValue = 19)
     private Long id;
     private ZonedDateTime createdAt;
     private String text;
@@ -23,10 +25,11 @@ public class Story {
     private List<User> tagFriends;
     @ManyToMany()
     private List<Like> likes;
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private List<Link_Publication> linkPublications;
+
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.createdAt = ZonedDateTime.now();
     }
 

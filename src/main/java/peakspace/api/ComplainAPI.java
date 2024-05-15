@@ -11,6 +11,7 @@ import peakspace.service.PublicationService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/complains")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ComplainAPI {
 
     private final PublicationService publicationService;

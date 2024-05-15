@@ -1,7 +1,6 @@
 package peakspace.dto.response;
 
-public record LinkResponse(
-        Long id,
-        String link
+public record LinkResponse(Long id,
+                           String link
 ) {
 }

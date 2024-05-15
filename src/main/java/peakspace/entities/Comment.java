@@ -1,4 +1,5 @@
 package peakspace.entities;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,16 +14,16 @@ import java.util.List;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comment_seq")
-    @SequenceGenerator(name = "comment_seq", allocationSize = 1,initialValue = 21)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
+    @SequenceGenerator(name = "comment_seq", allocationSize = 1, initialValue = 21)
     private Long id;
     private String message;
     private ZonedDateTime createdAt;
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
     private User user;
     @OneToMany
     private List<Notification> notifications;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private Publication publication;
     @OneToMany
     @JoinTable(name = "innerComment")
@@ -31,7 +32,7 @@ public class Comment {
     private List<Like> likes;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.createdAt = ZonedDateTime.now();
     }
 
