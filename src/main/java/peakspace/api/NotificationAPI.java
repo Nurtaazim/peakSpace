@@ -13,9 +13,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/notifications")
 public class NotificationAPI {
+
     private final NotificationService notificationService;
-    @GetMapping("/notifications")
+
+    @GetMapping
     List<NotificationResponse> getNotifications(){
        return notificationService.getAllNotifications();
     }
+
 }

@@ -301,31 +301,6 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    @Override
-    @Transactional
-    public SimpleResponse deleteLinkFromPostPublic(Long linkId, Long postId) {
-        User currentUser = getCurrentUser();
-
-        currentUser.getPablicProfiles().getPublications().stream()
-                .filter(publication -> publication.getId().equals(postId))
-                .filter(publication -> publication.getOwner().getId().equals(currentUser.getId()))
-                .findFirst()
-                .ifPresent(publication -> {
-                    List<Link_Publication> links = publication.getLinkPublications().stream()
-                            .filter(link -> !link.getId().equals(linkId))
-                            .collect(Collectors.toList());
-                    publication.setLinkPublications(links);
-                    publicationRepo.save(publication); // Сохраняем обновленную публикацию
-                    publicationRepo.deletePublicationLink(postId, linkId);
-                    linkPublicationRepo.deleteLink(linkId);
-                });
-
-        return SimpleResponse.builder()
-                .message("Successfully deleted!")
-                .httpStatus(HttpStatus.OK)
-                .build();
-    }
-
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User current = userRepository.getByEmail(email);

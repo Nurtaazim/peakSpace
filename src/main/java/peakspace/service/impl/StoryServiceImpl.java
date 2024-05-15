@@ -14,7 +14,7 @@ import peakspace.entities.Story;
 import peakspace.entities.User;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
-import peakspace.repository.LinkPublicationRepository;
+import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.StoryService;
@@ -27,7 +27,7 @@ import java.util.List;
 public class StoryServiceImpl implements StoryService {
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
-    private final LinkPublicationRepository linkPublicationRepository;
+    private final LinkPublicationRepo linkPublicationRepository;
     private final StorageService storageService;
 
     @Override

@@ -1,5 +1,6 @@
 package peakspace.config.security;
 
+import com.amazonaws.HttpMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import peakspace.config.jwt.JwtFilter;
 import peakspace.repository.UserRepository;
 
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -32,13 +32,17 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configurationSource(request -> {
-                    var corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.addAllowedOrigin("*");
-                    corsConfiguration.addAllowedMethod("*");
-                    corsConfiguration.addAllowedHeader("*");
-                    return corsConfiguration;
-                }))
+        http
+                .cors(cors -> {
+                    cors.configurationSource(request -> {
+                        var corsConfiguration = new CorsConfiguration();
+                        corsConfiguration.addAllowedOrigin("http://allowed-origin.com");
+                        corsConfiguration.addAllowedOrigin("*");
+                        corsConfiguration.addAllowedMethod("*");
+                        corsConfiguration.addAllowedHeader("*");
+                        return corsConfiguration;
+                    });
+                })
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> {
                     request

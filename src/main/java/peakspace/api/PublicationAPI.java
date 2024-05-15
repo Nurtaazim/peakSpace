@@ -20,7 +20,7 @@ import java.util.List;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/publics")
 @RequiredArgsConstructor
 public class PublicationAPI {
 
@@ -28,14 +28,14 @@ public class PublicationAPI {
     private final UserService userService;
 
     @Secured("USER")
-    @GetMapping("/getAllMyPosts")
+    @GetMapping("/my")
     @Operation(summary = " Все мои посты !")
     public GetAllPostsResponse getAllPosts(Principal principal) {
         return publicationService.getAllPosts(principal);
         }
 
-    @Secured({"USER","ADMIN"})
-    @GetMapping("/photoWithMe/{foundUserId}")
+    @Secured({"USER"})
+    @GetMapping("/photo-with-me/{foundUserId}")
     @Operation(summary = " Профиль друга Фото с вами !")
     public List<PublicationWithYouResponse> withPhoto(@PathVariable Long foundUserId) {
         return publicationService.withPhoto(foundUserId);
@@ -49,28 +49,28 @@ public class PublicationAPI {
     }
 
     @Secured({"USER"})
-    @GetMapping("/findAll/{friendId}")
+    @GetMapping("/{friendId}")
     @Operation(summary = "Профиль друга все публикации друга ! ")
     public List<PublicationResponse> findAllPublic(@PathVariable Long friendId) {
         return publicationService.findAllPublic(friendId);
     }
 
     @Secured({"USER"})
-    @GetMapping("/profileFriends/{foundUserId}")
+    @GetMapping("/profile-friends/{foundUserId}")
     @Operation(summary = " Профиль друга !", description = "Профиль страница друга  !")
     public ProfileFriendsResponse findByIdFriends(@PathVariable Long foundUserId){
         return userService.findFriendsProfile(foundUserId);
     }
 
     @Secured("USER")
-    @GetMapping("/findAllPublicMyFriends")
+    @GetMapping("/find-all-publics-my-friends")
     @Operation(summary = " Главный страница текущего пользователя который друзья опубликовали !")
     public List<HomePageResponse> homePageResponses(){
         return publicationService.homePage();
     }
 
     @Secured("USER")
-    @GetMapping("/findInnerPostLink/{postId}")
+    @GetMapping("/find-inner-post-link/{postId}")
     @Operation(summary = " Это универсальный метод для поста который когда нажимает фото это страница отображется ! ")
     public PostLinkResponse findPostInnerLink(@PathVariable Long postId){
     return publicationService.findInnerPost(postId);
