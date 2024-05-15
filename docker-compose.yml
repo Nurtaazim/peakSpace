@@ -10,7 +10,7 @@ services:
       SPRING_PROFILES_ACTIVE: main
       SERVER_PORT: 2024
       POSTGRES_DB: jdbc:postgresql://database:5432/postgres
-      POSTGRES_USER: java12user
+      POSTGRES_USERNAME: java12user
       POSTGRES_PASSWORD: java12pass
   database:
     image: postgres:15
