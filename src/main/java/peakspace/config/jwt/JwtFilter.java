@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
 @Component
@@ -30,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String headerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         String bearer = "Bearer ";
-        if (headerToken != null && headerToken.startsWith(bearer)){
+        if (headerToken != null && headerToken.startsWith(bearer)) {
             String token = headerToken.substring(bearer.length());
 
             try {
@@ -45,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                         user.getAuthorities()
                                 )
                         );
-            }catch (JWTVerificationException e){
+            } catch (JWTVerificationException e) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN,
                         "Invalid JWT Token");
             }

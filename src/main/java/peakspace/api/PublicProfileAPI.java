@@ -19,82 +19,77 @@ import peakspace.dto.response.PublicProfileResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.enums.Choise;
 import peakspace.service.PublicProfileService;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/public")
 @RequiredArgsConstructor
-public class PublicAPI {
+@RequestMapping("/public-profiles")
+public class PublicProfileAPI {
 
     private final PublicProfileService publicService;
 
     @Secured("USER")
     @Operation(summary = " Создание паблик канал !")
-    @PostMapping("/addPublic")
-    public SimpleResponse addPublic(@RequestBody PublicRequest publicRequest){
+    @PostMapping
+    public SimpleResponse addPublic(@RequestBody PublicRequest publicRequest) {
         return publicService.save(publicRequest);
     }
 
     @Secured("USER")
     @Operation(summary = " Изменение паблика !")
-    @PutMapping("/editPublic/{publicId}")
-    public SimpleResponse editPublic(@PathVariable Long publicId,@RequestBody PublicRequest publicRequest){
-        return publicService.edit(publicId,publicRequest);
+    @PutMapping
+    public SimpleResponse editPublic(@RequestBody PublicRequest publicRequest) {
+        return publicService.edit(publicRequest);
     }
 
     @Secured({"USER"})
     @Operation(summary = " Удаление паблик !")
-    @DeleteMapping("/delete/{publicId}")
-    public SimpleResponse delete(@PathVariable Long publicId){
+    @DeleteMapping("/{publicId}")
+    public SimpleResponse delete(@PathVariable Long publicId) {
         return publicService.delete(publicId);
     }
 
     @Secured({"USER"})
     @Operation(summary = " Мой паблик !")
-    @GetMapping("/myPublic/{publicId}/{userId}")
-    public PublicProfileResponse findPublic(@PathVariable Long publicId, @PathVariable Long userId){
-        return publicService.findPublicProfile(publicId,userId);
+    @GetMapping("/my-public/{publicId}/{userId}")
+    public PublicProfileResponse findPublic(@PathVariable Long publicId, @PathVariable Long userId) {
+        return publicService.findPublicProfile(publicId, userId);
     }
 
     @Secured("USER")
     @Operation(summary = " Публикации моего паблика по выбором фото или видео !")
-    @GetMapping("/publicPhotoAndVideo/{publicId}/{userId}")
-    public List<PublicPhotoAndVideoResponse> getMyPublic(@RequestParam Choise choise,@PathVariable Long publicId,@PathVariable Long userId){
-        return publicService.getPublicPost(choise,publicId,userId);
+    @GetMapping("/public-photo-and-video/{publicId}/{userId}")
+    public List<PublicPhotoAndVideoResponse> getMyPublic(@RequestParam Choise choise, @PathVariable Long publicId, @PathVariable Long userId) {
+        return publicService.getPublicPost(choise, publicId, userId);
     }
 
     @Secured("USER")
     @Operation(summary = " Страница одного поста полный вид findByPostId")
-    @GetMapping("/findPostPublic/{postId}")
-    public PublicPostResponse getByPost(@PathVariable Long postId){
+    @GetMapping("/find/{postId}")
+    public PublicPostResponse getByPost(@PathVariable Long postId) {
         return publicService.findPostPublic(postId);
     }
 
     @Secured("USER")
-    @Operation (summary = " Удаление пользователья в паблике ")
-    @PutMapping("/removeUser/{friendId}")
-    public SimpleResponse removeUserFromPublic(@PathVariable Long friendId){
+    @Operation(summary = " Удаление пользователя в паблике ")
+    @PutMapping("/tag/{friendId}")
+    public SimpleResponse removeUserFromPublic(@PathVariable Long friendId) {
         return publicService.removeUser(friendId);
     }
 
     @Secured("USER")
     @Operation(summary = " Для кнопка присоединится на паблик канал ! ")
-    @PutMapping("/sendJoinPublic/{publicId}")
-    public SimpleResponse sendJoinPublic(@PathVariable Long publicId){
+    @PutMapping("/send-join-public/{publicId}")
+    public SimpleResponse sendJoinPublic(@PathVariable Long publicId) {
         return publicService.sendPublic(publicId);
     }
 
     @Secured("USER")
     @Operation(summary = " Для удаление фото на паблика от имени Admin (владелец паблика) !")
-    @PutMapping("/removePost/{postId}")
-    public SimpleResponse removePostAdmin(@PathVariable Long postId){
+    @PutMapping("/post/{postId}")
+    public SimpleResponse removePostAdmin(@PathVariable Long postId) {
         return publicService.removePost(postId);
     }
 
-    @Secured("USER")
-    @Operation(summary = "Для удаление комментарии от имени Admin (владелец паблика) !")
-    @PutMapping("/removeCommeent/{commentId}")
-    public SimpleResponse removeCommentAdmin(@PathVariable Long commentId){
-        return publicService.removeComment(commentId);
-    }
 }

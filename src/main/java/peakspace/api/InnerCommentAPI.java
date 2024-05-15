@@ -19,48 +19,47 @@ import peakspace.service.CommentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/innerComment")
 @RequiredArgsConstructor
+@RequestMapping("/inner-comments")
 public class InnerCommentAPI {
 
     private final CommentService commentService;
 
     @Secured("USER")
     @Operation(summary = " Добавление комментарии в главном комментарии !")
-    @PostMapping("/save/{commentId}")
-    public SimpleResponse saveInnerComment(@PathVariable Long commentId, @RequestBody CommentRequest commentRequest) {
-        return commentService.saveInnerComment(commentId,commentRequest);
+    @PostMapping("/{commentId}")
+    public SimpleResponse saveInnerComment(@PathVariable Long commentId,
+                                           @RequestBody CommentRequest commentRequest) {
+        return commentService.saveInnerComment(commentId, commentRequest);
     }
 
     @Secured("USER")
     @Operation(summary = " Изменение комментарии в inner комментарии !")
-    @PutMapping("/edit/{innerCommentId}")
-    public SimpleResponse editInnerComment(@PathVariable Long innerCommentId, @RequestBody CommentRequest commentRequest) {
-        return commentService.editInnerComment(innerCommentId,commentRequest);
+    @PutMapping("/{innerCommentId}")
+    public SimpleResponse editInnerComment(@PathVariable Long innerCommentId,
+                                           @RequestBody CommentRequest commentRequest) {
+        return commentService.editInnerComment(innerCommentId, commentRequest);
     }
 
     @Secured("USER")
     @Operation(summary = " Удаление комментарии в inner комментарии !")
-    @DeleteMapping("/deleteInnerComment/{innerCommentId}")
+    @DeleteMapping("/{innerCommentId}")
     public SimpleResponse deleteInnerComment(@PathVariable Long innerCommentId) {
         return commentService.removeInnerComment(innerCommentId);
     }
 
     @Secured("USER")
     @Operation(summary = " Найти inner комментарии по id !")
-    @GetMapping("/findInnerComment/{innerCommentId}")
-    public InnerCommentResponse findComment(@PathVariable Long innerCommentId){
+    @GetMapping("/find/{innerCommentId}")
+    public InnerCommentResponse findComment(@PathVariable Long innerCommentId) {
         return commentService.findInnerComment(innerCommentId);
     }
 
     @Secured({"USER"})
     @Operation(summary = " Все inner комментарии одного комментарии !")
-    @GetMapping("/getAllComment/{commentId}")
+    @GetMapping("/{commentId}")
     public List<InnerCommentResponse> getAllInnerComment(@PathVariable Long commentId) {
         return commentService.getAllInnerComment(commentId);
     }
-
-
-
 
 }

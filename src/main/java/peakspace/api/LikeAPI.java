@@ -10,27 +10,27 @@ import peakspace.service.LikeService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/like")
+@RequestMapping("/likes")
 public class LikeAPI {
 
     private final LikeService likeService;
 
-    @PostMapping("/addLikeToPost/{postId}")
+    @PostMapping("/to-post/{postId}")
     @Operation(description = "Поставить лайк на пост")
-    boolean addLikeToPost(@PathVariable Long postId){
-       return likeService.addLikeToPost(postId);
+    boolean addLikeToPost(@PathVariable Long postId) {
+        return likeService.addLikeToPost(postId);
     }
 
-    @PostMapping("/addLikeToComment/{commentId}")
+    @PostMapping("/to-comment/{commentId}")
     @Operation(description = "Поставить лайк на комментарий")
-    boolean  addLikeToComment(@PathVariable Long commentId){
-       return likeService.addLikeToComment(commentId);
+    boolean addLikeToComment(@PathVariable Long commentId) {
+        return likeService.addLikeToComment(commentId);
     }
 
-    @PostMapping("/addLikeToStory/{storyId}")
+    @PostMapping("/to-story/{storyId}")
     @Operation(description = "Поставить лайк на сторис")
-    boolean addLikeToStory(@PathVariable Long storyId){
-       return likeService.addLikeToStory(storyId);
+    boolean addLikeToStory(@PathVariable Long storyId) {
+        return likeService.addLikeToStory(storyId);
     }
 
 }

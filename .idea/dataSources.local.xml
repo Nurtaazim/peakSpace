@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  <component name="dataSourceStorageLocal" created-in="IU-233.14015.106">
+    <data-source name="postgres@localhost" uuid="27a9c5b9-d597-466a-83e6-01d90d58c7c9">
+=======
+>>>>>>> efcf1ebcaaebecf20df1b0abed5bd93dd53b75f3
   <component name="dataSourceStorageLocal" created-in="IU-241.15989.150">
     <data-source name="postgres@localhost" uuid="5a4a3ee8-63f5-46ee-896d-424f32c16519">
+>>>>>>> da447f9f07ed41f21ccbe0d6df94491392064d75
       <database-info product="PostgreSQL" version="16.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="16.1" exact-driver-version="42.6">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node kind="database" qname="peakspace">
-            <node kind="schema" qname="public" />
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
           </node>
         </introspection-scope>
       </schema-mapping>

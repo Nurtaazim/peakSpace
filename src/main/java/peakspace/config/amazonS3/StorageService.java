@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class StorageService {
     private String bucketName;
     private final AmazonS3 s3Client;
 
-    public String uploadFile(MultipartFile file,String key) {
+    public String uploadFile(MultipartFile file, String key) {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         s3Client.putObject(new PutObjectRequest(bucketName, key, fileObj).withCannedAcl(CannedAccessControlList.PublicRead));
@@ -61,7 +62,7 @@ public class StorageService {
     }
 
     public String getUrl(String key) {
-      return s3Client.getUrl(bucketName,key).toString();
+        return s3Client.getUrl(bucketName, key).toString();
     }
 
 }

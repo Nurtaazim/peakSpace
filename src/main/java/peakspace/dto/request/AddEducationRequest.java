@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import peakspace.enums.Country;
 
-@Getter @Setter
+@Getter
+@Setter
 public class AddEducationRequest {
     private Country country;
     private String educationalInstitution;

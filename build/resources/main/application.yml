@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     password: ${POSTGRES_PASSWORD}
-    url: ${POSTGRES_URL}
+    url: ${POSTGRES_DB}
     username: ${POSTGRES_USERNAME}
   mail:
     host: smtp.gmail.com

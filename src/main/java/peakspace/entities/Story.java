@@ -21,8 +21,6 @@ public class Story {
     private User owner;
     @ManyToMany
     private List<User> tagFriends;
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
-    private List<User> tagFiends;
     @ManyToMany()
     private List<Like> likes;
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH})

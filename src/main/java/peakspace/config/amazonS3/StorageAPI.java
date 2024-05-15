@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/file")
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/files")
 public class StorageAPI {
     private final StorageService service;
 
@@ -27,7 +28,7 @@ public class StorageAPI {
     public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
         String key = UUID.randomUUID().toString();
         log.error(service.getUrl(key));
-        return new ResponseEntity<>(service.uploadFile(file,key), HttpStatus.OK);
+        return new ResponseEntity<>(service.uploadFile(file, key), HttpStatus.OK);
     }
 
     @GetMapping("/download/{fileName}")

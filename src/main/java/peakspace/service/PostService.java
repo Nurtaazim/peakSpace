@@ -32,5 +32,4 @@ public interface PostService {
 
     SimpleResponse deletePostPublic(Long postId);
 
-    SimpleResponse deleteLinkFromPostPublic(Long linkId, Long postId);
 }
