@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="IU-233.14015.106">
+<<<<<<< HEAD
     <data-source name="postgres@localhost" uuid="78c73266-4c53-4ce5-93ff-a34bce9bade0">
+=======
+    <data-source name="postgres@localhost" uuid="5a4a3ee8-63f5-46ee-896d-424f32c16519">
+>>>>>>> f540ddfb7803ee35592b84acd47aa37ffb901f14
       <database-info product="PostgreSQL" version="16.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="16.1" exact-driver-version="42.6">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
-      <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
       <schema-mapping>
         <introspection-scope>

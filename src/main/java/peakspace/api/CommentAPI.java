@@ -60,5 +60,4 @@ public class CommentAPI {
         return commentService.deleteComment(commentId);
     }
 
-
 }
