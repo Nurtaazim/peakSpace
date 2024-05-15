@@ -23,6 +23,7 @@ import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PostService;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,27 +119,10 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public SimpleResponse deleteLinkFromPost(Long linkId, Long postId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.getByEmail(email);
-
-        for (Publication publication : user.getPublications()) {
-            if (publication.getId().equals(postId)) {
-                if (publication.getOwner().getId().equals(user.getId())) {
-                    List<Link_Publication> photots = publication.getLinkPublications();
-                    List<Link_Publication> orig = new ArrayList<>();
-                    for (Link_Publication phot : photots) {
-                        if (!phot.getId().equals(linkId)) {
-                            orig.add(phot);
-                        }
-                    }
-                    publication.setLinkPublications(orig);
-                    publicationRepo.deletePublicationLink(postId, linkId);
-
-                }
-            }
-        }
+        publicationRepo.deletePublicationLink(postId, linkId);
+        linkPublicationRepo.deleteLink(linkId);
         return SimpleResponse.builder()
-                .message("Successfully deleted!")
+                .message("Successfully deleted! ")
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
@@ -233,11 +217,12 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-    @Override @Transactional
-    public SimpleResponse savePostPublic(Long publicId,Long userId,PostRequest postRequest) {
+    @Override
+    @Transactional
+    public SimpleResponse savePostPublic(Long publicId, Long userId, PostRequest postRequest) {
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(" Нет такой Пользоваетль !"));
 
-        PablicProfile publicProfile =  publicationRepo.findByIdPublic(publicId);
+        PablicProfile publicProfile = publicationRepo.findByIdPublic(publicId);
 
         List<Link_Publication> linkPublications = postRequest.getLinks().stream()
                 .map(link -> {
@@ -288,7 +273,8 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse deletePostPublic(Long postId) {
         User currentUser = getCurrentUser();
 
@@ -315,7 +301,8 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse deleteLinkFromPostPublic(Long linkId, Long postId) {
         User currentUser = getCurrentUser();
 
@@ -328,8 +315,9 @@ public class PostServiceImpl implements PostService {
                             .filter(link -> !link.getId().equals(linkId))
                             .collect(Collectors.toList());
                     publication.setLinkPublications(links);
+                    publicationRepo.save(publication); // Сохраняем обновленную публикацию
                     publicationRepo.deletePublicationLink(postId, linkId);
-
+                    linkPublicationRepo.deleteLink(linkId);
                 });
 
         return SimpleResponse.builder()

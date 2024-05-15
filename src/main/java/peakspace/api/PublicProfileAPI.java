@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/public")
 @RequiredArgsConstructor
-public class PublicAPI {
+public class PublicProfileAPI {
 
     private final PublicProfileService publicService;
 
@@ -97,4 +97,5 @@ public class PublicAPI {
     public SimpleResponse removeCommentAdmin(@PathVariable Long commentId){
         return publicService.removeComment(commentId);
     }
+
 }
