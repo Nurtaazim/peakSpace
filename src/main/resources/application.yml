@@ -25,11 +25,11 @@ spring:
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
-      mode: never
+      mode: always
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     open-in-view: false
 
