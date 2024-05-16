@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   docker-container:
     type: string
-    default: "peak-space-b12"
+    default: "pks"
 
 jobs:
   install-docker-if-not-exists:
