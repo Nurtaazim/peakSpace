@@ -1,3 +1,7 @@
+server:
+  error:
+    include-stacktrace: always
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -17,23 +21,22 @@ spring:
           starttls:
             enable: true
       defer-datasource-initialization: true
+
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
-      mode: never
+      mode: always
+
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     open-in-view: false
 
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-server:
-  error:
-    include-stacktrace: always
-  port: 9090
+
 app:
   jwt:
     secret: peak-space-java12
