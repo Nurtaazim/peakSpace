@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   docker-container:
     type: string
-    default: "project-peak-space"
+    default: "peak-space-b12"
 
 jobs:
   install-docker-if-not-exists:
