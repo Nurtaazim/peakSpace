@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     password: ${POSTGRES_PASSWORD}
     url: ${POSTGRES_DB}
-    username: ${POSTGRES_USERNAME}
+    username: ${POSTGRES_USER}
 
   mail:
     host: smtp.gmail.com
@@ -29,7 +29,7 @@ spring:
 
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgresSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
   error:
     include-stacktrace: always
