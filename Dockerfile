@@ -9,4 +9,4 @@ FROM openjdk:21-slim
 WORKDIR /app
 COPY --from=build /app/build/libs/peak-space-b12-0.0.1-SNAPSHOT.jar .
 CMD ["java", "-jar", "peak-space-b12-0.0.1-SNAPSHOT.jar"]
-EXPOSE 2024
+EXPOSE 2424
