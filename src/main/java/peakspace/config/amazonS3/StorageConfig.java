@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class StorageConfig {
 
-    @Value("${cloud.aws.accessKey}")
+    @Value("${cloud.aws.access-key}")
     private String accessKey;
-    @Value("${cloud.aws.secretKey}")
+    @Value("${cloud.aws.secret-key}")
     private String accessSecret;
     @Value("${cloud.aws.region}")
     private String region;

@@ -26,6 +26,9 @@ spring:
       ddl-auto: create
     show-sql: true
     open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
   error:
     include-stacktrace: always
@@ -37,8 +40,7 @@ app:
 cloud:
   aws:
     region: eu-north-1
-    accessKey: AKIAZI2LDVKOR6V4MDP7
-    secretKey: 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
+    access-key: AKIAZI2LDVKOR6V4MDP7
+    secret-key: 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
   s3:
     bucketName: peakspacebucket
-
