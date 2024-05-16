@@ -517,20 +517,25 @@ public class UserServiceImpl implements UserService {
         User currentUser = getCurrentUser();
         List<Long> searchFriendsHistory = currentUser.getSearchFriendsHistory();
         List<SubscriptionResponse> searchUserResponses = new ArrayList<>();
+        Set<Long> addedUserIds = new HashSet<>();
 
-        for (Long userId : searchFriendsHistory) {
-            User foundUser = userRepository.findById(userId).orElse(null);
-            if (foundUser != null) {
-                SubscriptionResponse response = new SubscriptionResponse(
-                        foundUser.getId(),
-                        foundUser.getUsername(),
-                        foundUser.getProfile().getAvatar(),
-                        foundUser.getProfile().getAboutYourSelf()
-                );
-                searchUserResponses.add(response);
+        for (int i = searchFriendsHistory.size() - 1; i >= 0; i--) {
+            Long userId = searchFriendsHistory.get(i);
+
+            if (!addedUserIds.contains(userId)) {
+                User foundUser = userRepository.findById(userId).orElse(null);
+                if (foundUser != null) {
+                    SubscriptionResponse response = new SubscriptionResponse(
+                            foundUser.getId(),
+                            foundUser.getUsername(),
+                            foundUser.getProfile().getAvatar(),
+                            foundUser.getProfile().getAboutYourSelf()
+                    );
+                    searchUserResponses.add(response);
+                    addedUserIds.add(userId);
+                }
             }
         }
-        Collections.reverse(searchUserResponses);
 
         return searchUserResponses;
     }

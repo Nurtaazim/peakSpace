@@ -25,6 +25,7 @@ import peakspace.repository.UserRepository;
 import peakspace.service.CommentService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,13 +66,20 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponseByPost> getAllComment(Long postId) {
-        Publication publication = publicationRepository.getReferenceById(postId);
-        List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
-        commentForResponse.reversed();
+        Publication publication = publicationRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Нет такой публикации с id: " + postId));
 
-        List<LinkResponse> links = publication.getLinkPublications().stream()
-                .map(link -> new LinkResponse(link.getId(), link.getLink()))
-                .collect(Collectors.toList());
+        List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
+
+        commentForResponse = new ArrayList<>(commentForResponse);
+        Collections.reverse(commentForResponse);
+
+        List<LinkResponse> links = new ArrayList<>();
+        if (publication.getLinkPublications() != null) {
+            links = publication.getLinkPublications().stream()
+                    .map(link -> new LinkResponse(link.getId(), link.getLink()))
+                    .collect(Collectors.toList());
+        }
 
         return List.of(new CommentResponseByPost(
                 publication.getId(),
@@ -81,8 +89,8 @@ public class CommentServiceImpl implements CommentService {
                 publication.getLocation(),
                 publication.getLikes().size(),
                 links,
-                commentForResponse
-        ));
+                commentForResponse));
+
     }
 
     @Override

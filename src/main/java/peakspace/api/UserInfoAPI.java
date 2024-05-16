@@ -1,6 +1,7 @@
 package peakspace.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import peakspace.dto.request.AddEducationRequest;
 import peakspace.dto.request.UserInfoRequest;
 import peakspace.dto.response.BlockAccountsResponse;
 import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UserInfoResponse;
 import peakspace.service.UserInfoService;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class    UserInfoAPI {
     @Secured("USER")
     @Operation(summary = " Заполнение профиля текущего пользователья !")
     @PutMapping
-    public SimpleResponse edit(@RequestBody UserInfoRequest userInfoRequest) {
+    public SimpleResponse edit(@RequestBody @Valid UserInfoRequest userInfoRequest) {
         return userInfoService.editProfile(userInfoRequest);
     }
 
@@ -35,6 +37,20 @@ public class    UserInfoAPI {
     }
 
     @Secured("USER")
+    @Operation(summary = " Удаление образование !")
+    @DeleteMapping("/{eduId}")
+    public SimpleResponse deleteEducation(@PathVariable Long eduId){
+        return userInfoService.deleteEducation(eduId);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Для получения страница UserInfo ")
+    @GetMapping()
+    public UserInfoResponse getUserInfo(){
+        return userInfoService.getUserInfo();
+    }
+
+    @Secured("USER")
     @Operation(summary = "Заблокирование аккаунта!")
     @PutMapping("/block/{userId}")
     public SimpleResponse blockAccount(@PathVariable Long userId) {
@@ -42,7 +58,7 @@ public class    UserInfoAPI {
     }
 
     @Secured("USER")
-    @Operation(summary = " Get заблокирование аккаунты!")
+    @Operation(summary = " Получить заблокирование аккаунты!")
     @GetMapping("/block-accounts")
     public List<BlockAccountsResponse> getBlockAccounts() {
         return userInfoService.getBlockAccounts();

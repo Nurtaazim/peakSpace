@@ -8,10 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.AddEducationRequest;
 import peakspace.dto.request.UserInfoRequest;
 import peakspace.dto.response.BlockAccountsResponse;
+import peakspace.dto.response.EducationResponse;
 import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.UserInfoResponse;
 import peakspace.entities.Education;
 import peakspace.entities.Profile;
 import peakspace.entities.User;
+import peakspace.enums.Country;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.EducationRepository;
 import peakspace.repository.ProfileRepository;
@@ -21,6 +24,7 @@ import peakspace.service.UserInfoService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,14 +51,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.getProfile().setWorkOrNot(userInfoRequest.isWorkOrNot());
         Education education = new Education();
         Profile profile = userRepository.findBYProfile(user.getProfile().getId());
-
-        education.setCountry(userInfoRequest.getCountry());
-        education.setLocation(userInfoRequest.getLocation());
-        education.setEducationalInstitution(userInfoRequest.getEducationalInstitution());
-
-
-        education.setProfile(profile);
-        educationRepo.save(education);
         profile.getEducations().add(education);
         profileRepo.save(profile);
         user.setProfile(profile);
@@ -62,32 +58,48 @@ public class UserInfoServiceImpl implements UserInfoService {
         userRepository.save(user);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Successfully saved!")
+                .message("Удачно сохранено!")
                 .build();
 
     }
 
+    @Transactional
     @Override
     public SimpleResponse addEducation(AddEducationRequest addEducationRequest) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
 
+        Profile profile = user.getProfile();
+
+        boolean educationExists = profile.getEducations().stream()
+                .anyMatch(education ->
+                        education.getCountry().equals(addEducationRequest.getCountry()) &&
+                                education.getEducationalInstitution().equals(addEducationRequest.getEducationalInstitution()));
+
+        if (educationExists) {
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message(" Образование для этого профиля уже существует !")
+                    .build();
+        }
+
         Education education = new Education();
-        Profile profile = userRepository.findBYProfile(user.getProfile().getId());
-
         education.setCountry(addEducationRequest.getCountry());
+        education.setLocation(addEducationRequest.getLocation());
         education.setEducationalInstitution(addEducationRequest.getEducationalInstitution());
-
         education.setProfile(profile);
+
         educationRepo.save(education);
         profile.getEducations().add(education);
         profileRepo.save(profile);
-        user.setProfile(profile);
+
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Successfully saved!")
+                .message("Удачно сохранилось образование!")
                 .build();
     }
+
+
 
     @Transactional
     @Override
@@ -106,11 +118,11 @@ public class UserInfoServiceImpl implements UserInfoService {
             foundUser.setBlockAccount(true);
          }
     }else {
-            System.out.println("You cant blocked yourself!");
+            System.out.println("Вы не можете заблокировать себя");
         }
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Successfully blocked!")
+                .message(" Удачно блокировано!")
                 .build();
     }
 
@@ -143,8 +155,50 @@ public class UserInfoServiceImpl implements UserInfoService {
         User user = userRepository.getByEmail(email);
         user.setIsBlock(!user.getIsBlock());
         return SimpleResponse.builder()
-                .message("Successfully returned to close Account!")
+                .message(" Успешно вернулись в закрытый аккаунт!")
                 .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    @Override
+    public SimpleResponse deleteEducation(Long eduId) {
+        userRepository.deleteEducation(eduId);
+        return SimpleResponse.builder()
+                .message("Удачно удалено образование !")
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    @Override
+    public UserInfoResponse getUserInfo() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getByEmail(email);
+        Profile profile = user.getProfile();
+
+        List<EducationResponse> educationResponses = profile.getEducations().stream()
+                .map(this::mapToEducationResponse)
+                .collect(Collectors.toList());
+
+        String fullName = String.format("%s %s", profile.getFirstName(), profile.getLastName());
+
+        return UserInfoResponse.builder()
+                .avatar(profile.getAvatar())
+                .cover(profile.getCover())
+                .userName(profile.getUser().getUsername())
+                .fullName(fullName)
+                .aboutYourSelf(profile.getAboutYourSelf())
+                .educationResponses(educationResponses)
+                .profession(profile.getProfession())
+                .workOrNot(profile.isWorkOrNot())
+                .build();
+    }
+
+    private EducationResponse mapToEducationResponse(Education education) {
+        return EducationResponse.builder()
+                .id(education.getId())
+                .country(education.getCountry())
+                .city(education.getLocation())
+                .educationalInstitution(education.getEducationalInstitution())
                 .build();
     }
 }

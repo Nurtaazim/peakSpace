@@ -1,6 +1,8 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,10 +37,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
+    private static final Logger log = LoggerFactory.getLogger(PostServiceImpl.class);
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepo;
     private final PublicationRepository publicationRepo;
 
+    @Transactional
     @Override
     public SimpleResponse savePost(PostRequest postRequest) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -61,7 +65,6 @@ public class PostServiceImpl implements PostService {
 
         publicationRepo.save(publication);
         user.getPublications().add(publication);
-        userRepository.save(user);
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
@@ -127,7 +130,6 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-
     @Override
     public SimpleResponse notationFriend(Long postId, List<Long> foundUserIds) {
         User owner = getCurrentUser();
@@ -142,7 +144,7 @@ public class PostServiceImpl implements PostService {
         }
 
         for (User tagFriend : publication.getTagFriends()) {
-            if (foundUserIds.contains(tagFriend.getId())){
+            if (foundUserIds.contains(tagFriend.getId())) {
                 throw new BadRequestException(" Уже отмечен друг !");
             }
         }
@@ -179,7 +181,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public SimpleResponse removeNotation(Long postId,List<Long> friendsId) {
+    public SimpleResponse removeNotation(Long postId, List<Long> friendsId) {
         User owner = getCurrentUser();
         Publication publication = publicationRepo.findById(postId)
                 .orElseThrow(() -> new NotFoundException("Нет такой публикации!"));
@@ -196,7 +198,7 @@ public class PostServiceImpl implements PostService {
 
             publication.getTagFriends().removeIf(user -> friendIdsToRemove.contains(user.getId()));
             publicationRepo.save(publication);
-        }else {
+        } else {
             throw new BadRequestException(" Это не твой публикация !");
         }
         return SimpleResponse.builder()
@@ -227,6 +229,7 @@ public class PostServiceImpl implements PostService {
     public FavoritePostResponse favorites() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
+
         List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
         Map<Long, String> publics = allById.stream()
                 .collect(Collectors.toMap(
@@ -278,19 +281,15 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public SimpleResponse editPostPublic(Long postId, PostUpdateRequest postUpdateRequest) {
         User currentUser = getCurrentUser();
+        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
 
-        Optional<Publication> publicationOptional = currentUser.getPublications().stream()
-                .filter(publication -> publication.getId().equals(postId))
-                .findFirst();
-
-        if (publicationOptional.isPresent()) {
-            Publication publication = publicationOptional.get();
+        if (publication.getOwner().equals(currentUser) || currentUser.getPablicProfiles().getPublications().contains(publication)){
             publication.setDescription(postUpdateRequest.getDescription());
             publication.setLocation(postUpdateRequest.getLocation());
             publication.setBlockComment(postUpdateRequest.isBlockComment());
             publication.setUpdatedAt(ZonedDateTime.now());
             return SimpleResponse.builder()
-                    .message(" Успешно сохранен пост паблике!")
+                    .message(" Успешно изменен пост паблике!")
                     .httpStatus(HttpStatus.OK)
                     .build();
         } else {
@@ -302,26 +301,21 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public SimpleResponse deletePostPublic(Long postId) {
         User currentUser = getCurrentUser();
+        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
 
-        Optional<Publication> publicationToRemove = currentUser.getPablicProfiles().getPublications().stream()
-                .filter(publication -> publication.getId().equals(postId))
-                .findFirst();
-
-        if (publicationToRemove.isPresent()) {
-            Publication publication = publicationToRemove.get();
+        if (publication.getOwner().equals(currentUser) || currentUser.getPablicProfiles().getPublications().contains(publication)){
             publicationRepo.deleteComNotifications(postId);
             publicationRepo.deleteCom(postId);
             publicationRepo.deleteByIds(publication.getId());
 
-            System.err.println("Test");
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
-                    .message(" Удачно удаление !")
+                    .message(" Удачно удалено пост  !")
                     .build();
         } else {
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
-                    .message(" Нет такой публикации на паблике !")
+                    .message(" Вы не можете удалить эту публикацию у вас нету доступ !")
                     .build();
         }
     }

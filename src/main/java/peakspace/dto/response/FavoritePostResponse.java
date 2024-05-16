@@ -5,6 +5,7 @@ import lombok.Builder;
 import java.util.Map;
 
 @Builder
-public record FavoritePostResponse(Map<Long, String> publications) {
+public record FavoritePostResponse(
+        Map<Long, String> publications) {
 
 }

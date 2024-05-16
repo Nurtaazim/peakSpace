@@ -20,6 +20,7 @@ import peakspace.entities.User;
 import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicProfileRepository;
@@ -147,7 +148,9 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<LinkResponse> links = publication.getLinkPublications().stream()
                 .map(link -> new LinkResponse(link.getId(), link.getLink()))
                 .collect(Collectors.toList());
-
+        if (publication.getPablicProfile() == null) {
+            throw new BadRequestException(" Нет такой пост в паблике паблик !");
+        }
         return new PublicPostResponse(
                 publication.getId(),
                 publication.getOwner().getId(),
