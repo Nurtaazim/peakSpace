@@ -10,8 +10,8 @@ services:
       SPRING_PROFILES_ACTIVE: main
       SERVER_PORT: 2424
       POSTGRES_DB: jdbc:postgresql://database:5432/postgres
-      POSTGRES_USERNAME: userjava12
-      POSTGRES_PASSWORD: passjava12
+      POSTGRES_USERNAME: java12user
+      POSTGRES_PASSWORD: java12pass
   database:
     image: postgres:15
     restart: always
@@ -19,8 +19,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USERNAME: userjava12
-      POSTGRES_PASSWORD: passjava12
+      POSTGRES_USERNAME: java12user
+      POSTGRES_PASSWORD: java12pass
     volumes:
       - db_data:/var/lib/postgresql/data
 volumes:
