@@ -1,8 +1,8 @@
 version: "3.9"
 services:
   backend:
-    image: peakspace
-    container_name: peakspace
+    image: peak-space
+    container_name: peak-space
     restart: always
     ports:
       - "80:2424"
