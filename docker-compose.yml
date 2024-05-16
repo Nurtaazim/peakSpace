@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   backend:
-    image: space
+    image: peakspace
     container_name: PeakSpace
     restart: always
     ports:
