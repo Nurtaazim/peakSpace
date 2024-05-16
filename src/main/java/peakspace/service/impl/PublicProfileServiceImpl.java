@@ -125,7 +125,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                                         .toList();
                                 return (choise == Choise.Photos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
-                                       || (choise == Choise.Videos) && links.stream()
+                                        || (choise == Choise.Videos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".mp4") || link.endsWith(".webm") || link.endsWith(".ogg"));
                             })
                             .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
@@ -138,6 +138,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .publicationsPublic(publics)
                 .build());
     }
+
+
 
     @Override
     public PublicPostResponse findPostPublic(Long postId) {
