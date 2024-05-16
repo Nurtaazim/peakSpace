@@ -522,7 +522,7 @@ public class UserServiceImpl implements UserService {
                 .aboutYourSelf(friendsResponse.getAboutYourSelf())
                 .profession(friendsResponse.getProfession())
                 .friendsSize(foundUser.getChapters().size())
-                .pablicationsSize(pablicationsSize)
+                .publicationsSize(pablicationsSize)
                 .build();
     }
 
@@ -597,16 +597,6 @@ public class UserServiceImpl implements UserService {
                 .chapters(chapterService.getAllChaptersByUserId(userId))
                 .friendsResponsesList(searchFriends.getAllFriendsWithJDBCTemplate(userId, chapterId, search))
                 .build();
-    }
-
-    private long getFriendsSize(Long foundUserID) {
-        Chapter chapter = chapterRepository.findByID(foundUserID);
-        return chapter.getFriends().size();
-    }
-
-    private long getFriendsPublicSize(Long foundUserID) {
-        PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
-        return pablicProfile.getPublications().size();
     }
 
     private User getCurrentUser() {

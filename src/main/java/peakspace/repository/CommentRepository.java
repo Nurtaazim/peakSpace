@@ -57,8 +57,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("delete from Notification n where n.comment.id =:commentId")
     void deleteNotification(Long commentId);
 
-    @Modifying
-    @Transactional
-    @Query(value = "delete from inner_comment where comment_id =:commentId",nativeQuery = true)
-    void deleteInnerCommentByComment(Long commentId);
 }

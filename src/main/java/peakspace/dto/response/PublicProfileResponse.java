@@ -4,6 +4,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 import peakspace.enums.Tematica;
+
 @Setter
 @Getter
 @AllArgsConstructor

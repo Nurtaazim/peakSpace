@@ -5,7 +5,5 @@ import lombok.Builder;
 import java.util.Map;
 
 @Builder
-public record PublicPhotoAndVideoResponse(
-        Map<Long,String> publicationsPublic
-) {
+public record PublicPhotoAndVideoResponse(Map<Long, String> publicationsPublic) {
 }

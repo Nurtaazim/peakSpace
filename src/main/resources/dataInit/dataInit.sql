@@ -21,7 +21,7 @@ values
      false,'USER'),
     (10, 'Nurislam', 'nurt@gmail.com', '$2a$12$t7nUpSW.BjMy2Fe2N2HTgOWY723XNMj6yC15piA9gTV2nkh5CLgNS',
      false,'USER'),
-    (11, 'JohnSmith', 'john.smith@example.com', '$2a$12$encodedPassword1', false,'USER'),
+    (11, 'Admin', 'admin@gmail.com', '$2a$12$R/BCR0rspzVEztgDOqIGsufUUsDAFsQXrUmxTQNp0BS5M5bMdb9JO', false,'ADMIN'),
     (12, 'EmilyJohnson', 'emily.johnson@example.com', '$2a$12$encodedPassword2', false,'USER'),
     (13, 'MichaelWilliams', 'michael.williams@example.com', '$2a$12$encodedPassword3', false,'USER'),
     (14, 'EmmaBrown', 'emma.brown@example.com', '$2a$12$encodedPassword4', false,'USER'),
@@ -300,7 +300,7 @@ values (1, 1, 'Friends'),
        (10, 5, 'Project Group');
 
 
-insert into stories_tag_fiends(story_id, tag_fiends_id)
+insert into stories_tag_friends(story_id, tag_friends_id)
 values (1, 2),
        (1, 3),
        (1, 4),

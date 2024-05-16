@@ -12,8 +12,8 @@ import peakspace.enums.Country;
 public class Education {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "edu_seq")
-    @SequenceGenerator(name = "edu_seq", allocationSize = 1,initialValue = 21)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "edu_seq")
+    @SequenceGenerator(name = "edu_seq", allocationSize = 1, initialValue = 21)
     private Long id;
     @Enumerated(EnumType.STRING)
     private Country country;
@@ -21,7 +21,7 @@ public class Education {
     private String educationalInstitution;
 
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
     private Profile profile;
 
 }

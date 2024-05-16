@@ -10,5 +10,4 @@ public class PeakSpaceB12Application {
         SpringApplication.run(PeakSpaceB12Application.class, args);
         System.out.println("Peakspace project is running...");
     }
-
 }
