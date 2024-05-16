@@ -41,8 +41,8 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
     @Query("select p from Publication p where p.id =:postId")
     Publication findPostById(Long postId);
 
-    @Query("select p from Publication p join p.owner o where o = :owner and p.id = :postId")
-    Publication findByIdAndOwner(Long postId, User owner);
+    @Query("select p from Publication p join p.owner o where o.id = :ownerId and p.id = :postId")
+    Publication findByIdAndOwner(Long postId, Long ownerId);
 
     @Modifying
     @Transactional

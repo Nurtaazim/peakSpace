@@ -129,54 +129,79 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public SimpleResponse notationFriend(Long postId, List<Long> foundUserId) {
+    public SimpleResponse notationFriend(Long postId, List<Long> foundUserIds) {
         User owner = getCurrentUser();
-        List<UserMarkResponse> foundUsers = userRepository.findFoundUserId(foundUserId);
-        if (foundUserId.contains(owner.getId())) {
+
+        if (foundUserIds.contains(owner.getId())) {
             throw new BadRequestException("Нельзя отмечать себя!");
         }
 
-        Publication publication = publicationRepo.findByIdAndOwner(postId, owner);
+        Publication publication = publicationRepo.findByIdAndOwner(postId, owner.getId());
         if (publication == null) {
-            throw new NotFoundException(" Нет такой публикации !");
+            throw new NotFoundException("Нет такой публикации!");
         }
-        for (UserMarkResponse userMarkResponse : foundUsers) {
-            User markUser = userRepository.findById(userMarkResponse.id()).orElseThrow(() -> new NotFoundException("Пользователь не найден!"));
-            if (publication.getTagFriends().contains(markUser)) {
-                throw new BadRequestException("Уже отмечали друга " + markUser.getThisUserName());
-            }
-            publication.getTagFriends().add(markUser);
 
-            Notification notification = new Notification();
-            notification.setNotificationMessage(" Хочет выложить фото с вами!");
-            notification.setUserNotification(markUser);
-            notification.setSeen(false);
-            notification.setCreatedAt(ZonedDateTime.now());
-            notification.setSenderUserId(owner.getId());
-            markUser.getNotifications().add(notification);
+        for (User tagFriend : publication.getTagFriends()) {
+            if (foundUserIds.contains(tagFriend.getId())){
+                throw new BadRequestException(" Уже отмечен друг !");
+            }
         }
-        publicationRepo.save(publication);
+
+        List<User> usersToMark = foundUserIds.stream()
+                .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не найден!")))
+                .filter(user -> !publication.getTagFriends().contains(user))
+                .collect(Collectors.toList());
+
+        if (!usersToMark.isEmpty()) {
+            for (User user : usersToMark) {
+                publication.getTagFriends().add(user);
+                Notification notification = createNotification(owner, user);
+                user.getNotifications().add(notification);
+            }
+            publicationRepo.save(publication);
+        }
+
         return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message("Друзья успешно отмечены!")
+                .httpStatus(usersToMark.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
+                .message(usersToMark.isEmpty() ? "Отмечать некого" : "Друзья успешно отмечены!")
                 .build();
     }
 
-    @Override
-    public SimpleResponse removeNotation(List<Long> friendsId) {
-        User owner = getCurrentUser();
-        List<UserMarkResponse> foundUser = userRepository.findFoundUserId(friendsId);
+    private Notification createNotification(User owner, User user) {
+        Notification notification = new Notification();
+        notification.setNotificationMessage(owner.getUsername() + " хочет выложить фото с вами!");
+        notification.setUserNotification(user);
+        notification.setSeen(false);
+        notification.setCreatedAt(ZonedDateTime.now());
+        notification.setSenderUserId(owner.getId());
+        return notification;
+    }
 
-        for (Publication publication : owner.getPublications()) {
-            for (UserMarkResponse userMarkResponse : foundUser) {
-                User markUser = userRepository.findById(userMarkResponse.id()).orElse(null);
-                publication.getTagFriends().remove(markUser);
+
+    @Override
+    public SimpleResponse removeNotation(Long postId,List<Long> friendsId) {
+        User owner = getCurrentUser();
+        Publication publication = publicationRepo.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Нет такой публикации!"));
+
+        if (publication.getOwner().getId().equals(owner.getId())) {
+            List<Long> friendIdsToRemove = friendsId.stream()
+                    .filter(id -> publication.getTagFriends().stream()
+                            .anyMatch(user -> user.getId().equals(id)))
+                    .collect(Collectors.toList());
+
+            if (friendIdsToRemove.size() < friendsId.size()) {
+                throw new NotFoundException("Один или несколько друзей не найдены в списке отмеченных друзей!");
             }
+
+            publication.getTagFriends().removeIf(user -> friendIdsToRemove.contains(user.getId()));
+            publicationRepo.save(publication);
+        }else {
+            throw new BadRequestException(" Это не твой публикация !");
         }
-        publicationRepo.saveAll(owner.getPublications());
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Друзья успешно удален из отметки !")
+                .message("Друзья успешно удалены из отметки!")
                 .build();
     }
 

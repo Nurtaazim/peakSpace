@@ -70,5 +70,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(()-> new NotFoundException("Пользователь с такой емайл не найдено!"));
     }
 
+    @Query("select u from User u where u.confirmationCode=:uuid")
+    Optional<User> findByUuid(String uuid);
+
 
 }
