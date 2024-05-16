@@ -15,48 +15,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.config.amazonS3.StorageService;
 import peakspace.config.jwt.JwtService;
+import peakspace.dto.request.*;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
-import peakspace.exception.*;
-import peakspace.repository.*;
-import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.PasswordRequest;
-import peakspace.dto.request.SignInRequest;
-import peakspace.dto.request.SignUpRequest;
-import peakspace.dto.request.RegisterWithGoogleRequest;
-import peakspace.dto.response.ResponseWithGoogle;
-import peakspace.dto.response.ProfileFriendsResponse;
-import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.SubscriptionResponse;
-import peakspace.dto.response.SearchUserResponse;
-import peakspace.dto.response.FriendsPageResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
-import peakspace.dto.response.SignInResponse;
-import peakspace.dto.response.SignUpResponse;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.entities.Chapter;
-import peakspace.entities.Notification;
-import peakspace.entities.Profile;
-import peakspace.entities.User;
-import peakspace.entities.PablicProfile;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
-import peakspace.exception.FirebaseAuthException;
-import peakspace.exception.BadRequestException;
-import peakspace.exception.NotFoundException;
 import peakspace.exception.IllegalArgumentException;
-import peakspace.exception.InvalidConfirmationCode;
-import peakspace.exception.NotActiveException;
-import peakspace.repository.ChapterRepository;
-import peakspace.repository.PublicProfileRepository;
-import peakspace.repository.PublicationRepository;
-import peakspace.repository.ProfileRepository;
-import peakspace.repository.UserRepository;
+import peakspace.exception.*;
+import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,6 +35,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -551,7 +522,7 @@ public class UserServiceImpl implements UserService {
                 .aboutYourSelf(friendsResponse.getAboutYourSelf())
                 .profession(friendsResponse.getProfession())
                 .friendsSize(foundUser.getChapters().size())
-                .pablicationsSize(pablicationsSize)
+                .publicationsSize(pablicationsSize)
                 .build();
     }
 
@@ -615,9 +586,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SearchUserResponse> globalSearch(String keyWord) {
         List<SearchUserResponse> users = userRepository.findByAll("%" + keyWord + "%");
-        System.out.println(users.size());
-        return users;
-
+        return users.stream()
+                .filter(user -> !getCurrentUser().getBlockAccounts().contains(user.getId()))
+                .collect(Collectors.toList());
     }
 
     public FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search) {
@@ -626,16 +597,6 @@ public class UserServiceImpl implements UserService {
                 .chapters(chapterService.getAllChaptersByUserId(userId))
                 .friendsResponsesList(searchFriends.getAllFriendsWithJDBCTemplate(userId, chapterId, search))
                 .build();
-    }
-
-    private long getFriendsSize(Long foundUserID) {
-        Chapter chapter = chapterRepository.findByID(foundUserID);
-        return chapter.getFriends().size();
-    }
-
-    private long getFriendsPublicSize(Long foundUserID) {
-        PablicProfile pablicProfile = pablicProfileRepository.findByIds(foundUserID);
-        return pablicProfile.getPublications().size();
     }
 
     private User getCurrentUser() {
@@ -749,7 +710,7 @@ public class UserServiceImpl implements UserService {
         }
         List<Story> all1 = storyRepository.findAll();
         for (Story story : all1) {
-            if (ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))){
+            if (ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))) {
                 for (Link_Publication linkPublication : story.getLinkPublications()) {
                     storageService.deleteFile(linkPublication.getLink());
                 }

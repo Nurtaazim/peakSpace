@@ -1,17 +1,10 @@
 package peakspace.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.PrePersist;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.ZonedDateTime;
 
 @Getter
@@ -22,8 +15,8 @@ import java.time.ZonedDateTime;
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "not_seq")
-    @SequenceGenerator(name = "not_seq", allocationSize = 1,initialValue = 11)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "not_seq")
+    @SequenceGenerator(name = "not_seq", allocationSize = 1, initialValue = 11)
     private Long id;
     private ZonedDateTime createdAt;
     private boolean seen;
@@ -33,16 +26,21 @@ public class Notification {
     @ManyToOne(cascade = {CascadeType.DETACH})
     private User userNotification;   // получатель
     private Long senderUserId;       // отправитель
-    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne
     private Comment comment;
+    @ManyToOne
+    private Publication publication;
+    @ManyToOne
+    private Story story;
 
-    public Notification( Like like, User userNotification, Long senderUserId) {
+    public Notification(Like like, User userNotification, Long senderUserId) {
         this.like = like;
         this.userNotification = userNotification;
         this.senderUserId = senderUserId;
     }
+
     @PrePersist
-    void prePersist (){
+    void prePersist() {
         this.createdAt = ZonedDateTime.now();
     }
 }

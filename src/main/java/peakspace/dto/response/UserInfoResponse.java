@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import peakspace.enums.Country;
 
-@Getter @Setter @Builder
+@Getter
+@Setter
+@Builder
 public class UserInfoResponse {
     private String avatar;
     private String cover;

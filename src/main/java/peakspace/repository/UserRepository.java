@@ -3,6 +3,7 @@ package peakspace.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
@@ -49,12 +50,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
            "where u.id = :foundUserId")
     ProfileFriendsResponse getId(Long foundUserId);
 
-    @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.owner.profile pr where pr.id = :foundUserId and p.id in (select f from Profile pf join pf.favorites f where pf.id = :foundUserId)")
-    List<PublicationResponse> findFavorite(Long foundUserId);
-
-    @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.tagFriends tg where tg.id = :foundUserId and p.owner.id = :foundUserId")
-    List<PublicationResponse> findTagWithMe(Long foundUserId);
-
     @Query("select p from Profile p where  p.id=:id")
     Profile findBYProfile(Long id);
 
@@ -71,6 +66,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select distinct new peakspace.dto.response.SearchUserResponse(u.id,u.userName,u.profile.firstName,u.profile.lastName,u.profile.cover,u.profile.avatar,u.profile.profession) from User u left join u.publications ups where u.userName ilike :keyWord OR u.profile.lastName ilike :keyWord OR u.profile.firstName ilike :keyWord OR u.profile.patronymicName ilike :keyWord OR u.profile.profession ilike :keyWord")
     List<SearchUserResponse> findByAll(String keyWord);
+    default User getCurrentUser (){
+        return findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(()-> new NotFoundException("Пользователь с такой емайл не найдено!"));
+    }
 
 
 }
