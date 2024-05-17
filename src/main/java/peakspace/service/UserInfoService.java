@@ -11,9 +11,13 @@ import java.util.List;
 public interface UserInfoService {
 
      SimpleResponse editProfile(UserInfoRequest userInfoRequest);
+     
      SimpleResponse addEducation(AddEducationRequest addEducationRequest);
+     
      SimpleResponse blockAccount(Long userId);
+     
      List<BlockAccountsResponse> getBlockAccounts();
+     
      SimpleResponse closeAccount();
 
      SimpleResponse deleteEducation(Long eduId);
