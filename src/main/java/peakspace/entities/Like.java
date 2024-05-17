@@ -1,4 +1,5 @@
 package peakspace.entities;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,12 +11,11 @@ import lombok.Setter;
 public class Like {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "likes_seq")
-    @SequenceGenerator(name = "likes_seq", allocationSize = 1,initialValue = 21)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "likes_seq")
+    @SequenceGenerator(name = "likes_seq", allocationSize = 1, initialValue = 21)
     private Long id;
     @OneToOne(cascade = CascadeType.DETACH)
     private User user;
-
 
 
 }

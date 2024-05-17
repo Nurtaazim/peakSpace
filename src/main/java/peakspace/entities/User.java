@@ -1,16 +1,6 @@
 package peakspace.entities;
+
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,8 +20,8 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_seq")
-    @SequenceGenerator(name = "user_seq", allocationSize = 1,initialValue = 21)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", allocationSize = 1, initialValue = 21)
     private Long id;
     private String userName;
     private String email;
@@ -42,21 +32,21 @@ public class User implements UserDetails {
     private Boolean blockAccount;
     private String confirmationCode;
     private ZonedDateTime createdAt;
-    @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Profile profile;
-    @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Story> stories;
-    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Chapter> chapters;
-    @OneToMany(mappedBy = "sender",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "sender", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private List<Chat> chats;
-    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private List<Comment> comments;
-    @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private PablicProfile pablicProfiles;
-    @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Publication> publications;
-    @OneToMany(mappedBy = "userNotification",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "userNotification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Notification> notifications;
     @ElementCollection
     private List<Long> searchFriendsHistory;
@@ -66,10 +56,12 @@ public class User implements UserDetails {
     public String getThisUserName() {
         return this.userName;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);
     }
+
     @Override
     public String getPassword() {
         return password;
@@ -84,14 +76,17 @@ public class User implements UserDetails {
     public boolean isAccountNonExpired() {
         return false;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return false;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return false;
     }
+
     @Override
     public boolean isEnabled() {
         return false;

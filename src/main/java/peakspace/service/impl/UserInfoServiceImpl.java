@@ -29,7 +29,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserRepository userRepository;
     private final EducationRepository educationRepo;
     private final ProfileRepository profileRepo;
-    private final PublicationRepository publicationRepo;
 
     @Transactional
     @Override

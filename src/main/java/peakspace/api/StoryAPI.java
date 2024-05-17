@@ -12,22 +12,28 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/story")
+@RequestMapping("/stories")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class StoryAPI {
+
     private final StoryService service;
-    @PostMapping("/create")
+
+    @PostMapping
     @Operation(summary = "Создать сторис")
-    SimpleResponse create(@RequestBody StoryRequest storyRequest){
+    public SimpleResponse create(@RequestBody StoryRequest storyRequest) {
         return service.create(storyRequest);
     }
-    @DeleteMapping("/delete/{id}")
+
+    @DeleteMapping("/{storyId}")
     @Operation(summary = "Удалить сторис", description = "id сториса которого хотите удалить")
-    SimpleResponse delete(@PathVariable long id){
-        return service.delete(id);
+    public SimpleResponse delete(@PathVariable Long storyId) {
+        return service.delete(storyId);
     }
-    @GetMapping("/stories")
+
+    @GetMapping
     @Operation(summary = "Получить сторисы пользователя", description = "id пользователя которого хотите смотреть сторис")
-    List<StoryResponse>  getAll(@RequestParam long userId){
+    public List<StoryResponse> getAll(@RequestParam long userId) {
         return service.getAll(userId);
     }
+
 }

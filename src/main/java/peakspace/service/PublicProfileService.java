@@ -11,7 +11,7 @@ import java.util.List;
 public interface PublicProfileService {
     SimpleResponse save(PublicRequest publicRequest);
 
-    SimpleResponse edit(Long publicId, PublicRequest publicRequest);
+    SimpleResponse edit(PublicRequest publicRequest);
 
     SimpleResponse delete(Long publicId);
 

@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Builder
 @Setter
 @Getter
@@ -18,9 +15,8 @@ public class ProfileFriendsResponse {
     private String cover;
     private String aboutYourSelf;
     private String profession;
-
     private int friendsSize;
-    private int pablicationsSize;
+    private int publicationsSize;
 
     public ProfileFriendsResponse(Long id, String avatar, String cover, String aboutYourSelf, String profession) {
         this.id = id;

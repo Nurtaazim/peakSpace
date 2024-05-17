@@ -1,18 +1,6 @@
 package peakspace.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,8 +16,8 @@ import java.util.Map;
 public class Publication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "publications_seq")
-    @SequenceGenerator(name = "publications_seq", allocationSize = 1,initialValue = 21)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "publications_seq")
+    @SequenceGenerator(name = "publications_seq", allocationSize = 1, initialValue = 21)
     private Long id;
     private String description;
     private ZonedDateTime createdAt;
@@ -38,26 +26,26 @@ public class Publication {
     private boolean isBlockComment;
     @ElementCollection
     private Map<Long, String> complains;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User owner;
     @ManyToMany(cascade = {CascadeType.PERSIST})
     private List<User> tagFriends;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Link_Publication> linkPublications = new ArrayList<>();
-    @OneToMany(mappedBy = "publication",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "publication", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> comments;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private PablicProfile pablicProfile;
     @ManyToMany()
     private List<Like> likes;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.createdAt = ZonedDateTime.now();
     }
 
     @PreUpdate
-    public void preUpdate(){
+    public void preUpdate() {
         this.createdAt = ZonedDateTime.now();
     }
 

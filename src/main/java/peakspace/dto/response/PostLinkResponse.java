@@ -5,11 +5,10 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record PostLinkResponse(
-        Long postId,
-        List<LinkResponse> linkResponses,
-        int countLikes,
-        int countComments
+public record PostLinkResponse(Long postId,
+                               List<LinkResponse> linkResponses,
+                               int countLikes,
+                               int countComments
 
 ) {
 }

@@ -1,4 +1,3 @@
-# Stage 1: Build stage
 FROM openjdk:21 as build
 WORKDIR /app
 COPY . ./
@@ -10,5 +9,4 @@ FROM openjdk:21-slim
 WORKDIR /app
 COPY --from=build /app/build/libs/peak-space-b12-0.0.1-SNAPSHOT.jar .
 CMD ["java", "-jar", "peak-space-b12-0.0.1-SNAPSHOT.jar"]
-# Expose port
 EXPOSE 2024

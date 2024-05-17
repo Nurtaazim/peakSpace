@@ -1,4 +1,5 @@
 package peakspace.entities;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,17 +14,17 @@ import java.util.List;
 public class Chat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "chat_seq")
-    @SequenceGenerator(name = "chat_seq", allocationSize = 1,initialValue = 21)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_seq")
+    @SequenceGenerator(name = "chat_seq", allocationSize = 1, initialValue = 21)
     private Long id;
-    @OneToMany(mappedBy = "chat",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "chat", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JsonIgnore
-    private List<MessageContent>messageContents;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    private List<MessageContent> messageContents;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User sender;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User receiver;
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Link_Publication> linkPublications;
 
 

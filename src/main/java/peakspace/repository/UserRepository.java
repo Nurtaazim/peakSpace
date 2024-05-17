@@ -50,12 +50,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
            "where u.id = :foundUserId")
     ProfileFriendsResponse getId(Long foundUserId);
 
-    @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.owner.profile pr where pr.id = :foundUserId and p.id in (select f from Profile pf join pf.favorites f where pf.id = :foundUserId)")
-    List<PublicationResponse> findFavorite(Long foundUserId);
-
-    @Query("select new peakspace.dto.response.PublicationResponse(p.id) from Publication p join p.tagFriends tg where tg.id = :foundUserId and p.owner.id = :foundUserId")
-    List<PublicationResponse> findTagWithMe(Long foundUserId);
-
     @Query("select p from Profile p where  p.id=:id")
     Profile findBYProfile(Long id);
 
