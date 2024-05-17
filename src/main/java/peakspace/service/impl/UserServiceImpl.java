@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     private final StoryRepository storyRepository;
     private final StorageService storageService;
     private String userName;
-    private int randomCode;
+
 
     @Override
     @Transactional

@@ -18,4 +18,5 @@ public class UserInfoRequest {
     private String aboutYourSelf;
     private String profession;
     private boolean workOrNot;
+    private String location;
 }

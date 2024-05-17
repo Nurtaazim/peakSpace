@@ -11,6 +11,5 @@ import peakspace.enums.Country;
 public class EducationResponse {
     private Long id;
     private Country country;
-    private String city;
     private String educationalInstitution;
 }

@@ -71,9 +71,6 @@ public class CommentServiceImpl implements CommentService {
 
         List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
 
-        commentForResponse = new ArrayList<>(commentForResponse);
-        Collections.reverse(commentForResponse);
-
         List<LinkResponse> links = new ArrayList<>();
         if (publication.getLinkPublications() != null) {
             links = publication.getLinkPublications().stream()

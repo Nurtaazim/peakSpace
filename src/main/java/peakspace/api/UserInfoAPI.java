@@ -39,14 +39,14 @@ public class UserInfoAPI {
     @Secured("USER")
     @Operation(summary = " Удаление образование !")
     @DeleteMapping("/{eduId}")
-    public SimpleResponse deleteEducation(@PathVariable Long eduId){
+    public SimpleResponse deleteEducation(@PathVariable Long eduId) {
         return userInfoService.deleteEducation(eduId);
     }
 
     @Secured("USER")
     @Operation(summary = " Для получения страница UserInfo ")
     @GetMapping()
-    public UserInfoResponse getUserInfo(){
+    public UserInfoResponse getUserInfo() {
         return userInfoService.getUserInfo();
     }
 

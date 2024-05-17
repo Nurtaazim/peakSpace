@@ -77,9 +77,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.confirmationCode=:uuid")
     Optional<User> findByUuid(String uuid);
 
-    @Modifying
-    @Transactional
-    @Query("delete from Education e where e.id=:eduId")
-    void deleteEducation(Long eduId);
 
 }

@@ -8,6 +8,5 @@ import peakspace.enums.Country;
 @Setter
 public class AddEducationRequest {
     private Country country;
-    private String location;
     private String educationalInstitution;
 }

@@ -49,9 +49,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.getProfile().setAboutYourSelf(userInfoRequest.getAboutYourSelf());
         user.getProfile().setProfession(userInfoRequest.getProfession());
         user.getProfile().setWorkOrNot(userInfoRequest.isWorkOrNot());
-        Education education = new Education();
+        user.getProfile().setLocation(userInfoRequest.getLocation());
         Profile profile = userRepository.findBYProfile(user.getProfile().getId());
-        profile.getEducations().add(education);
         profileRepo.save(profile);
         user.setProfile(profile);
 
@@ -85,7 +84,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         Education education = new Education();
         education.setCountry(addEducationRequest.getCountry());
-        education.setLocation(addEducationRequest.getLocation());
         education.setEducationalInstitution(addEducationRequest.getEducationalInstitution());
         education.setProfile(profile);
 
@@ -162,7 +160,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public SimpleResponse deleteEducation(Long eduId) {
-        userRepository.deleteEducation(eduId);
+        educationRepo.deleteEducation(eduId);
         return SimpleResponse.builder()
                 .message("Удачно удалено образование !")
                 .httpStatus(HttpStatus.OK)
@@ -189,7 +187,6 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .aboutYourSelf(profile.getAboutYourSelf())
                 .educationResponses(educationResponses)
                 .profession(profile.getProfession())
-                .workOrNot(profile.isWorkOrNot())
                 .build();
     }
 
@@ -197,7 +194,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         return EducationResponse.builder()
                 .id(education.getId())
                 .country(education.getCountry())
-                .city(education.getLocation())
                 .educationalInstitution(education.getEducationalInstitution())
                 .build();
     }

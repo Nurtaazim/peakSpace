@@ -27,6 +27,7 @@ public class Profile {
     private String profession;
     private String phoneNumber;
     private boolean workOrNot;
+    private String location;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> favorites;
     @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)

@@ -9,6 +9,7 @@ import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.InnerCommentResponse;
 import peakspace.entities.Comment;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
@@ -31,7 +32,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
            "c.user.userName, " +
            "c.message, " +
            "(select count(lik.user) from c.likes lik), " +
-           "c.createdAt) from Comment c where c.publication.id = ?1")
+           "c.createdAt) from Comment c where c.publication.id = ?1 order by c.id desc ")
     List<CommentResponse> getCommentForResponse(Long idPublic);
 
     @Query("select new peakspace.dto.response.CommentInnerResponse(c.id,c.user.id,c.user.profile.avatar,c.user.userName,c.message,(select count(l.id) from c.likes l),c.createdAt) from Comment c where c.id =:commentId")
@@ -57,4 +58,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("delete from Notification n where n.comment.id =:commentId")
     void deleteNotification(Long commentId);
 
+//    @Query("select new peakspace.dto.response.CommentResponse(c.id,c.user.id,c.user.profile.avatar,c.user.userName,c.message,count(c.likes),c.createdAt) from Comment c where c.publication.id =:id order by c.id desc ")
+//    List<CommentResponse> getAllComment(Long id);
 }

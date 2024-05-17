@@ -40,7 +40,7 @@ public class UserAPI {
     }
 
     @Secured("USER")
-    @GetMapping("/{foundUserId}")
+    @PutMapping("/{foundUserId}")
     @Operation(summary = "Отписатся  пользователя из раздела !")
     public SimpleResponse unsubscribeUser(@PathVariable Long foundUserId) {
         return userService.unsubscribeUser(foundUserId);
