@@ -14,11 +14,9 @@ import java.util.List;
 
 public interface UserService {
 
-    SimpleResponse forgot(String email) throws MessagingException;
+    SimpleResponse emailSender(String email) throws MessagingException;
 
-    SimpleResponse randomCode(int codeRequest,String email) throws BadRequestException;
-
-    UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest,String email);
+    SimpleResponse createPassword(String uuid, String password, String confirm);
 
     SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 
@@ -34,14 +32,11 @@ public interface UserService {
 
     List<ChapTerResponse> searchChapter(String search);
 
-    SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId);
+    SimpleResponse unsubscribeUser(Long foundUserId);
 
     List<SubscriptionResponse> getAllSearchUserHistory();
 
-
     List<SearchUserResponse> globalSearch(String keyWord);
-
-
 
     FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search);
 

@@ -30,6 +30,7 @@ public class CommentAPI {
         return commentService.save(postId, comment);
     }
 
+
     @Secured({"USER"})
     @Operation(summary = " Все комментарии одного поста !")
     @GetMapping("/{postId}")

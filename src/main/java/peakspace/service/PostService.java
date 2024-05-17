@@ -24,7 +24,7 @@ public interface PostService {
 
     SimpleResponse notationFriend(Long postId, List<Long> foundUserId);
 
-    SimpleResponse removeNotation(List<Long> friendsId);
+    SimpleResponse removeNotation(Long postId,List<Long> friendsId);
 
     SimpleResponse savePostPublic(Long publicId, Long userId, PostRequest postRequest);
 

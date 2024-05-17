@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import peakspace.dto.response.LinkResponse;
 import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
@@ -41,8 +42,8 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
     @Query("select p from Publication p where p.id =:postId")
     Publication findPostById(Long postId);
 
-    @Query("select p from Publication p join p.owner o where o = :owner and p.id = :postId")
-    Publication findByIdAndOwner(Long postId, User owner);
+    @Query("select p from Publication p join p.owner o where o.id = :ownerId and p.id = :postId")
+    Publication findByIdAndOwner(Long postId, Long ownerId);
 
     @Modifying
     @Transactional
@@ -66,4 +67,5 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
 
     @Query("select p from PablicProfile p where p.id =:publicId")
     PablicProfile findByIdPublic(Long publicId);
+
 }

@@ -65,10 +65,11 @@ public class PostAPI {
     }
 
     @Secured("USER")
-    @DeleteMapping("/{friendsId}")
-    @Operation(summary = " Удалить друзей из отметки !")
-    public SimpleResponse removeNotationFriends(@PathVariable List<Long> friendsId) {
-        return postService.removeNotation(friendsId);
+    @PutMapping("/removeNotationFriends/{postId}/{friendsId}")
+    @Operation(summary = " Удалить друзей из отметки из поста !")
+    public SimpleResponse removeNotationFriends(@PathVariable Long postId,@PathVariable List<Long> friendsId) {
+        return postService.removeNotation(postId,friendsId);
     }
+
 
 }

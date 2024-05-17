@@ -28,10 +28,7 @@ import peakspace.service.ChapterService;
 import peakspace.service.UserService;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -55,7 +52,7 @@ public class UserServiceImpl implements UserService {
     private final StoryRepository storyRepository;
     private final StorageService storageService;
     private String userName;
-    private int randomCode;
+
 
     @Override
     @Transactional
@@ -280,93 +277,47 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public SimpleResponse forgot(String email) throws MessagingException {
-        userRepository.getByEmail(email);
-        int randomCode = generateRandomCode();
-        sendVerificationEmail(email, randomCode);
+    public SimpleResponse emailSender(String toEmail) throws MessagingException {
+        String uuid = UUID.randomUUID().toString();
+        User user = userRepository.getByEmail(toEmail);
+        user.setConfirmationCode(uuid);
+        userRepository.save(user);
+        String link = "http://192.168.0.14:9090/createPassword.html?uuid=" + uuid;
+        String htmlContent = String.format("""
+                <html>
+                <body>
+                    <p>Для установки пароля, перейдите по следующей ссылке:</p>
+                    <a href="%s">УСТАНОВИТЬ ПАРОЛЬ</a>
+                </body>
+                </html>
+                """, link);
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setFrom("PEAKSPACE");
+        mimeMessageHelper.setTo(toEmail);
+        mimeMessageHelper.setText(uuid);
+        mimeMessageHelper.setText(htmlContent, true);
+        mimeMessageHelper.setSubject("Приложения PEAKSPACE!");
+        javaMailSender.send(mimeMessage);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Код подтверждения был отправлен на вашу почту.")
-                .build();
-    }
-
-    @Override
-    public SimpleResponse randomCode(int codeRequest, String email) {
-        int randomCode = getGeneratedCode(email);
-        if (randomCode != codeRequest) {
-            throw new BadRequestException("Неправильный код !!!");
-        }
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message("Код правильный !!!")
+                .message(" Успешно отправлен смс на почту !")
                 .build();
     }
 
     @Override
     @Transactional
-    public UpdatePasswordResponse updatePassword(PasswordRequest passwordRequest, String email) {
-        if (!passwordRequest.getPassword().equals(passwordRequest.getConfirmPassword())) {
-            throw new BadRequestException(" Пароль не корректный !");
+    public SimpleResponse createPassword(String uuid, String password, String confirm) {
+        if (!password.equals(confirm)) {
+            throw new IllegalArgumentException(" Пароли не совпадают");
+        } else {
+            User user = userRepository.findByUuid(uuid).orElseThrow(() -> new NotFoundException("User not found"));
+            user.setPassword(passwordEncoder.encode(password));
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Пароль успешно создан!")
+                    .build();
         }
-        User user = userRepository.getByEmail(email);
-        user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
-        userRepository.save(user);
-        return UpdatePasswordResponse.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .token(jwtService.createToken(user))
-                .build();
-    }
-
-    private int generateRandomCode() {
-        Random random = new Random();
-        return random.nextInt(9000) + 1000;
-    }
-
-    private void sendVerificationEmail(String email, int randomCode) throws MessagingException {
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
-        mimeMessageHelper.setTo(email);
-        String message = "<html>"
-                         + "<head>"
-                         + "<style>"
-                         + "body {"
-                         + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
-                         + "    background-size: cover;"
-                         + "    background-position: center;"
-                         + "    color: #ffffff;"
-                         + "    font-family: Arial, sans-serif;"
-                         + "}"
-                         + "h2 {"
-                         + "    color: #ffcc00;"
-                         + "}"
-                         + "h3 {"
-                         + "    color: #ff0000;"
-                         + "}"
-                         + "</style>"
-                         + "</head>"
-                         + "<body>"
-                         + "<div style=\"text-align: center; padding: 50px;\">"
-                         + "<h2>Забыли пароль?</h2>"
-                         + "<p>Вы запросили сброс пароля для учетной записи на сайте. Ваш код подтверждения:</p>"
-                         + "<h3>Код подтверждения: " + randomCode + "</h3>"
-                         + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
-                         + "</div>"
-                         + "</body>"
-                         + "</html>";
-        mimeMessageHelper.setText(message, true);
-        mimeMessageHelper.setSubject("Забыли пароль?");
-        javaMailSender.send(mimeMessage);
-    }
-
-    private int getGeneratedCode(String email) {
-        User user = userRepository.getByEmail(email);
-        if (user == null) {
-            throw new NotFoundException("Пользователь с указанным email не найден");
-        }
-        return generateRandomCode();
     }
 
 
@@ -455,21 +406,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public SimpleResponse createChapter(ChapterRequest chapterRequest) {
         User currentUser = getCurrentUser();
-        if (currentUser.getChapters().size() <= 5) {
-            throw new BadRequestException(" Ограничение количество 5 не должен превышать !");
+
+        if (currentUser.getChapters().size() >= 5) {
+            throw new BadRequestException("Превышено ограничение на количество раздел (максимум 5)!");
         }
-        Chapter chapter = new Chapter();
+
         for (Chapter currentUserChapter : currentUser.getChapters()) {
             if (currentUserChapter.getGroupName().equals(chapterRequest.getGroupName())) {
-                throw new IllegalArgumentException(" Уже есть такой раздел !");
+                throw new IllegalArgumentException("У пользователя уже есть раздел с таким же названием!");
             }
-            chapter.setGroupName(chapterRequest.getGroupName());
-            chapterRepository.save(chapter);
-            chapter.setUser(currentUser);
         }
+
+        Chapter chapter = new Chapter();
+        chapter.setGroupName(chapterRequest.getGroupName());
+        chapter.setUser(currentUser);
+        chapterRepository.save(chapter);
+
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Удачно сохранился раздел !")
+                .message("Глава успешно сохранена!")
                 .build();
     }
 
@@ -534,24 +489,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SimpleResponse unsubscribeUser(Long chapterId, Long foundUserId) {
+    public SimpleResponse unsubscribeUser(Long foundUserId) {
         User currentUser = getCurrentUser();
         User foundUser = userRepository.findByIds(foundUserId);
         boolean foundUserInFriends = false;
 
         for (Chapter chapter : currentUser.getChapters()) {
-            if (chapter.getId().equals(chapterId)) {
-                List<User> friends = chapter.getFriends();
-                if (friends.contains(foundUser)) {
-                    friends.remove(foundUser);
-                    foundUserInFriends = true;
-                } else {
-                    friends.add(foundUser);
-                }
-                break;
+            List<User> friends = chapter.getFriends();
+            if (friends.contains(foundUser)) {
+                friends.remove(foundUser);
+                foundUserInFriends = true;
+            } else {
+                friends.add(foundUser);
             }
+            break;
         }
-
         String message = foundUserInFriends ? "Удачно отписано !" : " Удачно подписались !";
 
         return SimpleResponse.builder()
@@ -565,20 +517,25 @@ public class UserServiceImpl implements UserService {
         User currentUser = getCurrentUser();
         List<Long> searchFriendsHistory = currentUser.getSearchFriendsHistory();
         List<SubscriptionResponse> searchUserResponses = new ArrayList<>();
+        Set<Long> addedUserIds = new HashSet<>();
 
-        for (Long userId : searchFriendsHistory) {
-            User foundUser = userRepository.findById(userId).orElse(null);
-            if (foundUser != null) {
-                SubscriptionResponse response = new SubscriptionResponse(
-                        foundUser.getId(),
-                        foundUser.getUsername(),
-                        foundUser.getProfile().getAvatar(),
-                        foundUser.getProfile().getAboutYourSelf()
-                );
-                searchUserResponses.add(response);
+        for (int i = searchFriendsHistory.size() - 1; i >= 0; i--) {
+            Long userId = searchFriendsHistory.get(i);
+
+            if (!addedUserIds.contains(userId)) {
+                User foundUser = userRepository.findById(userId).orElse(null);
+                if (foundUser != null) {
+                    SubscriptionResponse response = new SubscriptionResponse(
+                            foundUser.getId(),
+                            foundUser.getUsername(),
+                            foundUser.getProfile().getAvatar(),
+                            foundUser.getProfile().getAboutYourSelf()
+                    );
+                    searchUserResponses.add(response);
+                    addedUserIds.add(userId);
+                }
             }
         }
-        Collections.reverse(searchUserResponses);
 
         return searchUserResponses;
     }

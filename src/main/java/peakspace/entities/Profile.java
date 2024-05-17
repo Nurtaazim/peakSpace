@@ -27,11 +27,12 @@ public class Profile {
     private String profession;
     private String phoneNumber;
     private boolean workOrNot;
-    @ElementCollection
+    private String location;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> favorites;
-    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Education> educations;
-    @OneToOne
+    @OneToOne()
     private User user;
 
     public Profile(String firstName, String lastName, User user) {

@@ -1,10 +1,14 @@
 package peakspace.repository;
 
+import com.google.auto.value.extension.memoized.Memoized;
+import io.grpc.Grpc;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
 import peakspace.entities.Profile;
@@ -69,6 +73,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     default User getCurrentUser (){
         return findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(()-> new NotFoundException("Пользователь с такой емайл не найдено!"));
     }
+
+    @Query("select u from User u where u.confirmationCode=:uuid")
+    Optional<User> findByUuid(String uuid);
 
 
 }
