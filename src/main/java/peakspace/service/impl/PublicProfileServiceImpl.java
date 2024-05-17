@@ -204,7 +204,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
             users.add(currentUser);
             message = "Пользователь успешно присоединились !";
         }
-
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(message)
