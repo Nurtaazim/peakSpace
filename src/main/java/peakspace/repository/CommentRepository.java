@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+    
     @Query("select new peakspace.dto.response.InnerCommentResponse(" +
            "ic.id, " +
            "ic.user.id," +
@@ -57,7 +58,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Transactional
     @Query("delete from Notification n where n.comment.id =:commentId")
     void deleteNotification(Long commentId);
-
-//    @Query("select new peakspace.dto.response.CommentResponse(c.id,c.user.id,c.user.profile.avatar,c.user.userName,c.message,count(c.likes),c.createdAt) from Comment c where c.publication.id =:id order by c.id desc ")
-//    List<CommentResponse> getAllComment(Long id);
+    
 }
