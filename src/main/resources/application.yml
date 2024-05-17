@@ -1,9 +1,13 @@
+server:
+  error:
+    include-stacktrace: always
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     password: ${POSTGRES_PASSWORD}
     url: ${POSTGRES_DB}
-    username: ${POSTGRES_USERNAME}
+    username: ${POSTGRES_USER}
 
   mail:
     host: smtp.gmail.com
@@ -17,19 +21,22 @@ spring:
           starttls:
             enable: true
       defer-datasource-initialization: true
+
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
       mode: never
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     open-in-view: false
-server:
-  error:
-    include-stacktrace: always
-  port: 9090
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
 app:
   jwt:
     secret: peak-space-java12
@@ -37,8 +44,7 @@ app:
 cloud:
   aws:
     region: eu-north-1
-    accessKey: AKIAZI2LDVKOR6V4MDP7
-    secretKey: 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
+    access-key: AKIAZI2LDVKOR6V4MDP7
+    secret-key: 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
   s3:
     bucketName: peakspacebucket
-
