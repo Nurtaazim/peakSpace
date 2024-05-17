@@ -1,8 +1,10 @@
-server:
-  error:
-    include-stacktrace: always
-
 spring:
+  config:
+    import:
+      - classpath:/configs/database-config.yml
+      - classpath:/configs/email-config.yml
+      - classpath:/configs/flyway-config.yml
+      - classpath:/configs/amazon-services-config.yml
   datasource:
     driver-class-name: org.postgresql.Driver
     password: 1234
@@ -33,18 +35,11 @@ spring:
     show-sql: true
     open-in-view: false
 
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-
+# Security
 app:
   jwt:
     secret: peak-space-java12
 
-cloud:
-  aws:
-    region: eu-north-1
-    access-key: AKIAZI2LDVKOR6V4MDP7
-    secret-key: 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
-  s3:
-    bucketName: peakspacebucket
+server:
+  error:
+    include-stacktrace: always
