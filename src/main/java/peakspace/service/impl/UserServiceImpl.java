@@ -630,6 +630,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException {
+        if (userRepository.existsByEmail(signUpRequest.email())){
+            throw new peakspace.exception.MessagingException("Пользователь с таким email уже существует!");
+        }
+        if (userRepository.existsByThisUserName(signUpRequest.userName())){
+            throw new peakspace.exception.MessagingException("Пользователь с таким user name уже существует!");
+        }
         User user = new User();
         user.setUserName(signUpRequest.userName());
         user.setEmail(signUpRequest.email());
@@ -644,32 +650,32 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(ZonedDateTime.now());
         user.setBlockAccount(true);
         String message = "<html>"
-                         + "<head>"
-                         + "<style>"
-                         + "body {"
-                         + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
-                         + "    background-size: cover;"
-                         + "    background-position: center;"
-                         + "    color: #ffffff;"
-                         + "    font-family: Arial, sans-serif;"
-                         + "}"
-                         + "h2 {"
-                         + "    color: #ffcc00;"
-                         + "}"
-                         + "h3 {"
-                         + "    color: #ff0000;"
-                         + "}"
-                         + "</style>"
-                         + "</head>"
-                         + "<body>"
-                         + "<div style=\"text-align: center; padding: 50px;\">"
-                         + "<h2>Sign Up</h2>"
-                         + "<p>Ваш код подтверждения для регистрации:</p>"
-                         + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
-                         + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
-                         + "</div>"
-                         + "</body>"
-                         + "</html>";
+                + "<head>"
+                + "<style>"
+                + "body {"
+                + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
+                + "    background-size: cover;"
+                + "    background-position: center;"
+                + "    color: #ffffff;"
+                + "    font-family: Arial, sans-serif;"
+                + "}"
+                + "h2 {"
+                + "    color: #ffcc00;"
+                + "}"
+                + "h3 {"
+                + "    color: #ff0000;"
+                + "}"
+                + "</style>"
+                + "</head>"
+                + "<body>"
+                + "<div style=\"text-align: center; padding: 50px;\">"
+                + "<h2>Sign Up</h2>"
+                + "<p>Ваш код подтверждения для регистрации:</p>"
+                + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
+                + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
@@ -684,10 +690,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
-        User user = userRepository.findById(id).orElseThrow(() -> new MessagingException("с таким айди пользователь не существует!"));
+        User user = userRepository.findById(id).orElseThrow(() -> new peakspace.exception.MessagingException("C таким айди пользователь не существует!"));
         if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
             user.setBlockAccount(false);
             user.setConfirmationCode(null);
+            user.setIsBlock(false);
             return SignInResponse.builder()
                     .id(user.getId())
                     .token(jwtService.createToken(user))
@@ -719,4 +726,3 @@ public class UserServiceImpl implements UserService {
         }
     }
 }
-

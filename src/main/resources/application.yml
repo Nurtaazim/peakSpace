@@ -5,35 +5,10 @@ spring:
       - classpath:/configs/email-config.yml
       - classpath:/configs/flyway-config.yml
       - classpath:/configs/amazon-services-config.yml
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    password: 1234
-    url: jdbc:postgresql://localhost:5432/peakspace
-    username: postgres
-
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: arstanbeekovvv@gmail.com
-    password: gnfh xali juew hdna
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-      defer-datasource-initialization: true
-
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
       mode: never
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    open-in-view: false
 
 # Security
 app:

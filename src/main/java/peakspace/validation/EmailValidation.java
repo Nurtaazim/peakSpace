@@ -19,7 +19,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @RestControllerAdvice
 public @interface  EmailValidation {
-    String message() default "{Wrong format! Email must end with to @gmail.com!}";
+    String message() default "{Не правильный формат емайл!}";
 
     Class<?>[] groups() default {};
 
