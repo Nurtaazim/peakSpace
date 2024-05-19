@@ -1,14 +1,10 @@
 package peakspace.repository;
 
-import com.google.auto.value.extension.memoized.Memoized;
-import io.grpc.Grpc;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
 import peakspace.entities.Profile;
@@ -49,7 +45,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findById(foundUserId).orElseThrow(() -> new NotFoundException(" Нет такой ползователь !" + foundUserId));
     }
 
-    @Query("select new peakspace.dto.response.ProfileFriendsResponse(u.id, COALESCE(p.avatar, ''), COALESCE(p.cover, ''), COALESCE(p.aboutYourSelf, ''), COALESCE(p.profession, '')) " +
+    @Query("select new peakspace.dto.response.ProfileFriendsResponse(u.id, COALESCE(p.avatar, ''), COALESCE(p.cover, ''),COALESCE(u.userName, ''), COALESCE(p.aboutYourSelf, ''), COALESCE(p.profession, '')) " +
            "from User u left join u.profile p " +
            "where u.id = :foundUserId")
     ProfileFriendsResponse getId(Long foundUserId);
@@ -77,5 +73,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.confirmationCode=:uuid")
     Optional<User> findByUuid(String uuid);
 
-
+    @Query("select u from User u where u.userName = :userName")
+    Optional<User> findByName(String userName);
 }

@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PublicRequest;
-import peakspace.dto.response.PublicPhotoAndVideoResponse;
-import peakspace.dto.response.PublicPostResponse;
-import peakspace.dto.response.PublicProfileResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
 import peakspace.enums.Choise;
 import peakspace.service.PublicProfileService;
 
@@ -86,10 +83,25 @@ public class PublicProfileAPI {
     }
 
     @Secured("USER")
-    @Operation(summary = " Войти на Мой паблик или Профиль через ссылку !")
-    @GetMapping()
-    public PublicProfileResponse forwarding(@RequestParam String publicName){
+    @Operation(summary = " Войти на Мой паблик от страницы профилья!")
+    @GetMapping("/public/{publicName}")
+    public PublicProfileResponse forwardingPublic(@PathVariable String publicName){
         return publicService.forwardingMyPublic(publicName);
     }
+
+    @Secured("USER")
+    @Operation(summary = " Войти на профиль от страницы паблика !")
+    @GetMapping("/profile/{userName}")
+    public ProfileFriendsResponse forwardingProfile(@PathVariable String userName){
+        return publicService.forwardingMyProfile(userName);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Профиль участника !")
+    @GetMapping("/findUser/{postId}")
+    public ProfileFriendsResponse findUser(@PathVariable Long postId) {
+        return publicService.findUserByPostId(postId);
+    }
+
 
 }

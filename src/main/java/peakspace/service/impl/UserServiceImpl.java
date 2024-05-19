@@ -460,23 +460,27 @@ public class UserServiceImpl implements UserService {
         ProfileFriendsResponse friendsResponse = userRepository.getId(foundUserId);
 
         User foundUser = userRepository.findById(foundUserId)
-                .orElseThrow(() -> new NotFoundException("Нет такого пользователя!"));
+                .orElseThrow(() -> new NotFoundException(" Нет такого пользователя!"));
 
         List<Long> friends = currentUser.getSearchFriendsHistory();
         friends.add(foundUserId);
 
         int pablicationsSize = 0;
-        if (foundUser.getPablicProfiles() != null && foundUser.getPablicProfiles().getUsers() != null) {
-            pablicationsSize = foundUser.getPablicProfiles().getUsers().size();
+        if (foundUser.getPublicProfilesSize() != null) {
+            pablicationsSize = foundUser.getPublicProfilesSize().size();
         }
-
+        int sizeFriends = 0;
+        for (Chapter chapter : currentUser.getChapters()) {
+            sizeFriends = chapter.getFriends().size();
+        }
         return ProfileFriendsResponse.builder()
                 .id(friendsResponse.getId())
                 .avatar(friendsResponse.getAvatar())
                 .cover(friendsResponse.getCover())
+                .userName(friendsResponse.getUserName())
                 .aboutYourSelf(friendsResponse.getAboutYourSelf())
                 .profession(friendsResponse.getProfession())
-                .friendsSize(foundUser.getChapters().size())
+                .friendsSize(sizeFriends)
                 .publicationsSize(pablicationsSize)
                 .build();
     }

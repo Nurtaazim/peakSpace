@@ -52,6 +52,8 @@ public class User implements UserDetails {
     private List<Long> searchFriendsHistory;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> blockAccounts;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> publicProfilesSize;
 
     public String getThisUserName() {
         return this.userName;

@@ -15,6 +15,7 @@ public class PublicProfileResponse {
     private String cover;
     private String avatar;
     private String pablicName;
+    private String userName;
     private String descriptionPublic;
     @Enumerated(EnumType.STRING)
     private Tematica tematica;
