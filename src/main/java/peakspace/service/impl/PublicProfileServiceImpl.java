@@ -248,6 +248,22 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         throw new NotFoundException("Комментарий с id " + commentId + " не найден!");
     }
 
+    @Override
+    public PublicProfileResponse forwardingMyPublic(String publicName) {
+        PablicProfile publicProfile = getCurrentUser().getPablicProfiles();
+        if (!publicProfile.getPablicName().equals(publicName)){
+            throw new BadRequestException(" Нет такой у вас паблик !");
+        }
+        return PublicProfileResponse.builder()
+                .publicId(publicProfile.getId())
+                .cover(publicProfile.getCover())
+                .avatar(publicProfile.getAvatar())
+                .pablicName(publicProfile.getPablicName())
+                .tematica(publicProfile.getTematica())
+                .countFollower(publicProfile.getUsers().size())
+                .build();
+    }
+
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User current = userRepository.getByEmail(email);

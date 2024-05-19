@@ -28,4 +28,6 @@ public interface PublicProfileService {
     SimpleResponse removePost(Long postId);
 
     SimpleResponse removeComment(Long commentId);
+
+    PublicProfileResponse forwardingMyPublic(String publicName);
 }

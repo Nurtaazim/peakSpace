@@ -85,4 +85,11 @@ public class PublicProfileAPI {
         return publicService.removePost(postId);
     }
 
+    @Secured("USER")
+    @Operation(summary = " Войти на Мой паблик или Профиль через ссылку !")
+    @GetMapping()
+    public PublicProfileResponse forwarding(@RequestParam String publicName){
+        return publicService.forwardingMyPublic(publicName);
+    }
+
 }
