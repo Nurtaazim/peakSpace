@@ -7,7 +7,7 @@ import peakspace.validation.PasswordValidation;
 public class PasswordValidator implements ConstraintValidator<PasswordValidation, String> {
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if (s.length() < 8 || s.length() > 20) {
+        if (s.length() < 6 || s.length() > 20) {
             return false;
         }
 
