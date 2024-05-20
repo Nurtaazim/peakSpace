@@ -7,4 +7,4 @@ spring:
 flyway:
   password: ${POSTGRES_PASSWORD}
   url: ${POSTGRES_DB}
-  username: ${POSTGRES_USER}
+  user: ${POSTGRES_USER}
