@@ -26,17 +26,17 @@ public class Publication {
     private boolean isBlockComment;
     @ElementCollection
     private Map<Long, String> complains;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.EAGER)
     private User owner;
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.EAGER)
     private List<User> tagFriends;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.EAGER)
     private List<Link_Publication> linkPublications = new ArrayList<>();
-    @OneToMany(mappedBy = "publication", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "publication", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Comment> comments;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private PablicProfile pablicProfile;
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Like> likes;
 
     @PrePersist

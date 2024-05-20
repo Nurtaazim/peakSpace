@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,13 +23,13 @@ public class Comment {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
     private User user;
     @OneToMany
-    private List<Notification> notifications;
+    private List<Notification> notifications = new ArrayList<>();
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private Publication publication;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "innerComment")
     private List<Comment> innerComments;
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Like> likes;
 
     @PrePersist

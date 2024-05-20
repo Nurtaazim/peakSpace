@@ -76,6 +76,7 @@ public class PublicationServiceImpl implements PublicationService {
 
     }
 
+    @Override
     public List<PublicationWithYouResponse> withPhoto(Long foundUserId) {
         User foundUser = userRepository.findByIds(foundUserId);
         List<PublicationWithYouResponse> publicationsWithYou = new ArrayList<>();

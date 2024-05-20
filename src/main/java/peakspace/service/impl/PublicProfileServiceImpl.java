@@ -20,6 +20,7 @@ import peakspace.entities.User;
 import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicProfileRepository;
@@ -124,7 +125,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                                         .toList();
                                 return (choise == Choise.Photos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
-                                       || (choise == Choise.Videos) && links.stream()
+                                        || (choise == Choise.Videos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".mp4") || link.endsWith(".webm") || link.endsWith(".ogg"));
                             })
                             .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
@@ -138,6 +139,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build());
     }
 
+
+
     @Override
     public PublicPostResponse findPostPublic(Long postId) {
         Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой публикации !"));
@@ -147,7 +150,9 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<LinkResponse> links = publication.getLinkPublications().stream()
                 .map(link -> new LinkResponse(link.getId(), link.getLink()))
                 .collect(Collectors.toList());
-
+        if (publication.getPablicProfile() == null) {
+            throw new BadRequestException(" Нет такой пост в паблике паблик !");
+        }
         return new PublicPostResponse(
                 publication.getId(),
                 publication.getOwner().getId(),
@@ -199,7 +204,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
             users.add(currentUser);
             message = "Пользователь успешно присоединились !";
         }
-
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(message)
