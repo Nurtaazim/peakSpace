@@ -5,10 +5,6 @@ spring:
       - classpath:/configs/email-config.yml
       - classpath:/configs/flyway-config.yml
       - classpath:/configs/amazon-services-config.yml
-  sql:
-    init:
-      data-locations: classpath:dataInit/dataInit.sql
-      mode: never
 
 # Security
 app:
