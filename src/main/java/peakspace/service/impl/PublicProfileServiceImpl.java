@@ -323,7 +323,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 publicProfile.setAvatar(pablicProfilee.getAvatar());
                 publicProfile.setPablicName(pablicProfilee.getPablicName());
                 publicProfile.setTematica(pablicProfilee.getTematica());
-                publicProfile.setOwner(pablicProfilee.getUser().getUsername());
+                publicProfile.setOwner(pablicProfilee.getUser().getThisUserName());
                 publicProfiles.add(publicProfile);
             }
         return publicProfiles;
