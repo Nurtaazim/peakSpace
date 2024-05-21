@@ -7,12 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PublicRequest;
-import peakspace.dto.response.PublicPhotoAndVideoResponse;
-import peakspace.dto.response.CommentResponse;
-import peakspace.dto.response.LinkResponse;
-import peakspace.dto.response.PublicPostResponse;
-import peakspace.dto.response.PublicProfileResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
 import peakspace.entities.Comment;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
@@ -246,6 +241,16 @@ public class PublicProfileServiceImpl implements PublicProfileService {
             }
         }
         throw new NotFoundException("Комментарий с id " + commentId + " не найден!");
+    }
+
+    @Override
+    public List<PublicProfile> getAllPublics(Long userId) {
+        getCurrentUser();
+        User user = userRepository.findByIds(userId);
+        if(user.getId().equals(getCurrentUser().getId())){
+
+        }
+        return null;
     }
 
     private User getCurrentUser() {
