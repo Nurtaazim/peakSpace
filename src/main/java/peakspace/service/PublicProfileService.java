@@ -1,10 +1,7 @@
 package peakspace.service;
 
 import peakspace.dto.request.PublicRequest;
-import peakspace.dto.response.PublicPhotoAndVideoResponse;
-import peakspace.dto.response.PublicPostResponse;
-import peakspace.dto.response.PublicProfileResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
 import peakspace.enums.Choise;
 import java.util.List;
 
@@ -28,4 +25,10 @@ public interface PublicProfileService {
     SimpleResponse removePost(Long postId);
 
     SimpleResponse removeComment(Long commentId);
+
+    PublicProfileResponse forwardingMyPublic(String publicName);
+
+    ProfileFriendsResponse forwardingMyProfile(String userName);
+
+    ProfileFriendsResponse findUserByPostId(Long postId);
 }
