@@ -34,4 +34,12 @@ public class AuthWithGoogleApi {
         return userService.sendConfirmationCode(email);
     }
 
+
+//    Test auth with google
+
+    @PostMapping("/sign-up-with-token")
+    @Operation(description = "аутентификация и регистрация через google аккаунт.")
+    public ResponseWithGoogle signUpWithGoogle(@RequestParam String tokenFromGoogle) {
+        return userService.authWithGoogle(tokenFromGoogle);
+    }
 }
