@@ -32,6 +32,6 @@ public interface PublicProfileService {
 
     ProfileFriendsResponse findUserByPostId(Long postId);
 
-    List<PublicProfile> getAllPublics(Long userId);
+    List<GetAllPublicProfileResponse> getAllPublics(Long userId);
 
 }

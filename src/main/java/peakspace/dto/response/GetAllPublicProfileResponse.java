@@ -10,7 +10,7 @@ import peakspace.enums.Tematica;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PublicProfile {
+public class GetAllPublicProfileResponse {
 
     private String avatar;
     private String pablicName;

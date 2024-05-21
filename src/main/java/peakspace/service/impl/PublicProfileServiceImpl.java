@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
-import peakspace.dto.response.*;
 import peakspace.entities.Comment;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
@@ -25,6 +24,7 @@ import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicProfileService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -311,13 +311,22 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     }
 
     @Override
-    public List<PublicProfile> getAllPublics(Long userId) {
+    public List<GetAllPublicProfileResponse> getAllPublics(Long userId) {
         getCurrentUser();
-        User user = userRepository.findByIds(userId);
-        if(user.getId().equals(getCurrentUser().getId())){
 
-        }
-        return null;
+        User user = userRepository.findByIds(userId);
+        List<GetAllPublicProfileResponse> publicProfiles = new ArrayList<>();
+            for (Long id : user.getPublicProfilesSize()) {
+                PablicProfile pablicProfilee = publicProfileRepository.findById(id).orElseThrow(() -> new NotFoundException("With this id not found!"));
+
+                GetAllPublicProfileResponse publicProfile = new GetAllPublicProfileResponse();
+                publicProfile.setAvatar(pablicProfilee.getAvatar());
+                publicProfile.setPablicName(pablicProfilee.getPablicName());
+                publicProfile.setTematica(pablicProfilee.getTematica());
+                publicProfile.setOwner(pablicProfilee.getUser().getUsername());
+                publicProfiles.add(publicProfile);
+            }
+        return publicProfiles;
     }
 
     private User getCurrentUser() {

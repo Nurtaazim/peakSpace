@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import peakspace.dto.response.GetAllPublicProfileResponse;
 import peakspace.dto.response.SearchResponse;
 import peakspace.entities.PablicProfile;
 import java.util.List;
@@ -31,4 +32,5 @@ public interface PublicProfileRepository extends JpaRepository<PablicProfile, Lo
 
     @Query("select p from PablicProfile p where p.pablicName=:publicName")
     Optional<PablicProfile> findByPublicName(String publicName);
+
 }

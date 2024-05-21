@@ -103,5 +103,11 @@ public class PublicProfileAPI {
         return publicService.findUserByPostId(postId);
     }
 
+    @Secured("USER")
+    @Operation(summary = "Get all PublicProfiles!")
+    @GetMapping("/profiles/{userId}")
+    public List<GetAllPublicProfileResponse> getAllPublicProfiles(@PathVariable Long userId){
+        return publicService.getAllPublics(userId);
+    }
 
 }
