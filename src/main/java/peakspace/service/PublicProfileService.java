@@ -26,6 +26,12 @@ public interface PublicProfileService {
 
     SimpleResponse removeComment(Long commentId);
 
+    PublicProfileResponse forwardingMyPublic(String publicName);
+
+    ProfileFriendsResponse forwardingMyProfile(String userName);
+
+    ProfileFriendsResponse findUserByPostId(Long postId);
+
     List<PublicProfile> getAllPublics(Long userId);
 
 }
