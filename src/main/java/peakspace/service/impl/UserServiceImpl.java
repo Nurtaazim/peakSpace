@@ -290,7 +290,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getByEmail(toEmail);
         user.setConfirmationCode(uuid);
         userRepository.save(user);
-       String fullLinks = link + uuid;
+       String fullLinks = link +"/"+ uuid;
         String htmlContent = String.format("""
                 <html>
                 <body>
