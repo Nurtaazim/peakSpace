@@ -47,13 +47,10 @@ public interface UserService {
     String sendConfirmationCode(String email) throws MessagingException;
 
     SignInResponse signIn(SignInRequest signInRequest) throws MessagingException;
+    
     SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException;
 
     SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
-
-
-
-
 
 //    Test auth with google
     ResponseWithGoogle authWithGoogle(String tokenFromGoogle);
