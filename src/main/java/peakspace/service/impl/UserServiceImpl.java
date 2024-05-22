@@ -1,11 +1,16 @@
 package peakspace.service.impl;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,6 +32,7 @@ import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
 
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -119,6 +125,8 @@ public class UserServiceImpl implements UserService {
             throw new FirebaseAuthException();
         }
     }
+
+
 
     @Override
     @Transactional
@@ -277,12 +285,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public SimpleResponse emailSender(String toEmail) throws MessagingException {
+    public SimpleResponse emailSender(String toEmail,String link) throws MessagingException {
         String uuid = UUID.randomUUID().toString();
         User user = userRepository.getByEmail(toEmail);
         user.setConfirmationCode(uuid);
         userRepository.save(user);
-        String link = "http://192.168.0.14:9090/createPassword.html?uuid=" + uuid;
+       String fullLinks = link +"/"+ uuid;
         String htmlContent = String.format("""
                 <html>
                 <body>
@@ -290,7 +298,7 @@ public class UserServiceImpl implements UserService {
                     <a href="%s">УСТАНОВИТЬ ПАРОЛЬ</a>
                 </body>
                 </html>
-                """, link);
+                """, fullLinks);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setFrom("PEAKSPACE");
@@ -661,6 +669,61 @@ public class UserServiceImpl implements UserService {
                     .token(jwtService.createToken(user))
                     .build();
         } else throw new MessagingException("Не правильный код!");
+    }
+
+    @Override
+    public ResponseWithGoogle authWithGoogle(String tokenFromGoogle) {
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
+            String email = decodedToken.getEmail();
+            String fullName = decodedToken.getName();
+            String picture = decodedToken.getPicture();
+
+            User user = userRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("not found"));
+
+            if (user == null) {
+
+                user = new User();
+                user.setEmail(email);
+                user.setRole(Role.USER);
+                user.setPassword(passwordEncoder.encode("defaultPassword"));
+
+                Profile profile = new Profile();
+                profile.setUser(user);
+                profile.setAvatar(picture);
+
+                String[] nameParts = fullName.split(" ");
+                if (nameParts.length >= 1) {
+                    profile.setLastName(nameParts[0]);
+                }
+                if (nameParts.length >= 2) {
+                    profile.setFirstName(nameParts[1]);
+                }
+                if (nameParts.length >= 3) {
+                    profile.setPatronymicName(nameParts[2]);
+                }
+
+                user.setProfile(profile);
+                profileRepository.save(profile);
+                userRepository.save(user);
+            }
+
+            return ResponseWithGoogle.builder()
+                    .idUser(user.getId())
+                    .token(jwtService.createToken(user))
+                    .build();
+        } catch (FirebaseAuthException | com.google.firebase.auth.FirebaseAuthException e) {
+            throw new RuntimeException("Invalid Firebase token", e);
+        }
+    }
+
+    @PostConstruct
+    public void init() throws IOException {
+        GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
+                new ClassPathResource("google.json").getInputStream());
+        FirebaseOptions firebaseOptions = FirebaseOptions.builder()
+                .setCredentials(googleCredentials).build();
+        FirebaseApp.initializeApp(firebaseOptions);
     }
 
     public void startTask() {
