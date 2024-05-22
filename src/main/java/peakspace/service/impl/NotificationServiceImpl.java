@@ -28,20 +28,20 @@ public class NotificationServiceImpl implements NotificationService {
             User user = notificationRepository.findBySenderNotification(notification.getSenderUserId());
             NotificationResponse notificationResponse = new NotificationResponse();
 
-            notificationResponse.setMassage(notification.getNotificationMessage());
+            notificationResponse.setMessage(notification.getNotificationMessage());
             notificationResponse.setCreatedAt(notification.getCreatedAt().toLocalDate());
             notificationResponse.setSenderUserId(notification.getSenderUserId());
             notificationResponse.setSenderUserName(user.getThisUserName());
             notificationResponse.setSenderProfileImageUrl(user.getProfile().getAvatar());
 
             if (notification.getPublication() != null) {
-                notificationResponse.setPublicationOrStoryOrCommentId(notification.getPublication().getId());
+                notificationResponse.setPublicationId(notification.getPublication().getId());
                 notificationResponse.setPublicationOrStoryImageUrl(notification.getPublication().getLinkPublications().getFirst().getLink());
             } else if (notification.getStory() != null) {
-                notificationResponse.setPublicationOrStoryOrCommentId(notification.getStory().getId());
+                notificationResponse.setStoryId(notification.getStory().getId());
                 notificationResponse.setPublicationOrStoryImageUrl(notification.getStory().getLinkPublications().getFirst().getLink());
             } else if (notification.getComment() != null) {
-                notificationResponse.setPublicationOrStoryOrCommentId(notification.getComment().getId());
+                notificationResponse.setCommentId(notification.getComment().getId());
                 notificationResponse.setPublicationOrStoryImageUrl(notification.getPublication().getLinkPublications().getFirst().getLink());
             }
             notificationResponses.add(notificationResponse);
