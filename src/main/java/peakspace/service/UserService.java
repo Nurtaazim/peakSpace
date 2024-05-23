@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface UserService {
 
-    SimpleResponse emailSender(String email) throws MessagingException;
+    SimpleResponse emailSender(String email,String link) throws MessagingException;
 
     SimpleResponse createPassword(String uuid, String password, String confirm);
 
@@ -47,9 +47,12 @@ public interface UserService {
     String sendConfirmationCode(String email) throws MessagingException;
 
     SignInResponse signIn(SignInRequest signInRequest) throws MessagingException;
-
+    
     SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException;
 
     SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
+
+//    Test auth with google
+    ResponseWithGoogle authWithGoogle(String tokenFromGoogle);
 
 }

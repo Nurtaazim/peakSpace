@@ -26,8 +26,8 @@ public class AuthAPI {
 
     @Operation(summary = "Забыли пароль")
     @PutMapping("/forgotPassword")
-    public SimpleResponse forgotPassword(@RequestParam String email) throws MessagingException {
-        return userService.emailSender(email);
+    public SimpleResponse forgotPassword(@RequestParam String email,@RequestParam String link) throws MessagingException {
+        return userService.emailSender(email,link);
     }
 
     @Operation(summary = " Cоздать новый пароль через ссылку который отправленный на его почту  !")
