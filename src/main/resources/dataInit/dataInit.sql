@@ -380,19 +380,12 @@ values (1, 1),
        (5, 9);
 
 
-insert into notifications(id, like_id, user_notification_id, comment_id, seen, notification_message, created_at)
+insert into notifications(id, like_id, user_notification_id, sender_user_id, comment_id, publication_id, story_id, seen, notification_message, created_at)
 values
-    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
-    (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'),
-    (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
-    (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
-    (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
-    (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
-    (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
-    (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
-    (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
-    (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
-
+    (1, 1, 1, 1, NULL, NULL, NULL, false, 'Ваш пост понравился пользователю Aliaskar', '2024-05-22T11:06:23.439327+00:00'),
+    (2, 2, 1, 3, NULL, 1, NULL, false, 'Лайкнул на ваш пост', '2024-05-22T17:11:49.125000+00:00'),
+    (3, 3, 1, 4, NULL, NULL, 1, false, 'Лайкнул на ваш сториз', '2024-05-22T17:13:34.333000+00:00'),
+    (4, 4, 1, 2, 2, NULL, NULL, false, 'Ваш коммент понравился!', '2024-05-22T17:09:56.493000+00:00');
 
 insert into inner_comment(comment_id, inner_comments_id)
 values (1, 1),
