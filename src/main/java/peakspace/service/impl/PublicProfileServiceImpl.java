@@ -2,6 +2,7 @@ package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -310,24 +311,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build();
     }
 
-    @Override
-    public List<GetAllPublicProfileResponse> getAllPublics(Long userId) {
-        getCurrentUser();
-
-        User user = userRepository.findByIds(userId);
-        List<GetAllPublicProfileResponse> publicProfiles = new ArrayList<>();
-            for (Long id : user.getPublicProfilesSize()) {
-                PablicProfile pablicProfilee = publicProfileRepository.findById(id).orElseThrow(() -> new NotFoundException("With this id not found!"));
-
-                GetAllPublicProfileResponse publicProfile = new GetAllPublicProfileResponse();
-                publicProfile.setAvatar(pablicProfilee.getAvatar());
-                publicProfile.setPablicName(pablicProfilee.getPablicName());
-                publicProfile.setTematica(pablicProfilee.getTematica());
-                publicProfile.setOwner(pablicProfilee.getUser().getThisUserName());
-                publicProfiles.add(publicProfile);
-            }
-        return publicProfiles;
-    }
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
