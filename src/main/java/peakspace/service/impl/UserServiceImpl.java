@@ -59,6 +59,63 @@ public class UserServiceImpl implements UserService {
     private final StorageService storageService;
     private String userName;
 
+    @Override
+    @Transactional
+    public ResponseWithGoogle authWithGoogle(String tokenFromGoogle) {
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
+            String email = decodedToken.getEmail();
+            String fullName = decodedToken.getName();
+            String picture = decodedToken.getPicture();
+
+            User user = userRepository.findByEmail(email).orElse(null);
+
+            if (user == null) {
+                user = new User();
+                user.setEmail(email);
+                user.setRole(Role.USER);
+                user.setBlockAccount(false);
+                user.setIsBlock(false);
+                user.setPassword(passwordEncoder.encode("defaultPassword"));
+
+                Profile profile = new Profile();
+                profile.setAvatar(picture);
+
+                String[] nameParts = fullName.split(" ");
+                if (nameParts.length >= 1) {
+                    profile.setLastName(nameParts[0]);
+                }
+                if (nameParts.length >= 2) {
+                    profile.setFirstName(nameParts[1]);
+                }
+                if (nameParts.length >= 3) {
+                    profile.setPatronymicName(nameParts[2]);
+                }
+
+                user.setProfile(profile);
+                profile.setUser(user);
+
+
+                String username = profile.getLastName().toLowerCase();
+                while (userRepository.existsByUserName(username)) {
+                    username = username + new Random().nextInt(1, userRepository.findAll().size() * 2);
+                }
+                user.setUserName(username);
+
+                userRepository.save(user);
+                profileRepository.save(profile);
+            }
+
+            return ResponseWithGoogle.builder()
+                    .idUser(user.getId())
+                    .token(jwtService.createToken(user))
+                    .build();
+        } catch (FirebaseAuthException | com.google.firebase.auth.FirebaseAuthException e) {
+            throw new RuntimeException("Invalid Firebase token", e);
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred", e);
+        }
+    }
 
     @Override
     @Transactional
@@ -671,60 +728,21 @@ public class UserServiceImpl implements UserService {
         } else throw new MessagingException("Не правильный код!");
     }
 
-    @Override
-    public ResponseWithGoogle authWithGoogle(String tokenFromGoogle) {
-        try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
-            String email = decodedToken.getEmail();
-            String fullName = decodedToken.getName();
-            String picture = decodedToken.getPicture();
 
-            User user = userRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("not found"));
-
-            if (user == null) {
-
-                user = new User();
-                user.setEmail(email);
-                user.setRole(Role.USER);
-                user.setPassword(passwordEncoder.encode("defaultPassword"));
-
-                Profile profile = new Profile();
-                profile.setUser(user);
-                profile.setAvatar(picture);
-
-                String[] nameParts = fullName.split(" ");
-                if (nameParts.length >= 1) {
-                    profile.setLastName(nameParts[0]);
-                }
-                if (nameParts.length >= 2) {
-                    profile.setFirstName(nameParts[1]);
-                }
-                if (nameParts.length >= 3) {
-                    profile.setPatronymicName(nameParts[2]);
-                }
-
-                user.setProfile(profile);
-                profileRepository.save(profile);
-                userRepository.save(user);
-            }
-
-            return ResponseWithGoogle.builder()
-                    .idUser(user.getId())
-                    .token(jwtService.createToken(user))
-                    .build();
-        } catch (FirebaseAuthException | com.google.firebase.auth.FirebaseAuthException e) {
-            throw new RuntimeException("Invalid Firebase token", e);
-        }
-    }
 
     @PostConstruct
     public void init() throws IOException {
-        GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
-                new ClassPathResource("google.json").getInputStream());
-        FirebaseOptions firebaseOptions = FirebaseOptions.builder()
-                .setCredentials(googleCredentials).build();
-        FirebaseApp.initializeApp(firebaseOptions);
+        try {
+            GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
+                    new ClassPathResource("google.json").getInputStream());
+            FirebaseOptions firebaseOptions = FirebaseOptions.builder()
+                    .setCredentials(googleCredentials).build();
+            FirebaseApp.initializeApp(firebaseOptions);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize Firebase", e);
+        }
     }
+
 
     public void startTask() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
