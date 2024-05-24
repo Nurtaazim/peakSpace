@@ -1,7 +1,6 @@
 package peakspace.config.amazonS3;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -25,12 +24,11 @@ public class StorageService {
     private String bucketName;
     private final AmazonS3 s3Client;
 
-    public String uploadFile(MultipartFile file, String key) {
+    public String uploadFile(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        s3Client.putObject(new PutObjectRequest(bucketName, key, fileObj).withCannedAcl(CannedAccessControlList.PublicRead));
-        fileObj.delete();
-        return "File uploaded : " + fileName;
+        s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
+        return s3Client.getUrl(bucketName, fileName).toString();
     }
 
     public byte[] downloadFile(String fileName) {
