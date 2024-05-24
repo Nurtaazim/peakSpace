@@ -25,8 +25,6 @@ public class GetAllPublicsImpl implements GetAllPublics {
                 "JOIN pablic_profiles_users upp ON pp.id = upp.pablic_profile_id " +
                 "WHERE upp.users_id = ?";
 
-
-
         return jdbcTemplate.query(sql, new Object[]{userId}, (ResultSet rs, int rowNum) ->
                 GetAllPublicProfileResponse.builder()
                         .avatar(rs.getString("avatar"))
