@@ -129,9 +129,13 @@ public class UserServiceImpl implements UserService {
         if (userForVerifier.getConfirmationCode().equals(tokenFromGoogle.confirmationCode())) {
             User user = userRepository.getReferenceById(userForVerifier.getId());
             user.setIsBlock(false);
+            user.setConfirmationCode(null);
+            user.setCreatedAt(ZonedDateTime.now());
             sendDefaultPasswordToEmail(user);
+            user.setBlockAccount(false);
             return ResponseWithGoogle.builder()
                     .idUser(user.getId())
+                    .description("Вы успешно зарегистрировались!")
                     .token(jwtService.createToken(user)).build();
         }
         throw new InvalidConfirmationCode();

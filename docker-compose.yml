@@ -19,7 +19,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USERNAME: java12user
+      POSTGRES_USER: java12user
       POSTGRES_PASSWORD: java12pass
     volumes:
       - db_data:/var/lib/postgresql/data
