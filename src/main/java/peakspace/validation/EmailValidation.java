@@ -5,7 +5,11 @@ import jakarta.validation.Payload;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import peakspace.validation.validator.EmailValidator;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Constraint(
@@ -15,7 +19,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @RestControllerAdvice
 public @interface  EmailValidation {
-    String message() default "{Wrong format! Email must end with to @gmail.com!}";
+    String message() default "{Не правильный формат емайл!}";
 
     Class<?>[] groups() default {};
 

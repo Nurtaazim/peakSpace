@@ -1,6 +1,8 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,10 +37,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
+    private static final Logger log = LoggerFactory.getLogger(PostServiceImpl.class);
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepo;
     private final PublicationRepository publicationRepo;
 
+    @Transactional
     @Override
     public SimpleResponse savePost(PostRequest postRequest) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -61,7 +65,6 @@ public class PostServiceImpl implements PostService {
 
         publicationRepo.save(publication);
         user.getPublications().add(publication);
-        userRepository.save(user);
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
@@ -127,56 +130,80 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-
     @Override
-    public SimpleResponse notationFriend(Long postId, List<Long> foundUserId) {
+    public SimpleResponse notationFriend(Long postId, List<Long> foundUserIds) {
         User owner = getCurrentUser();
-        List<UserMarkResponse> foundUsers = userRepository.findFoundUserId(foundUserId);
-        if (foundUserId.contains(owner.getId())) {
+
+        if (foundUserIds.contains(owner.getId())) {
             throw new BadRequestException("Нельзя отмечать себя!");
         }
 
-        Publication publication = publicationRepo.findByIdAndOwner(postId, owner);
+        Publication publication = publicationRepo.findByIdAndOwner(postId, owner.getId());
         if (publication == null) {
-            throw new NotFoundException(" Нет такой публикации !");
+            throw new NotFoundException("Нет такой публикации!");
         }
-        for (UserMarkResponse userMarkResponse : foundUsers) {
-            User markUser = userRepository.findById(userMarkResponse.id()).orElseThrow(() -> new NotFoundException("Пользователь не найден!"));
-            if (publication.getTagFriends().contains(markUser)) {
-                throw new BadRequestException("Уже отмечали друга " + markUser.getThisUserName());
-            }
-            publication.getTagFriends().add(markUser);
 
-            Notification notification = new Notification();
-            notification.setNotificationMessage(" Хочет выложить фото с вами!");
-            notification.setUserNotification(markUser);
-            notification.setSeen(false);
-            notification.setCreatedAt(ZonedDateTime.now());
-            notification.setSenderUserId(owner.getId());
-            markUser.getNotifications().add(notification);
+        for (User tagFriend : publication.getTagFriends()) {
+            if (foundUserIds.contains(tagFriend.getId())) {
+                throw new BadRequestException(" Уже отмечен друг !");
+            }
         }
-        publicationRepo.save(publication);
+
+        List<User> usersToMark = foundUserIds.stream()
+                .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не найден!")))
+                .filter(user -> !publication.getTagFriends().contains(user))
+                .collect(Collectors.toList());
+
+        if (!usersToMark.isEmpty()) {
+            for (User user : usersToMark) {
+                publication.getTagFriends().add(user);
+                Notification notification = createNotification(owner, user);
+                user.getNotifications().add(notification);
+            }
+            publicationRepo.save(publication);
+        }
+
         return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message("Друзья успешно отмечены!")
+                .httpStatus(usersToMark.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
+                .message(usersToMark.isEmpty() ? "Отмечать некого" : "Друзья успешно отмечены!")
                 .build();
     }
 
-    @Override
-    public SimpleResponse removeNotation(List<Long> friendsId) {
-        User owner = getCurrentUser();
-        List<UserMarkResponse> foundUser = userRepository.findFoundUserId(friendsId);
+    private Notification createNotification(User owner, User user) {
+        Notification notification = new Notification();
+        notification.setNotificationMessage(owner.getUsername() + " хочет выложить фото с вами!");
+        notification.setUserNotification(user);
+        notification.setSeen(false);
+        notification.setCreatedAt(ZonedDateTime.now());
+        notification.setSenderUserId(owner.getId());
+        return notification;
+    }
 
-        for (Publication publication : owner.getPublications()) {
-            for (UserMarkResponse userMarkResponse : foundUser) {
-                User markUser = userRepository.findById(userMarkResponse.id()).orElse(null);
-                publication.getTagFriends().remove(markUser);
+
+    @Override
+    public SimpleResponse removeNotation(Long postId, List<Long> friendsId) {
+        User owner = getCurrentUser();
+        Publication publication = publicationRepo.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Нет такой публикации!"));
+
+        if (publication.getOwner().getId().equals(owner.getId())) {
+            List<Long> friendIdsToRemove = friendsId.stream()
+                    .filter(id -> publication.getTagFriends().stream()
+                            .anyMatch(user -> user.getId().equals(id)))
+                    .collect(Collectors.toList());
+
+            if (friendIdsToRemove.size() < friendsId.size()) {
+                throw new NotFoundException("Один или несколько друзей не найдены в списке отмеченных друзей!");
             }
+
+            publication.getTagFriends().removeIf(user -> friendIdsToRemove.contains(user.getId()));
+            publicationRepo.save(publication);
+        } else {
+            throw new BadRequestException(" Это не твой публикация !");
         }
-        publicationRepo.saveAll(owner.getPublications());
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Друзья успешно удален из отметки !")
+                .message("Друзья успешно удалены из отметки!")
                 .build();
     }
 
@@ -202,6 +229,7 @@ public class PostServiceImpl implements PostService {
     public FavoritePostResponse favorites() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
+
         List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
         Map<Long, String> publics = allById.stream()
                 .collect(Collectors.toMap(
@@ -253,19 +281,15 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public SimpleResponse editPostPublic(Long postId, PostUpdateRequest postUpdateRequest) {
         User currentUser = getCurrentUser();
+        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
 
-        Optional<Publication> publicationOptional = currentUser.getPublications().stream()
-                .filter(publication -> publication.getId().equals(postId))
-                .findFirst();
-
-        if (publicationOptional.isPresent()) {
-            Publication publication = publicationOptional.get();
+        if (publication.getOwner().equals(currentUser) || currentUser.getPablicProfiles().getPublications().contains(publication)){
             publication.setDescription(postUpdateRequest.getDescription());
             publication.setLocation(postUpdateRequest.getLocation());
             publication.setBlockComment(postUpdateRequest.isBlockComment());
             publication.setUpdatedAt(ZonedDateTime.now());
             return SimpleResponse.builder()
-                    .message(" Успешно сохранен пост паблике!")
+                    .message(" Успешно изменен пост паблике!")
                     .httpStatus(HttpStatus.OK)
                     .build();
         } else {
@@ -277,26 +301,21 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public SimpleResponse deletePostPublic(Long postId) {
         User currentUser = getCurrentUser();
+        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
 
-        Optional<Publication> publicationToRemove = currentUser.getPablicProfiles().getPublications().stream()
-                .filter(publication -> publication.getId().equals(postId))
-                .findFirst();
-
-        if (publicationToRemove.isPresent()) {
-            Publication publication = publicationToRemove.get();
+        if (publication.getOwner().equals(currentUser) || currentUser.getPablicProfiles().getPublications().contains(publication)){
             publicationRepo.deleteComNotifications(postId);
             publicationRepo.deleteCom(postId);
             publicationRepo.deleteByIds(publication.getId());
 
-            System.err.println("Test");
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
-                    .message(" Удачно удаление !")
+                    .message(" Удачно удалено пост  !")
                     .build();
         } else {
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
-                    .message(" Нет такой публикации на паблике !")
+                    .message(" Вы не можете удалить эту публикацию у вас нету доступ !")
                     .build();
         }
     }

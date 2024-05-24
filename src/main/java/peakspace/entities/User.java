@@ -34,24 +34,26 @@ public class User implements UserDetails {
     private ZonedDateTime createdAt;
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Profile profile;
-    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Story> stories;
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Chapter> chapters;
-    @OneToMany(mappedBy = "sender", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @OneToMany(mappedBy = "sender", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.EAGER)
     private List<Chat> chats;
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.EAGER)
     private List<Comment> comments;
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.EAGER)
     private PablicProfile pablicProfiles;
-    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Publication> publications;
-    @OneToMany(mappedBy = "userNotification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "userNotification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Notification> notifications;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> searchFriendsHistory;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> blockAccounts;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> publicProfilesSize;
 
     public String getThisUserName() {
         return this.userName;

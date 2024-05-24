@@ -36,10 +36,10 @@ public class InnerCommentAPI {
     }
 
     @Secured("USER")
-    @Operation(summary = " Удаление комментарии в inner комментарии !")
-    @DeleteMapping("/{innerCommentId}")
-    public SimpleResponse deleteInnerComment(@PathVariable Long innerCommentId) {
-        return commentService.removeInnerComment(innerCommentId);
+    @Operation(summary = "Универсальный метод . Удаление комментарии и inner комментарии !")
+    @DeleteMapping("/{commentId}")
+    public SimpleResponse deleteInnerComment(@PathVariable Long commentId) {
+        return commentService.removeInnerComment(commentId);
     }
 
     @Secured("USER")

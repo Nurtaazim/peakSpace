@@ -126,29 +126,30 @@ values
 
 
 
-insert into profiles(id, user_id,work_or_not, avatar, cover, about_your_self, last_name,first_name,patronymic_name,profession)
+insert into profiles(id, user_id, work_or_not, avatar, cover, about_your_self, last_name, first_name, patronymic_name, profession, location)
 values
 
-       (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', 'Temirbekovich', 'DataIng'),
-       (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan','Arstanbekovich', 'Backend dev'),
-       (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', 'Keldibekovna','Java dev'),
-       (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', 'Universal','C# dev'),
-       (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed','Universal',  'C++ dev'),
-       (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', 'Universal','JS dev'),
-       (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', 'Universal','UX/UI'),
-       (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', 'Universal','UX/UI'),
-       (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', 'Universal', 'C++ dev'),
-       (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', 'Universal','Backend dev'),
-       (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', 'Universal','Full-stack dev'),
-       (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', 'Universal', 'Software Engineer'),
-       (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon',  'Universal','Frontend dev'),
-       (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan',  'Universal','Web Developer'),
-       (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', 'Universal','Mobile App Developer'),
-       (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', 'Universal','Software Developer'),
-       (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', 'Universal','Systems Analyst'),
-       (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', 'Universal','Database Administrator'),
-       (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat',  'Universal','Network Administrator'),
-       (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy',  'Universal','Machine Learning Engineer');
+    (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', 'Temirbekovich', 'DataIng', 'Bishkek, Kyrgyzstan'),
+    (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan','Arstanbekovich', 'Backend dev', 'Osh, Kyrgyzstan'),
+    (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', 'Keldibekovna','Java dev', 'Jalal-Abad, Kyrgyzstan'),
+    (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', 'Universal','C# dev', 'Talas, Kyrgyzstan'),
+    (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed','Universal',  'C++ dev', 'Naryn, Kyrgyzstan'),
+    (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', 'Universal','JS dev', 'Batken, Kyrgyzstan'),
+    (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', 'Universal','UX/UI', 'Issyk-Kul, Kyrgyzstan'),
+    (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', 'Universal','UX/UI', 'Chui, Kyrgyzstan'),
+    (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', 'Universal', 'C++ dev', 'Naryn, Kyrgyzstan'),
+    (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', 'Universal','Backend dev', 'Bishkek, Kyrgyzstan'),
+    (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', 'Universal','Full-stack dev', 'Osh, Kyrgyzstan'),
+    (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', 'Universal', 'Software Engineer', 'Jalal-Abad, Kyrgyzstan'),
+    (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon',  'Universal','Frontend dev', 'Talas, Kyrgyzstan'),
+    (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan',  'Universal','Web Developer', 'Naryn, Kyrgyzstan'),
+    (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', 'Universal','Mobile App Developer', 'Batken, Kyrgyzstan'),
+    (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', 'Universal','Software Developer', 'Issyk-Kul, Kyrgyzstan'),
+    (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', 'Universal','Systems Analyst', 'Chui, Kyrgyzstan'),
+    (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', 'Universal','Database Administrator', 'Bishkek, Kyrgyzstan'),
+    (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat',  'Universal','Network Administrator', 'Osh, Kyrgyzstan'),
+    (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy',  'Universal','Machine Learning Engineer', 'Jalal-Abad, Kyrgyzstan');
+
 
 
 insert into chats(id, sender_id, receiver_id)
@@ -241,27 +242,27 @@ values (1, 'imageLink1'),
        (20, 'imageLink11');
 
 
-insert into educations(id, profile_id, country, location, educational_institution)
-values (1, 1, 'KAZAKHSTAN', 'Karakol', 'KGTU'),
-       (2, 1, 'KAZAKHSTAN', 'Bishkek', 'KGTU'),
-       (3, 2, 'KAZAKHSTAN', 'Naryn', 'PED'),
-       (4, 2, 'KAZAKHSTAN', 'Bishkek', 'AUSA'),
-       (5, 3, 'KAZAKHSTAN', 'Bishkek', 'MANAS'),
-       (6, 4, 'KAZAKHSTAN', 'Naryn', 'USA'),
-       (7, 4, 'KAZAKHSTAN', 'Osh', 'OSHGU'),
-       (8, 5, 'KAZAKHSTAN', 'Osh', 'OSHGU'),
-       (9, 6, 'KAZAKHSTAN', 'Tokmok', 'KGTU'),
-       (10, 7, 'KAZAKHSTAN', 'Talas', 'MANAS'),
-       (11, 7, 'KAZAKHSTAN', 'Karakol', 'KGMA'),
-       (12, 8, 'KAZAKHSTAN', 'Jalal-Abad', 'OSHGU'),
-       (13, 8, 'KAZAKHSTAN', 'Bishkek', 'KSUCTA'),
-       (14, 9, 'KAZAKHSTAN', 'Naryn', 'KNU'),
-       (15, 9, 'KAZAKHSTAN', 'Bishkek', 'KRSU'),
-       (16, 10, 'KAZAKHSTAN', 'Tashkent', 'TUIT'),
-       (17, 11, 'KAZAKHSTAN', 'Osh', 'KSUCTA'),
-       (18, 12, 'KAZAKHSTAN', 'Bishkek', 'KSTU'),
-       (19, 13, 'KAZAKHSTAN', 'Bishkek', 'KNURE'),
-       (20, 14, 'KAZAKHSTAN', 'Bishkek', 'KRSU');
+insert into educations(id, profile_id, country, educational_institution)
+values (1, 1, 'KAZAKHSTAN', 'KGTU'),
+       (2, 1, 'KAZAKHSTAN', 'KGTU'),
+       (3, 2, 'KAZAKHSTAN', 'PED'),
+       (4, 2, 'KAZAKHSTAN','AUSA'),
+       (5, 3, 'KAZAKHSTAN', 'MANAS'),
+       (6, 4, 'KAZAKHSTAN', 'USA'),
+       (7, 4, 'KAZAKHSTAN', 'OSHGU'),
+       (8, 5, 'KAZAKHSTAN', 'OSHGU'),
+       (9, 6, 'KAZAKHSTAN', 'KGTU'),
+       (10, 7, 'KAZAKHSTAN','MANAS'),
+       (11, 7, 'KAZAKHSTAN', 'KGMA'),
+       (12, 8, 'KAZAKHSTAN', 'OSHGU'),
+       (13, 8, 'KAZAKHSTAN','KSUCTA'),
+       (14, 9, 'KAZAKHSTAN','KNU'),
+       (15, 9, 'KAZAKHSTAN', 'KRSU'),
+       (16, 10, 'KAZAKHSTAN', 'TUIT'),
+       (17, 11, 'KAZAKHSTAN', 'KSUCTA'),
+       (18, 12, 'KAZAKHSTAN','KSTU'),
+       (19, 13, 'KAZAKHSTAN', 'KNURE'),
+       (20, 14, 'KAZAKHSTAN','KRSU');
 
 
 INSERT INTO comments(id, user_id, publication_id, message, created_at)
@@ -379,19 +380,12 @@ values (1, 1),
        (5, 9);
 
 
-insert into notifications(id, like_id, user_notification_id, comment_id, seen, notification_message, created_at)
+insert into notifications(id, like_id, user_notification_id, sender_user_id, comment_id, publication_id, story_id, seen, notification_message, created_at)
 values
-    (1, 1, 1, 1, false, 'notification', '2024-04-10T00:00:00+00:00'),
-    (2, 2, 2, 2, false, 'notification', '2024-04-11T00:00:00+00:00'),
-    (3, 3, 3, 3, false, 'notification', '2024-04-12T00:00:00+00:00'),
-    (4, 4, 4, 4, false, 'notification', '2024-04-13T00:00:00+00:00'),
-    (5, 5, 5, 5, false, 'notification', '2024-04-14T00:00:00+00:00'),
-    (6, 6, 6, 6, false, 'notification', '2024-04-15T00:00:00+00:00'),
-    (7, 7, 7, 7, false, 'notification', '2024-04-16T00:00:00+00:00'),
-    (8, 8, 8, 8, false, 'notification', '2024-04-17T00:00:00+00:00'),
-    (9, 9, 9, 9, false, 'notification', '2024-04-18T00:00:00+00:00'),
-    (10, 10, 10, 10, false, 'notification', '2024-04-19T00:00:00+00:00');
-
+    (1, 1, 1, 1, NULL, NULL, NULL, false, 'Ваш пост понравился пользователю Aliaskar', '2024-05-22T11:06:23.439327+00:00'),
+    (2, 2, 1, 3, NULL, 1, NULL, false, 'Лайкнул на ваш пост', '2024-05-22T17:11:49.125000+00:00'),
+    (3, 3, 1, 4, NULL, NULL, 1, false, 'Лайкнул на ваш сториз', '2024-05-22T17:13:34.333000+00:00'),
+    (4, 4, 1, 2, 2, NULL, NULL, false, 'Ваш коммент понравился!', '2024-05-22T17:09:56.493000+00:00');
 
 insert into inner_comment(comment_id, inner_comments_id)
 values (1, 1),

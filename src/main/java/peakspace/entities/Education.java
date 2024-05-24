@@ -17,7 +17,6 @@ public class Education {
     private Long id;
     @Enumerated(EnumType.STRING)
     private Country country;
-    private String location;
     private String educationalInstitution;
 
 

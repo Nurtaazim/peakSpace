@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import peakspace.dto.response.GetAllPublicProfileResponse;
 import peakspace.dto.response.SearchResponse;
 import peakspace.entities.PablicProfile;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PublicProfileRepository extends JpaRepository<PablicProfile, Long> {
@@ -27,4 +29,8 @@ public interface PublicProfileRepository extends JpaRepository<PablicProfile, Lo
     @Transactional
     @Query(value = "delete from pablic_profiles where id = :publicId", nativeQuery = true)
     void deletePablicById(Long publicId);
+
+    @Query("select p from PablicProfile p where p.pablicName=:publicName")
+    Optional<PablicProfile> findByPublicName(String publicName);
+
 }

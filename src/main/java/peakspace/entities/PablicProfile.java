@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import peakspace.enums.Tematica;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,11 +24,11 @@ public class PablicProfile {
     private String descriptionPublic;
     @Enumerated(EnumType.STRING)
     private Tematica tematica;
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST}) //ManyToOne
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
     private User user;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<User> users;
     @OneToMany(mappedBy = "pablicProfile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Publication> publications;
+    private List<Publication> publications = new ArrayList<>();
 
 }

@@ -10,11 +10,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationResponse {
-    private String massage;
+    private String message;
     private String senderUserName;
     private LocalDate createdAt;
     private String publicationOrStoryImageUrl;
     private String senderProfileImageUrl;
-    private long senderUserId;
-    private long publicationOrStoryOrCommentId;
+    private Long senderUserId;
+    private Long publicationId;
+    private Long commentId;
+    private Long storyId;
 }

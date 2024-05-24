@@ -23,7 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.email =:email")
     Optional<User> findByEmail(String email);
-
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.userName = :userName")
+    boolean existsByThisUserName(@Param("userName") String userName);
     default User getByEmail(String email) {
         return findByEmail(email).orElseThrow(() ->
                 new NotFoundException("Пользователь с email '" + email + "' не найден в базе!"));
@@ -45,7 +46,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findById(foundUserId).orElseThrow(() -> new NotFoundException(" Нет такой ползователь !" + foundUserId));
     }
 
-    @Query("select new peakspace.dto.response.ProfileFriendsResponse(u.id, COALESCE(p.avatar, ''), COALESCE(p.cover, ''), COALESCE(p.aboutYourSelf, ''), COALESCE(p.profession, '')) " +
+    @Query("select new peakspace.dto.response.ProfileFriendsResponse(u.id, COALESCE(p.avatar, ''), COALESCE(p.cover, ''),COALESCE(u.userName, ''), COALESCE(p.aboutYourSelf, ''), COALESCE(p.profession, '')) " +
            "from User u left join u.profile p " +
            "where u.id = :foundUserId")
     ProfileFriendsResponse getId(Long foundUserId);
@@ -70,5 +71,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(()-> new NotFoundException("Пользователь с такой емайл не найдено!"));
     }
 
+    @Query("select u from User u where u.confirmationCode=:uuid")
+    Optional<User> findByUuid(String uuid);
 
+    @Query("select u from User u where u.userName = :userName")
+    Optional<User> findByName(String userName);
 }

@@ -2,17 +2,14 @@ package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PublicRequest;
-import peakspace.dto.response.PublicPhotoAndVideoResponse;
-import peakspace.dto.response.CommentResponse;
-import peakspace.dto.response.LinkResponse;
-import peakspace.dto.response.PublicPostResponse;
-import peakspace.dto.response.PublicProfileResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
+import peakspace.entities.*;
 import peakspace.entities.Comment;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
@@ -20,6 +17,7 @@ import peakspace.entities.User;
 import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
+import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicProfileRepository;
@@ -27,6 +25,7 @@ import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicProfileService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +100,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .cover(publicProfile.getCover())
                 .avatar(publicProfile.getAvatar())
                 .pablicName(publicProfile.getPablicName())
+                .userName(publicProfile.getUser().getThisUserName())
                 .tematica(publicProfile.getTematica())
                 .countFollower(publicProfile.getUsers().size())
                 .build();
@@ -124,7 +124,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                                         .toList();
                                 return (choise == Choise.Photos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
-                                       || (choise == Choise.Videos) && links.stream()
+                                        || (choise == Choise.Videos) && links.stream()
                                         .anyMatch(link -> link.endsWith(".mp4") || link.endsWith(".webm") || link.endsWith(".ogg"));
                             })
                             .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
@@ -138,6 +138,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build());
     }
 
+
+
     @Override
     public PublicPostResponse findPostPublic(Long postId) {
         Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой публикации !"));
@@ -147,7 +149,9 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<LinkResponse> links = publication.getLinkPublications().stream()
                 .map(link -> new LinkResponse(link.getId(), link.getLink()))
                 .collect(Collectors.toList());
-
+        if (publication.getPablicProfile() == null) {
+            throw new BadRequestException(" Нет такой пост в паблике паблик !");
+        }
         return new PublicPostResponse(
                 publication.getId(),
                 publication.getOwner().getId(),
@@ -194,12 +198,13 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<User> users = publicProfile.getUsers();
         if (users.contains(currentUser)) {
             users.remove(currentUser);
+            currentUser.getPublicProfilesSize().remove(publicProfile.getId());
             message = "Пользователь успешно отписано!";
         } else {
             users.add(currentUser);
+            currentUser.getPublicProfilesSize().add(publicProfile.getId());
             message = "Пользователь успешно присоединились !";
         }
-
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(message)
@@ -243,6 +248,69 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         }
         throw new NotFoundException("Комментарий с id " + commentId + " не найден!");
     }
+
+    @Override
+    public PublicProfileResponse forwardingMyPublic(String publicName) {
+        getCurrentUser();
+        PablicProfile publicProfile = publicProfileRepository.findByPublicName(publicName)
+                .orElseThrow(() -> new NotFoundException("Паблик не найден"));
+
+        if (!publicProfile.getPablicName().equals(publicName)) {
+            throw new BadRequestException("У пользователя нет такого паблика!");
+        }
+
+        return PublicProfileResponse.builder()
+                .publicId(publicProfile.getId())
+                .cover(publicProfile.getCover())
+                .avatar(publicProfile.getAvatar())
+                .pablicName(publicProfile.getPablicName())
+                .userName(publicProfile.getUser().getThisUserName())
+                .tematica(publicProfile.getTematica())
+                .countFollower(publicProfile.getUsers().size())
+                .build();
+    }
+
+    @Override
+    public ProfileFriendsResponse forwardingMyProfile(String userName) {
+        getCurrentUser();
+        User ownerProfile = userRepository.findByName(userName).orElseThrow(()-> new NotFoundException(" Нет такой пользователь "));
+        int sizeFriends = 0;
+        for (Chapter chapter : ownerProfile.getChapters()) {
+            sizeFriends += chapter.getFriends().size();
+        }
+
+        return ProfileFriendsResponse.builder()
+                .id(ownerProfile.getId())
+                .avatar(ownerProfile.getProfile().getAvatar())
+                .cover(ownerProfile.getProfile().getCover())
+                .userName(ownerProfile.getThisUserName())
+                .aboutYourSelf(ownerProfile.getProfile().getAboutYourSelf())
+                .profession(ownerProfile.getProfile().getProfession())
+                .friendsSize(sizeFriends)
+                .publicationsSize(ownerProfile.getPublicProfilesSize().size())
+                .build();
+    }
+
+    @Override
+    public ProfileFriendsResponse findUserByPostId(Long postId) {
+        getCurrentUser();
+        Publication publication = publicationRepository.findPostById(postId);
+        int sizeFriends = 0;
+        for (Chapter chapter : publication.getOwner().getChapters()) {
+            sizeFriends += chapter.getFriends().size();
+        }
+        return ProfileFriendsResponse.builder()
+                .id(publication.getOwner().getId())
+                .avatar(publication.getOwner().getProfile().getAvatar())
+                .cover(publication.getOwner().getProfile().getCover())
+                .userName(publication.getOwner().getThisUserName())
+                .aboutYourSelf(publication.getOwner().getProfile().getAboutYourSelf())
+                .profession(publication.getOwner().getProfile().getProfession())
+                .friendsSize(sizeFriends)
+                .publicationsSize(publication.getOwner().getPublicProfilesSize().size())
+                .build();
+    }
+
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
