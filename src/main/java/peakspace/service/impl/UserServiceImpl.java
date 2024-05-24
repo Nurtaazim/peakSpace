@@ -57,65 +57,6 @@ public class UserServiceImpl implements UserService {
     private final ChapterService chapterService;
     private final StoryRepository storyRepository;
     private final StorageService storageService;
-    private String userName;
-
-    @Override
-    @Transactional
-    public ResponseWithGoogle authWithGoogle(String tokenFromGoogle) {
-        try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenFromGoogle);
-            String email = decodedToken.getEmail();
-            String fullName = decodedToken.getName();
-            String picture = decodedToken.getPicture();
-
-            User user = userRepository.findByEmail(email).orElse(null);
-
-            if (user == null) {
-                user = new User();
-                user.setEmail(email);
-                user.setRole(Role.USER);
-                user.setBlockAccount(false);
-                user.setIsBlock(false);
-                user.setPassword(passwordEncoder.encode("defaultPassword"));
-
-                Profile profile = new Profile();
-                profile.setAvatar(picture);
-
-                String[] nameParts = fullName.split(" ");
-                if (nameParts.length >= 1) {
-                    profile.setLastName(nameParts[0]);
-                }
-                if (nameParts.length >= 2) {
-                    profile.setFirstName(nameParts[1]);
-                }
-                if (nameParts.length >= 3) {
-                    profile.setPatronymicName(nameParts[2]);
-                }
-
-                user.setProfile(profile);
-                profile.setUser(user);
-
-
-                String username = profile.getLastName().toLowerCase();
-                while (userRepository.existsByUserName(username)) {
-                    username = username + new Random().nextInt(1, userRepository.findAll().size() * 2);
-                }
-                user.setUserName(username);
-
-                userRepository.save(user);
-                profileRepository.save(profile);
-            }
-
-            return ResponseWithGoogle.builder()
-                    .idUser(user.getId())
-                    .token(jwtService.createToken(user))
-                    .build();
-        } catch (FirebaseAuthException | com.google.firebase.auth.FirebaseAuthException e) {
-            throw new RuntimeException("Invalid Firebase token", e);
-        } catch (Exception e) {
-            throw new RuntimeException("An unexpected error occurred", e);
-        }
-    }
 
     @Override
     @Transactional
@@ -129,72 +70,72 @@ public class UserServiceImpl implements UserService {
                 User user = userRepository.getReferenceByEmail(email);
                 return ResponseWithGoogle.builder()
                         .idUser(user.getId())
+                        .description(user.getUsername() + " успешно прошел аутентификацию!")
                         .token(jwtService.createToken(user))
                         .build();
-            } else if (phoneNumber != null && phoneNumber.length() > 2) {
-                String fullName = decodedToken.getName();
-                User user = new User();
-                Profile profile = new Profile();
-                profile.setPhoneNumber(phoneNumber);
-                String picture = decodedToken.getPicture();
-                String defaultPassword = generatorDefaultPassword(8, 8);
-                user.setRole(Role.USER);
-                user.setPassword(passwordEncoder.encode(defaultPassword));
-                user.setEmail(email);
-
-                try {
-                    sendConfirmationCode(email);
-                } catch (MessagingException e) {
-                    throw new RuntimeException(e);
-                }
-                user.setBlockAccount(true);
-                profile.setAvatar(picture);
-                profile.setUser(user);
-                profileRepository.save(profile);
-                userRepository.save(user);
-                user.setProfile(profile);
-                String[] parts = fullName.split(" ");
-                if (parts.length >= 1) {
-                    profile.setLastName(parts[0]);
-                }
-                if (parts.length >= 2) {
-                    profile.setFirstName(parts[1]);
-                }
-                if (parts.length >= 3) {
-                    profile.setPatronymicName(parts[2]);
-                }
-                String username = user.getProfile().getLastName();
-                while (!user.getUsername().isEmpty()) {
-                    if (!userRepository.existsByUserName(username)) {
-                        user.setUserName(user.getProfile().getLastName().toLowerCase());
-                    } else {
-                        username = username + new Random().nextInt(1, userRepository.findAll().size() * 2);
-                    }
-
-                }
-                return ResponseWithGoogle.builder()
-                        .idUser(user.getId())
-                        .description(email)
-                        .build();
             }
-            throw new NotActiveException();
+            String fullName = decodedToken.getName();
+            User user = new User();
+            Profile profile = new Profile();
+            profile.setPhoneNumber(phoneNumber);
+            String picture = decodedToken.getPicture();
+            String defaultPassword = generatorDefaultPassword(8, 8);
+            user.setRole(Role.USER);
+            user.setPassword(passwordEncoder.encode(defaultPassword));
+            user.setEmail(email);
+            user.setBlockAccount(true);
+            profile.setAvatar(picture);
+            profile.setUser(user);
+            profileRepository.save(profile);
+            String[] parts = fullName.split(" ");
+            if (parts.length >= 1) {
+                profile.setLastName(parts[0]);
+            }
+            if (parts.length >= 2) {
+                profile.setFirstName(parts[1]);
+            }
+            if (parts.length >= 3) {
+                profile.setPatronymicName(parts[2]);
+            }
+            userRepository.save(user);
+            user.setProfile(profile);
+            String username = user.getProfile().getLastName();
+            while (user.getThisUserName() == null)   {
+                if (!userRepository.existsByUserName(username)) {
+                    user.setUserName(user.getProfile().getLastName().toLowerCase());
+                    break;
+                } else {
+                    username = username + new Random().nextInt(1, userRepository.findAll().size() * 2);
+                }
+            }
+            try {
+                sendConfirmationCode(email);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+            return ResponseWithGoogle.builder()
+                    .idUser(user.getId())
+                    .description(email + " мы отправили код подтверждения на этот адрес электронной почты!")
+                    .build();
         } catch (com.google.firebase.auth.FirebaseAuthException e) {
-            throw new FirebaseAuthException();
+            throw new FirebaseAuthException(e.getMessage());
         }
     }
-
-
 
     @Override
     @Transactional
     public ResponseWithGoogle signUpWithGoogle(RegisterWithGoogleRequest tokenFromGoogle) {
         User userForVerifier = userRepository.getReferenceById(tokenFromGoogle.idVerifierUser());
-        if (userForVerifier.getPassword().equals(tokenFromGoogle.confirmationCode())) {
+        if (userForVerifier.getConfirmationCode().equals(tokenFromGoogle.confirmationCode())) {
             User user = userRepository.getReferenceById(userForVerifier.getId());
             user.setIsBlock(false);
+            user.setConfirmationCode(null);
+            user.setCreatedAt(ZonedDateTime.now());
             sendDefaultPasswordToEmail(user);
+            user.setBlockAccount(false);
             return ResponseWithGoogle.builder()
                     .idUser(user.getId())
+                    .description("Вы успешно зарегистрировались!")
                     .token(jwtService.createToken(user)).build();
         }
         throw new InvalidConfirmationCode();
@@ -204,7 +145,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String sendConfirmationCode(String email) throws MessagingException {
         User user = userRepository.getByEmail(email);
-        userName = user.getEmail();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
@@ -342,12 +282,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public SimpleResponse emailSender(String toEmail,String link) throws MessagingException {
+    public SimpleResponse emailSender(String toEmail, String link) throws MessagingException {
         String uuid = UUID.randomUUID().toString();
         User user = userRepository.getByEmail(toEmail);
         user.setConfirmationCode(uuid);
         userRepository.save(user);
-       String fullLinks = link +"/"+ uuid;
+        String fullLinks = link + "/" + uuid;
         String htmlContent = String.format("""
                 <html>
                 <body>
@@ -656,10 +596,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException {
-        if (userRepository.existsByEmail(signUpRequest.email())){
+        if (userRepository.existsByEmail(signUpRequest.email())) {
             throw new peakspace.exception.MessagingException("Пользователь с таким email уже существует!");
         }
-        if (userRepository.existsByThisUserName(signUpRequest.userName())){
+        if (userRepository.existsByThisUserName(signUpRequest.userName())) {
             throw new peakspace.exception.MessagingException("Пользователь с таким user name уже существует!");
         }
         User user = new User();
@@ -676,32 +616,32 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(ZonedDateTime.now());
         user.setBlockAccount(true);
         String message = "<html>"
-                + "<head>"
-                + "<style>"
-                + "body {"
-                + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
-                + "    background-size: cover;"
-                + "    background-position: center;"
-                + "    color: #ffffff;"
-                + "    font-family: Arial, sans-serif;"
-                + "}"
-                + "h2 {"
-                + "    color: #ffcc00;"
-                + "}"
-                + "h3 {"
-                + "    color: #ff0000;"
-                + "}"
-                + "</style>"
-                + "</head>"
-                + "<body>"
-                + "<div style=\"text-align: center; padding: 50px;\">"
-                + "<h2>Sign Up</h2>"
-                + "<p>Ваш код подтверждения для регистрации:</p>"
-                + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
-                + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
+                         + "<head>"
+                         + "<style>"
+                         + "body {"
+                         + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
+                         + "    background-size: cover;"
+                         + "    background-position: center;"
+                         + "    color: #ffffff;"
+                         + "    font-family: Arial, sans-serif;"
+                         + "}"
+                         + "h2 {"
+                         + "    color: #ffcc00;"
+                         + "}"
+                         + "h3 {"
+                         + "    color: #ff0000;"
+                         + "}"
+                         + "</style>"
+                         + "</head>"
+                         + "<body>"
+                         + "<div style=\"text-align: center; padding: 50px;\">"
+                         + "<h2>Sign Up</h2>"
+                         + "<p>Ваш код подтверждения для регистрации:</p>"
+                         + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
+                         + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
+                         + "</div>"
+                         + "</body>"
+                         + "</html>";
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
@@ -729,9 +669,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @PostConstruct
-    public void init() throws IOException {
+    public void init() {
         try {
             GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
                     new ClassPathResource("google.json").getInputStream());
