@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
 import peakspace.enums.Choise;
+import peakspace.repository.jdbsTamplate.GetAllPublics;
 import peakspace.service.PublicProfileService;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PublicProfileAPI {
 
     private final PublicProfileService publicService;
+    private final GetAllPublics getAllPublics;
 
     @Secured("USER")
     @Operation(summary = " Создание паблик канал !")
@@ -103,5 +105,11 @@ public class PublicProfileAPI {
         return publicService.findUserByPostId(postId);
     }
 
+    @Secured("USER")
+    @Operation(summary = "Get all PublicProfiles!")
+    @GetMapping("/profiles/{userId}")
+    public List<GetAllPublicProfileResponse> getAllPublicProfiles(@PathVariable Long userId){
+        return getAllPublics.getAllPublics(userId);
+    }
 
 }
