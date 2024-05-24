@@ -52,7 +52,4 @@ public interface UserService {
 
     SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 
-//    Test auth with google
-    ResponseWithGoogle authWithGoogle(String tokenFromGoogle);
-
 }
