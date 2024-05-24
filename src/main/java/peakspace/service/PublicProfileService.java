@@ -31,4 +31,5 @@ public interface PublicProfileService {
     ProfileFriendsResponse forwardingMyProfile(String userName);
 
     ProfileFriendsResponse findUserByPostId(Long postId);
+
 }

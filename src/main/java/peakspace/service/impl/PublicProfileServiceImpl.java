@@ -2,6 +2,7 @@ package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
+import peakspace.entities.Comment;
+import peakspace.entities.PablicProfile;
+import peakspace.entities.Publication;
+import peakspace.entities.User;
+import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
@@ -19,6 +25,7 @@ import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicProfileService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -303,6 +310,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .publicationsSize(publication.getOwner().getPublicProfilesSize().size())
                 .build();
     }
+
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();

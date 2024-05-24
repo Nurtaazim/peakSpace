@@ -531,8 +531,8 @@ public class UserServiceImpl implements UserService {
         friends.add(foundUserId);
 
         int pablicationsSize = 0;
-        if (foundUser.getPublicProfilesSize() != null) {
-            pablicationsSize = foundUser.getPublicProfilesSize().size();
+        if (foundUser.getPablicProfiles().getUsers() != null) {
+            pablicationsSize = foundUser.getPablicProfiles().getUsers().size();
         }
         int sizeFriends = 0;
         for (Chapter chapter : currentUser.getChapters()) {
