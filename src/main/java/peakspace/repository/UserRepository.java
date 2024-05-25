@@ -23,20 +23,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.email =:email")
     Optional<User> findByEmail(String email);
+
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.userName = :userName")
     boolean existsByThisUserName(@Param("userName") String userName);
+
     default User getByEmail(String email) {
         return findByEmail(email).orElseThrow(() ->
                 new NotFoundException("Пользователь с email '" + email + "' не найден в базе!"));
     }
+
     @Query("select u from  User u where u.userName like :email")
     Optional<User> getByUserName(String email);
-
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
            "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")
     List<SearchResponse> findAllSearch(@Param("keyword") String keyword);
-
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
             "from User u left join u.profile p")
