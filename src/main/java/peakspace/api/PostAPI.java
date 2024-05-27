@@ -71,4 +71,11 @@ public class PostAPI {
         return postService.removeNotation(postId,friendsId);
     }
 
+    @Secured("USER")
+    @PostMapping("/accept-users/{postId}/{friendsId}")
+    @Operation(summary = " Accept")
+    public SimpleResponse accept(@PathVariable Long postId,@RequestParam Boolean tag) {
+        return postService.acceptTagFriend(postId,tag);
+    }
+
 }
