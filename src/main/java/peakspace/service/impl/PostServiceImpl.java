@@ -130,6 +130,7 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
+    @Transactional
     @Override
     public SimpleResponse notationFriend(Long postId, List<Long> foundUserIds) {
         User owner = getCurrentUser();
@@ -322,20 +323,20 @@ public class PostServiceImpl implements PostService {
 
 
 
+    @Transactional
     @Override
-    public SimpleResponse acceptTagFriend(Long postId, boolean tag) {
+    public SimpleResponse acceptTagFriend(Long  postId, boolean tag) {
         getCurrentUser();
         Publication post = publicationRepo.findPostById(postId);
             if(tag){
-                post.getOwner().getAcceptPublics().add(getCurrentUser().getId());
-//                post.getTagFriends().add(getCurrentUser());
+                 getCurrentUser().getMyAcceptPost().add(post.getId());
             }else {
                post.getTagFriends().remove(getCurrentUser());
             }
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Success!")
+                .message(" Удачно  одобрено !")
                 .build();
     }
 

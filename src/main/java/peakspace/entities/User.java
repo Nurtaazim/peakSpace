@@ -55,7 +55,7 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> publicProfilesSize;
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<Long> acceptPublics;
+    private List<Long> myAcceptPost;
     public String getThisUserName() {
         return this.userName;
     }
