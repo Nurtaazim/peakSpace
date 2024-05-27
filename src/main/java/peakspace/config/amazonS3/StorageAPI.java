@@ -26,9 +26,7 @@ public class StorageAPI {
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
-        String key = UUID.randomUUID().toString();
-        log.error(service.getUrl(key));
-        return new ResponseEntity<>(service.uploadFile(file, key), HttpStatus.OK);
+        return new ResponseEntity<>(service.uploadFile(file), HttpStatus.OK);
     }
 
     @GetMapping("/download/{fileName}")

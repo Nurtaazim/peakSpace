@@ -71,5 +71,4 @@ public class PostAPI {
         return postService.removeNotation(postId,friendsId);
     }
 
-
 }
