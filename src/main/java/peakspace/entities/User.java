@@ -54,7 +54,8 @@ public class User implements UserDetails {
     private List<Long> blockAccounts;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> publicProfilesSize;
-
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> acceptPublics;
     public String getThisUserName() {
         return this.userName;
     }

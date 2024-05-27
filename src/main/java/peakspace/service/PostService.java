@@ -32,4 +32,5 @@ public interface PostService {
 
     SimpleResponse deletePostPublic(Long postId);
 
+    SimpleResponse acceptTagFriend(Long postId,boolean tag);
 }

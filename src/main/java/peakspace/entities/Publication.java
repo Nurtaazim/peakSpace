@@ -39,6 +39,7 @@ public class Publication {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Like> likes;
 
+
     @PrePersist
     public void prePersist() {
         this.createdAt = ZonedDateTime.now();

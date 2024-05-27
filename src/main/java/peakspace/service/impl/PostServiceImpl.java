@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.FavoritePostResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UserMarkResponse;
+import peakspace.dto.response.*;
 import peakspace.entities.User;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Publication;
@@ -22,6 +20,7 @@ import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.LinkPublicationRepo;
+import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PostService;
@@ -41,6 +40,7 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepo;
     private final PublicationRepository publicationRepo;
+    private final NotificationRepository notificationRepository;
 
     @Transactional
     @Override
@@ -318,6 +318,25 @@ public class PostServiceImpl implements PostService {
                     .message(" Вы не можете удалить эту публикацию у вас нету доступ !")
                     .build();
         }
+    }
+
+
+
+    @Override
+    public SimpleResponse acceptTagFriend(Long postId, boolean tag) {
+        getCurrentUser();
+        Publication post = publicationRepo.findPostById(postId);
+            if(tag){
+                post.getOwner().getAcceptPublics().add(getCurrentUser().getId());
+//                post.getTagFriends().add(getCurrentUser());
+            }else {
+               post.getTagFriends().remove(getCurrentUser());
+            }
+
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Success!")
+                .build();
     }
 
     private User getCurrentUser() {
