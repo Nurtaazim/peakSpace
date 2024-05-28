@@ -43,7 +43,7 @@ public class GlobalHandlerException {
     public ExceptionResponse badRequest(ForbiddenException forbiddenException){
         log.error(forbiddenException.getMessage());
         return ExceptionResponse.builder()
-                .httpStatus(HttpStatus.NOT_FOUND)
+                .httpStatus(HttpStatus.FORBIDDEN)
                 .exceptionClassName(forbiddenException.getClass().getSimpleName())
                 .message(forbiddenException.getMessage())
                 .build();

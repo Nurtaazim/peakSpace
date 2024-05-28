@@ -75,15 +75,14 @@ public class PublicationServiceImpl implements PublicationService {
 
     }
 
-    private boolean thisUserMyFriend(User user) {
-        for (Chapter chapter : user.getChapters()) {
-            for (User friend : chapter.getFriends()) {
-                if (friend.getId().equals(getCurrentUser().getId()))
-                    return true;
-            }
-        }
-        return false;
+
+
+    @Override
+    public MyPostResponse getById(Long postId) {
+        publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
+        return getMyPost(postId);
     }
+
 
     @Override
     public List<PublicationWithYouResponse> withPhoto(Long foundUserId) {
@@ -120,12 +119,15 @@ public class PublicationServiceImpl implements PublicationService {
 
 
 
-    @Override
-    public MyPostResponse getById(Long postId) {
-        publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
-        return getMyPost(postId);
+    private boolean thisUserMyFriend(User user) {
+        for (Chapter chapter : user.getChapters()) {
+            for (User friend : chapter.getFriends()) {
+                if (friend.getId().equals(getCurrentUser().getId()))
+                    return true;
+            }
+        }
+        return false;
     }
-
     @Override
     @Transactional
     public List<PublicationResponse> findAllPublic(Long friendId) {

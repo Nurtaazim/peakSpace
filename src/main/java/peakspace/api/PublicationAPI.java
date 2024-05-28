@@ -11,6 +11,7 @@ import peakspace.dto.response.HomePageResponse;
 import peakspace.dto.response.PostLinkResponse;
 import peakspace.dto.response.PublicationWithYouResponse;
 import peakspace.dto.response.MyPostResponse;
+import peakspace.repository.jdbsTamplate.GetAllPostFriendsProfile;
 import peakspace.service.PublicationService;
 import peakspace.service.UserService;
 
@@ -25,6 +26,7 @@ public class PublicationAPI {
 
     private final UserService userService;
     private final PublicationService publicationService;
+    private final GetAllPostFriendsProfile getAllPostFriendsProfile;
 
     @Secured("USER")
     @GetMapping("/my")
@@ -51,7 +53,7 @@ public class PublicationAPI {
     @GetMapping("/{friendId}")
     @Operation(summary = "Профиль друга все публикации друга ! ")
     public List<PublicationResponse> findAllPublic(@PathVariable Long friendId) {
-        return publicationService.findAllPublic(friendId);
+        return getAllPostFriendsProfile.findAllPublic(friendId);
     }
 
     @Secured({"USER"})
