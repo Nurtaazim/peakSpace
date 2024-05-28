@@ -15,11 +15,7 @@ public interface PublicationService {
 
     GetAllPostsResponse getAllPosts(Principal principal);
 
-    List<PublicationWithYouResponse> withPhoto(Long foundUserId);
-
     MyPostResponse getById(Long postId);
-
-    List<PublicationResponse> findAllPublic(Long friendId);
 
     List<HomePageResponse> homePage();
 
