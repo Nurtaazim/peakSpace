@@ -11,7 +11,7 @@ import peakspace.enums.Tematica;
 @NoArgsConstructor
 @Builder
 public class GetAllPublicProfileResponse {
-
+    private Long id;
     private String avatar;
     private String pablicName;
     @Enumerated(EnumType.STRING)

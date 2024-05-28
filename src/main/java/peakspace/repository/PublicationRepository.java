@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import peakspace.dto.response.LinkResponse;
+import peakspace.dto.response.PublicationWithYouResponse;
 import peakspace.dto.response.SearchHashtagsResponse;
 import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
