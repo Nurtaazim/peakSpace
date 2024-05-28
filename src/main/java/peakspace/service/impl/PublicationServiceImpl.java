@@ -78,7 +78,7 @@ public class PublicationServiceImpl implements PublicationService {
     private boolean thisUserMyFriend(User user) {
         for (Chapter chapter : user.getChapters()) {
             for (User friend : chapter.getFriends()) {
-                if (friend.getId().equals(user.getId()))
+                if (friend.getId().equals(getCurrentUser().getId()))
                     return true;
             }
         }
@@ -88,38 +88,36 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public List<PublicationWithYouResponse> withPhoto(Long foundUserId) {
         User foundUser = userRepository.findByIds(foundUserId);
-        List<PublicationWithYouResponse> publicationsWithYou = new ArrayList<>();
-        List<Publication> publications = publicationRepository.findAll();
 
         if (foundUser.getIsBlock() && !thisUserMyFriend(foundUser)) {
-            throw new AccountIsBlock("Закрытый аккаунт! ");
+            throw new AccountIsBlock("Закрытый аккаунт!");
         }
-                    for (Publication publication : publications) {
-                if (publication.getTagFriends().stream().anyMatch(user -> user.getId().equals(foundUserId))) {
-                    PublicationWithYouResponse publicationWithYouResponse = new PublicationWithYouResponse();
-                    publicationWithYouResponse.setId(publication.getId());
-                    publicationWithYouResponse.setDescription(publication.getDescription());
-                    publicationWithYouResponse.setLocation(publication.getLocation());
 
-                    List<Link_Publication> linkPublications = publication.getLinkPublications();
-                    List<LinkPublicationResponse> linkPublicationResponses = new ArrayList<>();
+        List<Long> myAcceptPost = foundUser.getMyAcceptPost();
+        List<PublicationWithYouResponse> publicationsWithYou = new ArrayList<>();
 
-                    if (linkPublications != null && !linkPublications.isEmpty()) {
-                        for (Link_Publication linkPublication : linkPublications) {
-                            LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse();
-                            linkPublicationResponse.setId(linkPublication.getId());
-                            linkPublicationResponse.setLink(linkPublication.getLink());
-                            linkPublicationResponses.add(linkPublicationResponse);
-                        }
-                    }
+        for (Long postId : myAcceptPost) {
+            Publication publication = publicationRepository.findPostById(postId);
+            PublicationWithYouResponse publicationWithYouResponse = new PublicationWithYouResponse();
+            publicationWithYouResponse.setId(publication.getId());
+            publicationWithYouResponse.setDescription(publication.getDescription());
+            publicationWithYouResponse.setLocation(publication.getLocation());
 
-                    publicationWithYouResponse.setLinks(linkPublicationResponses);
-                    publicationsWithYou.add(publicationWithYouResponse);
-                }
-            }
+            List<LinkPublicationResponse> linkPublicationResponses = publication.getLinkPublications().stream()
+                    .map(linkPublication -> {
+                        LinkPublicationResponse linkPublicationResponse = new LinkPublicationResponse();
+                        linkPublicationResponse.setId(linkPublication.getId());
+                        linkPublicationResponse.setLink(linkPublication.getLink());
+                        return linkPublicationResponse;
+                    })
+                    .collect(Collectors.toList());
 
+            publicationWithYouResponse.setLinks(linkPublicationResponses);
+            publicationsWithYou.add(publicationWithYouResponse);
+        }
         return publicationsWithYou;
     }
+
 
 
     @Override
