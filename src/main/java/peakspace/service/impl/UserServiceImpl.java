@@ -27,6 +27,7 @@ import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.*;
+import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
@@ -135,10 +136,10 @@ public class UserServiceImpl implements UserService {
             user.setBlockAccount(false);
             return ResponseWithGoogle.builder()
                     .idUser(user.getId())
-                    .description("Вы успешно зарегистрировались!")
+                    .description("Вы успешно зарегистрировались! ")
                     .token(jwtService.createToken(user)).build();
         }
-        throw new InvalidConfirmationCode();
+        throw new InvalidConfirmationCode("Confirmation code не совпадает! ");
     }
 
     @Override
@@ -278,7 +279,7 @@ public class UserServiceImpl implements UserService {
             javaMailSender.send(mimeMessage);
             System.out.println("Mail sent to " + user.getEmail());
         } catch (MessagingException e) {
-            throw new NotActiveException();
+            throw new SmsSendingException();
         }
     }
 
