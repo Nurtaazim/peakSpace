@@ -1,4 +1,5 @@
 package peakspace.exception.handler;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,6 +15,17 @@ import peakspace.exception.response.ExceptionResponse;
 @RestControllerAdvice
 @Slf4j
 public class GlobalHandlerException {
+
+    @ExceptionHandler(AccountIsBlock.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse accountIsBlock(AccountIsBlock accountIsBlockException){
+        log.error(accountIsBlockException.getMessage());
+        return ExceptionResponse.builder()
+                .httpStatus(HttpStatus.FORBIDDEN)
+                .exceptionClassName(accountIsBlockException.getClass().getSimpleName())
+                .message(accountIsBlockException.getMessage())
+                .build();
+    }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

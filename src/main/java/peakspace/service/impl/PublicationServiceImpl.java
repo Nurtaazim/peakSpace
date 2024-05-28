@@ -22,12 +22,10 @@ import peakspace.entities.Publication;
 import peakspace.entities.User;
 import peakspace.entities.Notification;
 import peakspace.enums.Role;
+import peakspace.exception.AccountIsBlock;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
-import peakspace.repository.CommentRepository;
-import peakspace.repository.NotificationRepository;
-import peakspace.repository.PublicationRepository;
-import peakspace.repository.UserRepository;
+import peakspace.repository.*;
 import peakspace.service.PublicationService;
 
 import java.security.Principal;
@@ -45,6 +43,7 @@ public class PublicationServiceImpl implements PublicationService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final NotificationRepository notificationRepository;
+    private final ChapterRepository chapterRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -76,14 +75,27 @@ public class PublicationServiceImpl implements PublicationService {
 
     }
 
+    private boolean thisUserMyFriend(User user) {
+        for (Chapter chapter : user.getChapters()) {
+            for (User friend : chapter.getFriends()) {
+                if (friend.getId().equals(user.getId()))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public List<PublicationWithYouResponse> withPhoto(Long foundUserId) {
         User foundUser = userRepository.findByIds(foundUserId);
         List<PublicationWithYouResponse> publicationsWithYou = new ArrayList<>();
+        List<Publication> publications = publicationRepository.findAll();
 
-        if (foundUser != null) {
-            for (Publication publication : foundUser.getPublications()) {
-                if (publication.getTagFriends().stream().anyMatch(user -> user.getId().equals(getCurrentUser().getId()))) {
+        if (foundUser.getIsBlock() && !thisUserMyFriend(foundUser)) {
+            throw new AccountIsBlock("Закрытый аккаунт! ");
+        }
+                    for (Publication publication : publications) {
+                if (publication.getTagFriends().stream().anyMatch(user -> user.getId().equals(foundUserId))) {
                     PublicationWithYouResponse publicationWithYouResponse = new PublicationWithYouResponse();
                     publicationWithYouResponse.setId(publication.getId());
                     publicationWithYouResponse.setDescription(publication.getDescription());
@@ -105,10 +117,10 @@ public class PublicationServiceImpl implements PublicationService {
                     publicationsWithYou.add(publicationWithYouResponse);
                 }
             }
-        }
 
         return publicationsWithYou;
     }
+
 
     @Override
     public MyPostResponse getById(Long postId) {
@@ -117,10 +129,17 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
+    @Transactional
     public List<PublicationResponse> findAllPublic(Long friendId) {
+
+        User referenceById = userRepository.getReferenceById(friendId);
+        if (referenceById.getIsBlock() && !thisUserMyFriend(referenceById)){
+            throw new AccountIsBlock("Закрытый аккаунт! ");
+        }
 
         List<Publication> friendsPublic = userRepository.findFriendsPub(friendId);
         List<PublicationResponse> allPublications = new ArrayList<>();
+
         for (Publication publication : friendsPublic) {
             if (publication.getPablicProfile() == null) {
                 PublicationResponse publicationResponse = new PublicationResponse();
