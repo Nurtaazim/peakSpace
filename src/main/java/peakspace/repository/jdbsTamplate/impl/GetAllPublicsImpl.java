@@ -19,7 +19,7 @@ public class GetAllPublicsImpl implements GetAllPublics {
 
     @Override
     public List<GetAllPublicProfileResponse> getAllPublics(Long userId) {
-        String sql = "SELECT pp.avatar, pp.pablic_name, pp.tematica, u.user_name AS owner " +
+        String sql = "SELECT pp.id, pp.avatar, pp.pablic_name, pp.tematica, u.user_name AS owner " +
                 "FROM pablic_profiles pp " +
                 "JOIN users u ON pp.user_id = u.id " +
                 "JOIN pablic_profiles_users upp ON pp.id = upp.pablic_profile_id " +
@@ -27,6 +27,7 @@ public class GetAllPublicsImpl implements GetAllPublics {
 
         return jdbcTemplate.query(sql, new Object[]{userId}, (ResultSet rs, int rowNum) ->
                 GetAllPublicProfileResponse.builder()
+                        .id(rs.getLong("id"))
                         .avatar(rs.getString("avatar"))
                         .pablicName(rs.getString("pablic_name"))
                         .tematica(Tematica.valueOf(rs.getString("tematica")))
