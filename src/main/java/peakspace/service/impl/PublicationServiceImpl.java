@@ -6,15 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.dto.response.GetAllPostsResponse;
-import peakspace.dto.response.LinkPublicationResponse;
-import peakspace.dto.response.MyPostResponse;
-import peakspace.dto.response.HomePageResponse;
-import peakspace.dto.response.CommentResponse;
-import peakspace.dto.response.LinkResponse;
-import peakspace.dto.response.PostLinkResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.entities.Chapter;
+import peakspace.dto.response.*;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
@@ -23,9 +15,10 @@ import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
+import peakspace.repository.jdbsTamplate.PublicationJdbcTemplate;
 import peakspace.service.PublicationService;
+
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +33,7 @@ public class PublicationServiceImpl implements PublicationService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final NotificationRepository notificationRepository;
+    private final PublicationJdbcTemplate publicationJdbcTemplate;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -142,6 +136,16 @@ public class PublicationServiceImpl implements PublicationService {
                 .countLikes(publication.getLikes().size())
                 .countComments(publication.getComments().size())
                 .build();
+    }
+
+    @Override
+    public List<PublicationResponse> findAllPublic(Long friendId) {
+        return publicationJdbcTemplate.findAllPublic(friendId);
+    }
+
+    @Override
+    public List<PublicationWithYouResponse> withPhoto(Long foundUserId) {
+        return publicationJdbcTemplate.withPhoto(foundUserId);
     }
 
     private User getCurrentUser() {

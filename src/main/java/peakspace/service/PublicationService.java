@@ -22,5 +22,7 @@ public interface PublicationService {
     SimpleResponse saveComplainToPost(Long postId, String complain);
 
     PostLinkResponse findInnerPost(Long postId);
+    List<PublicationResponse> findAllPublic(Long friendId);
+    List<PublicationWithYouResponse> withPhoto(Long foundUserId);
 
 }

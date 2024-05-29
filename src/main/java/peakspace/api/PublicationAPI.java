@@ -40,7 +40,7 @@ public class PublicationAPI {
     @GetMapping("/photo-with-me/{foundUserId}")
     @Operation(summary = " Профиль друга Фото с вами !")
     public List<PublicationWithYouResponse> withPhoto(@PathVariable Long foundUserId) {
-        return publicationJdbcTemplate.withPhoto(foundUserId);
+        return publicationService.withPhoto(foundUserId);
     }
 
     @Secured({"USER"})
@@ -54,7 +54,7 @@ public class PublicationAPI {
     @GetMapping("/{friendId}")
     @Operation(summary = "Профиль друга все публикации друга ! ")
     public List<PublicationResponse> findAllPublic(@PathVariable Long friendId) {
-        return publicationJdbcTemplate.findAllPublic(friendId);
+        return publicationService.findAllPublic(friendId);
     }
 
     @Secured({"USER"})
