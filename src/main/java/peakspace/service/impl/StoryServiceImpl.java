@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.config.amazonS3.StorageService;
 import peakspace.dto.request.StoryRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryResponse;

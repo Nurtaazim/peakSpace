@@ -18,7 +18,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.config.amazonS3.StorageService;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.*;
 import peakspace.dto.response.*;
