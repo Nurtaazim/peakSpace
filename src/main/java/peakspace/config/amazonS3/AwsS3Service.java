@@ -12,8 +12,6 @@ public interface AwsS3Service {
 
     S3Response uploadFiles(List<MultipartFile> files);
 
-    byte[] downloadFile(String key);
-
     SimpleResponse deleteFile(String key);
 
 }

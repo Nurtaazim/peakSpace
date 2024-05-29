@@ -2,9 +2,6 @@ package peakspace.config.amazonS3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,31 +38,45 @@ public class AwsS3ServiceImpl implements AwsS3Service {
             return S3Response.builder()
                     .simpleResponse(SimpleResponse.builder()
                             .httpStatus(HttpStatus.BAD_REQUEST)
-                            .message("No file provided")
+                            .message("Файл не предоставлен")
                             .build())
                     .build();
         }
+
         String key = UUID.randomUUID().toString();
         File fileObj = null;
 
         try {
             fileObj = convertMultiPartFileToFile(file);
             s3Client.putObject(new PutObjectRequest(bucketName, key, fileObj));
+
+            // Проверка, что файл действительно сохранился в S3
+            boolean exists = s3Client.doesObjectExist(bucketName, key);
+            if (!exists) {
+                log.error("Файл не сохранился в S3, ключ: {}", key);
+                return S3Response.builder()
+                        .simpleResponse(SimpleResponse.builder()
+                                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .message("Файл не сохранился в S3")
+                                .build())
+                        .build();
+            }
+
             String url = getUrl(key);
-            log.info("saved successfully with URL: {}", url);
+            log.info("Файл успешно сохранен с URL: {}", url);
             return S3Response.builder()
                     .object(url)
                     .simpleResponse(SimpleResponse.builder()
                             .httpStatus(HttpStatus.OK)
-                            .message("saved successfully")
+                            .message("Файл успешно сохранен")
                             .build())
                     .build();
         } catch (Exception e) {
-            log.error("Error occurred while saving", e);
+            log.error("Произошла ошибка при сохранении файла", e);
             return S3Response.builder()
                     .simpleResponse(SimpleResponse.builder()
-                            .httpStatus(HttpStatus.BAD_REQUEST)
-                            .message("Error occurred while saving")
+                            .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .message("Произошла ошибка при сохранении файла")
                             .build())
                     .build();
         } finally {
@@ -128,39 +139,6 @@ public class AwsS3ServiceImpl implements AwsS3Service {
                         .message("saved successfully")
                         .build())
                 .build();
-    }
-
-    @Override
-    public byte[] downloadFile(String key) {
-        log.info("Downloading file with key: {}", key);
-        S3Object s3Object = null;
-        S3ObjectInputStream inputStream = null;
-
-        try {
-            s3Object = s3Client.getObject(bucketName, key);
-            inputStream = s3Object.getObjectContent();
-            byte[] content = IOUtils.toByteArray(inputStream);
-            log.info("File downloaded successfully with key: {}", key);
-            return content;
-        } catch (IOException e) {
-            log.error("Error occurred while downloading file with key: {}", key, e);
-            return new byte[0];
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    log.error("Error occurred while closing input stream for file with key: {}", key, e);
-                }
-            }
-            if (s3Object != null) {
-                try {
-                    s3Object.close();
-                } catch (IOException e) {
-                    log.error("Error occurred while closing S3Object for file with key: {}", key, e);
-                }
-            }
-        }
     }
 
     @Override

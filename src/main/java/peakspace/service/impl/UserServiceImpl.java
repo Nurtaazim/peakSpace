@@ -18,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.*;
 import peakspace.dto.response.*;
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
     private final SearchFriends searchFriends;
     private final ChapterService chapterService;
     private final StoryRepository storyRepository;
-    private final StorageService storageService;
+    private final AwsS3Service storageService;
 
     @Override
     @Transactional
