@@ -1,11 +1,11 @@
 # Amazon S3
 cloud:
   aws:
-    region: eu-center-1
-    access-key: AKIAZI2LDVKOR6V4MDP7
-    secret-key: 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
+    region: eu-central-1
+    access-key: AKIA3KYNRCVIBB2TALRT
+    secret-key: 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
   s3:
-    bucketName: peakspacebucket
+    bucketName: peakspace-b12
 
 spring:
   servlet:
