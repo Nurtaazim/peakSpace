@@ -1,8 +1,16 @@
 # Amazon S3
 cloud:
   aws:
-    region: eu-north-1
+    region: eu-center-1
     access-key: AKIAZI2LDVKOR6V4MDP7
     secret-key: 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
   s3:
     bucketName: peakspacebucket
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 22MB
+      max-file-size: 100MB
+      max-request-size: 100MB

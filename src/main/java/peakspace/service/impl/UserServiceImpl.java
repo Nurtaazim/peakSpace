@@ -18,7 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peakspace.config.amazonS3.StorageService;
+import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.*;
 import peakspace.dto.response.*;
@@ -27,6 +27,7 @@ import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.*;
+import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.ChapterService;
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
     private final SearchFriends searchFriends;
     private final ChapterService chapterService;
     private final StoryRepository storyRepository;
-    private final StorageService storageService;
+    private final AwsS3Service storageService;
 
     @Override
     @Transactional
@@ -135,10 +136,10 @@ public class UserServiceImpl implements UserService {
             user.setBlockAccount(false);
             return ResponseWithGoogle.builder()
                     .idUser(user.getId())
-                    .description("Вы успешно зарегистрировались!")
+                    .description("Вы успешно зарегистрировались! ")
                     .token(jwtService.createToken(user)).build();
         }
-        throw new InvalidConfirmationCode();
+        throw new InvalidConfirmationCode("Confirmation code не совпадает! ");
     }
 
     @Override
@@ -278,7 +279,7 @@ public class UserServiceImpl implements UserService {
             javaMailSender.send(mimeMessage);
             System.out.println("Mail sent to " + user.getEmail());
         } catch (MessagingException e) {
-            throw new NotActiveException();
+            throw new SmsSendingException();
         }
     }
 
