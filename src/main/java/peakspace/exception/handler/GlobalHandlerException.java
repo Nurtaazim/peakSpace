@@ -18,7 +18,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionResponse notFound(NotFoundException notFoundException){
+    public ExceptionResponse notFound(NotFoundException notFoundException) {
         log.error(notFoundException.getMessage());
         return ExceptionResponse.builder()
                 .httpStatus(HttpStatus.NOT_FOUND)
@@ -29,7 +29,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse illegalArgument(IllegalArgumentException illegalArgumentException){
+    public ExceptionResponse illegalArgument(IllegalArgumentException illegalArgumentException) {
         log.error(illegalArgumentException.getMessage());
         return ExceptionResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
@@ -40,7 +40,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse badRequest(BadRequestException e){
+    public ExceptionResponse badRequest(BadRequestException e) {
         return ExceptionResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(e.getClass().getSimpleName())
@@ -50,7 +50,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse argumentNotValid(MethodArgumentNotValidException e){
+    public ExceptionResponse argumentNotValid(MethodArgumentNotValidException e) {
         return ExceptionResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(e.getClass().getSimpleName())
@@ -60,7 +60,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(MessagingException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-    public ExceptionResponse messageException(MessagingException e){
+    public ExceptionResponse messageException(MessagingException e) {
         return ExceptionResponse.builder()
                 .httpStatus(HttpStatus.EXPECTATION_FAILED)
                 .exceptionClassName(e.getClass().getSimpleName())
@@ -70,7 +70,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionResponse accessDenied(AccessDeniedException accessDeniedException){
+    public ExceptionResponse accessDenied(AccessDeniedException accessDeniedException) {
         log.error(accessDeniedException.getMessage());
         return ExceptionResponse.builder()
                 .httpStatus(HttpStatus.FORBIDDEN)
@@ -81,7 +81,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(FirebaseAuthException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse firebaseAuth(FirebaseAuthException notActiveException){
+    public ExceptionResponse firebaseAuth(FirebaseAuthException notActiveException) {
         return peakspace.exception.response.ExceptionResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(notActiveException.getClass().getSimpleName())
@@ -91,7 +91,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(InvalidConfirmationCode.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse invalidConfirmation(InvalidConfirmationCode invalidConfirmationCode){
+    public ExceptionResponse invalidConfirmation(InvalidConfirmationCode invalidConfirmationCode) {
         return peakspace.exception.response.ExceptionResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(invalidConfirmationCode.getClass().getSimpleName())
@@ -101,7 +101,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(SmsSendingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse SmsSending(SmsSendingException smsSendingException){
+    public ExceptionResponse SmsSending(SmsSendingException smsSendingException) {
         return peakspace.exception.response.ExceptionResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .exceptionClassName(smsSendingException.getClass().getSimpleName())
