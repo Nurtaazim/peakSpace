@@ -1,0 +1,1 @@
+-- ALTER TABLE notifications DROP CONSTRAINT notifications_like_id_key;
