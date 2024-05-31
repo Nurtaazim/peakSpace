@@ -574,7 +574,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SignInResponse signIn(SignInRequest signInRequest) throws MessagingException {
+    public SignInResponse signIn(SignInRequest signInRequest) throws peakspace.exception.MessagingException {
         User user;
         if (signInRequest.email().endsWith("@gmail.com")) {
             user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
@@ -591,11 +591,11 @@ public class UserServiceImpl implements UserService {
                     .id(user.getId())
                     .token(jwtService.createToken(user))
                     .build();
-        } else throw new MessagingException("Incorrect password!");
+        } else throw new peakspace.exception.MessagingException("Incorrect password!");
     }
 
     @Override
-    public SignUpResponse signUp(SignUpRequest signUpRequest) throws MessagingException {
+    public SignUpResponse signUp(SignUpRequest signUpRequest) throws peakspace.exception.MessagingException, MessagingException {
         if (userRepository.existsByEmail(signUpRequest.email())) {
             throw new peakspace.exception.MessagingException("Пользователь с таким email уже существует!");
         }
