@@ -17,7 +17,7 @@ public class Chapter {
     @SequenceGenerator(name = "chapter_seq", allocationSize = 1, initialValue = 11)
     private Long id;
     private String groupName;
-    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<User> friends;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private User user;
