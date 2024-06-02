@@ -14,6 +14,4 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     @Query(value = "select n from Notification  n where n.like.id = :likeId")
     Optional<Notification> findByLikeId(long likeId);
 
-    @Query("select u from User u where u.id =:senderUserId")
-    User findBySenderNotification(Long senderUserId);
 }
