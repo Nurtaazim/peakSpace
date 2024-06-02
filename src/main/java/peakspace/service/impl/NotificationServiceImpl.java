@@ -1,5 +1,6 @@
 package peakspace.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.NotificationResponse;
@@ -20,12 +21,14 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
 
     @Override
+    @Transactional
     public List<NotificationResponse> getAllNotifications() {
         List<Notification> notifications = userRepository.getCurrentUser().getNotifications();
         List<NotificationResponse> notificationResponses = new ArrayList<>();
+        notifications.sort((n1, n2) -> n2.getId().compareTo(n1.getId()));
 
         for (Notification notification : notifications) {
-            User user = notificationRepository.findBySenderNotification(notification.getSenderUserId());
+            User user = userRepository.getReferenceById(notification.getSenderUserId());
             NotificationResponse notificationResponse = new NotificationResponse();
 
             notificationResponse.setMessage(notification.getNotificationMessage());
@@ -34,17 +37,22 @@ public class NotificationServiceImpl implements NotificationService {
             notificationResponse.setSenderUserName(user.getThisUserName());
             notificationResponse.setSenderProfileImageUrl(user.getProfile().getAvatar());
 
-            if (notification.getPublication() != null) {
+            if (notification.getPublication() != null && notification.getLike() != null) {
                 notificationResponse.setPublicationId(notification.getPublication().getId());
                 notificationResponse.setPublicationOrStoryImageUrl(notification.getPublication().getLinkPublications().getFirst().getLink());
-            } else if (notification.getStory() != null) {
+            } else if (notification.getStory() != null && notification.getLike() != null) {
                 notificationResponse.setStoryId(notification.getStory().getId());
                 notificationResponse.setPublicationOrStoryImageUrl(notification.getStory().getLinkPublications().getFirst().getLink());
+            } else if (notification.getComment() != null && notification.getLike() == null) {
+                notificationResponse.setCommentId(notification.getComment().getId());
+                notificationResponse.setPublicationOrStoryImageUrl(notification.getComment().getPublication().getLinkPublications().getFirst().getLink());
             } else if (notification.getComment() != null) {
                 notificationResponse.setCommentId(notification.getComment().getId());
-                notificationResponse.setPublicationOrStoryImageUrl(notification.getPublication().getLinkPublications().getFirst().getLink());
+                notificationResponse.setPublicationOrStoryImageUrl(notification.getComment().getPublication().getLinkPublications().getFirst().getLink());
             }
+            notificationResponse.setSeen(notification.isSeen());
             notificationResponses.add(notificationResponse);
+            notification.setSeen(true);
         }
 
         return notificationResponses;
