@@ -26,7 +26,7 @@ public class Comment {
     private List<Notification> notifications = new ArrayList<>();
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     private Publication publication;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "innerComment")
     private List<Comment> innerComments;
     @ManyToMany(fetch = FetchType.EAGER)

@@ -25,7 +25,7 @@ public class Story {
     private List<User> tagFriends;
     @ManyToMany()
     private List<Like> likes;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.LAZY)
     private List<Link_Publication> linkPublications;
 
     @PrePersist

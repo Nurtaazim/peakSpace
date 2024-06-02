@@ -49,6 +49,10 @@ dependencies {
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
     //for migration
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.22.3'
+    // jakarta servlet openSeesionFactory
+    implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    // Cacheable
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
 
 }
 tasks.named('test') {
