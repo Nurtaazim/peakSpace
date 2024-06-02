@@ -15,6 +15,7 @@ public class NotificationResponse {
     private LocalDate createdAt;
     private String publicationOrStoryImageUrl;
     private String senderProfileImageUrl;
+    private boolean seen;
     private Long senderUserId;
     private Long publicationId;
     private Long commentId;

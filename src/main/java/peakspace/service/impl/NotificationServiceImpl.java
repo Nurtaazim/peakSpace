@@ -25,6 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     public List<NotificationResponse> getAllNotifications() {
         List<Notification> notifications = userRepository.getCurrentUser().getNotifications();
         List<NotificationResponse> notificationResponses = new ArrayList<>();
+        notifications.sort((n1, n2) -> n2.getId().compareTo(n1.getId()));
 
         for (Notification notification : notifications) {
             User user = userRepository.getReferenceById(notification.getSenderUserId());
@@ -49,7 +50,7 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationResponse.setCommentId(notification.getComment().getId());
                 notificationResponse.setPublicationOrStoryImageUrl(notification.getComment().getPublication().getLinkPublications().getFirst().getLink());
             }
-
+            notificationResponse.setSeen(notification.isSeen());
             notificationResponses.add(notificationResponse);
             notification.setSeen(true);
         }
