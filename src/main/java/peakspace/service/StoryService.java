@@ -2,6 +2,7 @@ package peakspace.service;
 
 import peakspace.dto.request.StoryRequest;
 import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface StoryService  {
     SimpleResponse delete(long id);
 
     List<StoryResponse> getAll(long userId);
+
+    List<StoryAllHomPageResponse> getAllFriendsStory();
 }
