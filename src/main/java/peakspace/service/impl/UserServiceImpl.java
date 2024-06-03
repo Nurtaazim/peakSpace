@@ -656,7 +656,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException {
+    public SignInResponse confirmToSignUp(int codeInEmail, long id) throws peakspace.exception.MessagingException {
         User user = userRepository.findById(id).orElseThrow(() -> new peakspace.exception.MessagingException("C таким айди пользователь не существует!"));
         if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
             user.setBlockAccount(false);
@@ -666,7 +666,7 @@ public class UserServiceImpl implements UserService {
                     .id(user.getId())
                     .token(jwtService.createToken(user))
                     .build();
-        } else throw new MessagingException("Не правильный код!");
+        } else throw new peakspace.exception.MessagingException("Не правильный код!");
     }
 
 
