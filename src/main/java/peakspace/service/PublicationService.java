@@ -15,16 +15,14 @@ public interface PublicationService {
 
     GetAllPostsResponse getAllPosts(Principal principal);
 
-    List<PublicationWithYouResponse> withPhoto(Long foundUserId);
-
     MyPostResponse getById(Long postId);
-
-    List<PublicationResponse> findAllPublic(Long friendId);
 
     List<HomePageResponse> homePage();
 
     SimpleResponse saveComplainToPost(Long postId, String complain);
 
     PostLinkResponse findInnerPost(Long postId);
+    List<PublicationResponse> findAllPublic(Long friendId);
+    List<PublicationWithYouResponse> withPhoto(Long foundUserId);
 
 }

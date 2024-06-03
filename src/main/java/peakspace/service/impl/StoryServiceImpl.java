@@ -5,9 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import peakspace.config.amazonS3.StorageService;
+import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.dto.request.StoryRequest;
 import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Story;
@@ -17,6 +18,7 @@ import peakspace.exception.NotFoundException;
 import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
+import peakspace.repository.jdbsTamplate.StoryJdbcTemplate;
 import peakspace.service.StoryService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -28,7 +30,8 @@ public class StoryServiceImpl implements StoryService {
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepository;
-    private final StorageService storageService;
+    private final AwsS3Service storageService;
+    private final StoryJdbcTemplate storyJdbcTemplate;
 
     @Override
     @Transactional
@@ -77,7 +80,6 @@ public class StoryServiceImpl implements StoryService {
                     .message("Сторис успешно удалено!").build();
         }
         else throw new MessagingException("У вас нету прав удалить чужие сторисы!");
-
     }
 
     @Transactional
@@ -101,5 +103,10 @@ public class StoryServiceImpl implements StoryService {
             story.add(storyResponse);
         }
         return story;
+    }
+
+    @Override
+    public List<StoryAllHomPageResponse> getAllFriendsStory() {
+        return storyJdbcTemplate.getAllFriendsStory();
     }
 }

@@ -72,7 +72,7 @@ public class PostAPI {
     }
 
     @Secured("USER")
-    @PostMapping("/accept-users/{postId}/{friendsId}")
+    @PostMapping("/accept-users/{postId}")
     @Operation(summary = " Accept")
     public SimpleResponse accept(@PathVariable Long postId,@RequestParam Boolean tag) {
         return postService.acceptTagFriend(postId,tag);

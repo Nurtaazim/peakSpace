@@ -2,6 +2,7 @@ package peakspace.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
@@ -29,6 +30,7 @@ import java.util.Date;
 import java.util.Collections;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
@@ -45,11 +47,15 @@ public class ChatServiceImpl implements ChatService {
         User managedCurrentUser = userRepository.findById(currentUser.getId()).orElse(null);
         User managedUserReceiver = userRepository.findById(userReceiver.getId()).orElse(null);
 
+        log.info("In create chat method");
         if (managedCurrentUser != null && managedUserReceiver != null) {
+            log.info("in first if");
             Chat existingChat = chatRepository.findByUsers(managedCurrentUser, managedUserReceiver);
             if (existingChat != null) {
+                log.info("existing chat");
                 return existingChat;
             } else {
+                log.info("existing chat");
                 Chat chat = new Chat();
                 chat.setSender(managedCurrentUser);
                 chat.setReceiver(managedUserReceiver);
@@ -66,7 +72,9 @@ public class ChatServiceImpl implements ChatService {
     public void sendMessage(Long chatId,User sender,String content) {
 
         Chat chat = chatRepository.findById(chatId).orElse(null);
+        log.info("In sendMessage method");
         if (chat != null) {
+            log.info("In chat non null");
             MessageContent message = new MessageContent();
             message.setContent(content);
 
@@ -77,14 +85,13 @@ public class ChatServiceImpl implements ChatService {
             chat.getMessageContents().add(savedMessage);
             simpMessagingTemplate.convertAndSend("/topic/chat/" + chat.getId(), message, Collections.singletonMap("token", jwtService.createToken(sender)));
         } else {
-            throw new NotFoundException("Нет такой чат!");
+            throw new NotFoundException("Нет такого чат!");
         }
     }
 
 
-
-
     private Chat getLastChat(User currentUser, User friend) {
+        log.info("In getLastChat method");
         List<Chat> chats = currentUser.getChats();
         for (Chat chat : chats) {
             if (chat.getSender().equals(friend) || chat.getReceiver().equals(friend)) {
@@ -96,6 +103,7 @@ public class ChatServiceImpl implements ChatService {
 
 
     public ChatResponse findChatResponse(Long currentUserId, Long foundUserId) {
+        log.info("In findChatResponse method");
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
         User foundUser = userRepository.findById(foundUserId)
@@ -133,6 +141,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional
     public ChatResponse findChatId(Long currentUserId,Long foundUserId) {
+        log.info("In findChatId method");
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
@@ -169,6 +178,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<UserChatResponse> findAllBy() {
+        log.info("findAllBy method");
         User currentUser = getCurrentUser();
         List<User> currentUserFriends = currentUser.getFriendsWithChats();
 
@@ -194,6 +204,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public SimpleResponse deleteChatId(Long chatId) {
+        log.info("In deleteChatId method");
         chatRepository.deleteMessage(chatId);
         chatRepository.deleteLink(chatId);
         chatRepository.deleteById(chatId);
@@ -205,6 +216,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public SimpleResponse deleteMessageId(Long messageId) {
+        log.info("In deleteMessageId method");
         messageContentRepository.deleteById(messageId);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
@@ -214,6 +226,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public SimpleResponse edit(Long messageId, String newContent) {
+        log.info("In edit method");
         Optional<MessageContent> optionalMessage = messageContentRepository.findById(messageId);
 
         if (optionalMessage.isPresent()) {
@@ -235,7 +248,9 @@ public class ChatServiceImpl implements ChatService {
 
 
     private User getCurrentUser() {
+        log.info("In getCurrentUser method");
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("email: " + email);
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
             return current;
