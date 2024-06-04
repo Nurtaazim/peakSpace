@@ -22,6 +22,7 @@ import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,23 +36,22 @@ public class PublicationServiceImpl implements PublicationService {
     private final NotificationRepository notificationRepository;
     private final PublicationJdbcTemplate publicationJdbcTemplate;
 
+
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
         User user = userRepository.getByEmail(principal.getName());
-        Map<Long, String> publics = user.getPublications().stream()
+        List<Map<Long, String>> publications = user.getPublications().stream()
                 .filter(publication -> publication.getPablicProfile() == null)
-                .collect(Collectors.toMap(
-                        Publication::getId,
-                        publication -> {
-                            List<Link_Publication> linkPublications = publication.getLinkPublications();
-                            return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
-                        }
-                ));
+                .map(publication -> {
+                    List<Link_Publication> linkPublications = publication.getLinkPublications();
+                    String link = linkPublications.isEmpty() ? "" : linkPublications.get(0).getLink();
+                    return Map.of(publication.getId(), link);
+                })
 
-        int countPablics = 0;
-        if (user.getPablicProfiles() != null) {
-            countPablics = user.getPablicProfiles().getUsers().size();
-        }
+                .collect(Collectors.toList());
+        int countPublics = Optional.ofNullable(user.getPablicProfiles())
+                .map(profiles -> profiles.getUsers().size())
+                .orElse(0);
         return GetAllPostsResponse.builder()
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
@@ -59,10 +59,9 @@ public class PublicationServiceImpl implements PublicationService {
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
                 .countFriends(user.getChapters().size())
-                .countPablics(countPablics)
-                .publications(publics)
+                .countPablics(countPublics)
+                .publications(publications.reversed())
                 .build();
-
     }
 
 
