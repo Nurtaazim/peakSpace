@@ -230,11 +230,6 @@ public class PostServiceImpl implements PostService {
     public FavoritePostResponse favorites() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
-
-        if (user == null) {
-            return FavoritePostResponse.builder().build(); // Empty response if no user found
-        }
-
         List<Long> favoriteIds = user.getProfile().getFavorites();
 
         List<Publication> favoritePublications = publicationRepo.findAllById(favoriteIds);
