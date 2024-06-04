@@ -231,18 +231,28 @@ public class PostServiceImpl implements PostService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
 
-        List<Publication> allById = publicationRepo.findAllById(user.getProfile().getFavorites());
-        Map<Long, String> publics = allById.stream()
-                .collect(Collectors.toMap(
-                        Publication::getId,
-                        publication -> {
-                            List<Link_Publication> linkPublications = publication.getLinkPublications();
-                            return linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
-                        }
-                ));
+        if (user == null) {
+            return FavoritePostResponse.builder().build(); // Empty response if no user found
+        }
+
+        List<Long> favoriteIds = user.getProfile().getFavorites();
+
+        List<Publication> favoritePublications = publicationRepo.findAllById(favoriteIds);
+
+        List<Map<Long, String>> publications = favoritePublications.stream()
+                .map(publication -> {
+                    List<Link_Publication> linkPublications = publication.getLinkPublications();
+                    String link = linkPublications.stream()
+                            .filter(linkPublication -> !linkPublication.getLink().isEmpty())
+                            .findFirst()
+                            .map(Link_Publication::getLink)
+                            .orElse("");
+                    return Map.of(publication.getId(), link);
+                })
+                .collect(Collectors.toList());
 
         return FavoritePostResponse.builder()
-                .publications(publics)
+                .publications(publications.reversed())
                 .build();
     }
 

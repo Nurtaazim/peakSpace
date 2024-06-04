@@ -2,6 +2,7 @@ package peakspace.dto.response;
 
 import lombok.Builder;
 
+import java.util.List;
 import java.util.Map;
 
 @Builder
@@ -12,5 +13,5 @@ public record GetAllPostsResponse(String cover,
                                   String major,
                                   int countFriends,
                                   int countPablics,
-                                  Map<Long, String> publications) {
+                                  List<Map<Long, String>> publications) {
 }
