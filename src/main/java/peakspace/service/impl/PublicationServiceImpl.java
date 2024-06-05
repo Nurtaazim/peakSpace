@@ -110,11 +110,12 @@ public class PublicationServiceImpl implements PublicationService {
                 .collect(Collectors.toList());
 
         return MyPostResponse.builder()
-                .id(publication.getId())
+                .postId(publication.getId())
                 .userId(publication.getOwner().getId())
                 .avatar(publication.getOwner().getProfile().getAvatar())
                 .userName(publication.getOwner().getThisUserName())
                 .location(publication.getLocation())
+                .description(publication.getDescription())
                 .countLikes(publication.getLikes().size())
                 .links(links)
                 .commentResponses(commentForResponse)
