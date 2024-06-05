@@ -82,7 +82,6 @@ public class PostServiceImpl implements PostService {
             if (publication.getId().equals(postId)) {
                 publication.setDescription(postUpdateRequest.getDescription());
                 publication.setLocation(postUpdateRequest.getLocation());
-                publication.setBlockComment(postUpdateRequest.isBlockComment());
                 publication.setUpdatedAt(ZonedDateTime.now());
                 break;
             }
@@ -292,7 +291,6 @@ public class PostServiceImpl implements PostService {
         if (publication.getOwner().equals(currentUser) || currentUser.getPablicProfiles().getPublications().contains(publication)){
             publication.setDescription(postUpdateRequest.getDescription());
             publication.setLocation(postUpdateRequest.getLocation());
-            publication.setBlockComment(postUpdateRequest.isBlockComment());
             publication.setUpdatedAt(ZonedDateTime.now());
             return SimpleResponse.builder()
                     .message(" Успешно изменен пост паблике!")
