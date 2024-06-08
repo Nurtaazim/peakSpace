@@ -42,8 +42,8 @@ public class User implements UserDetails {
     private List<Chat> chats;
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.LAZY)
     private List<Comment> comments;
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
-    private PablicProfile pablicProfiles;
+//    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+//    private PablicProfile pablicProfiles;
     @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
     private List<Publication> publications;
     @OneToMany(mappedBy = "userNotification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
@@ -56,6 +56,8 @@ public class User implements UserDetails {
     private List<Long> publicProfilesSize;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<Long> myAcceptPost;
+    @OneToOne(mappedBy = "owner")
+    private PablicProfile community;
     public String getThisUserName() {
         return this.userName;
     }

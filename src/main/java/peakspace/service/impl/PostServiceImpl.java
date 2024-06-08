@@ -288,7 +288,7 @@ public class PostServiceImpl implements PostService {
         User currentUser = getCurrentUser();
         Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
 
-        if (publication.getOwner().equals(currentUser) || currentUser.getPablicProfiles().getPublications().contains(publication)){
+        if (publication.getOwner().equals(currentUser) || currentUser.getCommunity().getPublications().contains(publication)){
             publication.setDescription(postUpdateRequest.getDescription());
             publication.setLocation(postUpdateRequest.getLocation());
             publication.setUpdatedAt(ZonedDateTime.now());
@@ -307,7 +307,7 @@ public class PostServiceImpl implements PostService {
         User currentUser = getCurrentUser();
         Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
 
-        if (publication.getOwner().equals(currentUser) || currentUser.getPablicProfiles().getPublications().contains(publication)){
+        if (publication.getOwner().equals(currentUser) || currentUser.getCommunity().getPublications().contains(publication)){
             publicationRepo.deleteComNotifications(postId);
             publicationRepo.deleteCom(postId);
             publicationRepo.deleteByIds(publication.getId());
