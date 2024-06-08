@@ -49,7 +49,7 @@ public class PublicationServiceImpl implements PublicationService {
                 })
 
                 .collect(Collectors.toList());
-        int countPublics = Optional.ofNullable(user.getPablicProfiles())
+        int countPublics = Optional.ofNullable(user.getCommunity())
                 .map(profiles -> profiles.getUsers().size())
                 .orElse(0);
         return GetAllPostsResponse.builder()
@@ -169,14 +169,14 @@ public class PublicationServiceImpl implements PublicationService {
 
         Notification notification = new Notification();
         notification.setSenderUserId(getCurrentUser().getId());
-        notification.setUserNotification(publication.getPablicProfile().getUser());
+        notification.setUserNotification(publication.getPablicProfile().getOwner());
         notification.setNotificationMessage("оставил(-а) на этот пост жалоб!: " + complain);
         notificationRepository.save(notification);
 
         if (publication.getComplains().size() >= 10) {
             publicationRepository.save(publication);
             Notification notification1 = new Notification();
-            notification1.setSenderUserId(publication.getPablicProfile().getUser().getId());
+            notification1.setSenderUserId(publication.getPablicProfile().getOwner().getId());
             notification1.setUserNotification(publication.getOwner());
             notification1.setNotificationMessage("Мы удалили вашу публикацию, потому что ее жаловали 10 раз!");
             return SimpleResponse.builder()

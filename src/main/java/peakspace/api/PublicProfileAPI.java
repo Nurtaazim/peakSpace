@@ -24,7 +24,7 @@ public class PublicProfileAPI {
     @Secured("USER")
     @Operation(summary = " Создание паблик канал !")
     @PostMapping
-    public SimpleResponse addPublic(@RequestBody PublicRequest publicRequest) {
+    public PublicProfileResponse addPublic(@RequestBody PublicRequest publicRequest) {
         return publicService.save(publicRequest);
     }
 

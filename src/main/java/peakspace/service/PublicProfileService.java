@@ -6,7 +6,7 @@ import peakspace.enums.Choise;
 import java.util.List;
 
 public interface PublicProfileService {
-    SimpleResponse save(PublicRequest publicRequest);
+    PublicProfileResponse save(PublicRequest publicRequest);
 
     SimpleResponse edit(PublicRequest publicRequest);
 

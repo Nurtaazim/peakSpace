@@ -12,7 +12,7 @@ import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.response.SignInResponse;
 import peakspace.dto.response.SignUpResponse;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.UpdatePasswordResponse;
+
 import peakspace.service.UserService;
 import peakspace.validation.PasswordValidation;
 

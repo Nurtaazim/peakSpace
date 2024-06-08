@@ -2,7 +2,6 @@ package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicProfileService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,32 +40,33 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     @Override
     @Transactional
-    public SimpleResponse save(PublicRequest publicRequest) {
+    public PublicProfileResponse save(PublicRequest publicRequest) {
         User currentUser = getCurrentUser();
-        if (currentUser.getPablicProfiles() != null) {
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message(" Профиль уже существует для данного пользователя !")
-                    .build();
-        }
         PablicProfile newPublic = new PablicProfile();
         newPublic.setCover(publicRequest.getCover());
         newPublic.setAvatar(publicRequest.getAvatar());
         newPublic.setPablicName(publicRequest.getPablicName());
         newPublic.setDescriptionPublic(publicRequest.getDescriptionPublic());
         newPublic.setTematica(publicRequest.getTematica());
-        currentUser.setPablicProfiles(newPublic);
-        newPublic.setUser(currentUser);
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message(" Удачно сохранилась  !")
+        PablicProfile save = publicProfileRepository.save(newPublic);
+        currentUser.setCommunity(newPublic);
+        newPublic.setOwner(currentUser);
+        return PublicProfileResponse.builder()
+                .publicId(save.getId())
+                .avatar(newPublic.getAvatar())
+                .cover(newPublic.getCover())
+                .userName(newPublic.getOwner().getThisUserName())
+                .countFollower(0)
+                .descriptionPublic(newPublic.getDescriptionPublic())
+                .pablicName(newPublic.getPablicName())
+                .tematica(newPublic.getTematica())
                 .build();
     }
 
     @Override
     @Transactional
     public SimpleResponse edit(PublicRequest publicRequest) {
-        PablicProfile editPublic = publicProfileRepository.findById(getCurrentUser().getPablicProfiles().getId()).orElseThrow(() -> new NotFoundException("У вас нет паблик !" + getCurrentUser().getUsername()));
+        PablicProfile editPublic = publicProfileRepository.findById(getCurrentUser().getCommunity().getId()).orElseThrow(() -> new NotFoundException("У вас нет паблик !" + getCurrentUser().getUsername()));
         editPublic.setCover(publicRequest.getCover());
         editPublic.setAvatar(publicRequest.getAvatar());
         editPublic.setPablicName(publicRequest.getPablicName());
@@ -100,7 +99,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .cover(publicProfile.getCover())
                 .avatar(publicProfile.getAvatar())
                 .pablicName(publicProfile.getPablicName())
-                .userName(publicProfile.getUser().getThisUserName())
+                .userName(publicProfile.getOwner().getThisUserName())
                 .tematica(publicProfile.getTematica())
                 .countFollower(publicProfile.getUsers().size())
                 .build();
@@ -170,7 +169,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         User currentUser = getCurrentUser();
         User friendUser = userRepository.findByIds(friendId);
 
-        PablicProfile publicProfile = currentUser.getPablicProfiles();
+        PablicProfile publicProfile = currentUser.getCommunity();
         if (publicProfile == null) {
             throw new NotFoundException(" Паблик текущего пользователя не найден!");
         }
@@ -215,7 +214,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public SimpleResponse removePost(Long postId) {
         User currentUser = getCurrentUser();
-        List<Publication> publications = currentUser.getPablicProfiles().getPublications();
+        List<Publication> publications = currentUser.getCommunity().getPublications();
 
         boolean removed = publications.removeIf(publication -> publication.getId().equals(postId));
         publicationRepository.deleteComNotifications(postId);
@@ -234,7 +233,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public SimpleResponse removeComment(Long commentId) {
         User currentUser = getCurrentUser();
-        List<Publication> publications = currentUser.getPablicProfiles().getPublications();
+        List<Publication> publications = currentUser.getCommunity().getPublications();
 
         for (Publication publication : publications) {
             List<Comment> comments = publication.getComments();
@@ -264,7 +263,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .cover(publicProfile.getCover())
                 .avatar(publicProfile.getAvatar())
                 .pablicName(publicProfile.getPablicName())
-                .userName(publicProfile.getUser().getThisUserName())
+                .userName(publicProfile.getOwner().getThisUserName())
                 .tematica(publicProfile.getTematica())
                 .countFollower(publicProfile.getUsers().size())
                 .build();

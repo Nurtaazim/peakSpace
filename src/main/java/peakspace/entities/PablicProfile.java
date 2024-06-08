@@ -25,7 +25,7 @@ public class PablicProfile {
     @Enumerated(EnumType.STRING)
     private Tematica tematica;
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
-    private User user;
+    private User owner;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<User> users;
     @OneToMany(mappedBy = "pablicProfile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
