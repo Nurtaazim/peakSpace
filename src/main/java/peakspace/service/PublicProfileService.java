@@ -32,4 +32,9 @@ public interface PublicProfileService {
 
     ProfileFriendsResponse findUserByPostId(Long postId);
 
+    List<PublicProfileResponse> getRandomCommunities();
+
+    List<PublicProfileResponse> getMyCommunities();
+
+    PublicProfileResponse getMyCommunity();
 }
