@@ -196,7 +196,7 @@ values (1, 1, 'Hello', '2024-04-09', false),
        (18, 3, 'Howdy!', '2024-05-01', true);
 
 
-INSERT INTO pablic_profiles(id, user_id, cover, avatar, pablic_name, tematica)
+INSERT INTO pablic_profiles(id, owner_id, cover, avatar, pablic_name, tematica)
 VALUES (1, 1, 'cover', 'avatar', 'Felisity', 'MOVIE'),
        (2, 2, 'cover', 'avatar', 'IT', 'IT'),
        (3, 3, 'cover', 'avatar', 'Code your future', 'IT'),
