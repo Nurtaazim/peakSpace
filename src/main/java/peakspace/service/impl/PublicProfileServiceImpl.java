@@ -318,7 +318,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<PublicProfileResponse> randomCommunities = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < 50; i++) {
-            int randomIndex = random.nextInt(all.size());
+            int randomIndex = random.nextInt(0,all.size()-1);
             PablicProfile publicProfile = all.get(randomIndex);
 
             if (!publicProfile.getUsers().contains(getCurrentUser()) &&

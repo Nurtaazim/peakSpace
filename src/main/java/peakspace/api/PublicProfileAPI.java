@@ -117,13 +117,13 @@ public class PublicProfileAPI {
     public List<PublicProfileResponse> getRandomCommunities(){
         return publicService.getRandomCommunities();
     }
-    @GetMapping("myCommunities")
+    @GetMapping("/myCommunities")
     @Secured("USER")
     @Operation(summary = "Сообщества в которые вступил данный пользователь")
     public List<PublicProfileResponse> getMyCommunities(){
         return publicService.getMyCommunities();
     }
-    @GetMapping("myCommunity")
+    @GetMapping("/myCommunity")
     @Secured("USER")
     @Operation(summary = "Войти в сообщество данного пользователя")
     public PublicProfileResponse getMyCommunity(){
