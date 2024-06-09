@@ -10,7 +10,7 @@ spring:
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
-      mode: always
+      mode: never
 
   # Hibernate/Jpa settings
   jpa:
