@@ -24,9 +24,7 @@ import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.PublicProfileService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -307,6 +305,78 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .profession(publication.getOwner().getProfile().getProfession())
                 .friendsSize(sizeFriends)
                 .publicationsSize(publication.getOwner().getPublicProfilesSize().size())
+                .build();
+    }
+
+    @Override
+    public List<PublicProfileResponse> getRandomCommunities() {
+        List<PablicProfile> all = publicProfileRepository.findAll();
+        if (all.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<PublicProfileResponse> randomCommunities = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 50; i++) {
+            int randomIndex = random.nextInt(0,all.size()-1);
+            PablicProfile publicProfile = all.get(randomIndex);
+
+            if (!publicProfile.getUsers().contains(getCurrentUser()) &&
+                    !publicProfile.getOwner().getId().equals(getCurrentUser().getId())) {
+
+                randomCommunities.add(new PublicProfileResponse(
+                        publicProfile.getId(),
+                        publicProfile.getCover(),
+                        publicProfile.getAvatar(),
+                        publicProfile.getPablicName(),
+                        publicProfile.getOwner().getThisUserName(),
+                        publicProfile.getDescriptionPublic(),
+                        publicProfile.getTematica(),
+                        publicProfile.getUsers().size()
+                ));
+            }
+        }
+
+        return randomCommunities;
+    }
+
+    @Override
+    public List<PublicProfileResponse> getMyCommunities() {
+        List<PablicProfile> all = publicProfileRepository.findAll();
+        if (all.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<PublicProfileResponse> myCommunities = new ArrayList<>();
+        for (PablicProfile pablicProfile : all) {
+            if (pablicProfile.getUsers().contains(getCurrentUser())) {
+                myCommunities.add(new PublicProfileResponse(
+                        pablicProfile.getId(),
+                        pablicProfile.getCover(),
+                        pablicProfile.getAvatar(),
+                        pablicProfile.getPablicName(),
+                        pablicProfile.getOwner().getThisUserName(),
+                        pablicProfile.getDescriptionPublic(),
+                        pablicProfile.getTematica(),
+                        pablicProfile.getUsers().size()
+                ));
+            }
+        }
+        return myCommunities;
+    }
+
+    @Override
+    public PublicProfileResponse getMyCommunity() {
+        PablicProfile community = getCurrentUser().getCommunity();
+        if (community == null) return null;
+        else return PublicProfileResponse.builder()
+                .publicId(community.getId())
+                .avatar(community.getAvatar())
+                .cover(community.getCover())
+                .userName(community.getOwner().getThisUserName())
+                .countFollower(community.getUsers().size())
+                .descriptionPublic(community.getDescriptionPublic())
+                .pablicName(community.getPablicName())
+                .tematica(community.getTematica())
                 .build();
     }
 

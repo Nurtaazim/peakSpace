@@ -111,5 +111,23 @@ public class PublicProfileAPI {
     public List<GetAllPublicProfileResponse> getAllPublicProfiles(@PathVariable Long userId){
         return getAllPublics.getAllPublics(userId);
     }
+    @GetMapping
+    @Secured("USER")
+    @Operation(summary = "Сообщества для рекомендации")
+    public List<PublicProfileResponse> getRandomCommunities(){
+        return publicService.getRandomCommunities();
+    }
+    @GetMapping("/myCommunities")
+    @Secured("USER")
+    @Operation(summary = "Сообщества в которые вступил данный пользователь")
+    public List<PublicProfileResponse> getMyCommunities(){
+        return publicService.getMyCommunities();
+    }
+    @GetMapping("/myCommunity")
+    @Secured("USER")
+    @Operation(summary = "Войти в сообщество данного пользователя")
+    public PublicProfileResponse getMyCommunity(){
+        return publicService.getMyCommunity();
+    }
 
 }

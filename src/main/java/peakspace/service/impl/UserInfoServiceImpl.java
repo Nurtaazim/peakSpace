@@ -152,8 +152,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
         user.setIsBlock(!user.getIsBlock());
-        return SimpleResponse.builder()
-                .message(" Успешно вернулись в закрытый аккаунт!")
+        if (user.getIsBlock()) {
+            return SimpleResponse.builder()
+                    .message(" Успешно вернулись в закрытый аккаунт!")
+                    .httpStatus(HttpStatus.OK)
+                    .build();
+        }
+        else return SimpleResponse.builder()
+                .message(" Успешно вернулись в открытый аккаунт!")
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
