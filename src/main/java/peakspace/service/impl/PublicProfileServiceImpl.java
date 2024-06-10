@@ -310,7 +310,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build();
     }
 
-    @Override
     public List<PublicProfileResponse> getRandomCommunities() {
         List<PablicProfile> all = publicProfileRepository.findAll();
         if (all.isEmpty()) {
@@ -319,23 +318,26 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
         List<PublicProfileResponse> randomCommunities = new ArrayList<>();
         Random random = new Random();
+        List<Integer> numbers = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             int randomIndex = random.nextInt(0,all.size()-1);
-            PablicProfile publicProfile = all.get(randomIndex);
+            if (!numbers.contains(randomIndex)) {
+                PablicProfile publicProfile = all.get(randomIndex);
+                numbers.add(randomIndex);
+                if (!publicProfile.getUsers().contains(getCurrentUser()) &&
+                        !publicProfile.getOwner().getId().equals(getCurrentUser().getId())) {
 
-            if (!publicProfile.getUsers().contains(getCurrentUser()) &&
-                    !publicProfile.getOwner().getId().equals(getCurrentUser().getId())) {
-
-                randomCommunities.add(new PublicProfileResponse(
-                        publicProfile.getId(),
-                        publicProfile.getCover(),
-                        publicProfile.getAvatar(),
-                        publicProfile.getPablicName(),
-                        publicProfile.getOwner().getThisUserName(),
-                        publicProfile.getDescriptionPublic(),
-                        publicProfile.getTematica(),
-                        publicProfile.getUsers().size()
-                ));
+                    randomCommunities.add(new PublicProfileResponse(
+                            publicProfile.getId(),
+                            publicProfile.getCover(),
+                            publicProfile.getAvatar(),
+                            publicProfile.getPablicName(),
+                            publicProfile.getOwner().getThisUserName(),
+                            publicProfile.getDescriptionPublic(),
+                            publicProfile.getTematica(),
+                            publicProfile.getUsers().size()
+                    ));
+                }
             }
         }
 
