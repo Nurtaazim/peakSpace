@@ -17,6 +17,7 @@ import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
+import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
 import peakspace.repository.PublicProfileRepository;
@@ -40,6 +41,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public PublicProfileResponse save(PublicRequest publicRequest) {
         User currentUser = getCurrentUser();
+        if (currentUser.getCommunity() == null) throw new MessagingException("У вас уже существует сообщество");
         PablicProfile newPublic = new PablicProfile();
         newPublic.setCover(publicRequest.getCover());
         newPublic.setAvatar(publicRequest.getAvatar());
