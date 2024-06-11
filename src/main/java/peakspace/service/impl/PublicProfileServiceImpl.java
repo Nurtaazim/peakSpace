@@ -41,7 +41,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public PublicProfileResponse save(PublicRequest publicRequest) {
         User currentUser = getCurrentUser();
-        if (currentUser.getCommunity() == null) throw new MessagingException("У вас уже существует сообщество");
+        if (currentUser.getCommunity() != null) throw new MessagingException("У вас уже существует сообщество");
         PablicProfile newPublic = new PablicProfile();
         newPublic.setCover(publicRequest.getCover());
         newPublic.setAvatar(publicRequest.getAvatar());
@@ -50,7 +50,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         newPublic.setTematica(publicRequest.getTematica());
         PablicProfile save = publicProfileRepository.save(newPublic);
         currentUser.setCommunity(newPublic);
-        newPublic.setOwner(currentUser);
+        save.setOwner(currentUser);
         return PublicProfileResponse.builder()
                 .publicId(save.getId())
                 .avatar(newPublic.getAvatar())
@@ -81,7 +81,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     @Transactional
     public SimpleResponse delete(Long publicId) {
-        publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !" + publicId));
+        PablicProfile pablicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !" + publicId));
+        if (!pablicProfile.getOwner().equals(getCurrentUser())) throw new MessagingException("У вас нету прав удалить чужие сообщества");
         publicProfileRepository.deleteUsers(publicId);
         publicProfileRepository.deletePablicById(publicId);
         return SimpleResponse.builder()
