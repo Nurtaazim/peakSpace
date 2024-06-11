@@ -385,6 +385,21 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build();
     }
 
+    @Override
+    public PublicProfileResponse getCommunityById(Long communityId) {
+        PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(()->new NotFoundException("Сообщество с такой id не найдено"));
+        return PublicProfileResponse.builder()
+                .publicId(communityId)
+                .cover(community.getCover())
+                .avatar(community.getAvatar())
+                .tematica(community.getTematica())
+                .pablicName(community.getPablicName())
+                .descriptionPublic(community.getDescriptionPublic())
+                .countFollower(community.getUsers().size())
+                .userName(community.getOwner().getThisUserName())
+                .build();
+    }
+
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();

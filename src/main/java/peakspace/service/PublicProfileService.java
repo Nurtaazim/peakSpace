@@ -37,4 +37,6 @@ public interface PublicProfileService {
     List<PublicProfileResponse> getMyCommunities();
 
     PublicProfileResponse getMyCommunity();
+
+    PublicProfileResponse getCommunityById(Long communityId);
 }
