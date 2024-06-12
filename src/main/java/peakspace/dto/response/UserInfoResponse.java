@@ -14,7 +14,9 @@ public class UserInfoResponse {
     private String avatar;
     private String cover;
     private String userName;
-    private String fullName;
+    private String firstName;
+    private String lastName;
+    private String fathersName;
     private String aboutYourSelf;
     private List<EducationResponse> educationResponses;
     private String profession;
