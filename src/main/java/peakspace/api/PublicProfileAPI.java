@@ -30,7 +30,7 @@ public class PublicProfileAPI {
 
     @Secured("USER")
     @Operation(summary = " Изменение паблика !")
-    @PutMapping
+    @PatchMapping
     public SimpleResponse editPublic(@RequestBody PublicRequest publicRequest) {
         return publicService.edit(publicRequest);
     }
@@ -111,7 +111,7 @@ public class PublicProfileAPI {
     public List<GetAllPublicProfileResponse> getAllPublicProfiles(@PathVariable Long userId){
         return getAllPublics.getAllPublics(userId);
     }
-    @GetMapping
+    @GetMapping()
     @Secured("USER")
     @Operation(summary = "Сообщества для рекомендации")
     public List<PublicProfileResponse> getRandomCommunities(){
@@ -128,6 +128,11 @@ public class PublicProfileAPI {
     @Operation(summary = "Войти в сообщество данного пользователя")
     public PublicProfileResponse getMyCommunity(){
         return publicService.getMyCommunity();
+    }
+    @GetMapping("/{communityId}")
+    @Operation(summary = "Войти в сообщество", description = "id сообщесто")
+    PublicProfileResponse getCommunityById(@PathVariable Long communityId){
+        return publicService.getCommunityById(communityId);
     }
 
 }
