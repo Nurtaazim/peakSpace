@@ -183,13 +183,13 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .map(this::mapToEducationResponse)
                 .collect(Collectors.toList());
 
-        String fullName = String.format("%s %s", profile.getFirstName(), profile.getLastName());
-
         return UserInfoResponse.builder()
                 .avatar(profile.getAvatar())
                 .cover(profile.getCover())
                 .userName(profile.getUser().getUsername())
-                .fullName(fullName)
+                .firstName(profile.getFirstName())
+                .lastName(profile.getLastName())
+                .fathersName(profile.getPatronymicName())
                 .aboutYourSelf(profile.getAboutYourSelf())
                 .educationResponses(educationResponses)
                 .profession(profile.getProfession())
