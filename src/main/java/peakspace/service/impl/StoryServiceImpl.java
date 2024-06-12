@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.dto.request.StoryRequest;
+import peakspace.dto.response.MyStoriesResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
@@ -20,6 +21,8 @@ import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTamplate.StoryJdbcTemplate;
 import peakspace.service.StoryService;
+import peakspace.service.UserService;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,5 +111,11 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public List<StoryAllHomPageResponse> getAllFriendsStory() {
         return storyJdbcTemplate.getAllFriendsStory();
+    }
+
+    @Override
+    public List<MyStoriesResponse> getMyStories() {
+
+        return storyJdbcTemplate.getMyStories();
     }
 }

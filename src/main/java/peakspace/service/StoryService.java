@@ -1,6 +1,7 @@
 package peakspace.service;
 
 import peakspace.dto.request.StoryRequest;
+import peakspace.dto.response.MyStoriesResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
@@ -8,6 +9,7 @@ import peakspace.dto.response.StoryResponse;
 import java.util.List;
 
 public interface StoryService  {
+
     SimpleResponse create(StoryRequest storyRequest);
 
     SimpleResponse delete(long id);
@@ -15,4 +17,7 @@ public interface StoryService  {
     List<StoryResponse> getAll(long userId);
 
     List<StoryAllHomPageResponse> getAllFriendsStory();
+
+    List<MyStoriesResponse> getMyStories();
+
 }

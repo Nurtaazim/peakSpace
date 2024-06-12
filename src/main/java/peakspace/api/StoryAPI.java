@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.StoryRequest;
+import peakspace.dto.response.MyStoriesResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
@@ -46,6 +47,13 @@ public class StoryAPI {
     @Operation(summary = "Это все истории, которые опубликовали мои друзья на главной странице!")
     public List<StoryAllHomPageResponse> getAll() {
       return  service.getAllFriendsStory();
+    }
+
+    @Secured("USER")
+    @GetMapping("/my-stories")
+    @Operation(summary = "все мои истории!")
+    public List<MyStoriesResponse> allMyStories() {
+        return  service.getMyStories();
     }
 
 }
