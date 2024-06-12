@@ -1,5 +1,6 @@
 package peakspace.service;
 
+import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
 import peakspace.enums.Choise;
@@ -39,4 +40,8 @@ public interface PublicProfileService {
     PublicProfileResponse getMyCommunity();
 
     PublicProfileResponse getCommunityById(Long communityId);
+
+    SimpleResponse addPublicationToCommunityById(Long communityId, PostRequest postRequest);
+
+    List<ShortPublicationResponse> getAllPublicationByCommunityId(Long communityId);
 }

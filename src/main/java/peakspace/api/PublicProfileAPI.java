@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
 import peakspace.enums.Choise;
@@ -130,9 +131,24 @@ public class PublicProfileAPI {
         return publicService.getMyCommunity();
     }
     @GetMapping("/{communityId}")
-    @Operation(summary = "Войти в сообщество", description = "id сообщесто")
+    @Secured("USER")
+    @Operation(summary = "Войти в сообщество", description = "id сообщество")
     PublicProfileResponse getCommunityById(@PathVariable Long communityId){
         return publicService.getCommunityById(communityId);
     }
+    @PostMapping("/{communityId}")
+    @Secured("USER")
+    @Operation(summary = "Добавить публикацию в сообщество", description = "айди сообщества в которую хотите добавить")
+    SimpleResponse addPublicationToCommunity(@PathVariable Long communityId,
+                                             @RequestBody PostRequest postRequest){
+        return publicService.addPublicationToCommunityById(communityId, postRequest);
+    }
+    @GetMapping("publications/{communityId}")
+    @Secured("USER")
+    @Operation(summary = "Получить всех публикаций сообщества", description = "id сообщество")
+    List<ShortPublicationResponse> getAllPublicationByCommunityId(@PathVariable Long communityId){
+        return publicService.getAllPublicationByCommunityId(communityId);
+    }
+
 
 }

@@ -6,6 +6,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
@@ -19,10 +20,7 @@ import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
-import peakspace.repository.CommentRepository;
-import peakspace.repository.PublicProfileRepository;
-import peakspace.repository.PublicationRepository;
-import peakspace.repository.UserRepository;
+import peakspace.repository.*;
 import peakspace.service.PublicProfileService;
 
 import java.util.*;
@@ -36,7 +34,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     private final UserRepository userRepository;
     private final PublicationRepository publicationRepository;
     private final CommentRepository commentRepository;
-
+    private final LinkPublicationRepo linkPublicationRepository;
     @Override
     @Transactional
     public PublicProfileResponse save(PublicRequest publicRequest) {
@@ -48,6 +46,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         newPublic.setPablicName(publicRequest.getPablicName());
         newPublic.setDescriptionPublic(publicRequest.getDescriptionPublic());
         newPublic.setTematica(publicRequest.getTematica());
+        newPublic.setPublications(new ArrayList<>());
         PablicProfile save = publicProfileRepository.save(newPublic);
         currentUser.setCommunity(newPublic);
         save.setOwner(currentUser);
@@ -398,6 +397,50 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .countFollower(community.getUsers().size())
                 .userName(community.getOwner().getThisUserName())
                 .build();
+    }
+
+    @Override
+    @jakarta.transaction.Transactional
+    public SimpleResponse addPublicationToCommunityById(Long communityId, PostRequest postRequest) {
+        PablicProfile publicProfile = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой айди не существует!"));
+        if (publicProfile.getUsers().contains(getCurrentUser()) || publicProfile.getOwner().equals(getCurrentUser())) {
+            Publication publication = new Publication();
+            publication.setOwner(getCurrentUser());
+            publication.setLikes(new ArrayList<>());
+            publication.setBlockComment(postRequest.isBlockComment());
+            publication.setComments(new ArrayList<>());
+            publication.setDescription(postRequest.getDescription());
+            publication.setLocation(postRequest.getLocation());
+            List<String> strings = postRequest.getLinks();
+            Publication save = publicationRepository.save(publication);
+            List<Link_Publication> videosOrPhotosUrl = new ArrayList<>();
+            for (String string : strings) {
+                Link_Publication linkPublication = new Link_Publication();
+                linkPublication.setLink(string);
+                linkPublicationRepository.save(linkPublication);
+                videosOrPhotosUrl.add(linkPublication);
+            }
+            save.setLinkPublications(videosOrPhotosUrl);
+            publicProfile.getPublications().add(publication);
+            save.setPablicProfile(publicProfile);
+            return SimpleResponse.builder()
+                    .message("Успешно добавлено!")
+                    .httpStatus(HttpStatus.OK).build();
+        }
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message("Вы не можете добавить публикацию в сообщество  которой не состоите").build();
+    }
+
+    @Override
+    public List<ShortPublicationResponse> getAllPublicationByCommunityId(Long communityId) {
+        PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой айди не существует!"));
+        List<ShortPublicationResponse> publications = new ArrayList<>();
+        for (Publication publication : community.getPublications()) {
+            ShortPublicationResponse shortPublicationResponse = new ShortPublicationResponse(publication.getId(), publication.getLinkPublications().getFirst().getLink());
+            publications.add(shortPublicationResponse);
+        }
+        return publications;
     }
 
 
