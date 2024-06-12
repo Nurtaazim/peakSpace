@@ -30,7 +30,7 @@ public class PublicProfileAPI {
 
     @Secured("USER")
     @Operation(summary = " Изменение паблика !")
-    @PutMapping
+    @PatchMapping
     public SimpleResponse editPublic(@RequestBody PublicRequest publicRequest) {
         return publicService.edit(publicRequest);
     }
