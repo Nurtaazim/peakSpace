@@ -73,7 +73,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         boolean educationExists = profile.getEducations().stream()
                 .anyMatch(education ->
                         education.getCountry().equals(addEducationRequest.getCountry()) &&
-                                education.getEducationalInstitution().equals(addEducationRequest.getEducationalInstitution()));
+                        education.getEducationalInstitution().equals(addEducationRequest.getEducationalInstitution()));
 
         if (educationExists) {
             return SimpleResponse.builder()
@@ -98,7 +98,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
 
-
     @Transactional
     @Override
     public SimpleResponse blockAccount(Long userId) {
@@ -108,19 +107,25 @@ public class UserInfoServiceImpl implements UserInfoService {
         User foundUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found!"));
 
         if (!user.getId().equals(foundUser.getId())) {
-         if (user.getBlockAccounts().contains(foundUser.getId())) {
-            user.getBlockAccounts().remove(foundUser.getId());
-            foundUser.setBlockAccount(false);
-         } else {
-            user.getBlockAccounts().add(foundUser.getId());
-            foundUser.setBlockAccount(true);
-         }
-    }else {
+            if (user.getBlockAccounts().contains(foundUser.getId())) {
+                user.getBlockAccounts().remove(foundUser.getId());
+                foundUser.setBlockAccount(false);
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.OK)
+                        .message(" Удачно разблокировано!")
+                        .isBlock(foundUser.getBlockAccount())
+                        .build();
+            } else {
+                user.getBlockAccounts().add(foundUser.getId());
+                foundUser.setBlockAccount(true);
+            }
+        } else {
             System.out.println("Вы не можете заблокировать себя");
         }
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Удачно блокировано!")
+                .isBlock(foundUser.getBlockAccount())
                 .build();
     }
 
@@ -157,8 +162,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     .message(" Успешно вернулись в закрытый аккаунт!")
                     .httpStatus(HttpStatus.OK)
                     .build();
-        }
-        else return SimpleResponse.builder()
+        } else return SimpleResponse.builder()
                 .message(" Успешно вернулись в открытый аккаунт!")
                 .httpStatus(HttpStatus.OK)
                 .build();
