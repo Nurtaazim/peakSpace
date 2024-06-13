@@ -118,13 +118,16 @@ public class UserInfoServiceImpl implements UserInfoService {
             } else {
                 user.getBlockAccounts().add(foundUser.getId());
                 foundUser.setBlockAccount(true);
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.OK)
+                        .message(" Удачно блокировано!")
+                        .isBlock(foundUser.getBlockAccount())
+                        .build();
             }
-        } else {
-            System.out.println("Вы не можете заблокировать себя");
         }
         return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message(" Удачно блокировано!")
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(" Вы не можете заблокировать себя!")
                 .isBlock(foundUser.getBlockAccount())
                 .build();
     }
