@@ -1,7 +1,10 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     private final PublicationRepository publicationRepository;
     private final CommentRepository commentRepository;
     private final LinkPublicationRepo linkPublicationRepository;
+    private final JdbcTemplate jdbcTemplate;
+
     @Override
     @Transactional
     public PublicProfileResponse save(PublicRequest publicRequest) {
@@ -81,7 +86,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public SimpleResponse delete(Long publicId) {
         PablicProfile pablicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !" + publicId));
-        if (!pablicProfile.getOwner().equals(getCurrentUser())) throw new MessagingException("У вас нету прав удалить чужие сообщества");
+        if (!pablicProfile.getOwner().equals(getCurrentUser()))
+            throw new MessagingException("У вас нету прав удалить чужие сообщества");
         publicProfileRepository.deleteUsers(publicId);
         publicProfileRepository.deletePablicById(publicId);
         return SimpleResponse.builder()
@@ -136,7 +142,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .publicationsPublic(publics)
                 .build());
     }
-
 
 
     @Override
@@ -272,7 +277,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public ProfileFriendsResponse forwardingMyProfile(String userName) {
         getCurrentUser();
-        User ownerProfile = userRepository.findByName(userName).orElseThrow(()-> new NotFoundException(" Нет такой пользователь "));
+        User ownerProfile = userRepository.findByName(userName).orElseThrow(() -> new NotFoundException(" Нет такой пользователь "));
         int sizeFriends = 0;
         for (Chapter chapter : ownerProfile.getChapters()) {
             sizeFriends += chapter.getFriends().size();
@@ -320,7 +325,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         Random random = new Random();
         List<Integer> numbers = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
-            int randomIndex = random.nextInt(0,all.size()-1);
+            int randomIndex = random.nextInt(0, all.size() - 1);
             if (!numbers.contains(randomIndex)) {
                 PablicProfile publicProfile = all.get(randomIndex);
                 numbers.add(randomIndex);
@@ -386,7 +391,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     @Override
     public PublicProfileResponse getCommunityById(Long communityId) {
-        PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(()->new NotFoundException("Сообщество с такой id не найдено"));
+        PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой id не найдено"));
         return PublicProfileResponse.builder()
                 .publicId(communityId)
                 .cover(community.getCover())

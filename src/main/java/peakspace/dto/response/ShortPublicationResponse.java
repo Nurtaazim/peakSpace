@@ -6,7 +6,8 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ShortPublicationResponse {
     private Long id;
-    private String image;
+    private String link;
 }

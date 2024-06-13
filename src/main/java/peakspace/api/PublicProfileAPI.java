@@ -88,14 +88,14 @@ public class PublicProfileAPI {
     @Secured("USER")
     @Operation(summary = " Войти на Мой паблик от страницы профилья!")
     @GetMapping("/public/{publicName}")
-    public PublicProfileResponse forwardingPublic(@PathVariable String publicName){
+    public PublicProfileResponse forwardingPublic(@PathVariable String publicName) {
         return publicService.forwardingMyPublic(publicName);
     }
 
     @Secured("USER")
     @Operation(summary = " Войти на профиль от страницы паблика !")
     @GetMapping("/profile/{userName}")
-    public ProfileFriendsResponse forwardingProfile(@PathVariable String userName){
+    public ProfileFriendsResponse forwardingProfile(@PathVariable String userName) {
         return publicService.forwardingMyProfile(userName);
     }
 
@@ -109,44 +109,50 @@ public class PublicProfileAPI {
     @Secured("USER")
     @Operation(summary = "Get all PublicProfiles!")
     @GetMapping("/profiles/{userId}")
-    public List<GetAllPublicProfileResponse> getAllPublicProfiles(@PathVariable Long userId){
+    public List<GetAllPublicProfileResponse> getAllPublicProfiles(@PathVariable Long userId) {
         return getAllPublics.getAllPublics(userId);
     }
+
     @GetMapping()
     @Secured("USER")
     @Operation(summary = "Сообщества для рекомендации")
-    public List<PublicProfileResponse> getRandomCommunities(){
+    public List<PublicProfileResponse> getRandomCommunities() {
         return publicService.getRandomCommunities();
     }
+
     @GetMapping("/myCommunities")
     @Secured("USER")
     @Operation(summary = "Сообщества в которые вступил данный пользователь")
-    public List<PublicProfileResponse> getMyCommunities(){
+    public List<PublicProfileResponse> getMyCommunities() {
         return publicService.getMyCommunities();
     }
+
     @GetMapping("/myCommunity")
     @Secured("USER")
     @Operation(summary = "Войти в сообщество данного пользователя")
-    public PublicProfileResponse getMyCommunity(){
+    public PublicProfileResponse getMyCommunity() {
         return publicService.getMyCommunity();
     }
+
     @GetMapping("/{communityId}")
     @Secured("USER")
     @Operation(summary = "Войти в сообщество", description = "id сообщество")
-    PublicProfileResponse getCommunityById(@PathVariable Long communityId){
+    PublicProfileResponse getCommunityById(@PathVariable Long communityId) {
         return publicService.getCommunityById(communityId);
     }
+
     @PostMapping("/{communityId}")
     @Secured("USER")
     @Operation(summary = "Добавить публикацию в сообщество", description = "айди сообщества в которую хотите добавить")
     SimpleResponse addPublicationToCommunity(@PathVariable Long communityId,
-                                             @RequestBody PostRequest postRequest){
+                                             @RequestBody PostRequest postRequest) {
         return publicService.addPublicationToCommunityById(communityId, postRequest);
     }
-    @GetMapping("publications/{communityId}")
+
+    @GetMapping("/publications/{communityId}")
     @Secured("USER")
     @Operation(summary = "Получить всех публикаций сообщества", description = "id сообщество")
-    List<ShortPublicationResponse> getAllPublicationByCommunityId(@PathVariable Long communityId){
+    List<ShortPublicationResponse> getAllPublicationByCommunityId(@PathVariable Long communityId) {
         return publicService.getAllPublicationByCommunityId(communityId);
     }
 
