@@ -73,7 +73,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         boolean educationExists = profile.getEducations().stream()
                 .anyMatch(education ->
                         education.getCountry().equals(addEducationRequest.getCountry()) &&
-                        education.getEducationalInstitution().equals(addEducationRequest.getEducationalInstitution()));
+                                education.getEducationalInstitution().equals(addEducationRequest.getEducationalInstitution()));
 
         if (educationExists) {
             return SimpleResponse.builder()
@@ -143,6 +143,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         for (Long blockAccount : blockAccounts) {
             User user1 = userRepository.getReferenceById(blockAccount);
             accounts.add(BlockAccountsResponse.builder()
+                    .id(user1.getId())
                     .userName(user1.getThisUserName())
                     .avatar(user1.getProfile().getAvatar())
                     .cover(user1.getProfile().getCover())

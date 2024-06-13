@@ -58,7 +58,7 @@ public class UserInfoAPI {
     }
 
     @Secured("USER")
-    @Operation(summary = " Получить заблокирование аккаунты!")
+    @Operation(summary = " Получить заблокированные аккаунты!")
     @GetMapping("/block-accounts")
     public List<BlockAccountsResponse> getBlockAccounts() {
         return userInfoService.getBlockAccounts();
