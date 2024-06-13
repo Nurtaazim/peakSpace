@@ -88,6 +88,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         PablicProfile pablicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !" + publicId));
         if (!pablicProfile.getOwner().equals(getCurrentUser()))
             throw new MessagingException("У вас нету прав удалить чужие сообщества");
+        publicationRepository.deleteAll(pablicProfile.getPublications());
         publicProfileRepository.deleteUsers(publicId);
         publicProfileRepository.deletePablicById(publicId);
         return SimpleResponse.builder()
