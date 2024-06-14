@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import peakspace.dto.response.AllFriendsResponse;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
 import peakspace.entities.Profile;

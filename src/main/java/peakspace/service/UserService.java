@@ -1,10 +1,9 @@
 package peakspace.service;
 
 import jakarta.mail.MessagingException;
-import org.apache.coyote.BadRequestException;
+import peakspace.dto.response.AllFriendsResponse;
 import peakspace.dto.response.*;
 import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.request.RegisterWithGoogleRequest;
@@ -52,4 +51,5 @@ public interface UserService {
 
     SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 
+    List<AllFriendsResponse> getAllFriendsById(Long userId);
 }
