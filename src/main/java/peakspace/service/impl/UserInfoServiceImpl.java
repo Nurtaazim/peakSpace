@@ -109,7 +109,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (!user.getId().equals(foundUser.getId())) {
             if (user.getBlockAccounts().contains(foundUser.getId())) {
                 user.getBlockAccounts().remove(foundUser.getId());
-                foundUser.setBlockAccount(false);
                 return SimpleResponse.builder()
                         .httpStatus(HttpStatus.OK)
                         .message(" Удачно разблокировано!")
@@ -117,7 +116,6 @@ public class UserInfoServiceImpl implements UserInfoService {
                         .build();
             } else {
                 user.getBlockAccounts().add(foundUser.getId());
-                foundUser.setBlockAccount(true);
                 return SimpleResponse.builder()
                         .httpStatus(HttpStatus.OK)
                         .message(" Удачно блокировано!")
