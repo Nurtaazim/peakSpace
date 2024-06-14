@@ -57,12 +57,6 @@ public class PublicProfileAPI {
         return publicService.getPublicPost(choise, publicId, userId);
     }
 
-    @Secured("USER")
-    @Operation(summary = " Страница одного поста полный вид findByPostId")
-    @GetMapping("/find/{postId}")
-    public PublicPostResponse getByPost(@PathVariable Long postId) {
-        return publicService.findPostPublic(postId);
-    }
 
     @Secured("USER")
     @Operation(summary = " Удаление пользователя в паблике ")
