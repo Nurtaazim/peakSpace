@@ -443,7 +443,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой айди не существует!"));
         List<ShortPublicationResponse> publications = new ArrayList<>();
         for (Publication publication : community.getPublications()) {
-            ShortPublicationResponse shortPublicationResponse = new ShortPublicationResponse(publication.getId(),publication.getId(), publication.getLinkPublications().getFirst().getLink());
+            ShortPublicationResponse shortPublicationResponse = new ShortPublicationResponse(publication.getId(),publication.getOwner().getId(), publication.getLinkPublications().getFirst().getLink());
             publications.add(shortPublicationResponse);
         }
         return publications;
