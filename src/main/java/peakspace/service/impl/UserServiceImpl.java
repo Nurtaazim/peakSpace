@@ -675,22 +675,22 @@ public class UserServiceImpl implements UserService {
     public List<AllFriendsResponse> getAllFriendsById(Long userId) {
         User user = getCurrentUser();
         List<AllFriendsResponse> allFriendsResponses = new ArrayList<>();
-        if(userId.equals(user.getId())){
+        if (userId.equals(user.getId())) {
             for (Chapter chapter : user.getChapters()) {
                 for (User friend : chapter.getFriends()) {
                     allFriendsResponses.add(AllFriendsResponse.builder()
-                                    .idUser(friend.getId())
-                                    .avatar(friend.getProfile().getAvatar())
-                                    .userName(friend.getThisUserName())
-                                    .aboutMe(friend.getProfile().getAboutYourSelf())
-                                    .isMyFriend(true)
+                            .idUser(friend.getId())
+                            .avatar(friend.getProfile().getAvatar())
+                            .userName(friend.getThisUserName())
+                            .aboutMe(friend.getProfile().getAboutYourSelf())
+                            .isMyFriend(true)
                             .build());
                 }
             }
-        }else {
+        } else {
             for (Chapter chapter : userRepository.getReferenceById(userId).getChapters()) {
                 for (User friend : chapter.getFriends()) {
-                    if(!user.getBlockAccounts().contains(friend.getId())){
+                    if (!user.getBlockAccounts().contains(friend.getId())) {
                         boolean is = false;
                         for (Chapter userChapter : user.getChapters()) {
                             for (User userChapterFriend : userChapter.getFriends()) {
@@ -728,7 +728,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @PrePersist
     public void startTask() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
