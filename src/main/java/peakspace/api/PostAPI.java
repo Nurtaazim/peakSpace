@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.FavoritePostResponse;
+import peakspace.dto.response.PublicPostResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
+import peakspace.service.PublicProfileService;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class PostAPI {
 
     private final PostService postService;
+    private final PublicProfileService publicService;
 
     @Secured("USER")
     @PostMapping
@@ -67,15 +70,22 @@ public class PostAPI {
     @Secured("USER")
     @PutMapping("/removeNotationFriends/{postId}/{friendsId}")
     @Operation(summary = " Удалить друзей из отметки из поста !")
-    public SimpleResponse removeNotationFriends(@PathVariable Long postId,@PathVariable List<Long> friendsId) {
-        return postService.removeNotation(postId,friendsId);
+    public SimpleResponse removeNotationFriends(@PathVariable Long postId, @PathVariable List<Long> friendsId) {
+        return postService.removeNotation(postId, friendsId);
     }
 
     @Secured("USER")
     @PostMapping("/accept-users/{postId}")
     @Operation(summary = " Accept")
-    public SimpleResponse accept(@PathVariable Long postId,@RequestParam Boolean tag) {
-        return postService.acceptTagFriend(postId,tag);
+    public SimpleResponse accept(@PathVariable Long postId, @RequestParam Boolean tag) {
+        return postService.acceptTagFriend(postId, tag);
+    }
+
+    @Secured("USER")
+    @Operation(summary = " Страница одного поста полный вид findByPostId")
+    @GetMapping("/find/{postId}")
+    public PublicPostResponse getByPost(@PathVariable Long postId) {
+        return publicService.findPostPublic(postId);
     }
 
 }

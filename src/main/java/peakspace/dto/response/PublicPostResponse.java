@@ -1,6 +1,5 @@
 package peakspace.dto.response;
 
-import peakspace.enums.Tematica;
 
 import java.util.List;
 
@@ -8,7 +7,8 @@ public record PublicPostResponse(Long id,
                                  Long userId,
                                  String avatar,
                                  String userName,
-                                 Tematica tematica,
+                                 String location,
+                                 String description,
                                  int countLikes,
                                  List<LinkResponse> links,
                                  List<CommentResponse> commentResponses,
