@@ -1,7 +1,11 @@
-package peakspace.api;
+package peakspace.dto.response;
 
+import lombok.Builder;
+
+@Builder
 public record AllFriendsResponse(Long idUser,
                                  String avatar,
                                  String userName,
-                                 String aboutMe) {
+                                 String aboutMe,
+                                 boolean isMyFriend) {
 }

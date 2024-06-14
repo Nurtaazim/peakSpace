@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.FriendsPageResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
 
@@ -68,6 +65,13 @@ public class ChapterAPI {
                                              @PathVariable Long chapterId,
                                              @RequestParam(required = false) String search) {
         return userService.searchAllFriendsByChapter(userId, chapterId, search);
+    }
+
+    @Secured("USER")
+    @GetMapping("/all-my-friends/{userId}")
+    @Operation(summary = "Получить всех друзья пользователя! developer: Mirlan")
+    public List<AllFriendsResponse> getAllFriends(@PathVariable Long userId){
+        return userService.getAllFriendsById(userId);
     }
 
 }
