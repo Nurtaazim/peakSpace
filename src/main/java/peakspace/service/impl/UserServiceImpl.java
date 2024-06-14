@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseToken;
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.PrePersist;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
             user.setProfile(profile);
             String username = user.getProfile().getLastName();
-            while (user.getThisUserName() == null)   {
+            while (user.getThisUserName() == null) {
                 if (!userRepository.existsByUserName(username)) {
                     user.setUserName(user.getProfile().getLastName().toLowerCase());
                     break;
@@ -154,77 +155,77 @@ public class UserServiceImpl implements UserService {
         user.setConfirmationCode(randomCode);
         String fullName = user.getThisUserName();
         String message = "<!DOCTYPE html>\n" +
-                         "<html lang=\"en\">\n" +
-                         "\n" +
-                         "<head>\n" +
-                         "    <meta charset=\"UTF-8\">\n" +
-                         "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                         "    <title>Confirmation Code</title>\n" +
-                         "    <style>\n" +
-                         "        body {\n" +
-                         "            background-image: url('https://files.slack.com/files-pri/T023L1WBFLH-F06TT7FAU0J/img_2536.jpg');\n" +
-                         "            background-size: cover;\n" +
-                         "            background-position: center;\n" +
-                         "            color: #ffffff;\n" +
-                         "            font-family: Arial, sans-serif;\n" +
-                         "            margin: 0;\n" +
-                         "            padding: 0;\n" +
-                         "        }\n" +
-                         "\n" +
-                         "        .container {\n" +
-                         "            text-align: center;\n" +
-                         "            padding: 10% 5%;\n" +
-                         "        }\n" +
-                         "\n" +
-                         "        h2 {\n" +
-                         "            color: #ffcc00;\n" +
-                         "            font-size: 2.5em;\n" +
-                         "            margin-bottom: 20px;\n" +
-                         "        }\n" +
-                         "\n" +
-                         "        h3 {\n" +
-                         "            color: #ff0000;\n" +
-                         "            font-size: 2em;\n" +
-                         "            margin-bottom: 15px;\n" +
-                         "        }\n" +
-                         "\n" +
-                         "        p {\n" +
-                         "            font-size: 1.2em;\n" +
-                         "            margin-bottom: 10px;\n" +
-                         "        }\n" +
-                         "\n" +
-                         "        @media (max-width: 768px) {\n" +
-                         "            h2 {\n" +
-                         "                font-size: 2em;\n" +
-                         "            }\n" +
-                         "\n" +
-                         "            h3 {\n" +
-                         "                font-size: 1.5em;\n" +
-                         "            }\n" +
-                         "\n" +
-                         "            p {\n" +
-                         "                font-size: 1em;\n" +
-                         "            }\n" +
-                         "\n" +
-                         "            .container {\n" +
-                         "                padding: 20% 5%;\n" +
-                         "            }\n" +
-                         "        }\n" +
-                         "    </style>\n" +
-                         "</head>\n" +
-                         "\n" +
-                         "<body>\n" +
-                         "    <div class=\"container\">\n" +
-                         "        <h2>Confirmation code!</h2>\n" +
-                         "        <h2>ПРИВЕТ! " + fullName + "</h2>\n" +
-                         "        <h3>Код подтверждения: " + randomCode + "</h3>\n" +
-                         "        <p>НИКОМУ НЕ СООБЩАЙТЕ ЭТОТ КОД!</p>\n" +
-                         "        <p>Это код для регистрации в Peak Space</p>\n" +
-                         "        <p>Этот код действителен только 5 минут!</p>\n" +
-                         "    </div>\n" +
-                         "</body>\n" +
-                         "\n" +
-                         "</html>\n";
+                "<html lang=\"en\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Confirmation Code</title>\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            background-image: url('https://files.slack.com/files-pri/T023L1WBFLH-F06TT7FAU0J/img_2536.jpg');\n" +
+                "            background-size: cover;\n" +
+                "            background-position: center;\n" +
+                "            color: #ffffff;\n" +
+                "            font-family: Arial, sans-serif;\n" +
+                "            margin: 0;\n" +
+                "            padding: 0;\n" +
+                "        }\n" +
+                "\n" +
+                "        .container {\n" +
+                "            text-align: center;\n" +
+                "            padding: 10% 5%;\n" +
+                "        }\n" +
+                "\n" +
+                "        h2 {\n" +
+                "            color: #ffcc00;\n" +
+                "            font-size: 2.5em;\n" +
+                "            margin-bottom: 20px;\n" +
+                "        }\n" +
+                "\n" +
+                "        h3 {\n" +
+                "            color: #ff0000;\n" +
+                "            font-size: 2em;\n" +
+                "            margin-bottom: 15px;\n" +
+                "        }\n" +
+                "\n" +
+                "        p {\n" +
+                "            font-size: 1.2em;\n" +
+                "            margin-bottom: 10px;\n" +
+                "        }\n" +
+                "\n" +
+                "        @media (max-width: 768px) {\n" +
+                "            h2 {\n" +
+                "                font-size: 2em;\n" +
+                "            }\n" +
+                "\n" +
+                "            h3 {\n" +
+                "                font-size: 1.5em;\n" +
+                "            }\n" +
+                "\n" +
+                "            p {\n" +
+                "                font-size: 1em;\n" +
+                "            }\n" +
+                "\n" +
+                "            .container {\n" +
+                "                padding: 20% 5%;\n" +
+                "            }\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <h2>Confirmation code!</h2>\n" +
+                "        <h2>ПРИВЕТ! " + fullName + "</h2>\n" +
+                "        <h3>Код подтверждения: " + randomCode + "</h3>\n" +
+                "        <p>НИКОМУ НЕ СООБЩАЙТЕ ЭТОТ КОД!</p>\n" +
+                "        <p>Это код для регистрации в Peak Space</p>\n" +
+                "        <p>Этот код действителен только 5 минут!</p>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>\n";
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Код Подтверждение!");
         javaMailSender.send(mimeMessage);
@@ -261,20 +262,20 @@ public class UserServiceImpl implements UserService {
             mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
             mimeMessageHelper.setTo(user.getEmail());
             mimeMessageHelper.setText("""
-                                              Hi """ + user.getUsername() + """
-                                                                                            
-                                              """
-                                      +
-                                      user.getPassword()
-                                      +
-                                      """
-                                                                                            
-                                              НИКОМУ НЕ ГОВОРИТЕ КОД!
-                                              Это пароль по умолчанию для Peakspace.
-                                              Важно изменить этот пароль в целях вашей безопасности.
-                                                                               
-                                              Welcome to Peakspace!
-                                              """);
+                    Hi """ + user.getUsername() + """
+                                                                  
+                    """
+                    +
+                    user.getPassword()
+                    +
+                    """
+                                                                          
+                            НИКОМУ НЕ ГОВОРИТЕ КОД!
+                            Это пароль по умолчанию для Peakspace.
+                            Важно изменить этот пароль в целях вашей безопасности.
+                                                             
+                            Welcome to Peakspace!
+                            """);
             mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
             javaMailSender.send(mimeMessage);
             System.out.println("Mail sent to " + user.getEmail());
@@ -617,32 +618,32 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(ZonedDateTime.now());
         user.setBlockAccount(true);
         String message = "<html>"
-                         + "<head>"
-                         + "<style>"
-                         + "body {"
-                         + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
-                         + "    background-size: cover;"
-                         + "    background-position: center;"
-                         + "    color: #ffffff;"
-                         + "    font-family: Arial, sans-serif;"
-                         + "}"
-                         + "h2 {"
-                         + "    color: #ffcc00;"
-                         + "}"
-                         + "h3 {"
-                         + "    color: #ff0000;"
-                         + "}"
-                         + "</style>"
-                         + "</head>"
-                         + "<body>"
-                         + "<div style=\"text-align: center; padding: 50px;\">"
-                         + "<h2>Sign Up</h2>"
-                         + "<p>Ваш код подтверждения для регистрации:</p>"
-                         + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
-                         + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
-                         + "</div>"
-                         + "</body>"
-                         + "</html>";
+                + "<head>"
+                + "<style>"
+                + "body {"
+                + "    background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');"
+                + "    background-size: cover;"
+                + "    background-position: center;"
+                + "    color: #ffffff;"
+                + "    font-family: Arial, sans-serif;"
+                + "}"
+                + "h2 {"
+                + "    color: #ffcc00;"
+                + "}"
+                + "h3 {"
+                + "    color: #ff0000;"
+                + "}"
+                + "</style>"
+                + "</head>"
+                + "<body>"
+                + "<div style=\"text-align: center; padding: 50px;\">"
+                + "<h2>Sign Up</h2>"
+                + "<p>Ваш код подтверждения для регистрации:</p>"
+                + "<h3>Код подтверждения: " + user.getConfirmationCode() + "</h3>"
+                + "<p>Если это были не вы, просто проигнорируйте это сообщение.</p>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
@@ -683,7 +684,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @PrePersist
     public void startTask() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
