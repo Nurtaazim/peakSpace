@@ -9,5 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class ShortPublicationResponse {
     private Long id;
+    private Long ownerId;
     private String link;
 }
