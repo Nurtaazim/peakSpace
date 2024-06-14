@@ -18,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import peakspace.dto.response.AllFriendsResponse;
 import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.*;
@@ -667,6 +668,49 @@ public class UserServiceImpl implements UserService {
                     .token(jwtService.createToken(user))
                     .build();
         } else throw new peakspace.exception.MessagingException("Не правильный код!");
+    }
+
+    @Override
+    public List<AllFriendsResponse> getAllFriendsById(Long userId) {
+        User user = getCurrentUser();
+        List<AllFriendsResponse> allFriendsResponses = new ArrayList<>();
+        if(userId.equals(user.getId())){
+            for (Chapter chapter : user.getChapters()) {
+                for (User friend : chapter.getFriends()) {
+                    allFriendsResponses.add(AllFriendsResponse.builder()
+                                    .idUser(friend.getId())
+                                    .avatar(friend.getProfile().getAvatar())
+                                    .userName(friend.getThisUserName())
+                                    .aboutMe(friend.getProfile().getAboutYourSelf())
+                                    .isMyFriend(true)
+                            .build());
+                }
+            }
+        }else {
+            for (Chapter chapter : userRepository.getReferenceById(userId).getChapters()) {
+                for (User friend : chapter.getFriends()) {
+                    if(!user.getBlockAccounts().contains(friend.getId())){
+                        boolean is = false;
+                        for (Chapter userChapter : user.getChapters()) {
+                            for (User userChapterFriend : userChapter.getFriends()) {
+                                if (userChapterFriend.getId().equals(friend.getId())) {
+                                    is = true;
+                                    break;
+                                }
+                            }
+                        }
+                        allFriendsResponses.add(AllFriendsResponse.builder()
+                                .idUser(friend.getId())
+                                .avatar(friend.getProfile().getAvatar())
+                                .userName(friend.getThisUserName())
+                                .aboutMe(friend.getProfile().getAboutYourSelf())
+                                .isMyFriend(is)
+                                .build());
+                    }
+                }
+            }
+        }
+        return allFriendsResponses;
     }
 
 
