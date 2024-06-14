@@ -2,9 +2,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: ${POSTGRES_PASSWORD}
-    url: ${POSTGRES_DB}
-    username: ${POSTGRES_USER}
+    password: 1234
+    url: jdbc:postgresql://localhost:5432/peakspace
+    username: postgres
 
   # Sql data init
   sql:
