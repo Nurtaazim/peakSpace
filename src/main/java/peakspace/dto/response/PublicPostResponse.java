@@ -11,6 +11,7 @@ public record PublicPostResponse(Long id,
                                  Tematica tematica,
                                  int countLikes,
                                  List<LinkResponse> links,
-                                 List<CommentResponse> commentResponses
+                                 List<CommentResponse> commentResponses,
+                                 boolean blockComment
 ) {
 }

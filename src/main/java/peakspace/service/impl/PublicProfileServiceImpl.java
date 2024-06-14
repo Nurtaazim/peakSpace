@@ -154,9 +154,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<LinkResponse> links = publication.getLinkPublications().stream()
                 .map(link -> new LinkResponse(link.getId(), link.getLink()))
                 .collect(Collectors.toList());
-        if (publication.getPablicProfile() == null) {
-            throw new BadRequestException(" Нет такой пост в паблике паблик !");
-        }
         return new PublicPostResponse(
                 publication.getId(),
                 publication.getOwner().getId(),
@@ -165,7 +162,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 publication.getPablicProfile().getTematica(),
                 publication.getLikes().size(),
                 links,
-                commentForResponse
+                commentForResponse,
+                publication.isBlockComment()
         );
     }
 
@@ -443,7 +441,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой айди не существует!"));
         List<ShortPublicationResponse> publications = new ArrayList<>();
         for (Publication publication : community.getPublications()) {
-            ShortPublicationResponse shortPublicationResponse = new ShortPublicationResponse(publication.getId(),publication.getOwner().getId(), publication.getLinkPublications().getFirst().getLink());
+            ShortPublicationResponse shortPublicationResponse = new ShortPublicationResponse(publication.getId(), publication.getOwner().getId(), publication.getLinkPublications().getFirst().getLink());
             publications.add(shortPublicationResponse);
         }
         return publications;
