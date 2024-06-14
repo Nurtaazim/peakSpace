@@ -30,7 +30,8 @@ values
     (17, 'WilliamMartinez', 'william.martinez@example.com', '$2a$12$encodedPassword7', false,'USER'),
     (18, 'SophiaRobinson', 'sophia.robinson@example.com', '$2a$12$encodedPassword8', false,'USER'),
     (19, 'BenjaminClark', 'benjamin.clark@example.com', '$2a$12$encodedPassword9', false,'USER'),
-    (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false,'USER');
+    (20, 'AvaRodriguez', 'ava.rodriguez@example.com', '$2a$12$encodedPassword10', false,'USER'),
+    (28, 'Username', 'carparking170105@gmail.com', '$2a$10$pQ4GH3TMDhWB9CUMfe4VJ.VNNREt6XWcBNVjnmMcXSht6E56yvoY6', false,'USER');
 
 
 insert into stories(id, owner_id, created_at)
@@ -126,30 +127,29 @@ values
 
 
 
-insert into profiles(id, user_id, work_or_not, avatar, cover, about_your_self, last_name, first_name, patronymic_name, profession, location)
-values
 
-    (1, 1, true, 'avatar', 'cover', 'Powerfull', 'Temirbekov',' Aliaskar', 'Temirbekovich', 'DataIng', 'Bishkek, Kyrgyzstan'),
-    (2, 2, true, 'avatar', 'cover', 'I can all', 'Arstanbekov', 'Mirlan','Arstanbekovich', 'Backend dev', 'Osh, Kyrgyzstan'),
-    (3, 3, false,'avatar', 'cover', 'Everything id possible', 'Keldibekova ',' Myrzaiym', 'Keldibekovna','Java dev', 'Jalal-Abad, Kyrgyzstan'),
-    (4, 4, true,'avatar', 'cover', 'I am from Talas', 'Mukanov ',' Nurtaazim', 'Universal','C# dev', 'Talas, Kyrgyzstan'),
-    (5, 5, false,'avatar', 'cover', 'Happy person', 'Medetov ',' Nurmukhammed','Universal',  'C++ dev', 'Naryn, Kyrgyzstan'),
-    (6, 6, true,'avatar', 'cover', 'Happines with me', 'Kamchiev ',' Nurkamil', 'Universal','JS dev', 'Batken, Kyrgyzstan'),
-    (7, 7, false,'avatar', 'cover', 'Study hard', 'Maksat kyzy ',' Aiturgan', 'Universal','UX/UI', 'Issyk-Kul, Kyrgyzstan'),
-    (8, 8, true,'avatar', 'cover', 'Manas univ', 'Uson kyzy ',' Gulumkan', 'Universal','UX/UI', 'Chui, Kyrgyzstan'),
-    (9, 9, false,'avatar', 'cover', 'At school', 'Sadykov ',' Ajybek', 'Universal', 'C++ dev', 'Naryn, Kyrgyzstan'),
-    (10, 10, true,'avatar', 'cover', 'At work', 'Toigonbaev ',' Nurislam', 'Universal','Backend dev', 'Bishkek, Kyrgyzstan'),
-    (11, 11, false,'avatar', 'cover', 'Code Lover', 'Abdulatipov ',' Akbar', 'Universal','Full-stack dev', 'Osh, Kyrgyzstan'),
-    (12, 12, true,'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov ',' Bakyt', 'Universal', 'Software Engineer', 'Jalal-Abad, Kyrgyzstan'),
-    (13, 13, false,'avatar', 'cover', 'Innovator', 'Cholponbaeva ',' Cholpon',  'Universal','Frontend dev', 'Talas, Kyrgyzstan'),
-    (14, 14, true,'avatar', 'cover', 'Dreamer', 'Dastanov ',' Dastan',  'Universal','Web Developer', 'Naryn, Kyrgyzstan'),
-    (15, 15, false,'avatar', 'cover', 'Explorer', 'Esenbekov ',' Esen', 'Universal','Mobile App Developer', 'Batken, Kyrgyzstan'),
-    (16, 16, true,'avatar', 'cover', 'Problem Solver', 'Joldoshev ',' Joldosh', 'Universal','Software Developer', 'Issyk-Kul, Kyrgyzstan'),
-    (17, 17, false,'avatar', 'cover', 'Tech Guru', 'Keneshov ',' Kenesh', 'Universal','Systems Analyst', 'Chui, Kyrgyzstan'),
-    (18, 18, true,'avatar', 'cover', 'Innovative Mind', 'Kubatbekov ',' Kubat', 'Universal','Database Administrator', 'Bishkek, Kyrgyzstan'),
-    (19, 19, false,'avatar', 'cover', 'Data Scientist', 'Muratov ',' Murat',  'Universal','Network Administrator', 'Osh, Kyrgyzstan'),
-    (20, 20, true,'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev ',' Nurgazy',  'Universal','Machine Learning Engineer', 'Jalal-Abad, Kyrgyzstan');
-
+INSERT INTO profiles(id, user_id, work_or_not, avatar, cover, about_your_self, last_name, first_name, patronymic_name, profession, location)
+VALUES
+    (1, 1, true, 'https://ca.slack-edge.com/T023L1WBFLH-U05UL2DHP08-132be68f9199-192', 'https://short.url/1', 'Powerfull', 'Temirbekov', 'Aliaskar', 'Temirbekovich', 'DataIng', 'Bishkek, Kyrgyzstan'),
+    (2, 2, true, 'https://ca.slack-edge.com/T023L1WBFLH-U05UAG2LSQ7-f827d5460a13-192', 'https://short.url/2', 'I can all', 'Arstanbekov', 'Mirlan', 'Arstanbekovich', 'Backend dev', 'Osh, Kyrgyzstan'),
+    (3, 3, false, 'https://ca.slack-edge.com/T023L1WBFLH-U05UV0F2U21-96aecb313aa4-512', 'https://short.url/3', 'Everything is possible', 'Keldibekova', 'Myrzaiym', 'Keldibekovna', 'Java dev', 'Jalal-Abad, Kyrgyzstan'),
+    (4, 4, true, 'https://short.url/4', 'https://short.url/5', 'I am from Talas', 'Mukanov', 'Nurtaazim', 'Universal', 'C# dev', 'Talas, Kyrgyzstan'),
+    (5, 5, false, 'https://ca.slack-edge.com/T023L1WBFLH-U05TMGGE84A-b67a66e183b8-512', 'https://short.url/6', 'Happy person', 'Medetov', 'Nurmukhammed', 'Universal', 'C++ dev', 'Naryn, Kyrgyzstan'),
+    (6, 6, true, 'https://ca.slack-edge.com/T023L1WBFLH-U05V33UT0SV-8b0148a541d6-512', 'https://short.url/7', 'Happiness with me', 'Kamchiev', 'Nurkamil', 'Universal', 'JS dev', 'Batken, Kyrgyzstan'),
+    (7, 7, false, 'https://short.url/8', 'https://short.url/9', 'Study hard', 'Maksat kyzy', 'Aiturgan', 'Universal', 'UX/UI', 'Issyk-Kul, Kyrgyzstan'),
+    (8, 8, true, 'https://ca.slack-edge.com/T023L1WBFLH-U05TK7SG3S6-eead6146d502-192', 'https://short.url/10', 'Manas univ', 'Uson kyzy', 'Gulumkan', 'Universal', 'UX/UI', 'Chui, Kyrgyzstan'),
+    (9, 9, false, 'https://short.url/11', 'https://short.url/12', 'At school', 'Sadykov', 'Ajybek', 'Universal', 'C++ dev', 'Naryn, Kyrgyzstan'),
+    (10, 10, true, 'https://ca.slack-edge.com/T023L1WBFLH-U05TWJYJKCJ-b2595bd01b1c-192', 'https://short.url/13', 'At work', 'Toigonbaev', 'Nurislam', 'Universal', 'Backend dev', 'Bishkek, Kyrgyzstan'),
+    (11, 11, false, 'avatar', 'https://short.url/14', 'Code Lover', 'Abdulatipov', 'Akbar', 'Universal', 'Full-stack dev', 'Osh, Kyrgyzstan'),
+    (12, 12, true, 'avatar', 'cover', 'Tech Enthusiast', 'Bolotbekov', 'Bakyt', 'Universal', 'Software Engineer', 'Jalal-Abad, Kyrgyzstan'),
+    (13, 13, false, 'avatar', 'cover', 'Innovator', 'Cholponbaeva', 'Cholpon', 'Universal', 'Frontend dev', 'Talas, Kyrgyzstan'),
+    (14, 14, true, 'avatar', 'cover', 'Dreamer', 'Dastanov', 'Dastan', 'Universal', 'Web Developer', 'Naryn, Kyrgyzstan'),
+    (15, 15, false, 'avatar', 'cover', 'Explorer', 'Esenbekov', 'Esen', 'Universal', 'Mobile App Developer', 'Batken, Kyrgyzstan'),
+    (16, 16, true, 'avatar', 'cover', 'Problem Solver', 'Joldoshev', 'Joldosh', 'Universal', 'Software Developer', 'Issyk-Kul, Kyrgyzstan'),
+    (17, 17, false, 'avatar', 'cover', 'Tech Guru', 'Keneshov', 'Kenesh', 'Universal', 'Systems Analyst', 'Chui, Kyrgyzstan'),
+    (18, 18, true, 'avatar', 'cover', 'Innovative Mind', 'Kubatbekov', 'Kubat', 'Universal', 'Database Administrator', 'Bishkek, Kyrgyzstan'),
+    (19, 19, false, 'avatar', 'cover', 'Data Scientist', 'Muratov', 'Murat', 'Universal', 'Network Administrator', 'Osh, Kyrgyzstan'),
+    (20, 20, true, 'avatar', 'cover', 'AI Enthusiast', 'Nurgaziev', 'Nurgazy', 'Universal', 'Machine Learning Engineer', 'Jalal-Abad, Kyrgyzstan');
 
 
 insert into chats(id, sender_id, receiver_id)
@@ -197,16 +197,16 @@ values (1, 1, 'Hello', '2024-04-09', false),
 
 
 INSERT INTO pablic_profiles(id, owner_id, cover, avatar, pablic_name, tematica)
-VALUES (1, 1, 'cover', 'avatar', 'Felisity', 'MOVIE'),
-       (2, 2, 'cover', 'avatar', 'IT', 'IT'),
-       (3, 3, 'cover', 'avatar', 'Code your future', 'IT'),
-       (4, 4, 'cover', 'avatar', 'Vakansy', 'IT'),
-       (5, 5, 'cover', 'avatar', 'Apartment', 'IT'),
-       (6, 6, 'cover', 'avatar', 'Today', 'MOVIE'),
-       (7, 7, 'cover', 'avatar', 'Java', 'IT'),
-       (8, 8, 'cover', 'avatar', 'Apartment', 'MOVIE'),
-       (9, 9, 'cover', 'avatar', 'Networking', 'IT'),
-       (10, 10, 'cover', 'avatar', 'Databases', 'IT'),
+VALUES (1, 1, 'https://st2.depositphotos.com/1105977/9877/i/450/depositphotos_98775856-stock-photo-retro-film-production-accessories-still.jpg', 'https://amc-theatres-res.cloudinary.com/image/upload/f_auto,fl_lossy,h_465,q_auto,w_310/v1717521746/amc-cdn/production/2/movies/67500/67476/PosterDynamic/165402.jpg', 'Felisity', 'MOVIE'),
+       (2, 2, 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1024', 'https://thecode.org/wp-content/uploads/2024/05/cropped-THECODE-LOGO_SYMBOL_2019_HIGH.jpg', 'IT', 'IT'),
+       (3, 3, 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1024', 'https://img.freepik.com/free-photo/person-working-html-computer_23-2150038857.jpg?size=626&ext=jpg&ga=GA1.1.1224184972.1712102400&semt=ais', 'Code your future', 'IT'),
+       (4, 4, 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1024', 'https://static.vecteezy.com/system/resources/previews/019/148/839/non_2x/just-code-it-vector.jpg', 'Vakansy', 'IT'),
+       (5, 5, 'https://img.freepik.com/free-photo/programming-background-collage_23-2149901779.jpg', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUpHO0a0y8bTKs4PgICXMM36su0yo568W9GA&s', 'Apartment', 'IT'),
+       (6, 6, 'https://st2.depositphotos.com/1105977/9877/i/450/depositphotos_98775856-stock-photo-retro-film-production-accessories-still.jpg', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQDYau3Hs4-xw1i8jVSUY4BlF4FLmg8lQqg&s', 'Today', 'MOVIE'),
+       (7, 7, 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1024', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0rmXrbt5KWXxl9p9aelqM2xIBaMn-b8Zphw&s', 'Java', 'IT'),
+       (8, 8, 'https://st2.depositphotos.com/1105977/9877/i/450/depositphotos_98775856-stock-photo-retro-film-production-accessories-still.jpg', 'https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/fighter-et00304730-1704191105.jpg', 'Apartment', 'MOVIE'),
+       (9, 9, 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1024', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmIQFExWx-Oxxmshk-mmwpD4W8tRq0W2Cf4w&s', 'Networking', 'IT'),
+       (10, 10, 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=1024', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpghv-MjgzU1vNbcG2pTjbjhAp1YHBHs0z9A&s', 'Databases', 'IT'),
        (11, 11, 'cover', 'avatar', 'Web Development', 'IT'),
        (12, 12, 'cover', 'avatar', 'Mobile Apps', 'IT'),
        (13, 13, 'cover', 'avatar', 'Software Engineering', 'IT'),
@@ -219,28 +219,30 @@ VALUES (1, 1, 'cover', 'avatar', 'Felisity', 'MOVIE'),
        (20, 20, 'cover', 'avatar', 'Robotics', 'IT');
 
 
-insert into link_publications(id, link)
-values (1, 'imageLink1'),
-       (2, 'videoLink1'),
-       (3, 'videoLink2'),
-       (4, 'imageLink2'),
-       (5, 'videoLink3'),
-       (6, 'imageLink3'),
-       (7, 'imageLink4'),
-       (8, 'videoLink4'),
-       (9, 'imageLink5'),
-       (10, 'imageLink6'),
-       (11, 'videoLink5'),
-       (12, 'imageLink7'),
-       (13, 'imageLink8'),
-       (14, 'videoLink6'),
-       (15, 'videoLink7'),
-       (16, 'imageLink9'),
-       (17, 'videoLink8'),
-       (18, 'imageLink10'),
-       (19, 'videoLink9'),
-       (20, 'imageLink11');
 
+insert into link_publications(id, link)
+values
+    (1, 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.rottentomatoes.com%2Fm%2Fchallengers_2024&psig=AOvVaw2a4Vcdafiw-DXne7lmuc6J&ust=1718386504827000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMCF_NyO2YYDFQAAAAAdAAAAABAR'),
+    (2, 'https://youtu.be/1FZ7DbQwVcw'),
+    (3, 'https://youtu.be/p4FDs9v_EpY'),
+    (4, 'https://sotni.ru/wp-content/uploads/2023/08/estetika-17.webp'),
+    (5, 'https://youtu.be/PaKr9gWqwl4'),
+    (6, 'https://kartinki.pics/uploads/posts/2022-03/1646316456_1-kartinkin-net-p-kartinki-na-telefon-estetika-1.jpg'),
+    (7, 'https://i.pinimg.com/736x/c0/ff/75/c0ff7574dc48649b0b51961fc717605b.jpg'),
+    (8, 'https://youtu.be/ZSM3w1v-A_Y'),
+    (9, 'https://kartin.papik.pro/uploads/posts/2023-06/1688131226_kartin-papik-pro-p-kartinki-nebo-oblaka-estetika-25.jpg'),
+    (10, 'https://www.google.com/imgres?q=%D0%BF%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%82%20estetik&imgurl=https%3A%2F%2Fkartinki.pics%2Fuploads%2Fposts%2F2022-02%2F1644939472_1-kartinkin-net-p-estetichnie-kartinki-pinterest-1.jpg'),
+    (11, 'https://youtu.be/o_1aF54DO60'),
+    (12, 'https://www.google.com/imgres?q=%D0%BF%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%82%20estetik&imgurl=https%3A%2F%2Fi.pinimg.com%2F736x%2F1a%2Fd4%2F0c%2F1ad40ca8904b42e5be34f9cf4676874b.jpg'),
+    (13, 'https://www.google.com/imgres?q=%D0%BF%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%82%20estetik&imgurl=https%3A%2F%2Fsotni.ru%2Fwp-content%2Fuploads%2F2023%2F08%2Fmore-estetika-pinterest-4.webp'),
+    (14, 'https://youtu.be/gset79KMmt0'),
+    (15, 'https://youtu.be/nyuo9-OjNNg'),
+    (16, 'https://flomaster.top/o/uploads/posts/2023-11/1700287142_flomaster-top-p-more-estetika-risunki-vkontakte-2.jpg'),
+    (17, 'https://youtu.be/x5Dpz6w_jz4'),
+    (18, 'https://media-1.gorbilet.com/75/bd/e8/72/8e/20/thanh-soledas-XGuZ4HlC5qU-unsplash.jpg'),
+    (19, 'https://www.youtube.com/watch?v=M4ZoCHID9GI'),
+    (20, 'https://darulfikr.ru/wp-content/uploads/2022/10/photo_2022-10-06_10-01-33.jpg')
+;
 
 insert into educations(id, profile_id, country, educational_institution)
 values (1, 1, 'KAZAKHSTAN', 'KGTU'),
@@ -382,10 +384,10 @@ values (1, 1),
 
 insert into notifications(id, like_id, user_notification_id, sender_user_id, comment_id, publication_id, story_id, seen, notification_message, created_at)
 values
-    (1, 1, 1, 1, NULL, NULL, NULL, false, 'Ваш пост понравился пользователю Aliaskar', '2024-05-22T11:06:23.439327+00:00'),
-    (2, 2, 1, 3, NULL, 1, NULL, false, 'Лайкнул на ваш пост', '2024-05-22T17:11:49.125000+00:00'),
-    (3, 3, 1, 4, NULL, NULL, 1, false, 'Лайкнул на ваш сториз', '2024-05-22T17:13:34.333000+00:00'),
-    (4, 4, 1, 2, 2, NULL, NULL, false, 'Ваш коммент понравился!', '2024-05-22T17:09:56.493000+00:00');
+    (1, 1, 1, 1, NULL, 5, NULL, false, 'Ваш пост понравился пользователю Aliaskar', '2024-05-22T11:06:23.439327+00:00'),
+    (2, 2, 3, 3, NULL, 1, NULL, false, 'Лайкнул на ваш пост', '2024-05-22T17:11:49.125000+00:00'),
+    (3, 3, 1, 28, NULL, NULL, 1, false, 'Ваша история понравился пользователю Нуртаазим', '2024-05-22T17:13:34.333000+00:00'),
+    (4, 4, 4, 2, 2, NULL, NULL, false, 'Ваш коммент понравился!', '2024-05-22T17:09:56.493000+00:00');
 
 insert into inner_comment(comment_id, inner_comments_id)
 values (1, 1),
