@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import peakspace.dto.response.GetAllPublicProfileResponse;
 import peakspace.dto.response.SearchResponse;
 import peakspace.entities.PablicProfile;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +25,6 @@ public interface PublicProfileRepository extends JpaRepository<PablicProfile, Lo
     @Transactional
     @Query(value = "delete from pablic_profiles_users where pablic_profile_id = :publicId", nativeQuery = true)
     void deleteUsers(Long publicId);
-    @Modifying
-    @Transactional
-    @Query(value = "delete from publications p where p.pablic_profile_id = :publicId", nativeQuery = true)
-    void deleteCommunityInPublication(Long publicId);
 
     @Modifying
     @Transactional

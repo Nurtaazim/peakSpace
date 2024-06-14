@@ -8,6 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.*;
@@ -41,6 +42,7 @@ public class PostServiceImpl implements PostService {
     private final LinkPublicationRepo linkPublicationRepo;
     private final PublicationRepository publicationRepo;
     private final NotificationRepository notificationRepository;
+    private final AwsS3Service awsS3Service;
 
     @Transactional
     @Override
@@ -97,24 +99,20 @@ public class PostServiceImpl implements PostService {
     public SimpleResponse delete(Long postId) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
-
-        for (Publication publication : user.getPublications()) {
-            if (publication.getOwner().getId().equals(user.getId())) {
-                if (publication.getId().equals(postId)) {
-                    publicationRepo.deleteComNotifications(postId);
-                    publicationRepo.deleteCom(postId);
-                    publicationRepo.deleteLink(postId);
-                    publicationRepo.deleteTag(postId);
-                    publicationRepo.deleteLike(postId);
-                    publicationRepo.deletePublic(publication.getId());
-                    publicationRepo.deleteByIds(publication.getId());
-
-                }
+        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException("Публикация с таким айди не найдено"));
+        if (publication.getOwner().equals(user)) {
+            publicationRepo.delete(publication);
+            for (Link_Publication linkPublication : publication.getLinkPublications()) {
+                awsS3Service.deleteFile(linkPublication.getLink());
             }
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Successfully deleted!")
+                    .build();
         }
         return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message("Successfully deleted!")
+                .httpStatus(HttpStatus.FORBIDDEN)
+                .message("У вас нету прав удалить чужие публикации")
                 .build();
     }
 
@@ -306,8 +304,8 @@ public class PostServiceImpl implements PostService {
     public SimpleResponse deletePostPublic(Long postId) {
         User currentUser = getCurrentUser();
         Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
-
-        if (publication.getOwner().equals(currentUser) || currentUser.getCommunity().getPublications().contains(publication)){
+        if (publication.getPablicProfile() == null) throw new BadRequestException("Это публикация не состоит в сообществе");
+        if (publication.getOwner().equals(currentUser) || currentUser.equals(publication.getPablicProfile().getOwner())){
             publicationRepo.deleteComNotifications(postId);
             publicationRepo.deleteCom(postId);
             publicationRepo.deleteByIds(publication.getId());
@@ -318,7 +316,7 @@ public class PostServiceImpl implements PostService {
                     .build();
         } else {
             return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .httpStatus(HttpStatus.FORBIDDEN)
                     .message(" Вы не можете удалить эту публикацию у вас нету доступ !")
                     .build();
         }
