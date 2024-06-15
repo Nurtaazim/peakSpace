@@ -26,6 +26,16 @@ public class GlobalHandlerException {
                 .message(accountIsBlockException.getMessage())
                 .build();
     }
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse noAccess(ForbiddenException forbiddenException){
+        log.error(forbiddenException.getMessage());
+        return ExceptionResponse.builder()
+                .httpStatus(HttpStatus.FORBIDDEN)
+                .exceptionClassName(forbiddenException.getClass().getSimpleName())
+                .message(forbiddenException.getMessage())
+                .build();
+    }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

@@ -21,6 +21,7 @@ import peakspace.entities.Link_Publication;
 import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
+import peakspace.exception.ForbiddenException;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
@@ -38,7 +39,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     private final PublicationRepository publicationRepository;
     private final CommentRepository commentRepository;
     private final LinkPublicationRepo linkPublicationRepository;
-    private final JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional
@@ -195,9 +195,10 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public SimpleResponse sendPublic(Long publicId) {
         PablicProfile publicProfile = publicProfileRepository.findById(publicId)
-                .orElseThrow(() -> new NotFoundException("Паблик не найден!"));
+                .orElseThrow(() -> new NotFoundException("Сообщество с таким id "+publicId+" не найдено"));
 
         User currentUser = getCurrentUser();
+        if (publicProfile.getBlockUsers().contains(currentUser)) throw new ForbiddenException("Вы были заблокированы владельцом этого сообщества");
         String message = null;
         List<User> users = publicProfile.getUsers();
         if (users.contains(currentUser)) {
@@ -392,8 +393,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public PublicProfileResponse getCommunityById(Long communityId) {
         PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой id не найдено"));
+        if (community.getBlockUsers().contains(getCurrentUser())) throw new ForbiddenException("Вы были заблокированы для этого сообщество");
         return PublicProfileResponse.builder()
-                .publicId(communityId)
                 .cover(community.getCover())
                 .avatar(community.getAvatar())
                 .tematica(community.getTematica())
@@ -446,6 +447,30 @@ public class PublicProfileServiceImpl implements PublicProfileService {
             publications.add(shortPublicationResponse);
         }
         return publications;
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse blockUserInCommunity(Long communityId, Long userId) {
+        PablicProfile pablicProfile = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с таким айди не найдено"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с таким айди не найдено"));
+        if (!pablicProfile.getOwner().equals(getCurrentUser())) throw new ForbiddenException("У вас нету прав заблокировать других пользователей этого сообщество");
+        if (!pablicProfile.getBlockUsers().contains(user)){
+            pablicProfile.getBlockUsers().add(user);
+            pablicProfile.getUsers().remove(user);
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Пользователь успешно заблокировано")
+                    .isBlock(true)
+                    .build();
+        }
+        pablicProfile.getBlockUsers().remove(user);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Пользователь успешно разблокировано")
+                .isBlock(false)
+                .build();
+
     }
 
 

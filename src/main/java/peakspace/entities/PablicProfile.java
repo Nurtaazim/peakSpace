@@ -30,5 +30,6 @@ public class PablicProfile {
     private List<User> users;
     @OneToMany(mappedBy = "pablicProfile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Publication> publications = new ArrayList<>();
-
+    @OneToMany(cascade = CascadeType.DETACH)
+    private List<User> blockUsers = new ArrayList<>();
 }

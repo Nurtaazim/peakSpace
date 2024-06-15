@@ -149,6 +149,14 @@ public class PublicProfileAPI {
     List<ShortPublicationResponse> getAllPublicationByCommunityId(@PathVariable Long communityId) {
         return publicService.getAllPublicationByCommunityId(communityId);
     }
+    @PutMapping("/{communityId}/{userId}")
+    @Secured("USER")
+    @Operation(summary = "Заблокировать пользователя из сообщество", description = "userId - id пользователя которого хотите заблокировать " +
+            "\ncommunityId - это id сообщества из которого хотите заблокировать")
+    SimpleResponse blockUserInCommunity(@PathVariable Long communityId,
+                                         @PathVariable Long userId){
+        return publicService.blockUserInCommunity(communityId,userId);
+    }
 
 
 }
