@@ -662,7 +662,7 @@ public class UserServiceImpl implements UserService {
     public SignInResponse confirmToSignUp(int codeInEmail, long id) throws peakspace.exception.MessagingException {
         User user = userRepository.findById(id).orElseThrow(() -> new peakspace.exception.MessagingException("C таким айди пользователь не существует!"));
         if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
-            user.setBlockAccount(null);
+            user.setBlockAccount(false);
             user.setConfirmationCode(null);
             user.setIsBlock(false);
             return SignInResponse.builder()
