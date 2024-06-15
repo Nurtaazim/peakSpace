@@ -25,7 +25,6 @@ import peakspace.repository.UserRepository;
 import peakspace.service.CommentService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,16 +44,16 @@ public class CommentServiceImpl implements CommentService {
         Comment newComment = new Comment();
         newComment.setMessage(comment.getMessage());
         newComment.setPublication(publication);
-        commentRepository.save(newComment);
-        publication.getComments().add(newComment);
         newComment.setUser(currentUser);
+        Comment save = commentRepository.save(newComment);
+        publication.getComments().add(save);
 
         Notification notification = new Notification();
         notification.setSeen(false);
         notification.setNotificationMessage(" Ответил  на вашу публикации  ! ");
         notification.setCreatedAt(ZonedDateTime.now());
-        newComment.setNotification(notification);
-        notification.setComment(newComment);
+        save.setNotification(notification);
+        notification.setComment(save);
         notification.setUserNotification(publication.getOwner());
         notification.setSenderUserId(currentUser.getId());
         publication.getOwner().getNotifications().add(notification);
@@ -68,9 +67,18 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponseByPost> getAllComment(Long postId) {
         Publication publication = publicationRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("Нет такой публикации с id: " + postId));
-
-        List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
-
+        List<Comment> commentsByPublicationId = commentRepository.getCommentsByPublicationId(postId);
+        List<CommentResponse> commentForResponse = new ArrayList<>();
+        for (Comment comment : commentsByPublicationId) {
+            CommentResponse commentResponse = new CommentResponse(comment.getId(),
+                    comment.getUser().getId(),
+                    comment.getUser().getProfile().getAvatar(),
+                    comment.getUser().getThisUserName(),
+                    comment.getMessage(),
+                    comment.getLikes().size(),
+                    comment.getCreatedAt());
+            commentForResponse.add(commentResponse);
+        }
         List<LinkResponse> links = new ArrayList<>();
         if (publication.getLinkPublications() != null) {
             links = publication.getLinkPublications().stream()

@@ -395,6 +395,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой id не найдено"));
         if (community.getBlockUsers().contains(getCurrentUser())) throw new ForbiddenException("Вы были заблокированы для этого сообщество");
         return PublicProfileResponse.builder()
+                .publicId(communityId)
                 .cover(community.getCover())
                 .avatar(community.getAvatar())
                 .tematica(community.getTematica())
