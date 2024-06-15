@@ -11,10 +11,12 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.PrePersist;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -649,7 +651,6 @@ public class UserServiceImpl implements UserService {
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
         userRepository.save(user);
-        startTask();
         return SignUpResponse.builder()
                 .userId(user.getId())
                 .message("Код подтверждения был отправлен на вашу почту.")
@@ -661,7 +662,7 @@ public class UserServiceImpl implements UserService {
     public SignInResponse confirmToSignUp(int codeInEmail, long id) throws peakspace.exception.MessagingException {
         User user = userRepository.findById(id).orElseThrow(() -> new peakspace.exception.MessagingException("C таким айди пользователь не существует!"));
         if (user.getConfirmationCode().equals(String.valueOf(codeInEmail))) {
-            user.setBlockAccount(false);
+            user.setBlockAccount(null);
             user.setConfirmationCode(null);
             user.setIsBlock(false);
             return SignInResponse.builder()
@@ -728,13 +729,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void startTask() {
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
-        executor.scheduleAtFixedRate(this::yourMethod, 0, 1, TimeUnit.MINUTES);
-    }
-
-    private void yourMethod() {
+    @Transactional
+    @Scheduled(fixedRate = 180000)
+    public void yourMethod() {
         List<User> all = userRepository.findAll();
         for (User user1 : all) {
             if (ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()) {
