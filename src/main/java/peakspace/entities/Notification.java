@@ -23,7 +23,7 @@ public class Notification {
     private ZonedDateTime createdAt;
     private boolean seen;
     private String notificationMessage;
-    @OneToOne
+    @ManyToOne
     private Like like;
     @ManyToOne(cascade = {CascadeType.DETACH})
     private User userNotification;   // получатель

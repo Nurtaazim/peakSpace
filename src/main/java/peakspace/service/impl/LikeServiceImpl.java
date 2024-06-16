@@ -35,11 +35,11 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public boolean addLikeToPost(Long postId) {
         Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException("Пост с такой id не существует!"));
-        if (removeLike(publication.getLikes())){
+        if (removeLikeFromPublication(publication.getLikes(), postId)){
             Like like = createLike();
             publication.getLikes().add(like);
-            createNotification(like, "Ваш пост понравился пользователю " + currentUser().getThisUserName(), publication.getOwner());
-
+            Notification notification = createNotification(like, "Ваш пост понравился пользователю " + currentUser().getThisUserName(), publication.getOwner());
+            notification.setPublication(publication);
             return true;
         }
         else return false;
@@ -49,11 +49,11 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public boolean addLikeToComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Комментарий с такой id не существует!"));
-        if (removeLike(comment.getLikes())){
+        if (removeLikeFromComment(comment.getLikes(), commentId)){
             Like like = createLike();
             comment.getLikes().add(like);
-            createNotification(like, "Ваш комментарий понравился пользователю " + currentUser().getThisUserName(), comment.getUser());
-
+            Notification notification = createNotification(like, "Ваш комментарий понравился пользователю " + currentUser().getThisUserName(), comment.getUser());
+            notification.setComment(comment);
             return true;
         }
         else return false;
@@ -63,10 +63,11 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public boolean addLikeToStory(Long storyId) {
         Story story  = storyRepository.findById(storyId).orElseThrow(() -> new NotFoundException("Сторис с такой id не существует!"));
-        if (removeLike(story.getLikes())){
+        if (removeLikeFromStory(story.getLikes(), storyId)){
             Like like = createLike();
             story.getLikes().add(like);
-            createNotification(like, "Ваш сторис понравился пользователю " + currentUser().getThisUserName(), story.getOwner());
+            Notification notification = createNotification(like, "Ваш сторис понравился пользователю " + currentUser().getThisUserName(), story.getOwner());
+            notification.setStory(story);
             return true;
         }
         else return false;
@@ -77,11 +78,31 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Transactional
-    protected boolean removeLike(List<Like> likes){
+    protected boolean removeLikeFromComment(List<Like> likes, long commentId){
         for (Like like : likes) {
             if (currentUser().getId().equals(like.getUser().getId()) ){
                 likes.remove(like);
-                deleteNotificationByLikeId(like.getId());
+                deleteNotificationByLikeIdFromComment(like.getId(),commentId);
+                return false;
+            }
+        }
+        return true;
+    }@Transactional
+    protected boolean removeLikeFromPublication(List<Like> likes, long publicationId){
+        for (Like like : likes) {
+            if (currentUser().getId().equals(like.getUser().getId()) ){
+                likes.remove(like);
+                deleteNotificationByLikeIdFromPublication(like.getId(), publicationId);
+                return false;
+            }
+        }
+        return true;
+    }@Transactional
+    protected boolean removeLikeFromStory(List<Like> likes, long storyId){
+        for (Like like : likes) {
+            if (currentUser().getId().equals(like.getUser().getId()) ){
+                likes.remove(like);
+                deleteNotificationByLikeIdFromStory(like.getId(), storyId);
                 return false;
             }
         }
@@ -99,18 +120,40 @@ public class LikeServiceImpl implements LikeService {
         return likeByUserId;
     }
 
-    private void deleteNotificationByLikeId(long likeId){
-        Notification notification = notificationRepository.findByLikeId(likeId).orElseThrow(() -> new NotFoundException("Такое уведомление не существует!"));
-        notificationRepository.deleteById(notification.getId());
+    private void deleteNotificationByLikeIdFromPublication(long likeId, long postId){
+        List<Notification> notification = notificationRepository.findByLikeId(likeId);
+        for (Notification notification1 : notification) {
+            if (notification1.getPublication() != null && notification1.getPublication().getId().equals(postId)){
+                notificationRepository.deleteById(notification1.getId());
+            }
+
+        }
+
+    }private void deleteNotificationByLikeIdFromComment(long likeId, long commentId){
+        List<Notification> notification = notificationRepository.findByLikeId(likeId);
+        for (Notification notification1 : notification) {
+            if (notification1.getComment() != null && notification1.getComment().getId().equals(commentId)){
+                notificationRepository.deleteById(notification1.getId());
+            }
+        }
+
+    }private void deleteNotificationByLikeIdFromStory(long likeId, long storyId){
+        List<Notification> notification = notificationRepository.findByLikeId(likeId);
+        for (Notification notification1 : notification) {
+            if (notification1.getStory() != null && notification1.getStory().getId().equals(storyId)){
+                notificationRepository.deleteById(notification1.getId());
+            }
+        }
+
     }
 
-    private void createNotification(Like like, String forNotificationMassage, User userNotification){
+    private Notification createNotification(Like like, String forNotificationMassage, User userNotification){
         Notification n = new Notification();
         n.setLike(like);
         n.setSenderUserId(currentUser().getId());
         n.setNotificationMessage(forNotificationMassage);
         n.setUserNotification(userNotification);
-        notificationRepository.save(n);
+        return notificationRepository.save(n);
     }
 
 
