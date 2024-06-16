@@ -60,4 +60,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     void deleteNotification(Long commentId);
 
     List<Comment> getCommentsByPublicationId(Long postId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from comments_notifications where comment_id = :innerCommentId", nativeQuery = true)
+    void deleteNotificationComment(Long innerCommentId);
 }
