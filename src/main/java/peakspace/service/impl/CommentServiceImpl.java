@@ -173,6 +173,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override @Transactional
     public SimpleResponse removeInnerComment(Long innerCommentId) {
+        commentRepository.deleteNotificationComment(innerCommentId);
         commentRepository.deleteLikes(innerCommentId);
         commentRepository.deleteInnerComment(innerCommentId);
         deleteComment(innerCommentId);
