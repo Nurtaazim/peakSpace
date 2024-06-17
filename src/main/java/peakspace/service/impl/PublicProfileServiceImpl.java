@@ -1,9 +1,7 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -84,13 +82,9 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     @Override
     @Transactional
-    public SimpleResponse delete(Long publicId) {
-        PablicProfile pablicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !" + publicId));
-        if (!pablicProfile.getOwner().equals(getCurrentUser()))
-            throw new MessagingException("У вас нету прав удалить чужие сообщества");
-        publicationRepository.deleteAll(pablicProfile.getPublications());
-        publicProfileRepository.deleteUsers(publicId);
-        publicProfileRepository.deletePablicById(publicId);
+    public SimpleResponse delete() {
+        PablicProfile community = getCurrentUser().getCommunity();
+        publicProfileRepository.delete(community);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Удачно удалено !")
