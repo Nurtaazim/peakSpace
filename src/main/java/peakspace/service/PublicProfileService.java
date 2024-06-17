@@ -11,7 +11,7 @@ public interface PublicProfileService {
 
     SimpleResponse edit(PublicRequest publicRequest);
 
-    SimpleResponse delete(Long publicId);
+    SimpleResponse delete();
 
     PublicProfileResponse findPublicProfile(Long publicId,Long userId);
 
