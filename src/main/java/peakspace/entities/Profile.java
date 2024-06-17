@@ -30,7 +30,7 @@ public class Profile {
     private String location;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<Long> favorites;
-    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<Education> educations;
     @OneToOne()
     private User user;
@@ -39,5 +39,9 @@ public class Profile {
         this.firstName = firstName;
         this.lastName = lastName;
         this.user = user;
+        this.avatar = "https://bit.ly/3KMgyZ4";
+        this.cover = "https://bit.ly/3VK5PUn";
     }
+
+
 }
