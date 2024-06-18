@@ -17,6 +17,7 @@ import peakspace.entities.User;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.LinkPublicationRepo;
+import peakspace.repository.NotificationRepository;
 import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTamplate.StoryJdbcTemplate;
@@ -35,6 +36,7 @@ public class StoryServiceImpl implements StoryService {
     private final LinkPublicationRepo linkPublicationRepository;
     private final AwsS3Service storageService;
     private final StoryJdbcTemplate storyJdbcTemplate;
+    private final NotificationRepository notificationRepository;
 
     @Override
     @Transactional
@@ -70,6 +72,7 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    @Transactional
     public SimpleResponse delete(long id) {
         Story byId = storyRepository.findById(id).orElseThrow(()->new NotFoundException("Сторис с такой id не найдено!"));
         if (byId.getOwner().getId().equals(userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId())){
@@ -77,6 +80,7 @@ public class StoryServiceImpl implements StoryService {
             for (Link_Publication linkPublication : linkPublications) {
                 storageService.deleteFile(linkPublication.getLink());
             }
+            notificationRepository.deleteAllByStoryId(id);
             storyRepository.delete(byId);
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
