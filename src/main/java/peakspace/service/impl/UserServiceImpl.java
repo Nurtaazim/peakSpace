@@ -102,8 +102,10 @@ public class UserServiceImpl implements UserService {
             if (parts.length >= 3) {
                 profile.setPatronymicName(parts[2]);
             }
-            userRepository.save(user);
             user.setProfile(profile);
+            if (user.getProfile().getAvatar() == null  || user.getProfile().getAvatar().isEmpty()) user.getProfile().setAvatar("https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg");
+            if (user.getProfile().getCover() == null || user.getProfile().getAvatar().isEmpty()) user.getProfile().setCover("https://s3-alpha-sig.figma.com/img/1c92/1bf5/b0093ed0ac29cf722c834434cf7ee611?Expires=1719187200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aRbcWs8eN-Mhny0ICI4GwKLx-LG7tHupNdjJBDCVlh37EbKJDndgV-0wSV8n0xq8OM-TEVcxPBLZMhjhy2C1~O1H2JnivHYvfFiLd8f4~KNWiFAE0eQMFjR3ROYnWqWASvOYYbWJ3tIuHScnYxKnlNZzjjQ71UfYzEjQNdRj1ecjFym1oI2wCHHRm-Qemi1VGm0kPLCnLZokRPxn9i8AM7SznezApo2HJlzd3v363puF6ylHtDDjwGSMgnpW2rSxKVyKz3utSjLTQRKy~mpnGsZbX4HRFovktCXL2aq9TiYvxvvHboBXhyz5aXbJzLt-WPGGp4rCyCdSTwL0fnntsA__");
+            userRepository.save(user);
             String username = user.getProfile().getLastName();
             while (user.getThisUserName() == null) {
                 if (!userRepository.existsByUserName(username)) {
@@ -600,6 +602,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public SignUpResponse signUp(SignUpRequest signUpRequest) throws peakspace.exception.MessagingException, MessagingException {
         if (userRepository.existsByEmail(signUpRequest.email())) {
             throw new peakspace.exception.MessagingException("Пользователь с таким email уже существует!");
@@ -650,6 +653,8 @@ public class UserServiceImpl implements UserService {
         mimeMessageHelper.setText(message, true);
         mimeMessageHelper.setSubject("Sign Up to PeakSpace");
         javaMailSender.send(mimeMessage);
+        if (user.getProfile().getAvatar() == null) user.getProfile().setAvatar("https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg");
+        if (user.getProfile().getCover() == null) user.getProfile().setCover("https://s3-alpha-sig.figma.com/img/1c92/1bf5/b0093ed0ac29cf722c834434cf7ee611?Expires=1719187200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aRbcWs8eN-Mhny0ICI4GwKLx-LG7tHupNdjJBDCVlh37EbKJDndgV-0wSV8n0xq8OM-TEVcxPBLZMhjhy2C1~O1H2JnivHYvfFiLd8f4~KNWiFAE0eQMFjR3ROYnWqWASvOYYbWJ3tIuHScnYxKnlNZzjjQ71UfYzEjQNdRj1ecjFym1oI2wCHHRm-Qemi1VGm0kPLCnLZokRPxn9i8AM7SznezApo2HJlzd3v363puF6ylHtDDjwGSMgnpW2rSxKVyKz3utSjLTQRKy~mpnGsZbX4HRFovktCXL2aq9TiYvxvvHboBXhyz5aXbJzLt-WPGGp4rCyCdSTwL0fnntsA__");
         userRepository.save(user);
         return SignUpResponse.builder()
                 .userId(user.getId())
