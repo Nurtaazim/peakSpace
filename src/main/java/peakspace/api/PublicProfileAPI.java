@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
-import peakspace.enums.Choise;
 import peakspace.repository.jdbsTamplate.GetAllPublics;
 import peakspace.service.PublicProfileService;
 
@@ -43,21 +42,6 @@ public class PublicProfileAPI {
         return publicService.delete();
     }
 
-    @Secured({"USER"})
-    @Operation(summary = " Мой паблик !")
-    @GetMapping("/my-public/{publicId}/{userId}")
-    public PublicProfileResponse findPublic(@PathVariable Long publicId, @PathVariable Long userId) {
-        return publicService.findPublicProfile(publicId, userId);
-    }
-
-    @Secured("USER")
-    @Operation(summary = " Публикации моего паблика по выбором фото или видео !")
-    @GetMapping("/public-photo-and-video/{publicId}/{userId}")
-    public List<PublicPhotoAndVideoResponse> getMyPublic(@RequestParam Choise choise, @PathVariable Long publicId, @PathVariable Long userId) {
-        return publicService.getPublicPost(choise, publicId, userId);
-    }
-
-
     @Secured("USER")
     @Operation(summary = " Удаление пользователя в паблике ")
     @PutMapping("/tag/{friendId}")
@@ -72,12 +56,6 @@ public class PublicProfileAPI {
         return publicService.sendPublic(publicId);
     }
 
-    @Secured("USER")
-    @Operation(summary = " Для удаление фото на паблика от имени Admin (владелец паблика) !")
-    @PutMapping("/post/{postId}")
-    public SimpleResponse removePostAdmin(@PathVariable Long postId) {
-        return publicService.removePost(postId);
-    }
 
     @Secured("USER")
     @Operation(summary = " Войти на Мой паблик от страницы профилья!")
@@ -100,12 +78,6 @@ public class PublicProfileAPI {
         return publicService.findUserByPostId(postId);
     }
 
-    @Secured("USER")
-    @Operation(summary = "Get all PublicProfiles!")
-    @GetMapping("/profiles/{userId}")
-    public List<GetAllPublicProfileResponse> getAllPublicProfiles(@PathVariable Long userId) {
-        return getAllPublics.getAllPublics(userId);
-    }
 
     @GetMapping()
     @Secured("USER")
@@ -149,14 +121,19 @@ public class PublicProfileAPI {
     List<ShortPublicationResponse> getAllPublicationByCommunityId(@PathVariable Long communityId) {
         return publicService.getAllPublicationByCommunityId(communityId);
     }
+
     @PutMapping("/{communityId}/{userId}")
     @Secured("USER")
     @Operation(summary = "Заблокировать пользователя из сообщество", description = "userId - id пользователя которого хотите заблокировать " +
             "\ncommunityId - это id сообщества из которого хотите заблокировать")
     SimpleResponse blockUserInCommunity(@PathVariable Long communityId,
-                                         @PathVariable Long userId){
-        return publicService.blockUserInCommunity(communityId,userId);
+                                        @PathVariable Long userId) {
+        return publicService.blockUserInCommunity(communityId, userId);
     }
-
+    @GetMapping("/participants/{communityId}")
+    @Secured("USER")
+    List<SearchResponse> getUsersByCommunityId(@PathVariable Long communityId){
+        return publicService.getUsersByCommunityId(communityId);
+    }
 
 }

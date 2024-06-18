@@ -1,9 +1,8 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,6 @@ import peakspace.entities.User;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Publication;
 import peakspace.entities.Notification;
-import peakspace.entities.PablicProfile;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
@@ -30,19 +28,18 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private static final Logger log = LoggerFactory.getLogger(PostServiceImpl.class);
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepo;
     private final PublicationRepository publicationRepo;
     private final NotificationRepository notificationRepository;
     private final AwsS3Service awsS3Service;
+    private final JdbcTemplate jdbcTemplate;
 
     @Transactional
     @Override
@@ -266,13 +263,25 @@ public class PostServiceImpl implements PostService {
         if (publication.getPablicProfile() == null)
             throw new BadRequestException("Это публикация не состоит в сообществе");
         if (publication.getOwner().equals(currentUser) || currentUser.equals(publication.getPablicProfile().getOwner())) {
-            publicationRepo.deleteComNotifications(postId);
-            publicationRepo.deleteCom(postId);
+            String deleteCommentsNotificationsQuery = "DELETE FROM comments_notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteCommentsNotificationsQuery, postId);
+
+            String deleteNotificationsQuery = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteNotificationsQuery, postId);
+
+            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteCommentsLikesSQL, postId);
+            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteInnerCommentsSql, postId);
+
+            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
+            jdbcTemplate.update(deleteCommentsSQL, postId);
+            notificationRepository.deleteByPublicationId(postId);
             publicationRepo.deleteByIds(publication.getId());
 
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
-                    .message(" Пост успешно удалено !")
+                    .message(" Пост успешно удален !")
                     .build();
         } else {
             return SimpleResponse.builder()
