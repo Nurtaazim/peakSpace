@@ -51,6 +51,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         newPublic.setDescriptionPublic(publicRequest.getDescriptionPublic());
         newPublic.setTematica(publicRequest.getTematica());
         newPublic.setPublications(new ArrayList<>());
+        if(newPublic.getAvatar() == null || newPublic.getAvatar().isEmpty()) newPublic.setAvatar("https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg");
+        if(newPublic.getCover() == null || newPublic.getCover().isEmpty()) newPublic.setCover("https://s3-alpha-sig.figma.com/img/1c92/1bf5/b0093ed0ac29cf722c834434cf7ee611?Expires=1719187200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aRbcWs8eN-Mhny0ICI4GwKLx-LG7tHupNdjJBDCVlh37EbKJDndgV-0wSV8n0xq8OM-TEVcxPBLZMhjhy2C1~O1H2JnivHYvfFiLd8f4~KNWiFAE0eQMFjR3ROYnWqWASvOYYbWJ3tIuHScnYxKnlNZzjjQ71UfYzEjQNdRj1ecjFym1oI2wCHHRm-Qemi1VGm0kPLCnLZokRPxn9i8AM7SznezApo2HJlzd3v363puF6ylHtDDjwGSMgnpW2rSxKVyKz3utSjLTQRKy~mpnGsZbX4HRFovktCXL2aq9TiYvxvvHboBXhyz5aXbJzLt-WPGGp4rCyCdSTwL0fnntsA__");
         PablicProfile save = publicProfileRepository.save(newPublic);
         currentUser.setCommunity(newPublic);
         save.setOwner(currentUser);
