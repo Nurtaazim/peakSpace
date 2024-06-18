@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.service.PostService;
@@ -17,14 +16,6 @@ public class PublicPostAPI {
 
     private final PostService postService;
 
-    @Secured("USER")
-    @PostMapping("/{publicId}/{userId}")
-    @Operation(summary = " Для добавление пост на Паблике !")
-    public SimpleResponse savePostPublic(@PathVariable Long publicId,
-                                         @PathVariable Long userId,
-                                         @RequestBody PostRequest postRequest) {
-        return postService.savePostPublic(publicId, userId, postRequest);
-    }
 
     @Secured("USER")
     @PatchMapping("/{postId}")

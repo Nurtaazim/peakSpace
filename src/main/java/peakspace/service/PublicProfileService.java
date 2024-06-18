@@ -3,7 +3,6 @@ package peakspace.service;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
-import peakspace.enums.Choise;
 
 import java.util.List;
 
@@ -14,17 +13,11 @@ public interface PublicProfileService {
 
     SimpleResponse delete();
 
-    PublicProfileResponse findPublicProfile(Long publicId, Long userId);
-
-    List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise, Long publicId, Long userId);
-
     PublicPostResponse findPostPublic(Long postId);
 
     SimpleResponse removeUser(Long friendId);
 
     SimpleResponse sendPublic(Long publicId);
-
-    SimpleResponse removePost(Long postId);
 
     SimpleResponse removeComment(Long commentId);
 
@@ -48,4 +41,6 @@ public interface PublicProfileService {
 
 
     SimpleResponse blockUserInCommunity(Long communityId, Long userId);
+
+    List<SearchResponse> getUsersByCommunityId(Long communityId);
 }

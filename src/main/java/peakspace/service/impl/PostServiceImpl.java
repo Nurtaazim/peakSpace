@@ -1,9 +1,8 @@
 package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,6 @@ import peakspace.entities.User;
 import peakspace.entities.Link_Publication;
 import peakspace.entities.Publication;
 import peakspace.entities.Notification;
-import peakspace.entities.PablicProfile;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
@@ -30,19 +28,18 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private static final Logger log = LoggerFactory.getLogger(PostServiceImpl.class);
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepo;
     private final PublicationRepository publicationRepo;
     private final NotificationRepository notificationRepository;
     private final AwsS3Service awsS3Service;
+    private final JdbcTemplate jdbcTemplate;
 
     @Transactional
     @Override
@@ -116,16 +113,6 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-    @Override
-    @Transactional
-    public SimpleResponse deleteLinkFromPost(Long linkId, Long postId) {
-        publicationRepo.deletePublicationLink(postId, linkId);
-        linkPublicationRepo.deleteLink(linkId);
-        return SimpleResponse.builder()
-                .message("Successfully deleted! ")
-                .httpStatus(HttpStatus.OK)
-                .build();
-    }
 
     @Transactional
     @Override
@@ -248,37 +235,6 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
-    @Override
-    @Transactional
-    public SimpleResponse savePostPublic(Long publicId, Long userId, PostRequest postRequest) {
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(" Нет такой Пользоваетль !"));
-
-        PablicProfile publicProfile = publicationRepo.findByIdPublic(publicId);
-
-        List<Link_Publication> linkPublications = postRequest.getLinks().stream()
-                .map(link -> {
-                    Link_Publication linkPublication = new Link_Publication();
-                    linkPublication.setLink(link);
-                    linkPublicationRepo.save(linkPublication);
-                    return linkPublication;
-                })
-                .collect(Collectors.toList());
-
-        Publication publication = new Publication();
-        publication.setDescription(postRequest.getDescription());
-        publication.setLocation(postRequest.getLocation());
-        publication.setBlockComment(postRequest.isBlockComment());
-        publication.setLinkPublications(linkPublications);
-        publication.setOwner(currentUser);
-        publication.setPablicProfile(publicProfile);
-        publicationRepo.save(publication);
-        currentUser.getPublications().add(publication);
-
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message(" Успешно сохранен пост паблике !")
-                .build();
-    }
 
     @Override
     @Transactional
@@ -286,7 +242,7 @@ public class PostServiceImpl implements PostService {
         User currentUser = getCurrentUser();
         Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
 
-        if (publication.getOwner().equals(currentUser) || currentUser.getCommunity().getPublications().contains(publication)){
+        if (publication.getOwner().equals(currentUser) || currentUser.getCommunity().getPublications().contains(publication)) {
             publication.setDescription(postUpdateRequest.getDescription());
             publication.setLocation(postUpdateRequest.getLocation());
             publication.setUpdatedAt(ZonedDateTime.now());
@@ -304,36 +260,48 @@ public class PostServiceImpl implements PostService {
     public SimpleResponse deletePostPublic(Long postId) {
         User currentUser = getCurrentUser();
         Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой пост !"));
-        if (publication.getPablicProfile() == null) throw new BadRequestException("Это публикация не состоит в сообществе");
-        if (publication.getOwner().equals(currentUser) || currentUser.equals(publication.getPablicProfile().getOwner())){
-            publicationRepo.deleteComNotifications(postId);
-            publicationRepo.deleteCom(postId);
+        if (publication.getPablicProfile() == null)
+            throw new BadRequestException("Это публикация не состоит в сообществе");
+        if (publication.getOwner().equals(currentUser) || currentUser.equals(publication.getPablicProfile().getOwner())) {
+            String deleteCommentsNotificationsQuery = "DELETE FROM comments_notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteCommentsNotificationsQuery, postId);
+
+            String deleteNotificationsQuery = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteNotificationsQuery, postId);
+
+            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteCommentsLikesSQL, postId);
+            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteInnerCommentsSql, postId);
+
+            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
+            jdbcTemplate.update(deleteCommentsSQL, postId);
+            notificationRepository.deleteByPublicationId(postId);
             publicationRepo.deleteByIds(publication.getId());
 
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
-                    .message(" Удачно удалено пост  !")
+                    .message(" Пост успешно удален !")
                     .build();
         } else {
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.FORBIDDEN)
-                    .message(" Вы не можете удалить эту публикацию у вас нету доступ !")
+                    .message(" Вы не можете удалить эту публикацию у вас нету доступа !")
                     .build();
         }
     }
 
 
-
     @Transactional
     @Override
-    public SimpleResponse acceptTagFriend(Long  postId, boolean tag) {
+    public SimpleResponse acceptTagFriend(Long postId, boolean tag) {
         getCurrentUser();
         Publication post = publicationRepo.findPostById(postId);
-            if(tag){
-                 getCurrentUser().getMyAcceptPost().add(post.getId());
-            }else {
-               post.getTagFriends().remove(getCurrentUser());
-            }
+        if (tag) {
+            getCurrentUser().getMyAcceptPost().add(post.getId());
+        } else {
+            post.getTagFriends().remove(getCurrentUser());
+        }
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)

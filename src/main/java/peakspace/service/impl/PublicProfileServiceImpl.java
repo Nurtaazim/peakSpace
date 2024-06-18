@@ -16,7 +16,6 @@ import peakspace.entities.PablicProfile;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
 import peakspace.entities.Link_Publication;
-import peakspace.enums.Choise;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.ForbiddenException;
@@ -37,6 +36,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     private final PublicationRepository publicationRepository;
     private final CommentRepository commentRepository;
     private final LinkPublicationRepo linkPublicationRepository;
+    private final JdbcTemplate jdbcTemplate;
+    private final NotificationRepository notificationRepository;
 
     @Override
     @Transactional
@@ -82,62 +83,36 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .build();
     }
 
-    @Override
     @Transactional
+    @Override
     public SimpleResponse delete() {
         PablicProfile community = getCurrentUser().getCommunity();
+        if (community == null) throw new BadRequestException("У вас не существует сообщество");
+        for (Publication publication : community.getPublications()) {
+            String deleteCommentsNotificationsQuery = "DELETE FROM comments_notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteCommentsNotificationsQuery, publication.getId());
+
+            // Then, delete from notifications
+            String deleteNotificationsQuery = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteNotificationsQuery, publication.getId());
+
+            // Удалить связанные записи из comments_likes
+            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteCommentsLikesSQL, publication.getId());
+            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteInnerCommentsSql, publication.getId());
+
+            // Удалить комментарии
+            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
+            jdbcTemplate.update(deleteCommentsSQL, publication.getId());
+            notificationRepository.deleteByPublicationId(publication.getId());
+            publicationRepository.delete(publication);
+        }
         publicProfileRepository.delete(community);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Удачно удалено !")
                 .build();
-    }
-
-    @Override
-    public PublicProfileResponse findPublicProfile(Long publicId, Long userId) {
-        PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
-        userRepository.findByIds(userId);
-        return PublicProfileResponse.builder()
-                .publicId(publicProfile.getId())
-                .cover(publicProfile.getCover())
-                .avatar(publicProfile.getAvatar())
-                .pablicName(publicProfile.getPablicName())
-                .userName(publicProfile.getOwner().getThisUserName())
-                .tematica(publicProfile.getTematica())
-                .countFollower(publicProfile.getUsers().size())
-                .build();
-    }
-
-    @Override
-    public List<PublicPhotoAndVideoResponse> getPublicPost(Choise choise, Long publicId, Long userId) {
-        PablicProfile publicProfile = publicProfileRepository.findById(publicId).orElseThrow(() -> new NotFoundException(" Нет такой паблик !"));
-        userRepository.findByIds(userId);
-
-        Map<Long, String> publics = new HashMap<>();
-
-        if (publicProfile != null) {
-            switch (choise) {
-                case Photos:
-                case Videos:
-                    publics = publicProfile.getPublications().stream()
-                            .filter(publication -> {
-                                List<String> links = publication.getLinkPublications().stream()
-                                        .map(Link_Publication::getLink)
-                                        .toList();
-                                return (choise == Choise.Photos) && links.stream()
-                                        .anyMatch(link -> link.endsWith(".jpg") || link.endsWith(".img") || link.endsWith(".raw"))
-                                        || (choise == Choise.Videos) && links.stream()
-                                        .anyMatch(link -> link.endsWith(".mp4") || link.endsWith(".webm") || link.endsWith(".ogg"));
-                            })
-                            .collect(Collectors.toMap(Publication::getId, publication -> publication.getLinkPublications().getFirst().getLink()));
-                    break;
-                default:
-                    break;
-            }
-        }
-        return List.of(PublicPhotoAndVideoResponse.builder()
-                .publicationsPublic(publics)
-                .build());
     }
 
 
@@ -187,10 +162,11 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Transactional
     public SimpleResponse sendPublic(Long publicId) {
         PablicProfile publicProfile = publicProfileRepository.findById(publicId)
-                .orElseThrow(() -> new NotFoundException("Сообщество с таким id "+publicId+" не найдено"));
+                .orElseThrow(() -> new NotFoundException("Сообщество с таким id " + publicId + " не найдено"));
 
         User currentUser = getCurrentUser();
-        if (publicProfile.getBlockUsers().contains(currentUser)) throw new ForbiddenException("Вы были заблокированы владельцом этого сообщества");
+        if (publicProfile.getBlockUsers().contains(currentUser))
+            throw new ForbiddenException("Вы были заблокированы владельцом этого сообщества");
         String message = null;
         List<User> users = publicProfile.getUsers();
         if (users.contains(currentUser)) {
@@ -206,26 +182,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .httpStatus(HttpStatus.OK)
                 .message(message)
                 .build();
-    }
-
-    @Override
-    @Transactional
-    public SimpleResponse removePost(Long postId) {
-        User currentUser = getCurrentUser();
-        List<Publication> publications = currentUser.getCommunity().getPublications();
-
-        boolean removed = publications.removeIf(publication -> publication.getId().equals(postId));
-        publicationRepository.deleteComNotifications(postId);
-        publicationRepository.deleteCom(postId);
-        publicationRepository.deleteByIds(postId);
-        if (removed) {
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message("Пост успешно удален!")
-                    .build();
-        } else {
-            throw new NotFoundException("Пост с id " + postId + " не найден!");
-        }
     }
 
     @Override
@@ -385,7 +341,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public PublicProfileResponse getCommunityById(Long communityId) {
         PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой id не найдено"));
-        if (community.getBlockUsers().contains(getCurrentUser())) throw new ForbiddenException("Вы были заблокированы для этого сообщество");
+        if (community.getBlockUsers().contains(getCurrentUser()))
+            throw new ForbiddenException("Вы были заблокированы для этого сообщество");
         return PublicProfileResponse.builder()
                 .publicId(communityId)
                 .cover(community.getCover())
@@ -447,8 +404,9 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     public SimpleResponse blockUserInCommunity(Long communityId, Long userId) {
         PablicProfile pablicProfile = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с таким айди не найдено"));
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с таким айди не найдено"));
-        if (!pablicProfile.getOwner().equals(getCurrentUser())) throw new ForbiddenException("У вас нету прав заблокировать других пользователей этого сообщество");
-        if (!pablicProfile.getBlockUsers().contains(user)){
+        if (!pablicProfile.getOwner().equals(getCurrentUser()))
+            throw new ForbiddenException("У вас нету прав заблокировать других пользователей этого сообщество");
+        if (!pablicProfile.getBlockUsers().contains(user)) {
             pablicProfile.getBlockUsers().add(user);
             pablicProfile.getUsers().remove(user);
             return SimpleResponse.builder()
@@ -464,6 +422,19 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 .isBlock(false)
                 .build();
 
+    }
+
+    @Override
+    public List<SearchResponse> getUsersByCommunityId(Long communityId) {
+        PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с таким айди не существует!"));
+        if (!community.getUsers().contains(getCurrentUser()) || !getCurrentUser().equals(community.getOwner())) throw new ForbiddenException("Так как вы не являетесь участником, вы не можете посмотреть список участников ");
+        List<SearchResponse> users = new ArrayList<>();
+        if (community.getUsers() == null ) return new ArrayList<>();
+        for (User user : community.getUsers()) {
+            SearchResponse searchResponse = new SearchResponse(user.getId(), user.getThisUserName(), user.getProfile().getAvatar(), user.getProfile().getAboutYourSelf());
+            users.add(searchResponse);
+        }
+        return users;
     }
 
 
