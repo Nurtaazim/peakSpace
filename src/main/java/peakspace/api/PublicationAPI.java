@@ -27,7 +27,6 @@ public class PublicationAPI {
 
     private final UserService userService;
     private final PublicationService publicationService;
-    private final PublicationJdbcTemplate publicationJdbcTemplate;
 
     @Secured("USER")
     @GetMapping("/my")

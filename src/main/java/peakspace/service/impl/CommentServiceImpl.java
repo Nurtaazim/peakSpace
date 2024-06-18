@@ -64,38 +64,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponseByPost> getAllComment(Long postId) {
-        Publication publication = publicationRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException("Нет такой публикации с id: " + postId));
-        List<Comment> commentsByPublicationId = commentRepository.getCommentsByPublicationId(postId);
-        List<CommentResponse> commentForResponse = new ArrayList<>();
-        for (Comment comment : commentsByPublicationId) {
-            CommentResponse commentResponse = new CommentResponse(comment.getId(),
-                    comment.getUser().getId(),
-                    comment.getUser().getProfile().getAvatar(),
-                    comment.getUser().getThisUserName(),
-                    comment.getMessage(),
-                    comment.getLikes().size(),
-                    comment.getCreatedAt());
-            commentForResponse.add(commentResponse);
+    public List<CommentResponse> getAllComment(Long postId) {
+        List<Comment> comments = commentRepository.getAllCommentById(postId);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentResponses.add(CommentResponse.builder()
+                            .id(comment.getId())
+                            .userId(comment.getUser().getId())
+                            .avatar(comment.getUser().getProfile().getAvatar())
+                            .userName(comment.getUser().getThisUserName())
+                            .comment(comment.getMessage())
+                            .countLike(comment.getLikes().size())
+                            .createdAt(comment.getCreatedAt())
+                    .build());
         }
-        List<LinkResponse> links = new ArrayList<>();
-        if (publication.getLinkPublications() != null) {
-            links = publication.getLinkPublications().stream()
-                    .map(link -> new LinkResponse(link.getId(), link.getLink()))
-                    .collect(Collectors.toList());
-        }
-
-        return List.of(new CommentResponseByPost(
-                publication.getId(),
-                publication.getOwner().getId(),
-                publication.getOwner().getProfile().getAvatar(),
-                publication.getOwner().getThisUserName(),
-                publication.getLocation(),
-                publication.getLikes().size(),
-                links,
-                commentForResponse));
-
+        return commentResponses;
     }
 
     @Override

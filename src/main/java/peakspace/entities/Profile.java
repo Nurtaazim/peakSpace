@@ -18,8 +18,11 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AA")
     @SequenceGenerator(name = "AA", allocationSize = 1, initialValue = 21)
     private Long id;
+    @Column(length = 10000)
     private String avatar;
+    @Column(length = 10000)
     private String cover;
+    @Column(length = 1000)
     private String aboutYourSelf;
     private String firstName;
     private String lastName;

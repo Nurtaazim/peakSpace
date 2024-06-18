@@ -144,19 +144,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public PublicPostResponse findPostPublic(Long postId) {
         Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой публикации !"));
-        List<Comment> commentsByPublicationId = commentRepository.getCommentsByPublicationId(postId);
-        List<CommentResponse> commentForResponse = new ArrayList<>();
-        for (Comment comment : commentsByPublicationId) {
-            CommentResponse commentResponse = new CommentResponse(comment.getId(),
-                    comment.getUser().getId(),
-                    comment.getUser().getProfile().getAvatar(),
-                    comment.getUser().getThisUserName(),
-                    comment.getMessage(),
-                    comment.getLikes().size(),
-                    comment.getCreatedAt());
-            commentForResponse.add(commentResponse);
-        }
-
         List<LinkResponse> links = publication.getLinkPublications().stream()
                 .map(link -> new LinkResponse(link.getId(), link.getLink()))
                 .collect(Collectors.toList());
@@ -169,7 +156,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 publication.getDescription(),
                 publication.getLikes().size(),
                 links,
-                commentForResponse,
                 publication.isBlockComment()
         );
     }
