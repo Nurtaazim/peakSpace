@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.CommentRequest;
+import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.CommentResponseByPost;
 import peakspace.dto.response.CommentInnerResponse;
@@ -30,11 +31,10 @@ public class CommentAPI {
         return commentService.save(postId, comment);
     }
 
-
     @Secured({"USER"})
     @Operation(summary = " Все комментарии одного поста !")
     @GetMapping("/{postId}")
-    public List<CommentResponseByPost> getAllComment(@PathVariable Long postId) {
+    public List<CommentResponse> getAllComment(@PathVariable Long postId) {
         return commentService.getAllComment(postId);
     }
 

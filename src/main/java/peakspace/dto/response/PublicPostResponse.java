@@ -11,7 +11,6 @@ public record PublicPostResponse(Long id,
                                  String description,
                                  int countLikes,
                                  List<LinkResponse> links,
-                                 List<CommentResponse> commentResponses,
                                  boolean blockComment
 ) {
 }
