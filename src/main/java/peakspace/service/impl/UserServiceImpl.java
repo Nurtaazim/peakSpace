@@ -8,13 +8,12 @@ import com.google.firebase.auth.FirebaseToken;
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.persistence.PrePersist;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,9 +39,6 @@ import peakspace.service.UserService;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -474,9 +470,6 @@ public class UserServiceImpl implements UserService {
         User foundUser = userRepository.findById(foundUserId)
                 .orElseThrow(() -> new NotFoundException(" Нет такого пользователя!"));
 
-        List<Long> friends = currentUser.getSearchFriendsHistory();
-        friends.add(foundUserId);
-
         int pablicationsSize = 0;
         if (foundUser.getCommunity().getUsers() != null) {
             pablicationsSize = foundUser.getCommunity().getUsers().size();
@@ -718,6 +711,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return allFriendsResponses;
+    }
+
+    @Override
+    @Transactional
+    public SimpleResponse saveUserToHistorySearch(Long foundUserId) {
+        getCurrentUser().getSearchFriendsHistory().add(foundUserId);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Пользователь успешно сохранен!")
+                .build();
     }
 
 
