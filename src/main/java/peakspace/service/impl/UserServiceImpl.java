@@ -716,7 +716,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public SimpleResponse saveUserToHistorySearch(Long foundUserId) {
-        getCurrentUser().getSearchFriendsHistory().add(foundUserId);
+        List<Long> friendsHistory = getCurrentUser().getSearchFriendsHistory();
+        if(friendsHistory == null) friendsHistory = new ArrayList<>();
+        if(friendsHistory.contains(foundUserId)) friendsHistory.remove(foundUserId);
+        friendsHistory.add(foundUserId);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Пользователь успешно сохранен!")
