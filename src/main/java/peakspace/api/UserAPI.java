@@ -60,4 +60,10 @@ public class UserAPI {
         return userService.globalSearch(keyWord);
     }
 
+    @Secured("USER")
+    @PostMapping("/{foundUserId}")
+    @Operation(summary = "Сохранить пользователь в истории поиска! ")
+    public SimpleResponse searchAll(@PathVariable Long foundUserId) {
+        return userService.saveUserToHistorySearch(foundUserId);
+    }
 }

@@ -52,4 +52,6 @@ public interface UserService {
     SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 
     List<AllFriendsResponse> getAllFriendsById(Long userId);
+
+    SimpleResponse saveUserToHistorySearch(Long foundUserId);
 }
