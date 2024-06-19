@@ -56,7 +56,6 @@ dependencies {
     // Test Junit and Mockito
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.1'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.11.0'
-
 }
 tasks.named('test') {
     useJUnitPlatform()

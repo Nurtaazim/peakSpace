@@ -22,6 +22,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import peakspace.config.jwt.JwtFilter;
 import peakspace.repository.UserRepository;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -37,9 +40,15 @@ public class SecurityConfig {
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         var corsConfiguration = new CorsConfiguration();
-                        corsConfiguration.addAllowedOrigin("*");
-                        corsConfiguration.addAllowedMethod("*");
-                        corsConfiguration.addAllowedHeader("*");
+                        corsConfiguration.setAllowedOrigins(
+                                Arrays.asList(
+                                        "https://api-peakspace.beksultan.solutions/*",
+                                        "http://3.121.185.60/*",
+                                        "http://localhost:8080/"
+                                ));
+                        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+                        corsConfiguration.setAllowCredentials(true);
                         return corsConfiguration;
                     });
                 })
