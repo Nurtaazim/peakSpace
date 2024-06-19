@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
@@ -315,15 +314,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SimpleResponse createPassword(String uuid, String password, String confirm) {
+    public SignInResponse createPassword(String uuid, String password, String confirm) {
         if (!password.equals(confirm)) {
             throw new IllegalArgumentException(" Пароли не совпадают");
         } else {
             User user = userRepository.findByUuid(uuid).orElseThrow(() -> new NotFoundException("User not found"));
             user.setPassword(passwordEncoder.encode(password));
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .message("Пароль успешно создан!")
+            return SignInResponse.builder()
+                    .id(user.getId())
+                    .token(jwtService.createToken(user))
                     .build();
         }
     }
