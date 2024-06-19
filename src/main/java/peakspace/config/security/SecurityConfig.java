@@ -40,17 +40,9 @@ public class SecurityConfig {
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         var corsConfiguration = new CorsConfiguration();
-                        corsConfiguration.setAllowedOrigins(
-                                Arrays.asList(
-                                        "http://localhost:5173/*",
-                                        "http://localhost:3000/*",
-                                        "http://localhost:8080/*",
-                                        "http://3.121.185.60/*",
-                                        "https://api-peakspace.beksultan.solutions/*"
-                                ));
-                        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-                        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
-                        corsConfiguration.setAllowCredentials(true);
+                        corsConfiguration.addAllowedOrigin("*");
+                        corsConfiguration.addAllowedMethod("*");
+                        corsConfiguration.addAllowedHeader("*");
                         return corsConfiguration;
                     });
                 })
