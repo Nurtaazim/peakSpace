@@ -15,7 +15,7 @@ public interface UserService {
 
     SimpleResponse emailSender(String email,String link) throws MessagingException;
 
-    SimpleResponse createPassword(String uuid, String password, String confirm);
+    SignInResponse createPassword(String uuid, String password, String confirm);
 
     SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 
