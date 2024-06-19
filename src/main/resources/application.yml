@@ -6,6 +6,18 @@ spring:
       - classpath:/configs/flyway-config.yml
       - classpath:/configs/amazon-services-config.yml
 
+  websocket:
+    stomp:
+      endpoints: /ws
+      allowed-origins:
+        - http://localhost:5173
+        - http://localhost:3000
+        - http://localhost:8080,
+        - http://3.121.185.60
+        - https://api-peakspace.beksultan.solutions
+        - "*"
+
+
 # Security
 app:
   jwt:

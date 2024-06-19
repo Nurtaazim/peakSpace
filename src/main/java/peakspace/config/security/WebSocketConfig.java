@@ -27,17 +27,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setUserDestinationPrefix("/user");
     }
 
-//        @Override
-//        public void registerStompEndpoints(StompEndpointRegistry registry) {
-//            registry.addEndpoint("/ws")
-//                    .withSockJS();
-//        }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         log.info("Registering stomp endpoints");
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://localhost:5173", "*")// Укажите здесь ваши разрешенные источники
+                .setAllowedOrigins(
+                        "http://localhost:5173",
+                        "http://localhost:3000",
+                        "http://localhost:8080",
+                        "http://3.121.185.60/",
+                        "https://api-peakspace.beksultan.solutions/",
+                        "*")// Укажите здесь ваши разрешенные источники
                 .withSockJS();
     }
 
