@@ -35,9 +35,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOrigins(
                         "http://localhost:5173",
                         "http://localhost:3000",
-                        "http://localhost:8080",
-                        "http://3.121.185.60/",
-                        "https://api-peakspace.beksultan.solutions/",
+                        "http://localhost:63342",
                         "*")// Укажите здесь ваши разрешенные источники
                 .withSockJS();
     }
