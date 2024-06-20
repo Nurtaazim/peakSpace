@@ -54,13 +54,6 @@ public class CommentAPI {
     }
 
     @Secured("USER")
-    @Operation(summary = " Удалить комментарии !")
-    @DeleteMapping("/{commentId}")
-    public SimpleResponse delete(@PathVariable Long commentId) {
-        return commentService.deleteComment(commentId);
-    }
-
-    @Secured("USER")
     @Operation(summary = "Для удаление комментарии от имени Admin (владелец паблика) !")
     @DeleteMapping("/remove-comment/{commentId}")
     public SimpleResponse removeCommentAdmin(@PathVariable Long commentId) {

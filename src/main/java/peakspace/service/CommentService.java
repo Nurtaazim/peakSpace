@@ -12,8 +12,6 @@ public interface CommentService {
 
     SimpleResponse editComment(Long commentId, CommentRequest comment);
 
-    SimpleResponse deleteComment(Long commentId);
-
     CommentInnerResponse findComment(Long commentId);
 
     SimpleResponse saveInnerComment(Long commentId, CommentRequest commentRequest);

@@ -10,9 +10,7 @@ import peakspace.dto.request.CommentRequest;
 import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.CommentInnerResponse;
-import peakspace.dto.response.LinkResponse;
 import peakspace.dto.response.InnerCommentResponse;
-import peakspace.dto.response.CommentResponseByPost;
 import peakspace.entities.Comment;
 import peakspace.entities.Notification;
 import peakspace.entities.Publication;
@@ -26,7 +24,6 @@ import peakspace.service.CommentService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,11 +89,10 @@ public class CommentServiceImpl implements CommentService {
                 .build();
     }
 
-    @Override
-    public SimpleResponse deleteComment(Long commentId) {
+    public void deleteComment(Long commentId) {
         commentRepository.deleteNotification(commentId);
         commentRepository.deleteByIds(commentId);
-        return SimpleResponse.builder()
+        SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Комментарий успешно удален !")
                 .build();
