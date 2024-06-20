@@ -96,12 +96,37 @@ public class PostServiceImpl implements PostService {
     public SimpleResponse delete(Long postId) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
-        Publication publication = publicationRepo.findById(postId).orElseThrow(() -> new NotFoundException("Публикация с таким айди не найдено"));
+        Publication publication = publicationRepo.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Публикация с таким айди не найдено"));
         if (publication.getOwner().equals(user)) {
+
+            // Удалить связанные записи из comments_notifications
+            String deleteNotificationsQuery = "DELETE FROM comments_notifications WHERE notifications_id IN (SELECT id FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?))";
+            jdbcTemplate.update(deleteNotificationsQuery, publication.getId());
+
+            // Удалить связанные записи из notifications
+            String deleteNotificationsQuery1 = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteNotificationsQuery1, publication.getId());
+
+            // Удалить связанные записи из comments_likes
+            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteCommentsLikesSQL, publication.getId());
+
+            // Удалить связанные записи из inner_comment
+            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteInnerCommentsSql, publication.getId());
+
+            // Удалить комментарии
+            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
+            jdbcTemplate.update(deleteCommentsSQL, publication.getId());
+
+            notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepo.delete(publication);
+
             for (Link_Publication linkPublication : publication.getLinkPublications()) {
                 awsS3Service.deleteFile(linkPublication.getLink());
             }
+
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
                     .message("Successfully deleted!")
@@ -112,6 +137,7 @@ public class PostServiceImpl implements PostService {
                 .message("У вас нету прав удалить чужие публикации")
                 .build();
     }
+
 
 
     @Transactional

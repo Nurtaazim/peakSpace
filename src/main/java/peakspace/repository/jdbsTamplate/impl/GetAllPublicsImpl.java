@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.GetAllPublicProfileResponse;
 import peakspace.enums.Tematica;
-import peakspace.repository.PublicProfileRepository;
 import peakspace.repository.jdbsTamplate.GetAllPublics;
 
 import java.sql.ResultSet;

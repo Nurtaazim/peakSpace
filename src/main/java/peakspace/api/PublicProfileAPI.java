@@ -19,7 +19,6 @@ import java.util.List;
 public class PublicProfileAPI {
 
     private final PublicProfileService publicService;
-    private final GetAllPublics getAllPublics;
 
     @Secured("USER")
     @Operation(summary = " Создание паблик канал !")
