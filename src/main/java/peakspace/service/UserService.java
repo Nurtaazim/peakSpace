@@ -54,4 +54,6 @@ public interface UserService {
     List<AllFriendsResponse> getAllFriendsById(Long userId);
 
     SimpleResponse saveUserToHistorySearch(Long foundUserId);
+
+    void cancelConfirm(long userId);
 }

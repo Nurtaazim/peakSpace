@@ -585,6 +585,7 @@ public class UserServiceImpl implements UserService {
         } else {
             user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
         }
+        if (user.getBlockAccount()) throw new NotFoundException("Пользователь не найдено!");
         if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
             return SignInResponse.builder()
                     .id(user.getId())
@@ -723,6 +724,14 @@ public class UserServiceImpl implements UserService {
                 .httpStatus(HttpStatus.OK)
                 .message("Пользователь успешно сохранен!")
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void cancelConfirm(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с таким id не существует"));
+        if (!user.getBlockAccount()) throw new ForbiddenException("Вы не можете удалить этого пользователя");
+        userRepository.delete(user);
     }
 
 

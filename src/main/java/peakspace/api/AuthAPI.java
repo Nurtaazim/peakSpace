@@ -56,5 +56,10 @@ public class AuthAPI {
                                   long id) throws MessagingException {
         return userService.confirmToSignUp(codeInEmail, id);
     }
+    @DeleteMapping
+    @Operation(summary = "Отменить подтверждение пароля из gmail")
+    public void cancelConfirm(@RequestParam long userId){
+        userService.cancelConfirm(userId);
+    }
 
 }
