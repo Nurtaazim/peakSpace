@@ -9,6 +9,7 @@ import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.enums.Choise;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -56,4 +57,6 @@ public interface UserService {
     SimpleResponse saveUserToHistorySearch(Long foundUserId);
 
     void cancelConfirm(long userId);
+
+    List<UserResponse> findAllUsers(Principal principal);
 }

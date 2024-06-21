@@ -36,6 +36,7 @@ import peakspace.service.ChapterService;
 import peakspace.service.UserService;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -766,5 +767,12 @@ public class UserServiceImpl implements UserService {
                 storyRepository.delete(story);
             }
         }
+    }
+    @Override
+    public List<UserResponse> findAllUsers(Principal principal) {
+        List<Long> blockAccounts =  userRepository.getByEmail(principal.getName()).getBlockAccounts();
+        return blockAccounts == null ?
+                new ArrayList<>() :
+                userRepository.findAllNotInWithIds(blockAccounts);
     }
 }
