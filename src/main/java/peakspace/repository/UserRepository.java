@@ -78,4 +78,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.userName = :userName")
     Optional<User> findByName(String userName);
+
+    @Query(value = """
+            select new peakspace.dto.response.UserResponse(
+                u.id,
+                u.profile.avatar,
+                u.profile.firstName,
+                u.profile.lastName,
+                u.userName,
+                u.email
+            )
+            from User u
+            where u.id not in :userIds
+            """)
+    List<UserResponse> findAllNotInWithIds(List<Long> userIds);
+
+    //            where u.id not in :userIds
+//            and u.blockAccount is false
 }
