@@ -93,6 +93,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             """)
     List<UserResponse> findAllNotInWithIds(List<Long> userIds);
 
-    //            where u.id not in :userIds
-//            and u.blockAccount is false
 }
