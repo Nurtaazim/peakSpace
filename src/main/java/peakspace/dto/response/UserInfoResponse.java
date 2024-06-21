@@ -21,5 +21,5 @@ public class UserInfoResponse {
     private String aboutYourSelf;
     private List<EducationResponse> educationResponses;
     private String profession;
-    private boolean workOrNot;
+    private Boolean workOrNot;
 }
