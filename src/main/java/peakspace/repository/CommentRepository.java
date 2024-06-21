@@ -71,7 +71,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
                    "where not exists (" +
                    "    select 1 " +
                    "    from inner_comment ic " +
-                   "    where ic.comment_id = c.id" +
+                   "    where ic.inner_comments_id = c.id" +
                    ") " +
                    "and c.publication_id = :postId", nativeQuery = true)
     List<Comment> getAllCommentById(Long postId);
