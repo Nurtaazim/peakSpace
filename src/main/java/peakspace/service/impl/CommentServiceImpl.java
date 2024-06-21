@@ -89,15 +89,6 @@ public class CommentServiceImpl implements CommentService {
                 .build();
     }
 
-    public void deleteComment(Long commentId) {
-        commentRepository.deleteNotification(commentId);
-        commentRepository.deleteByIds(commentId);
-        SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message(" Комментарий успешно удален !")
-                .build();
-    }
-
     @Override
     public CommentInnerResponse findComment(Long commentId) {
         CommentInnerResponse commentInnerResponse = commentRepository.getCommentResponseInner(commentId);
@@ -155,7 +146,8 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteNotificationComment(innerCommentId);
         commentRepository.deleteLikes(innerCommentId);
         commentRepository.deleteInnerComment(innerCommentId);
-        deleteComment(innerCommentId);
+        commentRepository.deleteNotification(innerCommentId);
+        commentRepository.deleteByIds(innerCommentId);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Успешно удалено комментарии !")
