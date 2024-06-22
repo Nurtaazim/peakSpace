@@ -7,10 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.*;
-import peakspace.entities.Link_Publication;
-import peakspace.entities.Publication;
-import peakspace.entities.User;
-import peakspace.entities.Notification;
+import peakspace.entities.*;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
@@ -52,13 +49,17 @@ public class PublicationServiceImpl implements PublicationService {
         int countPublics = Optional.ofNullable(user.getCommunity())
                 .map(profiles -> profiles.getUsers().size())
                 .orElse(0);
+        int count = 0;
+        for (Chapter chapter : user.getChapters()) {
+            count+=chapter.getFriends().size();
+        }
         return GetAllPostsResponse.builder()
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
                 .userName(user.getUsername())
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
-                .countFriends(user.getChapters().size())
+                .countFriends(count)
                 .countPablics(countPublics)
                 .publications(publications.reversed())
                 .build();

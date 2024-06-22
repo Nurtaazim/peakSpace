@@ -11,14 +11,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SearchFriendsImpl implements SearchFriends {
+
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<FriendsResponse> getAllFriendsWithJDBCTemplate(Long userId, Long chapterId, String search) {
-
+    public List<FriendsResponse> getAllFriendsWithJDBCTemplate(Long chapterId, String search) {
         String str = "";
         if (search != null) {
-            str = " and (u.user_name ilike CONCAT('%"+search+"%') " +
+            str = " and (u.user_name ilike CONCAT('%"+search.trim()+"%') " +
                   "or CONCAT(up.first_name, up.last_name, up.patronymic_name) ilike CONCAT('%"+search+"%'))";
         }
 
@@ -31,9 +31,8 @@ public class SearchFriendsImpl implements SearchFriends {
                              INNER JOIN users u ON u.id = chf.friends_id
                              INNER JOIN profiles up ON up.user_id = u.id
                              INNER JOIN chapters ch ON ch.id = chf.chapter_id
-                             WHERE chf.chapter_id = """+chapterId+ """  
-                             \sand ch.user_id = """+userId+"""
-                             """ + str;
+                             WHERE chf.chapter_id = """+chapterId
+                             + str;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> FriendsResponse.builder()
                 .userId(rs.getLong("id"))

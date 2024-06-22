@@ -26,8 +26,6 @@ public interface UserService {
 
     List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyWord) throws MessagingException;
 
-    List<SearchResponse> searchMyFriends(Long chapterId, String userName);
-
     ProfileFriendsResponse findFriendsProfile(Long foundUserId);
 
     List<ChapTerResponse> searchChapter(String search);
@@ -38,7 +36,7 @@ public interface UserService {
 
     List<SearchUserResponse> globalSearch(String keyWord);
 
-    FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search);
+    List<FriendsResponse> searchAllFriendsByChapter(Long chapterId, String search);
 
     ResponseWithGoogle verifyToken(String tokenFromGoogle);
 
@@ -52,7 +50,7 @@ public interface UserService {
 
     SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 
-    List<AllFriendsResponse> getAllFriendsById(Long userId);
+    List<AllFriendsResponse> getAllFriendsById(Long userId, String userName);
 
     SimpleResponse saveUserToHistorySearch(Long foundUserId);
 

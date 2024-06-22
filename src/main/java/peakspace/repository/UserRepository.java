@@ -1,11 +1,12 @@
 package peakspace.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
-import peakspace.dto.response.AllFriendsResponse;
 import peakspace.dto.response.*;
 import peakspace.entities.Publication;
 import peakspace.entities.Profile;
@@ -39,10 +40,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
            "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")
     List<SearchResponse> findAllSearch(@Param("keyword") String keyword);
-
-    @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
-            "from User u left join u.profile p")
-    List<SearchResponse> findAllSearchEmpty();
 
     default User findByIds(Long foundUserId) {
         return findById(foundUserId).orElseThrow(() -> new NotFoundException(" Нет такой ползователь !" + foundUserId));
