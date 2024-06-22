@@ -51,27 +51,19 @@ public class ChapterAPI {
     }
 
     @Secured("USER")
-    @GetMapping("/{chapterId}")
-    @Operation(summary = "Получить всех пользователей раздела !")
-    public List<SearchResponse> findAllChapter(@RequestParam(required = false) String userName,
-                                               @PathVariable Long chapterId) {
-        return userService.searchMyFriends(chapterId, userName);
-    }
-
-    @Secured("USER")
-    @GetMapping("/search-friends/{userId}/{chapterId}")
+    @GetMapping("/search-friends/{chapterId}")
     @Operation(summary = "Получить друзья пользователя и поиск по имени пользователя и ФИО! ")
-    public FriendsPageResponse getAllFriends(@PathVariable Long userId,
-                                             @PathVariable Long chapterId,
+    public List<FriendsResponse> getAllFriends(@PathVariable Long chapterId,
                                              @RequestParam(required = false) String search) {
-        return userService.searchAllFriendsByChapter(userId, chapterId, search);
+        return userService.searchAllFriendsByChapter(chapterId, search);
     }
 
     @Secured("USER")
     @GetMapping("/all-my-friends/{userId}")
     @Operation(summary = "Получить всех друзья пользователя! developer: Mirlan")
-    public List<AllFriendsResponse> getAllFriends(@PathVariable Long userId){
-        return userService.getAllFriendsById(userId);
+    public List<AllFriendsResponse> getAllFriends(@RequestParam(required = false) String userName,
+                                                  @PathVariable Long userId){
+        return userService.getAllFriendsById(userId, userName);
     }
 
 }
