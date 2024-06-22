@@ -12,6 +12,7 @@ import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
 import peakspace.entities.Link_Publication;
+import peakspace.entities.Notification;
 import peakspace.entities.Story;
 import peakspace.entities.User;
 import peakspace.exception.MessagingException;
@@ -47,13 +48,6 @@ public class StoryServiceImpl implements StoryService {
         story.setCreatedAt(ZonedDateTime.now());
         story.setOwner(current);
         List<User> all = userRepository.findAll();
-        List<User> tagFriends = new ArrayList<>();
-        for (Long i : storyRequest.idsOfTaggedPeople()) {
-            for (User user : all) {
-                if (i.equals(user.getId())) tagFriends.add(user);
-            }
-        }
-        story.setTagFriends(tagFriends);
         story.setLikes(new ArrayList<>());
         List<String> strings = storyRequest.photoUrlOrVideoUrl();
         List<Link_Publication> videosOrPhotosUrl = new ArrayList<>();
@@ -65,7 +59,22 @@ public class StoryServiceImpl implements StoryService {
         }
         story.setText(storyRequest.description());
         story.setLinkPublications(videosOrPhotosUrl);
-        storyRepository.save(story);
+        Story save1 = storyRepository.save(story);
+        List<User> tagFriends = new ArrayList<>();
+        for (Long i : storyRequest.idsOfTaggedPeople()) {
+            for (User user : all) {
+                if (i.equals(user.getId())) {
+                    tagFriends.add(user);
+                    Notification notification = new Notification();
+                    notification.setSenderUserId(current.getId());
+                    notification.setSeen(false);
+                    notification.setUserNotification(user);
+                    Notification save = notificationRepository.save(notification);
+                    save.setStory(save1);
+                }
+            }
+        }
+        story.setTagFriends(tagFriends);
         return SimpleResponse.builder()
                 .message("Ваш сторис успешно добавлен!")
                 .httpStatus(HttpStatus.OK).build();

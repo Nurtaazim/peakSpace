@@ -54,6 +54,7 @@ public class PublicationServiceImpl implements PublicationService {
             count+=chapter.getFriends().size();
         }
         return GetAllPostsResponse.builder()
+                .userId(getCurrentUser().getId())
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
                 .userName(user.getUsername())
