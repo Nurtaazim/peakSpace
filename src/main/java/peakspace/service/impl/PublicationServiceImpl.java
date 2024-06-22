@@ -53,6 +53,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .map(profiles -> profiles.getUsers().size())
                 .orElse(0);
         return GetAllPostsResponse.builder()
+                .userId(getCurrentUser().getId())
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
                 .userName(user.getUsername())
