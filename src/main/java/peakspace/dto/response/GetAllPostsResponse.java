@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Builder
-public record GetAllPostsResponse(long userId,
+public record GetAllPostsResponse(Long userId,
                                   String cover,
                                   String avatar,
                                   String userName,
