@@ -105,6 +105,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
             // Удалить комментарии
             String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
             jdbcTemplate.update(deleteCommentsSQL, publication.getId());
+
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepository.delete(publication);
         }
@@ -167,7 +168,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         User currentUser = getCurrentUser();
         if (publicProfile.getBlockUsers().contains(currentUser))
             throw new ForbiddenException("Вы были заблокированы владельцом этого сообщества");
-        String message = null;
+        String message;
         List<User> users = publicProfile.getUsers();
         if (users.contains(currentUser)) {
             users.remove(currentUser);
@@ -443,6 +444,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
             return current;
-        else throw new AccessDeniedException("Forbidden 403");
+        else throw new AccessDeniedException("Ошибка 403! \nДоступ запрещен: у вас нет необходимых прав. ");
     }
 }

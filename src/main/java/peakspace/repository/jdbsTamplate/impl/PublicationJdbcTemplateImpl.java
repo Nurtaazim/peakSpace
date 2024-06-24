@@ -125,6 +125,6 @@ public class PublicationJdbcTemplateImpl implements PublicationJdbcTemplate {
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
             return current;
-        else throw new AccessDeniedException("Forbidden 403");
+        else throw new AccessDeniedException("Ошибка 403! \nДоступ запрещен: у вас нет необходимых прав.");
     }
 }
