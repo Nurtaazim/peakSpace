@@ -41,7 +41,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .filter(publication -> publication.getPablicProfile() == null)
                 .map(publication -> {
                     List<Link_Publication> linkPublications = publication.getLinkPublications();
-                    String link = linkPublications.isEmpty() ? "" : linkPublications.get(0).getLink();
+                    String link = linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
                     return Map.of(publication.getId(), link);
                 })
 
@@ -155,7 +155,7 @@ public class PublicationServiceImpl implements PublicationService {
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
             return current;
-        else throw new AccessDeniedException("Forbidden 403");
+        else throw new AccessDeniedException("Ошибка 403! \nДоступ запрещен: у вас нет необходимых прав.");
     }
 
     @Override
@@ -188,7 +188,7 @@ public class PublicationServiceImpl implements PublicationService {
         }
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Successfully saved complain!")
+                .message("Жалоба успешно сохранена!")
                 .build();
     }
 

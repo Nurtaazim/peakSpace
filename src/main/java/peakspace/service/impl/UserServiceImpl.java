@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
     private final SearchFriends searchFriends;
-    private final ChapterService chapterService;
     private final StoryRepository storyRepository;
     private final AwsS3Service storageService;
 
@@ -151,10 +150,10 @@ public class UserServiceImpl implements UserService {
     public String sendConfirmationCode(String email) throws MessagingException {
         User user = userRepository.getByEmail(email);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
         mimeMessageHelper.setTo(email);
-        String randomCode = generatorConfirmationCode(6);
+        String randomCode = generatorConfirmationCode();
         user.setConfirmationCode(randomCode);
         String fullName = user.getThisUserName();
         String message = "<!DOCTYPE html>\n" +
@@ -235,11 +234,11 @@ public class UserServiceImpl implements UserService {
         return "Успешно отправленно код подтверждение на вашем емайл: " + email;
     }
 
-    private String generatorConfirmationCode(int length) {
+    private String generatorConfirmationCode() {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(length);
+        StringBuilder sb = new StringBuilder(6);
         String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < 6; i++) {
             int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
             sb.append(ALLOWED_CHARACTERS.charAt(randomIndex));
         }
@@ -261,7 +260,7 @@ public class UserServiceImpl implements UserService {
     private void sendDefaultPasswordToEmail(User user) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true,"UTF-8");
             mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
             mimeMessageHelper.setTo(user.getEmail());
             mimeMessageHelper.setText("""
@@ -279,11 +278,10 @@ public class UserServiceImpl implements UserService {
                                                                                
                                               Welcome to Peakspace!
                                               """);
-            mimeMessageHelper.setSubject("Hello Kyrgyzstan !");
+            mimeMessageHelper.setSubject("Приложения PEAKSPACE!");
             javaMailSender.send(mimeMessage);
-            System.out.println("Mail sent to " + user.getEmail());
         } catch (MessagingException e) {
-            throw new SmsSendingException();
+            throw new SmsSendingException("Не удалось отправить электронное письмо на адрес " + user.getEmail() + ". Пожалуйста, проверьте адрес электронной почты и повторите попытку.");
         }
     }
 
@@ -302,7 +300,7 @@ public class UserServiceImpl implements UserService {
                 </html>
                 """, fullLinks);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         mimeMessageHelper.setFrom("PEAKSPACE");
         mimeMessageHelper.setTo(toEmail);
         mimeMessageHelper.setText(uuid);
@@ -553,29 +551,29 @@ public class UserServiceImpl implements UserService {
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
             return current;
-        else throw new AccessDeniedException("Forbidden 403");
+        else throw new AccessDeniedException("Доступ запрещен: у вас нет необходимых прав. Ошибка 403");
     }
 
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) throws peakspace.exception.MessagingException {
         User user;
         if (signInRequest.email().endsWith("@gmail.com")) {
-            user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("User with this email not found!"));
+            user = userRepository.findByEmail(signInRequest.email()).orElseThrow(() -> new NotFoundException("Пользователь не найдено!"));
         } else if (signInRequest.email().startsWith("+")) {
             Profile profile = profileRepository.findByPhoneNumber(signInRequest.email());
             if (profile == null)
-                throw new NotFoundException("User with this phone number not found! " + signInRequest.email());
+                throw new NotFoundException("Пользователь с таким номером телефона не найден! " + signInRequest.email());
             user = profile.getUser();
         } else {
-            user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Such user not found!"));
+            user = userRepository.getByUserName(signInRequest.email()).orElseThrow(() -> new NotFoundException("Пользователь не найдено!"));
         }
-        if (user.getBlockAccount()) throw new NotFoundException("Пользователь не найдено!");
+        if (user.getBlockAccount()) throw new NotFoundException("Учетная запись пользователя заблокирована! пожалуйста, свяжитесь со службой поддержки Peakspace! \nphone number: +996771234567 \nmail: peakspace@gmail.com ");
         if (passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
             return SignInResponse.builder()
                     .id(user.getId())
                     .token(jwtService.createToken(user))
                     .build();
-        } else throw new peakspace.exception.MessagingException("Incorrect password!");
+        } else throw new peakspace.exception.MessagingException("Неправильный пароль!");
     }
 
     @Override
@@ -594,7 +592,7 @@ public class UserServiceImpl implements UserService {
         user.setProfile(new Profile(signUpRequest.firstName(), signUpRequest.lastName(), user));
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
         user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
@@ -628,7 +626,7 @@ public class UserServiceImpl implements UserService {
                          + "</body>"
                          + "</html>";
         mimeMessageHelper.setText(message, true);
-        mimeMessageHelper.setSubject("Sign Up to PeakSpace");
+        mimeMessageHelper.setSubject("Зарегистрируйтесь в PeakSpace");
         javaMailSender.send(mimeMessage);
         if (user.getProfile().getAvatar() == null)
             user.getProfile().setAvatar("https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg");
@@ -764,7 +762,7 @@ public class UserServiceImpl implements UserService {
                     .setCredentials(googleCredentials).build();
             FirebaseApp.initializeApp(firebaseOptions);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to initialize Firebase", e);
+            throw new RuntimeException("Не удалось инициализировать Firebase.");
         }
     }
 
@@ -787,9 +785,10 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
     @Override
     public List<UserResponse> findAllUsers(Principal principal) {
-        List<Long> blockAccounts =  userRepository.getByEmail(principal.getName()).getBlockAccounts();
+        List<Long> blockAccounts = userRepository.getByEmail(principal.getName()).getBlockAccounts();
         return blockAccounts == null ?
                 new ArrayList<>() :
                 userRepository.findAllNotInWithIds(blockAccounts);
