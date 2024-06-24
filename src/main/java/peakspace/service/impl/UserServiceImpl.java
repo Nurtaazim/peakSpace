@@ -521,7 +521,7 @@ public class UserServiceImpl implements UserService {
                 if (foundUser != null) {
                     SubscriptionResponse response = new SubscriptionResponse(
                             foundUser.getId(),
-                            foundUser.getUsername(),
+                            foundUser.getThisUserName(),
                             foundUser.getProfile().getAvatar(),
                             foundUser.getProfile().getAboutYourSelf()
                     );
