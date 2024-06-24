@@ -773,13 +773,13 @@ public class UserServiceImpl implements UserService {
     public void yourMethod() {
         List<User> all = userRepository.findAll();
         for (User user1 : all) {
-            if (ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()) {
+            if (user1.getCreatedAt() != null && ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()) {
                 userRepository.delete(user1);
             }
         }
         List<Story> all1 = storyRepository.findAll();
         for (Story story : all1) {
-            if (ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))) {
+            if (story.getCreatedAt() != null && ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))) {
                 for (Link_Publication linkPublication : story.getLinkPublications()) {
                     storageService.deleteFile(linkPublication.getLink());
                 }
