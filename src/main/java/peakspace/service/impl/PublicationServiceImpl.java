@@ -57,7 +57,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .userId(getCurrentUser().getId())
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
-                .userName(user.getUsername())
+                .userName(user.getThisUserName())
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
                 .countFriends(count)
@@ -89,7 +89,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .map(publication -> new HomePageResponse(
                         publication.getOwner().getId(),
                         publication.getOwner().getProfile().getAvatar(),
-                        publication.getOwner().getUsername(),
+                        publication.getOwner().getThisUserName(),
                         publication.getLocation(),
                         publication.getId(),
                         publication.getDescription(),
