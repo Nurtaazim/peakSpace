@@ -24,7 +24,7 @@ public class ChapterAPI {
     @Secured("USER")
     @GetMapping("/user-chapters/{userId}")
     @Operation(summary = "Для получения всех разделов пользователя !")
-    public Map<Long, String> getAllChapter(@PathVariable Long userId) {
+    public List<ChapTerResponse> getAllChapter(@PathVariable Long userId) {
         return chapterService.getAllChaptersByUserId(userId);
     }
 
