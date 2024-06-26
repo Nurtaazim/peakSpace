@@ -767,7 +767,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 180000)
+    //@Scheduled(fixedRate = 180000)
     public void yourMethod() {
         List<User> all = userRepository.findAll();
         for (User user1 : all) {
