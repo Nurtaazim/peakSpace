@@ -60,7 +60,6 @@ dependencies {
     implementation group: 'io.logz.logback', name: 'logzio-logback-appender', version: '1.0.0'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.3.0'
 
-
 }
 tasks.named('test') {
     useJUnitPlatform()
