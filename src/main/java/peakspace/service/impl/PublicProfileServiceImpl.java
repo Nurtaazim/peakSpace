@@ -131,6 +131,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
                 publication.getLocation(),
                 publication.getDescription(),
                 publication.getLikes().size(),
+                publication.getCreatedAt(),
                 links,
                 publication.isBlockComment()
         );
