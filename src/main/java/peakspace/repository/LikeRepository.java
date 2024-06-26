@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import peakspace.entities.Like;
 
-import java.util.List;
-
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
     @Modifying

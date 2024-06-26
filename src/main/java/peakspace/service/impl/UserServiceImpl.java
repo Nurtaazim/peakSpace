@@ -10,6 +10,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -40,6 +41,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -53,8 +55,6 @@ public class UserServiceImpl implements UserService {
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
     private final SearchFriends searchFriends;
-    private final StoryRepository storyRepository;
-    private final AwsS3Service storageService;
 
     @Override
     @Transactional
@@ -761,26 +761,6 @@ public class UserServiceImpl implements UserService {
             FirebaseApp.initializeApp(firebaseOptions);
         } catch (IOException e) {
             throw new RuntimeException("Не удалось инициализировать Firebase.");
-        }
-    }
-
-    @Transactional
-    //@Scheduled(fixedRate = 180000)
-    public void yourMethod() {
-        List<User> all = userRepository.findAll();
-        for (User user1 : all) {
-            if (user1.getCreatedAt() != null && ZonedDateTime.now().isAfter(user1.getCreatedAt().plusMinutes(3)) && user1.getBlockAccount()) {
-                userRepository.delete(user1);
-            }
-        }
-        List<Story> all1 = storyRepository.findAll();
-        for (Story story : all1) {
-            if (story.getCreatedAt() != null && ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24))) {
-                for (Link_Publication linkPublication : story.getLinkPublications()) {
-                    storageService.deleteFile(linkPublication.getLink());
-                }
-                storyRepository.delete(story);
-            }
         }
     }
 

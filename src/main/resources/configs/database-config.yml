@@ -10,11 +10,11 @@ spring:
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
-      mode: always
+      mode: never
 
   # Hibernate/Jpa settings
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     open-in-view: false
