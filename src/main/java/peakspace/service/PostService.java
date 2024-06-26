@@ -16,8 +16,6 @@ public interface PostService {
 
     SimpleResponse delete(Long postId);
 
-    SimpleResponse deleteLinkFromPost(Long linkId, Long postId);
-
     SimpleResponse addFavorite(Long postId);
 
     FavoritePostResponse favorites();
@@ -26,7 +24,6 @@ public interface PostService {
 
     SimpleResponse removeNotation(Long postId,List<Long> friendsId);
 
-    SimpleResponse savePostPublic(Long publicId, Long userId, PostRequest postRequest);
 
     SimpleResponse editPostPublic(Long postId, PostUpdateRequest postUpdateRequest);
 

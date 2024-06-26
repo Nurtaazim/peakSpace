@@ -18,8 +18,11 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AA")
     @SequenceGenerator(name = "AA", allocationSize = 1, initialValue = 21)
     private Long id;
+    @Column(length = 10000)
     private String avatar;
+    @Column(length = 10000)
     private String cover;
+    @Column(length = 1000)
     private String aboutYourSelf;
     private String firstName;
     private String lastName;
@@ -30,14 +33,18 @@ public class Profile {
     private String location;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<Long> favorites;
-    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<Education> educations;
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Profile(String firstName, String lastName, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.user = user;
+        this.avatar = "https://bit.ly/3KMgyZ4";
+        this.cover = "https://bit.ly/3VK5PUn";
     }
+
+
 }

@@ -51,14 +51,14 @@ public class UserInfoAPI {
     }
 
     @Secured("USER")
-    @Operation(summary = "Заблокирование аккаунта!")
+    @Operation(summary = "Заблокирование аккаунта! Myrzaiym/Mirlan")
     @PutMapping("/block/{userId}")
     public SimpleResponse blockAccount(@PathVariable Long userId) {
         return userInfoService.blockAccount(userId);
     }
 
     @Secured("USER")
-    @Operation(summary = " Получить заблокирование аккаунты!")
+    @Operation(summary = " Получить заблокированные аккаунты!")
     @GetMapping("/block-accounts")
     public List<BlockAccountsResponse> getBlockAccounts() {
         return userInfoService.getBlockAccounts();

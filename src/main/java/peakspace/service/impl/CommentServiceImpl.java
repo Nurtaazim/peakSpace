@@ -10,9 +10,7 @@ import peakspace.dto.request.CommentRequest;
 import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.CommentInnerResponse;
-import peakspace.dto.response.LinkResponse;
 import peakspace.dto.response.InnerCommentResponse;
-import peakspace.dto.response.CommentResponseByPost;
 import peakspace.entities.Comment;
 import peakspace.entities.Notification;
 import peakspace.entities.Publication;
@@ -25,9 +23,7 @@ import peakspace.repository.UserRepository;
 import peakspace.service.CommentService;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,16 +41,16 @@ public class CommentServiceImpl implements CommentService {
         Comment newComment = new Comment();
         newComment.setMessage(comment.getMessage());
         newComment.setPublication(publication);
-        commentRepository.save(newComment);
-        publication.getComments().add(newComment);
         newComment.setUser(currentUser);
+        Comment save = commentRepository.save(newComment);
+        publication.getComments().add(save);
 
         Notification notification = new Notification();
         notification.setSeen(false);
         notification.setNotificationMessage(" Ответил  на вашу публикации  ! ");
         notification.setCreatedAt(ZonedDateTime.now());
-        newComment.setNotification(notification);
-        notification.setComment(newComment);
+        save.setNotification(notification);
+        notification.setComment(save);
         notification.setUserNotification(publication.getOwner());
         notification.setSenderUserId(currentUser.getId());
         publication.getOwner().getNotifications().add(notification);
@@ -65,29 +61,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponseByPost> getAllComment(Long postId) {
-        Publication publication = publicationRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException("Нет такой публикации с id: " + postId));
-
-        List<CommentResponse> commentForResponse = commentRepository.getCommentForResponse(publication.getId());
-
-        List<LinkResponse> links = new ArrayList<>();
-        if (publication.getLinkPublications() != null) {
-            links = publication.getLinkPublications().stream()
-                    .map(link -> new LinkResponse(link.getId(), link.getLink()))
-                    .collect(Collectors.toList());
+    public List<CommentResponse> getAllComment(Long postId) {
+        List<Comment> comments = commentRepository.getAllCommentById(postId);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentResponses.add(CommentResponse.builder()
+                            .id(comment.getId())
+                            .userId(comment.getUser().getId())
+                            .avatar(comment.getUser().getProfile().getAvatar())
+                            .userName(comment.getUser().getThisUserName())
+                            .comment(comment.getMessage())
+                            .countLike(comment.getLikes().size())
+                            .createdAt(comment.getCreatedAt())
+                    .build());
         }
-
-        return List.of(new CommentResponseByPost(
-                publication.getId(),
-                publication.getOwner().getId(),
-                publication.getOwner().getProfile().getAvatar(),
-                publication.getOwner().getThisUserName(),
-                publication.getLocation(),
-                publication.getLikes().size(),
-                links,
-                commentForResponse));
-
+        return commentResponses;
     }
 
     @Override
@@ -98,16 +86,6 @@ public class CommentServiceImpl implements CommentService {
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Комментарий успешно обновлен !")
-                .build();
-    }
-
-    @Override
-    public SimpleResponse deleteComment(Long commentId) {
-        commentRepository.deleteNotification(commentId);
-        commentRepository.deleteByIds(commentId);
-        return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message(" Комментарий успешно удален !")
                 .build();
     }
 
@@ -165,9 +143,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override @Transactional
     public SimpleResponse removeInnerComment(Long innerCommentId) {
+        commentRepository.deleteNotificationComment(innerCommentId);
         commentRepository.deleteLikes(innerCommentId);
         commentRepository.deleteInnerComment(innerCommentId);
-        deleteComment(innerCommentId);
+        commentRepository.deleteNotification(innerCommentId);
+        commentRepository.deleteByIds(innerCommentId);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message(" Успешно удалено комментарии !")
@@ -182,7 +162,7 @@ public class CommentServiceImpl implements CommentService {
                 .innerCommentId(innerComment.getId())
                 .userId(innerComment.getUser().getId())
                 .avatar(innerComment.getUser().getProfile().getAvatar())
-                .userName(innerComment.getUser().getUsername())
+                .userName(innerComment.getUser().getThisUserName())
                 .comment(innerComment.getMessage())
                 .countLike(innerComment.getLikes().size())
                 .createdAt(innerComment.getCreatedAt())
@@ -200,7 +180,7 @@ public class CommentServiceImpl implements CommentService {
                     .innerCommentId(innerComment.getId())
                     .userId(innerComment.getUser().getId())
                     .avatar(innerComment.getUser().getProfile().getAvatar())
-                    .userName(innerComment.getUser().getUsername())
+                    .userName(innerComment.getUser().getThisUserName())
                     .comment(innerComment.getMessage())
                     .countLike(innerComment.getLikes().size())
                     .createdAt(innerComment.getCreatedAt())

@@ -20,9 +20,9 @@ public class Chat {
     @OneToMany(mappedBy = "chat", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<MessageContent> messageContents;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, fetch = FetchType.LAZY)
     private User sender;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, fetch = FetchType.LAZY)
     private User receiver;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Link_Publication> linkPublications;

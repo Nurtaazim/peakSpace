@@ -131,7 +131,7 @@ public class ChatServiceImpl implements ChatService {
         return ChatResponse.builder()
                 .id(foundUser.getId())
                 .avatar(foundUser.getProfile().getAvatar())
-                .userName(foundUser.getUsername())
+                .userName(foundUser.getThisUserName())
                 .aboutYourSelf(foundUser.getProfile().getAboutYourSelf())
                 .messageContents(messageResponses)
                 .build();
@@ -164,7 +164,7 @@ public class ChatServiceImpl implements ChatService {
         ChatResponse chatResponse = ChatResponse.builder()
                 .id(foundUser.getId())
                 .avatar(foundUser.getProfile().getAvatar())
-                .userName(foundUser.getUsername())
+                .userName(foundUser.getThisUserName())
                 .aboutYourSelf(foundUser.getProfile().getAboutYourSelf())
                 .messageContents(messageResponses)
                 .build();
@@ -191,7 +191,7 @@ public class ChatServiceImpl implements ChatService {
                 if (lastMessage != null) {
                     UserChatResponse response = UserChatResponse.builder()
                             .id(friend.getId())
-                            .username(friend.getUsername())
+                            .username(friend.getThisUserName())
                             .content(lastMessage.getContent())
                             .timestamp(lastMessage.getTimestamp())
                             .build();
@@ -254,6 +254,6 @@ public class ChatServiceImpl implements ChatService {
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
             return current;
-        else throw new AccessDeniedException("Forbidden 403");
+        else throw new AccessDeniedException("Ошибка 403! \nДоступ запрещен: у вас нет необходимых прав. ");
     }
 }

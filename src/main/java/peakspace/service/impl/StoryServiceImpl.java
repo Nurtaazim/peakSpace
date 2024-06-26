@@ -7,19 +7,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.dto.request.StoryRequest;
+import peakspace.dto.response.MyStoriesResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
 import peakspace.entities.Link_Publication;
+import peakspace.entities.Notification;
 import peakspace.entities.Story;
 import peakspace.entities.User;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.LinkPublicationRepo;
+import peakspace.repository.NotificationRepository;
 import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTamplate.StoryJdbcTemplate;
 import peakspace.service.StoryService;
+import peakspace.service.UserService;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +37,7 @@ public class StoryServiceImpl implements StoryService {
     private final LinkPublicationRepo linkPublicationRepository;
     private final AwsS3Service storageService;
     private final StoryJdbcTemplate storyJdbcTemplate;
+    private final NotificationRepository notificationRepository;
 
     @Override
     @Transactional
@@ -42,13 +48,6 @@ public class StoryServiceImpl implements StoryService {
         story.setCreatedAt(ZonedDateTime.now());
         story.setOwner(current);
         List<User> all = userRepository.findAll();
-        List<User> tagFriends = new ArrayList<>();
-        for (Long i : storyRequest.idsOfTaggedPeople()) {
-            for (User user : all) {
-                if (i.equals(user.getId())) tagFriends.add(user);
-            }
-        }
-        story.setTagFriends(tagFriends);
         story.setLikes(new ArrayList<>());
         List<String> strings = storyRequest.photoUrlOrVideoUrl();
         List<Link_Publication> videosOrPhotosUrl = new ArrayList<>();
@@ -60,13 +59,29 @@ public class StoryServiceImpl implements StoryService {
         }
         story.setText(storyRequest.description());
         story.setLinkPublications(videosOrPhotosUrl);
-        storyRepository.save(story);
+        Story save1 = storyRepository.save(story);
+        List<User> tagFriends = new ArrayList<>();
+        for (Long i : storyRequest.idsOfTaggedPeople()) {
+            for (User user : all) {
+                if (i.equals(user.getId())) {
+                    tagFriends.add(user);
+                    Notification notification = new Notification();
+                    notification.setSenderUserId(current.getId());
+                    notification.setSeen(false);
+                    notification.setUserNotification(user);
+                    Notification save = notificationRepository.save(notification);
+                    save.setStory(save1);
+                }
+            }
+        }
+        story.setTagFriends(tagFriends);
         return SimpleResponse.builder()
                 .message("Ваш сторис успешно добавлен!")
                 .httpStatus(HttpStatus.OK).build();
     }
 
     @Override
+    @Transactional
     public SimpleResponse delete(long id) {
         Story byId = storyRepository.findById(id).orElseThrow(()->new NotFoundException("Сторис с такой id не найдено!"));
         if (byId.getOwner().getId().equals(userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId())){
@@ -74,6 +89,7 @@ public class StoryServiceImpl implements StoryService {
             for (Link_Publication linkPublication : linkPublications) {
                 storageService.deleteFile(linkPublication.getLink());
             }
+            notificationRepository.deleteAllByStoryId(id);
             storyRepository.delete(byId);
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
@@ -108,5 +124,11 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public List<StoryAllHomPageResponse> getAllFriendsStory() {
         return storyJdbcTemplate.getAllFriendsStory();
+    }
+
+    @Override
+    public List<MyStoriesResponse> getMyStories() {
+
+        return storyJdbcTemplate.getMyStories();
     }
 }

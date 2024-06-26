@@ -33,7 +33,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
            "c.user.userName, " +
            "c.message, " +
            "(select count(lik.user) from c.likes lik), " +
-           "c.createdAt) from Comment c where c.publication.id = ?1 order by c.id desc ")
+           "c.createdAt) from Comment c where c.publication.id = :idPublic order by c.id desc ")
     List<CommentResponse> getCommentForResponse(Long idPublic);
 
     @Query("select new peakspace.dto.response.CommentInnerResponse(c.id,c.user.id,c.user.profile.avatar,c.user.userName,c.message,(select count(l.id) from c.likes l),c.createdAt) from Comment c where c.id =:commentId")
@@ -58,5 +58,21 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Transactional
     @Query("delete from Notification n where n.comment.id =:commentId")
     void deleteNotification(Long commentId);
-    
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from comments_notifications where comment_id = :innerCommentId", nativeQuery = true)
+    void deleteNotificationComment(Long innerCommentId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "select distinct c.* " +
+                   "from comments c " +
+                   "where not exists (" +
+                   "    select 1 " +
+                   "    from inner_comment ic " +
+                   "    where ic.inner_comments_id = c.id" +
+                   ") " +
+                   "and c.publication_id = :postId", nativeQuery = true)
+    List<Comment> getAllCommentById(Long postId);
 }

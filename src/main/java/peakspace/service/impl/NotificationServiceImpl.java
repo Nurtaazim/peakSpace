@@ -18,7 +18,6 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
 
     private final UserRepository userRepository;
-    private final NotificationRepository notificationRepository;
 
     @Override
     @Transactional

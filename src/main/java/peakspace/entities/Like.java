@@ -14,7 +14,7 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "likes_seq")
     @SequenceGenerator(name = "likes_seq", allocationSize = 1, initialValue = 21)
     private Long id;
-    @OneToOne(cascade = CascadeType.DETACH)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private User user;
 
 

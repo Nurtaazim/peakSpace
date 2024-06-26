@@ -5,25 +5,22 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import peakspace.dto.response.SearchHashtagsResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.SubscriptionResponse;
-import peakspace.dto.response.SearchUserResponse;
+import peakspace.dto.response.*;
 import peakspace.enums.Choise;
 import peakspace.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @CrossOrigin(origins = "*", maxAge = 3600)
+@Secured("USER")
 public class UserAPI {
 
     private final UserService userService;
 
-    @Secured("USER")
     @GetMapping("/search")
     @Operation(summary = "Поискавик по выборкам группы и пользователь !")
     public List<SearchResponse> search(@RequestParam Choise sample,
@@ -31,7 +28,6 @@ public class UserAPI {
         return userService.searchFriends(sample, keyWord);
     }
 
-    @Secured("USER")
     @GetMapping("/search-hashtags")
     @Operation(summary = " Поискавик по хештегам !")
     public List<SearchHashtagsResponse> searchHashTags(@RequestParam Choise sample,
@@ -39,25 +35,33 @@ public class UserAPI {
         return userService.searchHashtags(sample, keyWord);
     }
 
-    @Secured("USER")
     @PutMapping("/{foundUserId}")
     @Operation(summary = "Отписатся  пользователя из раздела !")
     public SimpleResponse unsubscribeUser(@PathVariable Long foundUserId) {
         return userService.unsubscribeUser(foundUserId);
     }
 
-    @Secured("USER")
     @GetMapping("/search-history")
     @Operation(summary = "Пользователи, которые введены в поисковике, сохранены! ")
     public List<SubscriptionResponse> getAllSearchUserHistory() {
         return userService.getAllSearchUserHistory();
     }
 
-    @Secured("USER")
     @GetMapping("/search-with-all")
     @Operation(summary = "Поиск пользователей со всеми! ")
     public List<SearchUserResponse> searchAll(@RequestParam String keyWord) {
         return userService.globalSearch(keyWord);
     }
 
+    @PostMapping("/{foundUserId}")
+    @Operation(summary = "Сохранить пользователь в истории поиска! ")
+    public SimpleResponse searchAll(@PathVariable Long foundUserId) {
+        return userService.saveUserToHistorySearch(foundUserId);
+    }
+
+    @Secured("USER")
+    @GetMapping
+    public List<UserResponse> findAllUsers(Principal principal){
+        return userService.findAllUsers(principal);
+    }
 }

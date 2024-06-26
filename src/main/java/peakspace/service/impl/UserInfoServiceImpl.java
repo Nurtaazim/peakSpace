@@ -98,7 +98,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
 
-
     @Transactional
     @Override
     public SimpleResponse blockAccount(Long userId) {
@@ -108,19 +107,26 @@ public class UserInfoServiceImpl implements UserInfoService {
         User foundUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found!"));
 
         if (!user.getId().equals(foundUser.getId())) {
-         if (user.getBlockAccounts().contains(foundUser.getId())) {
-            user.getBlockAccounts().remove(foundUser.getId());
-            foundUser.setBlockAccount(false);
-         } else {
-            user.getBlockAccounts().add(foundUser.getId());
-            foundUser.setBlockAccount(true);
-         }
-    }else {
-            System.out.println("Вы не можете заблокировать себя");
+            if (user.getBlockAccounts().contains(foundUser.getId())) {
+                user.getBlockAccounts().remove(foundUser.getId());
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.OK)
+                        .message(" Удачно разблокировано!")
+                        .isBlock(foundUser.getBlockAccount())
+                        .build();
+            } else {
+                user.getBlockAccounts().add(foundUser.getId());
+                return SimpleResponse.builder()
+                        .httpStatus(HttpStatus.OK)
+                        .message(" Удачно блокировано!")
+                        .isBlock(foundUser.getBlockAccount())
+                        .build();
+            }
         }
         return SimpleResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .message(" Удачно блокировано!")
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(" Вы не можете заблокировать себя!")
+                .isBlock(foundUser.getBlockAccount())
                 .build();
     }
 
@@ -135,6 +141,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         for (Long blockAccount : blockAccounts) {
             User user1 = userRepository.getReferenceById(blockAccount);
             accounts.add(BlockAccountsResponse.builder()
+                    .id(user1.getId())
                     .userName(user1.getThisUserName())
                     .avatar(user1.getProfile().getAvatar())
                     .cover(user1.getProfile().getCover())
@@ -157,8 +164,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     .message(" Успешно вернулись в закрытый аккаунт!")
                     .httpStatus(HttpStatus.OK)
                     .build();
-        }
-        else return SimpleResponse.builder()
+        } else return SimpleResponse.builder()
                 .message(" Успешно вернулись в открытый аккаунт!")
                 .httpStatus(HttpStatus.OK)
                 .build();
@@ -183,13 +189,14 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .map(this::mapToEducationResponse)
                 .collect(Collectors.toList());
 
-        String fullName = String.format("%s %s", profile.getFirstName(), profile.getLastName());
-
         return UserInfoResponse.builder()
                 .avatar(profile.getAvatar())
                 .cover(profile.getCover())
-                .userName(profile.getUser().getUsername())
-                .fullName(fullName)
+                .userName(user.getThisUserName())
+                .email(user.getEmail())
+                .firstName(profile.getFirstName())
+                .lastName(profile.getLastName())
+                .fathersName(profile.getPatronymicName())
                 .aboutYourSelf(profile.getAboutYourSelf())
                 .educationResponses(educationResponses)
                 .profession(profile.getProfession())

@@ -7,10 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.*;
-import peakspace.entities.Link_Publication;
-import peakspace.entities.Publication;
-import peakspace.entities.User;
-import peakspace.entities.Notification;
+import peakspace.entities.*;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
@@ -44,7 +41,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .filter(publication -> publication.getPablicProfile() == null)
                 .map(publication -> {
                     List<Link_Publication> linkPublications = publication.getLinkPublications();
-                    String link = linkPublications.isEmpty() ? "" : linkPublications.get(0).getLink();
+                    String link = linkPublications.isEmpty() ? "" : linkPublications.getFirst().getLink();
                     return Map.of(publication.getId(), link);
                 })
 
@@ -52,13 +49,18 @@ public class PublicationServiceImpl implements PublicationService {
         int countPublics = Optional.ofNullable(user.getCommunity())
                 .map(profiles -> profiles.getUsers().size())
                 .orElse(0);
+        int count = 0;
+        for (Chapter chapter : user.getChapters()) {
+            count+=chapter.getFriends().size();
+        }
         return GetAllPostsResponse.builder()
+                .userId(getCurrentUser().getId())
                 .cover(user.getProfile().getCover())
                 .avatar(user.getProfile().getAvatar())
-                .userName(user.getUsername())
+                .userName(user.getThisUserName())
                 .aboutMe(user.getProfile().getAboutYourSelf())
                 .major(user.getProfile().getProfession())
-                .countFriends(user.getChapters().size())
+                .countFriends(count)
                 .countPablics(countPublics)
                 .publications(publications.reversed())
                 .build();
@@ -87,7 +89,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .map(publication -> new HomePageResponse(
                         publication.getOwner().getId(),
                         publication.getOwner().getProfile().getAvatar(),
-                        publication.getOwner().getUsername(),
+                        publication.getOwner().getThisUserName(),
                         publication.getLocation(),
                         publication.getId(),
                         publication.getDescription(),
@@ -153,7 +155,7 @@ public class PublicationServiceImpl implements PublicationService {
         User current = userRepository.getByEmail(email);
         if (current.getRole().equals(Role.USER))
             return current;
-        else throw new AccessDeniedException("Forbidden 403");
+        else throw new AccessDeniedException("Ошибка 403! \nДоступ запрещен: у вас нет необходимых прав.");
     }
 
     @Override
@@ -186,7 +188,7 @@ public class PublicationServiceImpl implements PublicationService {
         }
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Successfully saved complain!")
+                .message("Жалоба успешно сохранена!")
                 .build();
     }
 

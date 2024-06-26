@@ -22,6 +22,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import peakspace.config.jwt.JwtFilter;
 import peakspace.repository.UserRepository;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor

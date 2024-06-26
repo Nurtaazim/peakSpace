@@ -1,22 +1,22 @@
 package peakspace.service;
 
 import jakarta.mail.MessagingException;
-import org.apache.coyote.BadRequestException;
+import peakspace.dto.response.AllFriendsResponse;
 import peakspace.dto.response.*;
 import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.request.RegisterWithGoogleRequest;
 import peakspace.enums.Choise;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
 
     SimpleResponse emailSender(String email,String link) throws MessagingException;
 
-    SimpleResponse createPassword(String uuid, String password, String confirm);
+    SignInResponse createPassword(String uuid, String password, String confirm);
 
     SimpleResponse sendFriends(Long foundUserId,Long chapterId);
 
@@ -25,8 +25,6 @@ public interface UserService {
     SimpleResponse createChapter(ChapterRequest chapterRequest);
 
     List<SearchHashtagsResponse> searchHashtags(Choise sample,String keyWord) throws MessagingException;
-
-    List<SearchResponse> searchMyFriends(Long chapterId, String userName);
 
     ProfileFriendsResponse findFriendsProfile(Long foundUserId);
 
@@ -38,7 +36,7 @@ public interface UserService {
 
     List<SearchUserResponse> globalSearch(String keyWord);
 
-    FriendsPageResponse searchAllFriendsByChapter(Long userId, Long chapterId, String search);
+    List<FriendsResponse> searchAllFriendsByChapter(Long chapterId, String search);
 
     ResponseWithGoogle verifyToken(String tokenFromGoogle);
 
@@ -52,4 +50,11 @@ public interface UserService {
 
     SignInResponse confirmToSignUp(int codeInEmail, long id) throws MessagingException;
 
+    List<AllFriendsResponse> getAllFriendsById(Long userId, String userName);
+
+    SimpleResponse saveUserToHistorySearch(Long foundUserId);
+
+    void cancelConfirm(long userId);
+
+    List<UserResponse> findAllUsers(Principal principal);
 }

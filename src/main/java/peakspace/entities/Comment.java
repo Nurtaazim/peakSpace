@@ -20,13 +20,13 @@ public class Comment {
     private Long id;
     private String message;
     private ZonedDateTime createdAt;
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private User user;
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.REMOVE})
     private List<Notification> notifications = new ArrayList<>();
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, fetch = FetchType.LAZY)
     private Publication publication;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinTable(name = "innerComment")
     private List<Comment> innerComments;
     @ManyToMany(fetch = FetchType.EAGER)

@@ -32,7 +32,7 @@ public class AuthAPI {
 
     @Operation(summary = " Cоздать новый пароль через ссылку который отправленный на его почту  !")
     @PostMapping("/createPassword")
-    public SimpleResponse createPassword(@RequestParam @PasswordValidation String password,
+    public SignInResponse createPassword(@RequestParam @PasswordValidation String password,
                                          @RequestParam @PasswordValidation String confirm,
                                          @RequestParam String uuid) {
         return userService.createPassword(uuid, password, confirm);
@@ -55,6 +55,11 @@ public class AuthAPI {
     public SignInResponse confirm(@RequestParam int codeInEmail,
                                   long id) throws MessagingException {
         return userService.confirmToSignUp(codeInEmail, id);
+    }
+    @DeleteMapping
+    @Operation(summary = "Отменить подтверждение пароля из gmail")
+    public void cancelConfirm(@RequestParam long userId){
+        userService.cancelConfirm(userId);
     }
 
 }

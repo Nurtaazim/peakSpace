@@ -1,21 +1,16 @@
 package peakspace.service;
 
 import peakspace.dto.request.CommentRequest;
-import peakspace.dto.response.CommentInnerResponse;
-import peakspace.dto.response.CommentResponseByPost;
-import peakspace.dto.response.InnerCommentResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
 
 import java.util.List;
 
 public interface CommentService {
     SimpleResponse save(Long postId, CommentRequest comment);
 
-    List<CommentResponseByPost> getAllComment(Long postId);
+    List<CommentResponse> getAllComment(Long postId);
 
     SimpleResponse editComment(Long commentId, CommentRequest comment);
-
-    SimpleResponse deleteComment(Long commentId);
 
     CommentInnerResponse findComment(Long commentId);
 

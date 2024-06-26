@@ -11,4 +11,5 @@ import org.springframework.http.HttpStatus;
 public class SimpleResponse {
     private HttpStatus httpStatus;
     private String message;
+    private Boolean isBlock;
 }

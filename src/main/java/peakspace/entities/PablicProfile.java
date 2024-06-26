@@ -18,17 +18,20 @@ public class PablicProfile {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "public_p_seq")
     @SequenceGenerator(name = "public_p_seq", allocationSize = 1, initialValue = 21)
     private Long id;
+    @Column(length = 10000)
     private String cover;
+    @Column(length = 10000)
     private String avatar;
     private String pablicName;
     private String descriptionPublic;
     @Enumerated(EnumType.STRING)
     private Tematica tematica;
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY)
     private User owner;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<User> users;
     @OneToMany(mappedBy = "pablicProfile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Publication> publications = new ArrayList<>();
-
+    @OneToMany(cascade = CascadeType.DETACH)
+    private List<User> blockUsers = new ArrayList<>();
 }

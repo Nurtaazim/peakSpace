@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.ChapterRequest;
-import peakspace.dto.response.ChapTerResponse;
-import peakspace.dto.response.FriendsPageResponse;
-import peakspace.dto.response.SearchResponse;
-import peakspace.dto.response.SimpleResponse;
+import peakspace.dto.response.*;
 import peakspace.service.ChapterService;
 import peakspace.service.UserService;
 
@@ -27,7 +24,7 @@ public class ChapterAPI {
     @Secured("USER")
     @GetMapping("/user-chapters/{userId}")
     @Operation(summary = "Для получения всех разделов пользователя !")
-    public Map<Long, String> getAllChapter(@PathVariable Long userId) {
+    public List<ChapTerResponse> getAllChapter(@PathVariable Long userId) {
         return chapterService.getAllChaptersByUserId(userId);
     }
 
@@ -54,20 +51,19 @@ public class ChapterAPI {
     }
 
     @Secured("USER")
-    @GetMapping("/{chapterId}")
-    @Operation(summary = "Получить всех пользователей раздела !")
-    public List<SearchResponse> findAllChapter(@RequestParam(required = false) String userName,
-                                               @PathVariable Long chapterId) {
-        return userService.searchMyFriends(chapterId, userName);
+    @GetMapping("/search-friends/{chapterId}")
+    @Operation(summary = "Получить друзья пользователя и поиск по имени пользователя и ФИО! ")
+    public List<FriendsResponse> getAllFriends(@PathVariable Long chapterId,
+                                             @RequestParam(required = false) String search) {
+        return userService.searchAllFriendsByChapter(chapterId, search);
     }
 
     @Secured("USER")
-    @GetMapping("/search-friends/{userId}/{chapterId}")
-    @Operation(summary = "Получить друзья пользователя и поиск по имени пользователя и ФИО! ")
-    public FriendsPageResponse getAllFriends(@PathVariable Long userId,
-                                             @PathVariable Long chapterId,
-                                             @RequestParam(required = false) String search) {
-        return userService.searchAllFriendsByChapter(userId, chapterId, search);
+    @GetMapping("/all-my-friends/{userId}")
+    @Operation(summary = "Получить всех друзья пользователя! developer: Mirlan")
+    public List<AllFriendsResponse> getAllFriends(@RequestParam(required = false) String userName,
+                                                  @PathVariable Long userId){
+        return userService.getAllFriendsById(userId, userName);
     }
 
 }
