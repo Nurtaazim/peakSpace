@@ -1,6 +1,7 @@
 package peakspace.dto.response;
 
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public record PublicPostResponse(Long id,
@@ -10,6 +11,7 @@ public record PublicPostResponse(Long id,
                                  String location,
                                  String description,
                                  int countLikes,
+                                 ZonedDateTime createdAt,
                                  List<LinkResponse> links,
                                  boolean blockComment
 ) {

@@ -19,7 +19,7 @@ public class Story {
     private Long id;
     private ZonedDateTime createdAt;
     private String text;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, fetch = FetchType.LAZY)
     private User owner;
     @ManyToMany
     private List<User> tagFriends;

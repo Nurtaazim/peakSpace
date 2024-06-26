@@ -23,16 +23,16 @@ public class Notification {
     private ZonedDateTime createdAt;
     private boolean seen;
     private String notificationMessage;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Like like;
-    @ManyToOne(cascade = {CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY)
     private User userNotification;   // получатель
     private Long senderUserId;       // отправитель
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Comment comment;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Publication publication;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Story story;
 
     public Notification(Like like, User userNotification, Long senderUserId) {

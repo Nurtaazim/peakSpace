@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +35,18 @@ public class Publication {
     private List<Link_Publication> linkPublications = new ArrayList<>();
     @OneToMany(mappedBy = "publication", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
     private List<Comment> comments;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private PablicProfile pablicProfile;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Like> likes;
     @PrePersist
     public void prePersist() {
-        this.createdAt = ZonedDateTime.now();
+        this.createdAt = ZonedDateTime.now(ZoneId.of("Asia/Bishkek"));
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.createdAt = ZonedDateTime.now();
+        this.createdAt = ZonedDateTime.now(ZoneId.of("Asia/Bishkek"));
     }
 
 }

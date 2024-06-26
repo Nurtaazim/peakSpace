@@ -19,7 +19,7 @@ public class Chapter {
     private String groupName;
     @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<User> friends;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, fetch = FetchType.LAZY)
     private User user;
 
 }
