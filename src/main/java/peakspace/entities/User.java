@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Getter
 @Setter
 @Entity
@@ -32,29 +34,29 @@ public class User implements UserDetails {
     private Boolean blockAccount;
     private String confirmationCode;
     private ZonedDateTime createdAt;
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = LAZY)
     private Profile profile;
-    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = LAZY)
     private List<Story> stories;
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = LAZY)
     private List<Chapter> chapters;
-    @OneToMany(mappedBy = "sender", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sender", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = LAZY)
     private List<Chat> chats;
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.DETACH},fetch = LAZY)
     private List<Comment> comments;
-    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = LAZY)
     private List<Publication> publications;
-    @OneToMany(mappedBy = "userNotification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userNotification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = LAZY)
     private List<Notification> notifications;
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = LAZY)
     private List<Long> searchFriendsHistory;
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = LAZY)
     private List<Long> blockAccounts;
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = LAZY)
     private List<Long> publicProfilesSize;
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = LAZY)
     private List<Long> myAcceptPost;
-    @OneToOne(mappedBy = "owner")
+    @OneToOne(mappedBy = "owner", fetch = LAZY)
     private PablicProfile community;
     public String getThisUserName() {
         return this.userName;

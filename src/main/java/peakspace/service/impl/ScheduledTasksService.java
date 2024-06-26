@@ -22,7 +22,7 @@ public class ScheduledTasksService {
     private final StoryRepository storyRepository;
     private final AwsS3Service storageService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    //@Scheduled(cron = "0 0 0 * * ?")
     public void dailyCleanup() {
         List<Story> stories = storyRepository.findAll();
         stories.stream()
@@ -44,7 +44,7 @@ public class ScheduledTasksService {
                 });
     }
 
-    @Scheduled(fixedRate = 180000)
+    //@Scheduled(fixedRate = 180000)
     public void periodicUserCleanup() {
         List<User> users = userRepository.findAll();
         users.stream()
