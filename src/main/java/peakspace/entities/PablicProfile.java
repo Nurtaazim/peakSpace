@@ -26,7 +26,7 @@ public class PablicProfile {
     private String descriptionPublic;
     @Enumerated(EnumType.STRING)
     private Tematica tematica;
-    @OneToOne(cascade = {CascadeType.DETACH})
+    @OneToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY)
     private User owner;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<User> users;

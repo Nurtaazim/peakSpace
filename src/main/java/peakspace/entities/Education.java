@@ -19,8 +19,7 @@ public class Education {
     private Country country;
     private String educationalInstitution;
 
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private Profile profile;
 
 }

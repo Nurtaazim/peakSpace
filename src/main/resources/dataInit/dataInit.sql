@@ -1,3 +1,5 @@
+SET TIME ZONE 'Asia/Bishkek';
+select now();
 
 insert into users(id, user_name, email, password, is_block,role, created_at, block_account)
 values

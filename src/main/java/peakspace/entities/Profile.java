@@ -35,7 +35,7 @@ public class Profile {
     private List<Long> favorites;
     @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<Education> educations;
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Profile(String firstName, String lastName, User user) {
