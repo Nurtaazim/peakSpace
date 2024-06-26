@@ -14,7 +14,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +31,6 @@ import peakspace.exception.*;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.SearchFriends;
-import peakspace.service.ChapterService;
 import peakspace.service.UserService;
 
 import java.io.IOException;

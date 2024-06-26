@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
-import peakspace.repository.jdbsTamplate.GetAllPublics;
 import peakspace.service.PublicProfileService;
 
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor

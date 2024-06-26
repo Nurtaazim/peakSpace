@@ -16,7 +16,6 @@ public class PublicPostAPI {
 
     private final PostService postService;
 
-
     @Secured("USER")
     @PatchMapping("/{postId}")
     @Operation(summary = " Изменение поста на паблике !")

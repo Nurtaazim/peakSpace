@@ -1,6 +1,5 @@
 package peakspace.config.security;
 
-import com.amazonaws.HttpMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,9 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import peakspace.config.jwt.JwtFilter;
 import peakspace.repository.UserRepository;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity

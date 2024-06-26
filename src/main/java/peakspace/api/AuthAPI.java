@@ -4,15 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.*;
-import peakspace.dto.request.PasswordRequest;
 import peakspace.dto.request.SignInRequest;
 import peakspace.dto.request.SignUpRequest;
 import peakspace.dto.response.SignInResponse;
 import peakspace.dto.response.SignUpResponse;
 import peakspace.dto.response.SimpleResponse;
-
 import peakspace.service.UserService;
 import peakspace.validation.PasswordValidation;
 

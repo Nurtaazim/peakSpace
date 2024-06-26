@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import peakspace.dto.response.NotificationResponse;
 import peakspace.entities.Notification;
 import peakspace.entities.User;
-import peakspace.repository.NotificationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.NotificationService;
 

@@ -24,9 +24,4 @@ public class MessageContent {
     @JsonIgnore
     private Chat chat;
 
-//    @PrePersist
-//    public void prePersist(){
-//        this.timestamp = ZonedDateTime.now();
-//    }
-
 }

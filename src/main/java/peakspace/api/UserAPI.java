@@ -3,7 +3,7 @@ package peakspace.api;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.*;
 import peakspace.enums.Choise;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @CrossOrigin(origins = "*", maxAge = 3600)
-@Secured("USER")
+@PreAuthorize("hasAuthority('USER')")
 public class UserAPI {
 
     private final UserService userService;
@@ -59,8 +59,8 @@ public class UserAPI {
         return userService.saveUserToHistorySearch(foundUserId);
     }
 
-    @Secured("USER")
     @GetMapping
+    @Operation(summary = "Получить всех пользователей, кроме заблокированного!")
     public List<UserResponse> findAllUsers(Principal principal){
         return userService.findAllUsers(principal);
     }

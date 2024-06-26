@@ -8,5 +8,4 @@ import peakspace.service.MessageContentService;
 @RequiredArgsConstructor
 public class MessageContentServiceImpl implements MessageContentService {
 
-
 }

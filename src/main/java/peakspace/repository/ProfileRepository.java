@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import peakspace.entities.Profile;
 
-import java.util.Optional;
-
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile,Long> {
 

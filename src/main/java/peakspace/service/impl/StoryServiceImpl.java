@@ -23,7 +23,6 @@ import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTamplate.StoryJdbcTemplate;
 import peakspace.service.StoryService;
-import peakspace.service.UserService;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -128,7 +127,6 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     public List<MyStoriesResponse> getMyStories() {
-
         return storyJdbcTemplate.getMyStories();
     }
 }

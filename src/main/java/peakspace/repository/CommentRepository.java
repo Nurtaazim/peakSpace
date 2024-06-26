@@ -9,7 +9,6 @@ import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.InnerCommentResponse;
 import peakspace.entities.Comment;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {

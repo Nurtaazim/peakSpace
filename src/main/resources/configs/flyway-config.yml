@@ -3,8 +3,3 @@ spring:
     enabled: false
     locations: classpath:db.migration
     baseline-on-migrate: false
-
-flyway:
-  password: ${POSTGRES_PASSWORD}
-  url: ${POSTGRES_DB}
-  user: ${POSTGRES_USER}

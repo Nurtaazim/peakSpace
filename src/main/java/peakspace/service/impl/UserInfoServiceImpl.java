@@ -14,11 +14,9 @@ import peakspace.dto.response.UserInfoResponse;
 import peakspace.entities.Education;
 import peakspace.entities.Profile;
 import peakspace.entities.User;
-import peakspace.enums.Country;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.EducationRepository;
 import peakspace.repository.ProfileRepository;
-import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.UserInfoService;
 

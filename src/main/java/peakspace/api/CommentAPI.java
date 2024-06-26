@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import peakspace.dto.request.CommentRequest;
 import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.SimpleResponse;
-import peakspace.dto.response.CommentResponseByPost;
 import peakspace.dto.response.CommentInnerResponse;
 import peakspace.service.CommentService;
 import peakspace.service.PublicProfileService;
@@ -59,5 +58,4 @@ public class CommentAPI {
     public SimpleResponse removeCommentAdmin(@PathVariable Long commentId) {
         return publicService.removeComment(commentId);
     }
-
 }

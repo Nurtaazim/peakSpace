@@ -18,5 +18,4 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
         return findById(id).orElseThrow(() -> new NotFoundException("Нет такого раздела с идентификатором: " + id));
     }
 
-
 }
