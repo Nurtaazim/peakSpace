@@ -2,19 +2,22 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://localhost:5434/peakspace
+    username: postgres
+    password: yiman
+#    url: ${POSTGRES_DB}
+#    username: ${POSTGRES_USER}
+#    password: ${POSTGRES_PASSWORD}
 
   # Sql data init
   sql:
     init:
       data-locations: classpath:dataInit/dataInit.sql
-      mode: never
+      mode: always
 
   # Hibernate/Jpa settings
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     open-in-view: false
