@@ -8,5 +8,4 @@ public interface LikeService {
 
     boolean addLikeToStory(Long storyId);
 
-
 }
