@@ -1,8 +1,8 @@
 version: "3.9"
 services:
   backend:
-    image: pks
-    container_name: pks
+    image: peakspace
+    container_name: peakspace
     restart: always
     ports:
       - "80:2024"
