@@ -13,6 +13,7 @@ import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
 import peakspace.repository.jdbsTamplate.PublicationJdbcTemplate;
+import peakspace.service.LikeService;
 import peakspace.service.PublicationService;
 
 import java.security.Principal;
@@ -32,7 +33,8 @@ public class PublicationServiceImpl implements PublicationService {
     private final CommentRepository commentRepository;
     private final NotificationRepository notificationRepository;
     private final PublicationJdbcTemplate publicationJdbcTemplate;
-
+    private final LikeService likeService;
+    private final LikeRepository likeRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -97,7 +99,10 @@ public class PublicationServiceImpl implements PublicationService {
                                 .map(linkPublication -> new LinkPublicationResponse(linkPublication.getId(), linkPublication.getLink()))
                                 .collect(Collectors.toList()),
                         publication.getLikes().size(),
-                        publication.getComments().size()
+                        publication.getComments().size(),
+                        publication.getLikes().contains(likeRepository.getLikeByUserId(currentUser.getId())),
+                        currentUser.getProfile().getFavorites().contains(publication.getId()),
+                        currentUser.getBlockAccounts().contains(publication.getOwner().getId())
                 ))
                 .collect(Collectors.toList());
     }
