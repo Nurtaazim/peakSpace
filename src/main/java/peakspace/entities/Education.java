@@ -1,7 +1,9 @@
 package peakspace.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import peakspace.enums.Country;
 
@@ -9,6 +11,8 @@ import peakspace.enums.Country;
 @Setter
 @Entity
 @Table(name = "educations")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Education {
 
     @Id

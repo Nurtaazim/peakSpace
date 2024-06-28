@@ -275,7 +275,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<PublicProfileResponse> randomCommunities = new ArrayList<>();
         Random random = new Random();
         List<Integer> numbers = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 7; i++) {
             int randomIndex = random.nextInt(0, all.size() - 1);
             if (!numbers.contains(randomIndex)) {
                 PablicProfile publicProfile = all.get(randomIndex);
@@ -303,9 +303,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public List<PublicProfileResponse> getMyCommunities() {
         List<PablicProfile> all = publicProfileRepository.findAll();
-        if (all.isEmpty()) {
-            return new ArrayList<>();
-        }
         List<PublicProfileResponse> myCommunities = new ArrayList<>();
         for (PablicProfile pablicProfile : all) {
             if (pablicProfile.getUsers().contains(getCurrentUser())) {

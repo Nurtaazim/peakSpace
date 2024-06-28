@@ -10,9 +10,5 @@ import peakspace.entities.Link_Publication;
 @Repository
 public interface LinkPublicationRepo extends JpaRepository<Link_Publication,Long> {
 
-    @Modifying
-    @Transactional
-    @Query("delete from Link_Publication l where l.id =:linkId")
-    void deleteLink(Long linkId);
 
 }

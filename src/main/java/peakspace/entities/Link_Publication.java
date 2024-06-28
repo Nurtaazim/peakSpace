@@ -1,13 +1,17 @@
 package peakspace.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "link_publications")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Link_Publication {
 
     @Id

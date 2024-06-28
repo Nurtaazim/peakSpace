@@ -54,12 +54,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new peakspace.dto.response.ChapTerResponse(c.id,c.groupName) from Chapter c join c.user u where lower(c.groupName) like lower(concat('%' ,:search ,'%') )")
     List<ChapTerResponse> searchChapter(String search);
 
-    @Query("select p from Publication p where p.owner.id =:friendId")
-    List<Publication> findFriendsPub(Long friendId);
-
-    @Query("select new peakspace.dto.response.UserMarkResponse(u.id, u.userName) from User u where u.id in :foundUserId")
-    List<UserMarkResponse> findFoundUserId(List<Long> foundUserId);
-
     @Query("select distinct new peakspace.dto.response.SearchUserResponse(u.id,u.userName,u.profile.firstName,u.profile.lastName,u.profile.cover,u.profile.avatar,u.profile.profession) from User u left join u.publications ups where u.userName ilike :keyWord OR u.profile.lastName ilike :keyWord OR u.profile.firstName ilike :keyWord OR u.profile.patronymicName ilike :keyWord OR u.profile.profession ilike :keyWord")
     List<SearchUserResponse> findByAll(String keyWord);
     default User getCurrentUser (){

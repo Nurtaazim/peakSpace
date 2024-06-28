@@ -2,7 +2,9 @@ package peakspace.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -11,6 +13,8 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "message_content")
+@AllArgsConstructor
+@NoArgsConstructor
 public class MessageContent {
 
     @Id
