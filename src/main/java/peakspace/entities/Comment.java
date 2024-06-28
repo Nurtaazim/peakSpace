@@ -1,17 +1,20 @@
 package peakspace.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "comments")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -22,8 +25,6 @@ public class Comment {
     private ZonedDateTime createdAt;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private User user;
-    @OneToMany(cascade = {CascadeType.REMOVE})
-    private List<Notification> notifications = new ArrayList<>();
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, fetch = FetchType.LAZY)
     private Publication publication;
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
@@ -37,7 +38,4 @@ public class Comment {
         this.createdAt = ZonedDateTime.now();
     }
 
-    public void setNotification(Notification notification) {
-        this.notifications.add(notification);
-    }
 }

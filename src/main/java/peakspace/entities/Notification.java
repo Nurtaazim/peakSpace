@@ -1,6 +1,7 @@
 package peakspace.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "notifications")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Notification {
 
     @Id

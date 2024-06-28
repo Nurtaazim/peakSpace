@@ -49,7 +49,6 @@ public class CommentServiceImpl implements CommentService {
         notification.setSeen(false);
         notification.setNotificationMessage(" Ответил  на вашу публикации  ! ");
         notification.setCreatedAt(ZonedDateTime.now());
-        save.setNotification(notification);
         notification.setComment(save);
         notification.setUserNotification(publication.getOwner());
         notification.setSenderUserId(currentUser.getId());
@@ -117,7 +116,6 @@ public class CommentServiceImpl implements CommentService {
         notification.setSeen(false);
         notification.setNotificationMessage(" Ответила на ваш комментарий ваша сообщение ! ");
         notification.setCreatedAt(ZonedDateTime.now());
-        innerComment.setNotification(notification);
         notification.setComment(innerComment);
         notification.setUserNotification(comment.getUser());
         notification.setSenderUserId(currentUser.getId());

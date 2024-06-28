@@ -1,6 +1,7 @@
 package peakspace.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "profiles")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Profile {
 
     @Id
@@ -33,7 +35,7 @@ public class Profile {
     private String location;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<Long> favorites;
-    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Education> educations;
     @OneToOne(fetch = FetchType.LAZY)
     private User user;

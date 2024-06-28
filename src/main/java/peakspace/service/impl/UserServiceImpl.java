@@ -436,7 +436,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword) {
-        getCurrentUser();
         if (sample.equals(Choise.Hashtag)) {
             return publicationRepository.findAllHashtags(keyword);
         }
@@ -475,18 +474,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ChapTerResponse> searchChapter(String search) {
-        getCurrentUser();
         return userRepository.searchChapter(search);
     }
 
     @Override
     @Transactional
     public SimpleResponse unsubscribeUser(Long foundUserId) {
-        User currentUser = getCurrentUser();
         User foundUser = userRepository.findByIds(foundUserId);
         boolean foundUserInFriends = false;
 
-        for (Chapter chapter : currentUser.getChapters()) {
+        for (Chapter chapter : getCurrentUser().getChapters()) {
             List<User> friends = chapter.getFriends();
             if (friends.contains(foundUser)) {
                 friends.remove(foundUser);

@@ -1,7 +1,9 @@
 package peakspace.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import peakspace.enums.Tematica;
 
@@ -12,6 +14,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "pablic_profiles")
+@AllArgsConstructor
+@NoArgsConstructor
 public class PablicProfile {
 
     @Id

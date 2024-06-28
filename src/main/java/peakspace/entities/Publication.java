@@ -1,7 +1,9 @@
 package peakspace.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZoneId;
@@ -14,6 +16,8 @@ import java.util.Map;
 @Setter
 @Entity
 @Table(name = "publications")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Publication {
 
     @Id
