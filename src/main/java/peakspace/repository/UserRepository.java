@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import peakspace.dto.response.*;
-import peakspace.entities.Publication;
 import peakspace.entities.Profile;
 import peakspace.entities.User;
 import peakspace.exception.NotFoundException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> getByUserName(String email);
 
     @Query("select new peakspace.dto.response.SearchResponse(u.id, u.userName, p.avatar, p.aboutYourSelf) " +
-           "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")
+            "from User u left join u.profile p where lower(u.userName) like lower(concat('%', :keyword, '%'))")
     List<SearchResponse> findAllSearch(@Param("keyword") String keyword);
 
     default User findByIds(Long foundUserId) {
@@ -42,8 +42,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     }
 
     @Query("select new peakspace.dto.response.ProfileFriendsResponse(u.id, COALESCE(p.avatar, ''), COALESCE(p.cover, ''),COALESCE(u.userName, ''), COALESCE(p.aboutYourSelf, ''), COALESCE(p.profession, '')) " +
-           "from User u left join u.profile p " +
-           "where u.id = :foundUserId")
+            "from User u left join u.profile p " +
+            "where u.id = :foundUserId")
     ProfileFriendsResponse getId(Long foundUserId);
 
     @Query("select p from Profile p where  p.id=:id")
@@ -56,8 +56,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select distinct new peakspace.dto.response.SearchUserResponse(u.id,u.userName,u.profile.firstName,u.profile.lastName,u.profile.cover,u.profile.avatar,u.profile.profession) from User u left join u.publications ups where u.userName ilike :keyWord OR u.profile.lastName ilike :keyWord OR u.profile.firstName ilike :keyWord OR u.profile.patronymicName ilike :keyWord OR u.profile.profession ilike :keyWord")
     List<SearchUserResponse> findByAll(String keyWord);
-    default User getCurrentUser (){
-        return findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(()-> new NotFoundException("Пользователь с такой емайл не найдено!"));
+
+    default User getCurrentUser() {
+        return findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new NotFoundException("Пользователь с такой емайл не найдено!"));
     }
 
     @Query("select u from User u where u.confirmationCode=:uuid")
