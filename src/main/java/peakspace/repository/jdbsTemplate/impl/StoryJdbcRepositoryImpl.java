@@ -2,17 +2,12 @@ package peakspace.repository.jdbsTemplate.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.MyStoriesResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
 import peakspace.entities.User;
-import peakspace.enums.Role;
-import peakspace.repository.StoryRepository;
-import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTemplate.StoryJdbcTemplate;
+import peakspace.repository.jdbsTemplate.StoryJdbcRepository;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
@@ -24,7 +19,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class StoryJdbcTemplateImpl implements StoryJdbcTemplate {
+public class StoryJdbcRepositoryImpl implements StoryJdbcRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

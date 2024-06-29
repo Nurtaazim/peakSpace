@@ -5,7 +5,7 @@ import peakspace.dto.response.PublicationWithYouResponse;
 
 import java.util.List;
 
-public interface PublicationJdbcTemplate {
+public interface PublicationJdbcRepository {
     List<PublicationResponse> findAllPublic(Long friendId);
     List<PublicationWithYouResponse> withPhoto(Long foundUserId);
 }

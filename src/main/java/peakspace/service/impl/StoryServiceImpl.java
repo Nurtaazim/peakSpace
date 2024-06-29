@@ -23,7 +23,7 @@ import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.NotificationRepository;
 import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTemplate.StoryJdbcTemplate;
+import peakspace.repository.jdbsTemplate.StoryJdbcRepository;
 import peakspace.service.StoryService;
 
 import java.time.ZonedDateTime;
@@ -38,7 +38,7 @@ public class StoryServiceImpl implements StoryService {
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepository;
     private final AwsS3Service storageService;
-    private final StoryJdbcTemplate storyJdbcTemplate;
+    private final StoryJdbcRepository storyJdbcTemplate;
     private final NotificationRepository notificationRepository;
 
     @Override

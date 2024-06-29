@@ -14,12 +14,12 @@ import peakspace.enums.Role;
 import peakspace.exception.AccountIsBlock;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTemplate.PublicationJdbcTemplate;
+import peakspace.repository.jdbsTemplate.PublicationJdbcRepository;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class PublicationJdbcTemplateImpl implements PublicationJdbcTemplate {
+public class PublicationJdbcRepositoryImpl implements PublicationJdbcRepository {
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
     private final PublicationRepository publicationRepository;

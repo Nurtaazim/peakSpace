@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import peakspace.dto.response.AllFriendsResponse;
 import peakspace.entities.User;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTemplate.GetAllFriends;
+import peakspace.repository.jdbsTemplate.GetAllFriendsJdbcRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class GetAllFriendsImpl implements GetAllFriends {
+public class GetAllFriendsRepositoryImpl implements GetAllFriendsJdbcRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;

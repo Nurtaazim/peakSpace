@@ -30,8 +30,8 @@ import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.*;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTemplate.GetAllFriends;
-import peakspace.repository.jdbsTemplate.SearchFriends;
+import peakspace.repository.jdbsTemplate.GetAllFriendsJdbcRepository;
+import peakspace.repository.jdbsTemplate.SearchFriendsJdbcRepository;
 import peakspace.service.UserService;
 
 import java.io.IOException;
@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
     private final PublicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
-    private final SearchFriends searchFriends;
-    private final GetAllFriends jdbcTemplate;
+    private final SearchFriendsJdbcRepository searchFriends;
+    private final GetAllFriendsJdbcRepository jdbcTemplate;
 
     @Override
     @Transactional

@@ -4,7 +4,7 @@ import peakspace.dto.response.FriendsResponse;
 
 import java.util.List;
 
-public interface SearchFriends {
+public interface SearchFriendsJdbcRepository {
 
     List<FriendsResponse> getAllFriendsWithJDBCTemplate(Long chapterId, String search);
 

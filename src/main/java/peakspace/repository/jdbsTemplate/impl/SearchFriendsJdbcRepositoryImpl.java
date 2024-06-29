@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.FriendsResponse;
-import peakspace.repository.jdbsTemplate.SearchFriends;
+import peakspace.repository.jdbsTemplate.SearchFriendsJdbcRepository;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SearchFriendsImpl implements SearchFriends {
+public class SearchFriendsJdbcRepositoryImpl implements SearchFriendsJdbcRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

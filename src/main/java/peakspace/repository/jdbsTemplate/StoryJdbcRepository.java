@@ -7,7 +7,7 @@ import peakspace.entities.User;
 
 import java.util.List;
 
-public interface StoryJdbcTemplate {
+public interface StoryJdbcRepository {
 
     List<StoryAllHomPageResponse> getAllFriendsStory(Long currentUserId);
 
