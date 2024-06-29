@@ -11,7 +11,7 @@ import peakspace.repository.jdbsTamplate.RemovePublicationByCommentId;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RemovePublicationByCommentIdImpl implements RemovePublicationByCommentId {
+public class NotificationJdbcRepositoryImpl implements NotificationJdbcRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
