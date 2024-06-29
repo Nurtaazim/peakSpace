@@ -99,32 +99,17 @@ public class PostServiceImpl implements PostService {
         Publication publication = publicationRepo.findById(postId)
                 .orElseThrow(() -> new NotFoundException("Публикация с таким айди не найдено"));
         if (publication.getOwner().equals(user)) {
-
-            String deleteNotificationsQuery = "DELETE FROM comments_notifications WHERE notifications_id IN (SELECT id FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?))";
-            jdbcTemplate.update(deleteNotificationsQuery, publication.getId());
-
             String deleteNotificationsQuery1 = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
             jdbcTemplate.update(deleteNotificationsQuery1, publication.getId());
-
-            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteCommentsLikesSQL, publication.getId());
-
-            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteInnerCommentsSql, publication.getId());
-
-            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
-            jdbcTemplate.update(deleteCommentsSQL, publication.getId());
-
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepo.delete(publication);
-
             for (Link_Publication linkPublication : publication.getLinkPublications()) {
                 awsS3Service.deleteFile(linkPublication.getLink());
             }
 
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
-                    .message("Успешно удалено!")
+                    .message("Публикация успешно удалена!")
                     .build();
         }
         return SimpleResponse.builder()
@@ -284,25 +269,19 @@ public class PostServiceImpl implements PostService {
         if (publication.getPablicProfile() == null)
             throw new BadRequestException("Это публикация не состоит в сообществе");
         if (publication.getOwner().equals(currentUser) || currentUser.equals(publication.getPablicProfile().getOwner())) {
-            String deleteCommentsNotificationsQuery = "DELETE FROM comments_notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteCommentsNotificationsQuery, postId);
-
             String deleteNotificationsQuery = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteNotificationsQuery, postId);
+            jdbcTemplate.update(deleteNotificationsQuery, publication.getId());
+            notificationRepository.deleteByCommentId(postId);
+            notificationRepository.deleteByPublicationId(publication.getId());
+            publicationRepo.delete(publication);
 
-            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteCommentsLikesSQL, postId);
-            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteInnerCommentsSql, postId);
-
-            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
-            jdbcTemplate.update(deleteCommentsSQL, postId);
-            notificationRepository.deleteByPublicationId(postId);
-            publicationRepo.deleteByIds(publication.getId());
+            for (Link_Publication linkPublication : publication.getLinkPublications()) {
+                awsS3Service.deleteFile(linkPublication.getLink());
+            }
 
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
-                    .message(" Пост успешно удален !")
+                    .message("Публикация успешно удалена!")
                     .build();
         } else {
             return SimpleResponse.builder()

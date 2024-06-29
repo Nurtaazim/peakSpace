@@ -89,23 +89,8 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         PablicProfile community = getCurrentUser().getCommunity();
         if (community == null) throw new BadRequestException("У вас не существует сообщество");
         for (Publication publication : community.getPublications()) {
-            String deleteCommentsNotificationsQuery = "DELETE FROM comments_notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteCommentsNotificationsQuery, publication.getId());
-
-            // Then, delete from notifications
-            String deleteNotificationsQuery = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteNotificationsQuery, publication.getId());
-
-            // Удалить связанные записи из comments_likes
-            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteCommentsLikesSQL, publication.getId());
-            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteInnerCommentsSql, publication.getId());
-
-            // Удалить комментарии
-            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
-            jdbcTemplate.update(deleteCommentsSQL, publication.getId());
-
+            String deleteNotificationsQuery1 = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
+            jdbcTemplate.update(deleteNotificationsQuery1, publication.getId());
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepository.delete(publication);
         }
