@@ -22,7 +22,7 @@ import peakspace.exception.ForbiddenException;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTamplate.RemovePublicationByCommentId;
+import peakspace.repository.jdbsTamplate.NotificationJdbcRepository;
 import peakspace.service.PublicProfileService;
 
 import java.util.*;
@@ -39,7 +39,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     private final LinkPublicationRepo linkPublicationRepository;
     private final JdbcTemplate jdbcTemplate;
     private final NotificationRepository notificationRepository;
-    private final RemovePublicationByCommentId removeNotificationByCommentId;
+    private final NotificationJdbcRepository notificationJdbcRepository;
 
     @Override
     @Transactional
@@ -91,7 +91,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         PablicProfile community = getCurrentUser().getCommunity();
         if (community == null) throw new BadRequestException("У вас не существует сообщество");
         for (Publication publication : community.getPublications()) {
-            removeNotificationByCommentId.deleteNotificationByCommentId(publication.getId());
+            notificationJdbcRepository.deleteNotificationByCommentId(publication.getId());
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepository.delete(publication);
         }
