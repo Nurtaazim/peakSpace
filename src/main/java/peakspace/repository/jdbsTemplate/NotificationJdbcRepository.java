@@ -1,4 +1,4 @@
-package peakspace.repository.jdbsTamplate;
+package peakspace.repository.jdbsTemplate;
 
 public interface NotificationJdbcRepository {
 

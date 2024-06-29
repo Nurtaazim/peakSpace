@@ -13,7 +13,6 @@ import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
 import peakspace.repository.jdbsTemplate.PublicationJdbcRepository;
-import peakspace.service.LikeService;
 import peakspace.service.PublicationService;
 
 import java.security.Principal;
@@ -33,8 +32,6 @@ public class PublicationServiceImpl implements PublicationService {
     private final CommentRepository commentRepository;
     private final NotificationRepository notificationRepository;
     private final PublicationJdbcRepository publicationJdbcTemplate;
-    private final LikeService likeService;
-    private final PublicationJdbcTemplate publicationJdbcTemplate;
     private final LikeRepository likeRepository;
 
     @Override
@@ -54,7 +51,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .orElse(0);
         int count = 0;
         for (Chapter chapter : user.getChapters()) {
-            count+=chapter.getFriends().size();
+            count += chapter.getFriends().size();
         }
         return GetAllPostsResponse.builder()
                 .userId(getCurrentUser().getId())

@@ -22,7 +22,7 @@ import peakspace.exception.ForbiddenException;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTamplate.NotificationJdbcRepository;
+import peakspace.repository.jdbsTemplate.NotificationJdbcRepository;
 import peakspace.service.PublicProfileService;
 
 import java.util.*;

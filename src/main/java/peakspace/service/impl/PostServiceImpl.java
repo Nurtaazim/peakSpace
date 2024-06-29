@@ -22,7 +22,7 @@ import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTamplate.NotificationJdbcRepository;
+import peakspace.repository.jdbsTemplate.NotificationJdbcRepository;
 import peakspace.service.PostService;
 
 import java.time.ZonedDateTime;

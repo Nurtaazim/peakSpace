@@ -64,7 +64,6 @@ public class StoryServiceImpl implements StoryService {
     @Override
     @Transactional
     public SimpleResponse delete(Long id) {
-    public SimpleResponse delete(long id) {
         Story byId = storyRepository.findById(id).orElseThrow(() -> new NotFoundException("Сторис с такой id не найдено!"));
         if (byId.getOwner().getId().equals(userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId())) {
             List<Link_Publication> linkPublications = byId.getLinkPublications();

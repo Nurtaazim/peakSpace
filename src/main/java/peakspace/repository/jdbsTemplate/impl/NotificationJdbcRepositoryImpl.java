@@ -1,4 +1,4 @@
-package peakspace.repository.jdbsTamplate.impl;
+package peakspace.repository.jdbsTemplate.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,7 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import peakspace.repository.jdbsTamplate.NotificationJdbcRepository;
+import peakspace.repository.jdbsTemplate.NotificationJdbcRepository;
 
 @Slf4j
 @Service
