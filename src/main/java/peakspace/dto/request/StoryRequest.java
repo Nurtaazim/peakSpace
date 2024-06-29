@@ -7,8 +7,7 @@ import java.util.List;
 @Builder
 public record StoryRequest(
         List<String> photoUrlOrVideoUrl,
-        String description,
-        List<Long> idsOfTaggedPeople
+        String description
 ) {
 
 }
