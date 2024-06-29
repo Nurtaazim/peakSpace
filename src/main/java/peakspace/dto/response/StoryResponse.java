@@ -1,13 +1,15 @@
 package peakspace.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class StoryResponse {
     private String userPhoto;
     private String userName;

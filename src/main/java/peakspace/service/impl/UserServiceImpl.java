@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.AllFriendsResponse;
-import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.*;
 import peakspace.dto.response.*;
@@ -31,8 +30,8 @@ import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.*;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTamplate.GetAllFriends;
-import peakspace.repository.jdbsTamplate.SearchFriends;
+import peakspace.repository.jdbsTemplate.GetAllFriendsJdbcRepository;
+import peakspace.repository.jdbsTemplate.SearchFriendsJdbcRepository;
 import peakspace.service.UserService;
 
 import java.io.IOException;
@@ -55,8 +54,8 @@ public class UserServiceImpl implements UserService {
     private final PublicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
-    private final SearchFriends searchFriends;
-    private final GetAllFriends jdbcTemplate;
+    private final SearchFriendsJdbcRepository searchFriends;
+    private final GetAllFriendsJdbcRepository jdbcTemplate;
 
     @Override
     @Transactional

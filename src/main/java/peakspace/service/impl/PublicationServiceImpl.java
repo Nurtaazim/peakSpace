@@ -12,7 +12,7 @@ import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTamplate.PublicationJdbcTemplate;
+import peakspace.repository.jdbsTemplate.PublicationJdbcRepository;
 import peakspace.service.LikeService;
 import peakspace.service.PublicationService;
 
@@ -32,6 +32,8 @@ public class PublicationServiceImpl implements PublicationService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final NotificationRepository notificationRepository;
+    private final PublicationJdbcRepository publicationJdbcTemplate;
+    private final LikeService likeService;
     private final PublicationJdbcTemplate publicationJdbcTemplate;
     private final LikeRepository likeRepository;
 
