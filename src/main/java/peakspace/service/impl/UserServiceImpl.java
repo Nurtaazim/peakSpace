@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.AllFriendsResponse;
-import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.config.jwt.JwtService;
 import peakspace.dto.request.*;
 import peakspace.dto.response.*;
@@ -40,7 +39,6 @@ import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 @Slf4j
 @Service
