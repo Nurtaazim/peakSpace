@@ -34,6 +34,7 @@ public class PublicationServiceImpl implements PublicationService {
     private final NotificationRepository notificationRepository;
     private final PublicationJdbcRepository publicationJdbcTemplate;
     private final LikeService likeService;
+    private final PublicationJdbcTemplate publicationJdbcTemplate;
     private final LikeRepository likeRepository;
 
     @Override

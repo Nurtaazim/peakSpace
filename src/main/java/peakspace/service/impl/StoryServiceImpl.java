@@ -44,39 +44,18 @@ public class StoryServiceImpl implements StoryService {
     @Override
     @Transactional
     public SimpleResponse create(StoryRequest storyRequest) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User current = userRepository.getByEmail(email);
+        User current = userRepository.getCurrentUser();
         Story story = new Story();
         story.setCreatedAt(ZonedDateTime.now());
         story.setOwner(current);
-        List<User> all = userRepository.findAll();
         story.setLikes(new ArrayList<>());
         List<String> strings = storyRequest.photoUrlOrVideoUrl();
-        List<Link_Publication> videosOrPhotosUrl = new ArrayList<>();
-        for (String string : strings) {
-            Link_Publication linkPublication = new Link_Publication();
-            linkPublication.setLink(string);
-            linkPublicationRepository.save(linkPublication);
-            videosOrPhotosUrl.add(linkPublication);
-        }
+        Link_Publication linkPublication = new Link_Publication();
+        linkPublication.setLink(strings.getFirst());
+        linkPublicationRepository.save(linkPublication);
         story.setText(storyRequest.description());
-        story.setLinkPublications(videosOrPhotosUrl);
-        Story save1 = storyRepository.save(story);
-        List<User> tagFriends = new ArrayList<>();
-        for (Long i : storyRequest.idsOfTaggedPeople()) {
-            for (User user : all) {
-                if (i.equals(user.getId())) {
-                    tagFriends.add(user);
-                    Notification notification = new Notification();
-                    notification.setSenderUserId(current.getId());
-                    notification.setSeen(false);
-                    notification.setUserNotification(user);
-                    Notification save = notificationRepository.save(notification);
-                    save.setStory(save1);
-                }
-            }
-        }
-        story.setTagFriends(tagFriends);
+        story.setLinkPublications(new ArrayList<>(List.of(linkPublication)));
+        storyRepository.save(story);
         return SimpleResponse.builder()
                 .message("Ваш сторис успешно добавлен!")
                 .httpStatus(HttpStatus.OK).build();
@@ -85,6 +64,7 @@ public class StoryServiceImpl implements StoryService {
     @Override
     @Transactional
     public SimpleResponse delete(Long id) {
+    public SimpleResponse delete(long id) {
         Story byId = storyRepository.findById(id).orElseThrow(() -> new NotFoundException("Сторис с такой id не найдено!"));
         if (byId.getOwner().getId().equals(userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId())) {
             List<Link_Publication> linkPublications = byId.getLinkPublications();
