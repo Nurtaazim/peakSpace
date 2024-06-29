@@ -6,12 +6,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import peakspace.repository.jdbsTamplate.RemovePublicationByCommentId;
+import peakspace.repository.jdbsTamplate.NotificationJdbcRepository;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationJdbcRepositoryImpl implements NotificationJdbcRepository {
+
     private final JdbcTemplate jdbcTemplate;
 
     @Override
