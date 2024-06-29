@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.MyStoriesResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;
+import peakspace.dto.response.StoryResponse;
 import peakspace.entities.User;
 import peakspace.enums.Role;
 import peakspace.repository.UserRepository;
@@ -99,5 +100,14 @@ public class StoryJdbcTemplateImpl implements StoryJdbcTemplate {
         if (current.getRole().equals(Role.USER))
             return current;
         else throw new AccessDeniedException("Forbidden 403");
+    }
+
+    @Override
+    public List<StoryResponse> getAllStoriesByUserId(Long userId) {
+        return jdbcTemplate.query("""
+                select u.profile.avatar,
+                       u.userName,
+                       s.createdDate,
+                """);
     }
 }

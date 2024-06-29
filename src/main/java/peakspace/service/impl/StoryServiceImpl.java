@@ -101,7 +101,10 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public List<StoryResponse> getAll(Long userId) {
         List<StoryResponse> story = new ArrayList<>();
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с такой id не найдено!"));
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("Пользователь с такой id не найден!")
+        );
+
         List<Story> stories = user.getStories();
         for (Story story1 : stories) {
             StoryResponse storyResponse = new StoryResponse();
