@@ -31,6 +31,7 @@ import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.*;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
+import peakspace.repository.jdbsTamplate.ChapterJdbcTemplate;
 import peakspace.repository.jdbsTamplate.SearchFriends;
 import peakspace.service.UserService;
 
@@ -55,6 +56,7 @@ public class UserServiceImpl implements UserService {
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
     private final SearchFriends searchFriends;
+    private final ChapterJdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional
@@ -326,74 +328,39 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
     @Transactional
     public SimpleResponse sendFriends(Long foundUserId, Long chapterId) {
-
         User currentUser = getCurrentUser();
 
         if (currentUser.getId().equals(foundUserId)) {
             throw new IllegalArgumentException("Нельзя подписаться на самого себя!");
         }
 
-        Chapter targetChapter = null;
-        for (Chapter chapter : currentUser.getChapters()) {
-            if (chapter.getId().equals(chapterId)) {
-                targetChapter = chapter;
-                break;
-            }
+        Chapter targetChapter = getTargetChapter(currentUser, chapterId);
+
+        if (jdbcTemplate.isFriendInOtherChapter(currentUser.getId(), foundUserId, chapterId)) {
+            throw new IllegalArgumentException("Пользователь уже добавлен в другой раздел.");
         }
 
-        if (targetChapter == null) {
-            throw new NotFoundException("Нет такого раздела: " + chapterId);
+        boolean isRemoved = jdbcTemplate.removeFriendFromChapter(targetChapter.getId(), foundUserId);
+
+        if (!isRemoved) {
+            jdbcTemplate.addFriendToChapter(targetChapter.getId(), foundUserId);
+            jdbcTemplate.sendNotification(currentUser.getId(), foundUserId);
         }
 
-        List<Chapter> userChapters = currentUser.getChapters();
-        for (Chapter chapter : userChapters) {
-            if (!chapter.getId().equals(chapterId) && chapter.getFriends().stream()
-                    .anyMatch(user -> user.getId().equals(foundUserId))) {
-                throw new IllegalArgumentException("Пользователь уже добавлен в другой раздел: " + chapter.getGroupName());
-            }
-        }
-
-        List<User> updatedFriends = new ArrayList<>(targetChapter.getFriends());
-        boolean removed = false;
-
-        for (User friend : updatedFriends) {
-            if (friend.getId().equals(foundUserId)) {
-                updatedFriends.remove(friend);
-                removed = true;
-                break;
-            }
-        }
-
-        User foundUser = userRepository.findById(foundUserId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с id " + foundUserId + " не найден"));
-        if (!removed) {
-
-            updatedFriends.add(foundUser);
-        }
-
-        if (targetChapter.getId().equals(chapterId)) {
-            targetChapter.setFriends(updatedFriends);
-        } else throw new NotFoundException(" Нет такой раздел " + chapterId);
-
-
-        Notification notification = new Notification();
-        notification.setNotificationMessage("Подписался !");
-        notification.setUserNotification(foundUser);
-        notification.setSeen(false);
-        notification.setCreatedAt(ZonedDateTime.now());
-        notification.setSenderUserId(currentUser.getId());
-        foundUser.getNotifications().add(notification);
-
-
-        String message = removed ? "Удачно отписались!" : "Удачно подписались!";
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(message)
+                .message(isRemoved ? "Удачно отписались!" : "Удачно подписались!")
                 .build();
+    }
+
+    private Chapter getTargetChapter(User currentUser, Long chapterId) {
+        return currentUser.getChapters().stream()
+                .filter(chapter -> chapter.getId().equals(chapterId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Нет такого раздела: " + chapterId));
     }
 
     @Override
