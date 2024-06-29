@@ -3,6 +3,7 @@ package peakspace.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peakspace.config.amazonS3.AwsS3Service;
@@ -15,6 +16,7 @@ import peakspace.entities.Link_Publication;
 import peakspace.entities.Notification;
 import peakspace.entities.Story;
 import peakspace.entities.User;
+import peakspace.enums.Role;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.LinkPublicationRepo;
@@ -100,36 +102,29 @@ public class StoryServiceImpl implements StoryService {
     @Transactional
     @Override
     public List<StoryResponse> getAll(Long userId) {
-        List<StoryResponse> story = new ArrayList<>();
+
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("Пользователь с такой id не найден!")
         );
 
-        List<Story> stories = user.getStories();
-        for (Story story1 : stories) {
-            StoryResponse storyResponse = new StoryResponse();
-            storyResponse.setText(story1.getText());
-            storyResponse.setUserName(user.getThisUserName());
-            storyResponse.setUserPhoto(user.getProfile().getAvatar());
-            storyResponse.setCreatedAt(story1.getCreatedAt().toLocalDate());
-            List<String> photoOrVideo = new ArrayList<>();
-            List<Link_Publication> linkPublications = story1.getLinkPublications();
-            for (Link_Publication linkPublication : linkPublications) {
-                photoOrVideo.add(linkPublication.getLink());
-            }
-            storyResponse.setPhotosOrVideosLink(photoOrVideo);
-            story.add(storyResponse);
-        }
-        return story;
+        return storyJdbcTemplate.getAllStoriesByUserId(user.getId());
     }
 
     @Override
     public List<StoryAllHomPageResponse> getAllFriendsStory() {
-        return storyJdbcTemplate.getAllFriendsStory();
+        return storyJdbcTemplate.getAllFriendsStory(getCurrentUser().getId());
     }
 
     @Override
     public List<MyStoriesResponse> getMyStories() {
-        return storyJdbcTemplate.getMyStories();
+        return storyJdbcTemplate.getMyStories(getCurrentUser());
+    }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User current = userRepository.getByEmail(email);
+        if (current.getRole().equals(Role.USER))
+            return current;
+        else throw new AccessDeniedException("Forbidden 403");
     }
 }

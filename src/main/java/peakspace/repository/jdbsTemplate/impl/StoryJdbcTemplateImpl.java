@@ -10,6 +10,7 @@ import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.dto.response.StoryResponse;
 import peakspace.entities.User;
 import peakspace.enums.Role;
+import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTemplate.StoryJdbcTemplate;
 
@@ -26,13 +27,9 @@ import java.util.Map;
 public class StoryJdbcTemplateImpl implements StoryJdbcTemplate {
 
     private final JdbcTemplate jdbcTemplate;
-    private final UserRepository userRepository;
-
 
     @Override
-    public List<StoryAllHomPageResponse> getAllFriendsStory() {
-        User currentUser = getCurrentUser();
-        Long currentUserId = currentUser.getId();
+    public List<StoryAllHomPageResponse> getAllFriendsStory(Long currentUserId) {
 
         Timestamp cutoffTime = Timestamp.from(ZonedDateTime.now().minus(24, ChronoUnit.HOURS).toInstant());
 
@@ -67,8 +64,7 @@ public class StoryJdbcTemplateImpl implements StoryJdbcTemplate {
     }
 
     @Override
-    public List<MyStoriesResponse> getMyStories() {
-        User user = getCurrentUser();
+    public List<MyStoriesResponse> getMyStories(User user) {
         Timestamp cutoffTime = Timestamp.from(ZonedDateTime.now().minus(24, ChronoUnit.HOURS).toInstant());
         List<MyStoriesResponse> myStoriesResponses = new ArrayList<>();
         String sql = """
@@ -94,20 +90,39 @@ public class StoryJdbcTemplateImpl implements StoryJdbcTemplate {
         return myStoriesResponses;
     }
 
-    private User getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User current = userRepository.getByEmail(email);
-        if (current.getRole().equals(Role.USER))
-            return current;
-        else throw new AccessDeniedException("Forbidden 403");
-    }
-
     @Override
     public List<StoryResponse> getAllStoriesByUserId(Long userId) {
         return jdbcTemplate.query("""
-                select u.profile.avatar,
-                       u.userName,
-                       s.createdDate,
-                """);
+                        select s.id,
+                               p.avatar,
+                               u.user_name,
+                               s.text,
+                               s.created_at
+                        from stories s
+                        inner join users u on u.id = s.owner_id
+                        inner join profiles p on p.user_id = u.id
+                        where s.owner_id = ?
+                        """,
+                ps -> ps.setLong(1, userId),
+                (rs, rowNum) -> StoryResponse.builder()
+                        .photosOrVideosLink(getPhotoOrVideoLink(rs.getLong(1)))
+                        .userPhoto(rs.getString(2))
+                        .userName(rs.getString(3))
+                        .text(rs.getString(4))
+                        .createdAt(rs.getTimestamp(5).toLocalDateTime().toLocalDate())
+                        .build()
+        );
+    }
+
+    private List<String> getPhotoOrVideoLink(Long storyId) {
+        return jdbcTemplate.query("""
+                        select lp.link
+                        from link_publications lp
+                        join stories_link_publications slp on slp.link_publications_id = lp.id
+                        where slp.story_id = ?
+                        """,
+                ps -> ps.setLong(1, storyId),
+                (rs, rowNum) -> rs.getString(1)
+        );
     }
 }
