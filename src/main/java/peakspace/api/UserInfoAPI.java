@@ -18,7 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user-infos")
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class UserInfoAPI {
+public class
+
+
+
+
+UserInfoAPI {
 
     private final UserInfoService userInfoService;
 
