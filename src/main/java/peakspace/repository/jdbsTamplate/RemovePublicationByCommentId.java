@@ -1,5 +1,5 @@
 package peakspace.repository.jdbsTamplate;
 
-public interface RemovePublicationByCommentId {
+public interface NotificationJdbcRepository {
     void deleteNotificationByCommentId(Long postId);
 }
