@@ -1,4 +1,4 @@
-package peakspace.repository.jdbsTamplate.impl;
+package peakspace.repository.jdbsTemplate.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +14,7 @@ import peakspace.enums.Role;
 import peakspace.exception.AccountIsBlock;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTamplate.PublicationJdbcTemplate;
+import peakspace.repository.jdbsTemplate.PublicationJdbcTemplate;
 import java.util.*;
 
 @Service

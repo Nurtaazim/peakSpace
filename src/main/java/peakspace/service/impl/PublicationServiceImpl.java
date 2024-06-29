@@ -12,7 +12,7 @@ import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTamplate.PublicationJdbcTemplate;
+import peakspace.repository.jdbsTemplate.PublicationJdbcTemplate;
 import peakspace.service.LikeService;
 import peakspace.service.PublicationService;
 

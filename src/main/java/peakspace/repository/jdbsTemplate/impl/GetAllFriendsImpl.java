@@ -1,13 +1,12 @@
-package peakspace.repository.jdbsTamplate.impl;
+package peakspace.repository.jdbsTemplate.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import peakspace.dto.response.AllFriendsResponse;
-import peakspace.entities.Chapter;
 import peakspace.entities.User;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTamplate.GetAllFriends;
+import peakspace.repository.jdbsTemplate.GetAllFriends;
 
 import java.util.ArrayList;
 import java.util.List;

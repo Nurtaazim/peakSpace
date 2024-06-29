@@ -1,4 +1,4 @@
-package peakspace.repository.jdbsTamplate.impl;
+package peakspace.repository.jdbsTemplate.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +10,7 @@ import peakspace.dto.response.StoryAllHomPageResponse;
 import peakspace.entities.User;
 import peakspace.enums.Role;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTamplate.StoryJdbcTemplate;
+import peakspace.repository.jdbsTemplate.StoryJdbcTemplate;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;

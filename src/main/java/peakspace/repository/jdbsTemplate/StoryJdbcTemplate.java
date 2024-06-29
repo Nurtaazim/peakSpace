@@ -1,4 +1,4 @@
-package peakspace.repository.jdbsTamplate;
+package peakspace.repository.jdbsTemplate;
 
 import peakspace.dto.response.MyStoriesResponse;
 import peakspace.dto.response.StoryAllHomPageResponse;

@@ -21,7 +21,7 @@ import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.NotificationRepository;
 import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTamplate.StoryJdbcTemplate;
+import peakspace.repository.jdbsTemplate.StoryJdbcTemplate;
 import peakspace.service.StoryService;
 
 import java.time.ZonedDateTime;
