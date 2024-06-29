@@ -22,6 +22,7 @@ import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
+import peakspace.repository.jdbsTamplate.RemovePublicationByCommentId;
 import peakspace.service.PostService;
 
 import java.time.ZonedDateTime;
@@ -40,6 +41,7 @@ public class PostServiceImpl implements PostService {
     private final NotificationRepository notificationRepository;
     private final AwsS3Service awsS3Service;
     private final JdbcTemplate jdbcTemplate;
+    private final RemovePublicationByCommentId removeNotificationByCommentId;
 
     @Transactional
     @Override
@@ -99,8 +101,7 @@ public class PostServiceImpl implements PostService {
         Publication publication = publicationRepo.findById(postId)
                 .orElseThrow(() -> new NotFoundException("Публикация с таким айди не найдено"));
         if (publication.getOwner().equals(user)) {
-            String deleteNotificationsQuery1 = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteNotificationsQuery1, publication.getId());
+            removeNotificationByCommentId.deleteNotificationByCommentId(postId);
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepo.delete(publication);
             for (Link_Publication linkPublication : publication.getLinkPublications()) {
@@ -269,8 +270,7 @@ public class PostServiceImpl implements PostService {
         if (publication.getPablicProfile() == null)
             throw new BadRequestException("Это публикация не состоит в сообществе");
         if (publication.getOwner().equals(currentUser) || currentUser.equals(publication.getPablicProfile().getOwner())) {
-            String deleteNotificationsQuery = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteNotificationsQuery, publication.getId());
+            removeNotificationByCommentId.deleteNotificationByCommentId(postId);
             notificationRepository.deleteByCommentId(postId);
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepo.delete(publication);
