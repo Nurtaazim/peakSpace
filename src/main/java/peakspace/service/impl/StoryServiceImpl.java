@@ -31,6 +31,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StoryServiceImpl implements StoryService {
+
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final LinkPublicationRepo linkPublicationRepository;
@@ -81,9 +82,9 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     @Transactional
-    public SimpleResponse delete(long id) {
-        Story byId = storyRepository.findById(id).orElseThrow(()->new NotFoundException("Сторис с такой id не найдено!"));
-        if (byId.getOwner().getId().equals(userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId())){
+    public SimpleResponse delete(Long id) {
+        Story byId = storyRepository.findById(id).orElseThrow(() -> new NotFoundException("Сторис с такой id не найдено!"));
+        if (byId.getOwner().getId().equals(userRepository.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId())) {
             List<Link_Publication> linkPublications = byId.getLinkPublications();
             for (Link_Publication linkPublication : linkPublications) {
                 storageService.deleteFile(linkPublication.getLink());
@@ -93,13 +94,12 @@ public class StoryServiceImpl implements StoryService {
             return SimpleResponse.builder()
                     .httpStatus(HttpStatus.OK)
                     .message("Сторис успешно удалено!").build();
-        }
-        else throw new MessagingException("У вас нету прав удалить чужие сторисы!");
+        } else throw new MessagingException("У вас нету прав удалить чужие сторисы!");
     }
 
     @Transactional
     @Override
-    public List<StoryResponse> getAll(long userId) {
+    public List<StoryResponse> getAll(Long userId) {
         List<StoryResponse> story = new ArrayList<>();
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с такой id не найдено!"));
         List<Story> stories = user.getStories();

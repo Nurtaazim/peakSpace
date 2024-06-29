@@ -12,9 +12,9 @@ public interface StoryService  {
 
     SimpleResponse create(StoryRequest storyRequest);
 
-    SimpleResponse delete(long id);
+    SimpleResponse delete(Long id);
 
-    List<StoryResponse> getAll(long userId);
+    List<StoryResponse> getAll(Long userId);
 
     List<StoryAllHomPageResponse> getAllFriendsStory();
 

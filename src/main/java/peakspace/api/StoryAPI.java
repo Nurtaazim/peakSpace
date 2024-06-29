@@ -38,7 +38,7 @@ public class StoryAPI {
     @Secured("USER")
     @GetMapping
     @Operation(summary = "Получить сторисы пользователя", description = "id пользователя которого хотите смотреть сторис")
-    public List<StoryResponse> getAll(@RequestParam long userId) {
+    public List<StoryResponse> getAll(@RequestParam Long userId) {
         return service.getAll(userId);
     }
 
