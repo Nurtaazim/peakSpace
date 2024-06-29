@@ -7,9 +7,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peakspace.repository.jdbsTamplate.RemovePublicationByCommentId;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class RemovePublicationByCommentIdImpl implements RemovePublicationByCommentId {
     private final JdbcTemplate jdbcTemplate;
 
