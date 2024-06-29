@@ -22,7 +22,7 @@ import peakspace.repository.LinkPublicationRepo;
 import peakspace.repository.NotificationRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
-import peakspace.repository.jdbsTamplate.RemovePublicationByCommentId;
+import peakspace.repository.jdbsTamplate.NotificationJdbcRepository;
 import peakspace.service.PostService;
 
 import java.time.ZonedDateTime;
@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService {
     private final NotificationRepository notificationRepository;
     private final AwsS3Service awsS3Service;
     private final JdbcTemplate jdbcTemplate;
-    private final RemovePublicationByCommentId removeNotificationByCommentId;
+    private final NotificationJdbcRepository notificationJdbcRepository;
 
     @Transactional
     @Override
@@ -101,7 +101,7 @@ public class PostServiceImpl implements PostService {
         Publication publication = publicationRepo.findById(postId)
                 .orElseThrow(() -> new NotFoundException("Публикация с таким айди не найдено"));
         if (publication.getOwner().equals(user)) {
-            removeNotificationByCommentId.deleteNotificationByCommentId(postId);
+            notificationJdbcRepository.deleteNotificationByCommentId(postId);
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepo.delete(publication);
             for (Link_Publication linkPublication : publication.getLinkPublications()) {
@@ -270,7 +270,7 @@ public class PostServiceImpl implements PostService {
         if (publication.getPablicProfile() == null)
             throw new BadRequestException("Это публикация не состоит в сообществе");
         if (publication.getOwner().equals(currentUser) || currentUser.equals(publication.getPablicProfile().getOwner())) {
-            removeNotificationByCommentId.deleteNotificationByCommentId(postId);
+            notificationJdbcRepository.deleteNotificationByCommentId(postId);
             notificationRepository.deleteByCommentId(postId);
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepo.delete(publication);
