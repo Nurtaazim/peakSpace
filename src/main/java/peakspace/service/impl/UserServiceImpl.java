@@ -715,7 +715,6 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
-
     @PostConstruct
     public void init() {
         try {
