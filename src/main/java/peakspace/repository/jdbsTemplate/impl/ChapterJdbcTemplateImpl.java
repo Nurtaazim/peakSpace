@@ -1,9 +1,9 @@
-package peakspace.repository.jdbsTamplate.impl;
+package peakspace.repository.jdbsTemplate.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import peakspace.repository.jdbsTamplate.ChapterJdbcTemplate;
+import peakspace.repository.jdbsTemplate.ChapterJdbcTemplate;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;

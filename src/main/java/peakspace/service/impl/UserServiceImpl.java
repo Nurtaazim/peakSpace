@@ -30,8 +30,9 @@ import peakspace.exception.IllegalArgumentException;
 import peakspace.exception.*;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTamplate.ChapterJdbcTemplate;
-import peakspace.repository.jdbsTamplate.SearchFriends;
+import peakspace.repository.jdbsTemplate.ChapterJdbcTemplate;
+import peakspace.repository.jdbsTemplate.GetAllFriendsJdbcRepository;
+import peakspace.repository.jdbsTemplate.SearchFriendsJdbcRepository;
 import peakspace.service.UserService;
 
 import java.io.IOException;
@@ -53,8 +54,10 @@ public class UserServiceImpl implements UserService {
     private final PublicProfileRepository pablicProfileRepository;
     private final PublicationRepository publicationRepository;
     private final ProfileRepository profileRepository;
-    private final SearchFriends searchFriends;
+    private final SearchFriendsJdbcRepository searchFriends;
     private final ChapterJdbcTemplate jdbcTemplate;
+    private final GetAllFriendsJdbcRepository jdbcRepository;
+
 
     @Override
     @Transactional
@@ -401,7 +404,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SearchHashtagsResponse> searchHashtags(Choise sample, String keyword) {
-        getCurrentUser();
         if (sample.equals(Choise.Hashtag)) {
             return publicationRepository.findAllHashtags(keyword);
         }
@@ -440,18 +442,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ChapTerResponse> searchChapter(String search) {
-        getCurrentUser();
         return userRepository.searchChapter(search);
     }
 
     @Override
     @Transactional
     public SimpleResponse unsubscribeUser(Long foundUserId) {
-        User currentUser = getCurrentUser();
         User foundUser = userRepository.findByIds(foundUserId);
         boolean foundUserInFriends = false;
 
-        for (Chapter chapter : currentUser.getChapters()) {
+        for (Chapter chapter : getCurrentUser().getChapters()) {
             List<User> friends = chapter.getFriends();
             if (friends.contains(foundUser)) {
                 friends.remove(foundUser);
@@ -618,80 +618,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<AllFriendsResponse> getAllFriendsById(Long userId, String userName) {
-        User user = getCurrentUser();
-        List<AllFriendsResponse> allFriendsResponses = new ArrayList<>();
-        if (userId.equals(user.getId())) {
-            for (Chapter chapter : user.getChapters()) {
-                for (User friend : chapter.getFriends()) {
-                    if (userName != null) {
-                        String trim = userName.trim();
-                        if (friend.getThisUserName().contains(trim) ||
-                            friend.getProfile().getFirstName().contains(trim) ||
-                            friend.getProfile().getLastName().contains(trim) ||
-                            friend.getProfile().getPatronymicName().contains(trim)) {
-
-                            if (friend.getThisUserName().contains(userName) ||
-                                friend.getProfile().getFirstName().contains(userName) ||
-                                friend.getProfile().getLastName().contains(userName) ||
-                                friend.getProfile().getPatronymicName().contains(userName)) {
-                                allFriendsResponses.add(AllFriendsResponse.builder()
-                                        .idUser(friend.getId())
-                                        .avatar(friend.getProfile().getAvatar())
-                                        .userName(friend.getThisUserName())
-                                        .aboutMe(friend.getProfile().getAboutYourSelf())
-                                        .isMyFriend(true)
-                                        .build());
-                            }
-                        }
-                    } else allFriendsResponses.add(AllFriendsResponse.builder()
-                            .idUser(friend.getId())
-                            .avatar(friend.getProfile().getAvatar())
-                            .userName(friend.getThisUserName())
-                            .aboutMe(friend.getProfile().getAboutYourSelf())
-                            .isMyFriend(true)
-                            .build());
-                }
-            }
-        } else {
-            for (Chapter chapter : userRepository.getReferenceById(userId).getChapters()) {
-                for (User friend : chapter.getFriends()) {
-                    boolean is = false;
-                    if (userName != null) {
-                        String trim = userName.trim();
-                        if (friend.getThisUserName().contains(trim) ||
-                            friend.getProfile().getFirstName().contains(trim) ||
-                            friend.getProfile().getLastName().contains(trim) ||
-                            friend.getProfile().getPatronymicName().contains(trim)) {
-                            if (!user.getBlockAccounts().contains(friend.getId())) {
-                                for (Chapter userChapter : user.getChapters()) {
-                                    for (User userChapterFriend : userChapter.getFriends()) {
-                                        if (userChapterFriend.getId().equals(friend.getId())) {
-                                            is = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                allFriendsResponses.add(AllFriendsResponse.builder()
-                                        .idUser(friend.getId())
-                                        .avatar(friend.getProfile().getAvatar())
-                                        .userName(friend.getThisUserName())
-                                        .aboutMe(friend.getProfile().getAboutYourSelf())
-                                        .isMyFriend(is)
-                                        .build());
-                            }
-                        }
-                    } else allFriendsResponses.add(AllFriendsResponse.builder()
-                            .idUser(friend.getId())
-                            .avatar(friend.getProfile().getAvatar())
-                            .userName(friend.getThisUserName())
-                            .aboutMe(friend.getProfile().getAboutYourSelf())
-                            .isMyFriend(is)
-                            .build());
-
-                }
-            }
-        }
-        return allFriendsResponses;
+        return jdbcRepository.getAllFriendsById(userId, userName);
     }
 
     @Override

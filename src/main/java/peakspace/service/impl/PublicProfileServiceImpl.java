@@ -22,6 +22,7 @@ import peakspace.exception.ForbiddenException;
 import peakspace.exception.MessagingException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
+import peakspace.repository.jdbsTemplate.NotificationJdbcRepository;
 import peakspace.service.PublicProfileService;
 
 import java.util.*;
@@ -38,6 +39,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     private final LinkPublicationRepo linkPublicationRepository;
     private final JdbcTemplate jdbcTemplate;
     private final NotificationRepository notificationRepository;
+    private final NotificationJdbcRepository notificationJdbcRepository;
 
     @Override
     @Transactional
@@ -89,23 +91,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         PablicProfile community = getCurrentUser().getCommunity();
         if (community == null) throw new BadRequestException("У вас не существует сообщество");
         for (Publication publication : community.getPublications()) {
-            String deleteCommentsNotificationsQuery = "DELETE FROM comments_notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteCommentsNotificationsQuery, publication.getId());
-
-            // Then, delete from notifications
-            String deleteNotificationsQuery = "DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteNotificationsQuery, publication.getId());
-
-            // Удалить связанные записи из comments_likes
-            String deleteCommentsLikesSQL = "DELETE FROM comments_likes WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteCommentsLikesSQL, publication.getId());
-            String deleteInnerCommentsSql = "DELETE FROM inner_comment WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)";
-            jdbcTemplate.update(deleteInnerCommentsSql, publication.getId());
-
-            // Удалить комментарии
-            String deleteCommentsSQL = "DELETE FROM comments WHERE publication_id = ?";
-            jdbcTemplate.update(deleteCommentsSQL, publication.getId());
-
+            notificationJdbcRepository.deleteNotificationByCommentId(publication.getId());
             notificationRepository.deleteByPublicationId(publication.getId());
             publicationRepository.delete(publication);
         }
@@ -275,7 +261,7 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         List<PublicProfileResponse> randomCommunities = new ArrayList<>();
         Random random = new Random();
         List<Integer> numbers = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 7; i++) {
             int randomIndex = random.nextInt(0, all.size() - 1);
             if (!numbers.contains(randomIndex)) {
                 PablicProfile publicProfile = all.get(randomIndex);
@@ -303,9 +289,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public List<PublicProfileResponse> getMyCommunities() {
         List<PablicProfile> all = publicProfileRepository.findAll();
-        if (all.isEmpty()) {
-            return new ArrayList<>();
-        }
         List<PublicProfileResponse> myCommunities = new ArrayList<>();
         for (PablicProfile pablicProfile : all) {
             if (pablicProfile.getUsers().contains(getCurrentUser())) {

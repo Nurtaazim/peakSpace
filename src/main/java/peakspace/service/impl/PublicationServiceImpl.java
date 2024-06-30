@@ -12,7 +12,7 @@ import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.*;
-import peakspace.repository.jdbsTamplate.PublicationJdbcTemplate;
+import peakspace.repository.jdbsTemplate.PublicationJdbcRepository;
 import peakspace.service.PublicationService;
 
 import java.security.Principal;
@@ -31,8 +31,8 @@ public class PublicationServiceImpl implements PublicationService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final NotificationRepository notificationRepository;
-    private final PublicationJdbcTemplate publicationJdbcTemplate;
-
+    private final PublicationJdbcRepository publicationJdbcTemplate;
+    private final LikeRepository likeRepository;
 
     @Override
     public GetAllPostsResponse getAllPosts(Principal principal) {
@@ -51,7 +51,7 @@ public class PublicationServiceImpl implements PublicationService {
                 .orElse(0);
         int count = 0;
         for (Chapter chapter : user.getChapters()) {
-            count+=chapter.getFriends().size();
+            count += chapter.getFriends().size();
         }
         return GetAllPostsResponse.builder()
                 .userId(getCurrentUser().getId())
@@ -97,7 +97,10 @@ public class PublicationServiceImpl implements PublicationService {
                                 .map(linkPublication -> new LinkPublicationResponse(linkPublication.getId(), linkPublication.getLink()))
                                 .collect(Collectors.toList()),
                         publication.getLikes().size(),
-                        publication.getComments().size()
+                        publication.getComments().size(),
+                        publication.getLikes().contains(likeRepository.getLikeByUserId(currentUser.getId())),
+                        currentUser.getProfile().getFavorites().contains(publication.getId()),
+                        currentUser.getBlockAccounts().contains(publication.getOwner().getId())
                 ))
                 .collect(Collectors.toList());
     }

@@ -1,5 +1,4 @@
-package peakspace.repository.jdbsTamplate;
-
+package peakspace.repository.jdbsTemplate;
 public interface ChapterJdbcTemplate {
     boolean isFriendInOtherChapter(Long id, Long foundUserId, Long chapterId);
 

@@ -2,7 +2,6 @@ package peakspace.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import peakspace.dto.response.GetAllPostsResponse;
@@ -12,7 +11,6 @@ import peakspace.dto.response.HomePageResponse;
 import peakspace.dto.response.PostLinkResponse;
 import peakspace.dto.response.PublicationWithYouResponse;
 import peakspace.dto.response.MyPostResponse;
-import peakspace.repository.jdbsTamplate.PublicationJdbcTemplate;
 import peakspace.service.PublicationService;
 import peakspace.service.UserService;
 
