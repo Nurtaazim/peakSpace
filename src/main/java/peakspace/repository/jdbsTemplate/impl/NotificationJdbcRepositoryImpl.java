@@ -19,7 +19,7 @@ public class NotificationJdbcRepositoryImpl implements NotificationJdbcRepositor
     @Transactional
     public void deleteNotificationByCommentId(Long postId) {
         try {
-            jdbcTemplate.update("DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?", postId);
+            jdbcTemplate.update("DELETE FROM notifications WHERE comment_id IN (SELECT id FROM comments WHERE publication_id = ?)", postId);
         } catch (DataAccessException e) {
             log.error(e.getMessage());
         }
