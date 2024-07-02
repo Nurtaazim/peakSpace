@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import peakspace.dto.response.CommentInnerResponse;
 import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.InnerCommentResponse;
@@ -74,4 +75,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
                    ") " +
                    "and c.publication_id = :postId", nativeQuery = true)
     List<Comment> getAllCommentById(Long postId);
+    @Query(value = "SELECT EXISTS(SELECT 1 FROM comments_likes WHERE comment_id = :commentId AND likes_id = :likeId)", nativeQuery = true)
+    boolean isLike(@Param("commentId") Long commentId, @Param("likeId") Long likeId);
 }

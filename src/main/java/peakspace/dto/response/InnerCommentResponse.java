@@ -11,5 +11,6 @@ public record InnerCommentResponse(Long innerCommentId,
                                    String userName,
                                    String comment,
                                    long countLike,
-                                   ZonedDateTime createdAt) {
+                                   ZonedDateTime createdAt,
+                                   boolean isLike) {
 }
