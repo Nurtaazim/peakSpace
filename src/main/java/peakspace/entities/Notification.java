@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -43,6 +44,6 @@ public class Notification {
 
     @PrePersist
     void prePersist() {
-        this.createdAt = ZonedDateTime.now();
+        this.createdAt = ZonedDateTime.now(ZoneId.of("Asia/Bishkek"));
     }
 }

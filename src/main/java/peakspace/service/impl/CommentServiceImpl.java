@@ -11,7 +11,11 @@ import peakspace.dto.response.CommentResponse;
 import peakspace.dto.response.SimpleResponse;
 import peakspace.dto.response.CommentInnerResponse;
 import peakspace.dto.response.InnerCommentResponse;
-import peakspace.entities.*;
+import peakspace.entities.Comment;
+import peakspace.entities.Notification;
+import peakspace.entities.Publication;
+import peakspace.entities.User;
+import peakspace.entities.Like;
 import peakspace.enums.Role;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
@@ -19,6 +23,8 @@ import peakspace.repository.LikeRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.CommentService;
+
+import java.time.ZoneId;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -37,7 +43,10 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public SimpleResponse save(Long postId, CommentRequest comment) {
         User currentUser = getCurrentUser();
-        Publication publication = publicationRepository.findById(postId).orElseThrow(() -> new NotFoundException(" Нет такой публикации " + postId));
+        Publication publication = publicationRepository.findById(postId).orElseThrow(
+                () -> new NotFoundException(" Нет такой публикации " + postId)
+        );
+
         Comment newComment = new Comment();
         newComment.setMessage(comment.getMessage());
         newComment.setPublication(publication);
@@ -49,6 +58,7 @@ public class CommentServiceImpl implements CommentService {
         notification.setSeen(false);
         notification.setNotificationMessage("Пользователь " + currentUser.getThisUserName()+ " прокомментировал(а) вашу публикацию !");
         notification.setCreatedAt(ZonedDateTime.now());
+//        notification.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
         notification.setComment(save);
         notification.setUserNotification(publication.getOwner());
         notification.setSenderUserId(currentUser.getId());
@@ -83,7 +93,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public SimpleResponse editComment(Long commentId, CommentRequest comment) {
-        Comment editComment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Нет такой комментарии" + commentId));
+        Comment editComment = commentRepository.findById(commentId).orElseThrow(
+                () -> new NotFoundException("Нет такой комментарии" + commentId)
+        );
+
         editComment.setMessage(comment.getMessage());
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
@@ -106,7 +119,9 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public SimpleResponse saveInnerComment(Long commentId, CommentRequest commentRequest) {
         User currentUser = getCurrentUser();
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException(" Нет такой комментарии ! "));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new NotFoundException(" Нет такой комментарии ! ")
+        );
 
         Comment innerComment = new Comment();
         innerComment.setMessage(commentRequest.getMessage());
@@ -118,7 +133,7 @@ public class CommentServiceImpl implements CommentService {
         Notification notification = new Notification();
         notification.setSeen(false);
         notification.setNotificationMessage("Пользователь " + getCurrentUser().getThisUserName() + " ответил(а) на ваш комментарий !");
-        notification.setCreatedAt(ZonedDateTime.now());
+//        notification.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
         notification.setComment(innerComment);
         notification.setUserNotification(comment.getUser());
         notification.setSenderUserId(currentUser.getId());
@@ -134,7 +149,10 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public SimpleResponse editInnerComment(Long innerCommentId, CommentRequest commentRequest) {
         User currentUser = getCurrentUser();
-        Comment innerComment = commentRepository.findById(innerCommentId).orElseThrow(() -> new NotFoundException("Нет такой innerComment !"));
+        Comment innerComment = commentRepository.findById(innerCommentId).orElseThrow(
+                () -> new NotFoundException("Нет такой innerComment !")
+        );
+
         innerComment.setMessage(commentRequest.getMessage());
         innerComment.setUser(currentUser);
         return SimpleResponse.builder()

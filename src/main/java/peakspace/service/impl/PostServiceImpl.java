@@ -2,7 +2,6 @@ package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -10,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import peakspace.config.amazonS3.AwsS3Service;
 import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PostUpdateRequest;
-import peakspace.dto.response.*;
-import peakspace.entities.User;
+import peakspace.dto.response.FavoritePostResponse;
+import peakspace.dto.response.SimpleResponse;
 import peakspace.entities.Link_Publication;
-import peakspace.entities.Publication;
 import peakspace.entities.Notification;
+import peakspace.entities.Publication;
+import peakspace.entities.User;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.NotFoundException;
@@ -25,6 +25,7 @@ import peakspace.repository.UserRepository;
 import peakspace.repository.jdbsTemplate.NotificationJdbcRepository;
 import peakspace.service.PostService;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,6 @@ public class PostServiceImpl implements PostService {
     private final PublicationRepository publicationRepo;
     private final NotificationRepository notificationRepository;
     private final AwsS3Service awsS3Service;
-    private final JdbcTemplate jdbcTemplate;
     private final NotificationJdbcRepository notificationJdbcRepository;
 
     @Transactional
@@ -83,7 +83,7 @@ public class PostServiceImpl implements PostService {
             if (publication.getId().equals(postId)) {
                 publication.setDescription(postUpdateRequest.getDescription());
                 publication.setLocation(postUpdateRequest.getLocation());
-                publication.setUpdatedAt(ZonedDateTime.now());
+                publication.setUpdatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
                 break;
             }
         }
@@ -120,7 +120,6 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     @Transactional
     @Override
     public SimpleResponse notationFriend(Long postId, List<Long> foundUserIds) {
@@ -142,7 +141,8 @@ public class PostServiceImpl implements PostService {
         }
 
         List<User> usersToMark = foundUserIds.stream()
-                .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не найден!")))
+                .map(userId -> userRepository.findById(userId).orElseThrow(
+                        () -> new NotFoundException("Пользователь не найден!")))
                 .filter(user -> !publication.getTagFriends().contains(user))
                 .collect(Collectors.toList());
 
@@ -166,7 +166,7 @@ public class PostServiceImpl implements PostService {
         notification.setNotificationMessage(owner.getUsername() + " хочет выложить фото с вами!");
         notification.setUserNotification(user);
         notification.setSeen(false);
-        notification.setCreatedAt(ZonedDateTime.now());
+//        notification.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
         notification.setSenderUserId(owner.getId());
         return notification;
     }
@@ -252,7 +252,7 @@ public class PostServiceImpl implements PostService {
         if (publication.getOwner().equals(currentUser) || currentUser.getCommunity().getPublications().contains(publication)) {
             publication.setDescription(postUpdateRequest.getDescription());
             publication.setLocation(postUpdateRequest.getLocation());
-            publication.setUpdatedAt(ZonedDateTime.now());
+            publication.setUpdatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
             return SimpleResponse.builder()
                     .message(" Успешно изменен пост паблике!")
                     .httpStatus(HttpStatus.OK)

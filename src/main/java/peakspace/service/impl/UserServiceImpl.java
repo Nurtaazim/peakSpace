@@ -37,6 +37,7 @@ import peakspace.service.UserService;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -135,7 +136,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.getReferenceById(userForVerifier.getId());
             user.setIsBlock(false);
             user.setConfirmationCode(null);
-            user.setCreatedAt(ZonedDateTime.now());
+//            user.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
             sendDefaultPasswordToEmail(user);
             user.setBlockAccount(false);
             return ResponseWithGoogle.builder()
@@ -559,7 +560,7 @@ public class UserServiceImpl implements UserService {
         mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
         user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
-        user.setCreatedAt(ZonedDateTime.now());
+//        user.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
         user.setBlockAccount(true);
         String message = "<html>"
                          + "<head>"

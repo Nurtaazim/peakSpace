@@ -2,7 +2,6 @@ package peakspace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,6 @@ import peakspace.dto.request.PostRequest;
 import peakspace.dto.request.PublicRequest;
 import peakspace.dto.response.*;
 import peakspace.entities.*;
-import peakspace.entities.Comment;
-import peakspace.entities.PablicProfile;
-import peakspace.entities.Publication;
-import peakspace.entities.User;
-import peakspace.entities.Link_Publication;
 import peakspace.enums.Role;
 import peakspace.exception.BadRequestException;
 import peakspace.exception.ForbiddenException;
@@ -25,7 +19,9 @@ import peakspace.repository.*;
 import peakspace.repository.jdbsTemplate.NotificationJdbcRepository;
 import peakspace.service.PublicProfileService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +33,6 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     private final PublicationRepository publicationRepository;
     private final CommentRepository commentRepository;
     private final LinkPublicationRepo linkPublicationRepository;
-    private final JdbcTemplate jdbcTemplate;
     private final NotificationRepository notificationRepository;
     private final NotificationJdbcRepository notificationJdbcRepository;
 
@@ -53,8 +48,10 @@ public class PublicProfileServiceImpl implements PublicProfileService {
         newPublic.setDescriptionPublic(publicRequest.getDescriptionPublic());
         newPublic.setTematica(publicRequest.getTematica());
         newPublic.setPublications(new ArrayList<>());
-        if(newPublic.getAvatar() == null || newPublic.getAvatar().isEmpty()) newPublic.setAvatar("https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg");
-        if(newPublic.getCover() == null || newPublic.getCover().isEmpty()) newPublic.setCover("https://s3-alpha-sig.figma.com/img/1c92/1bf5/b0093ed0ac29cf722c834434cf7ee611?Expires=1719187200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aRbcWs8eN-Mhny0ICI4GwKLx-LG7tHupNdjJBDCVlh37EbKJDndgV-0wSV8n0xq8OM-TEVcxPBLZMhjhy2C1~O1H2JnivHYvfFiLd8f4~KNWiFAE0eQMFjR3ROYnWqWASvOYYbWJ3tIuHScnYxKnlNZzjjQ71UfYzEjQNdRj1ecjFym1oI2wCHHRm-Qemi1VGm0kPLCnLZokRPxn9i8AM7SznezApo2HJlzd3v363puF6ylHtDDjwGSMgnpW2rSxKVyKz3utSjLTQRKy~mpnGsZbX4HRFovktCXL2aq9TiYvxvvHboBXhyz5aXbJzLt-WPGGp4rCyCdSTwL0fnntsA__");
+        if (newPublic.getAvatar() == null || newPublic.getAvatar().isEmpty())
+            newPublic.setAvatar("https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg");
+        if (newPublic.getCover() == null || newPublic.getCover().isEmpty())
+            newPublic.setCover("https://s3-alpha-sig.figma.com/img/1c92/1bf5/b0093ed0ac29cf722c834434cf7ee611?Expires=1719187200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aRbcWs8eN-Mhny0ICI4GwKLx-LG7tHupNdjJBDCVlh37EbKJDndgV-0wSV8n0xq8OM-TEVcxPBLZMhjhy2C1~O1H2JnivHYvfFiLd8f4~KNWiFAE0eQMFjR3ROYnWqWASvOYYbWJ3tIuHScnYxKnlNZzjjQ71UfYzEjQNdRj1ecjFym1oI2wCHHRm-Qemi1VGm0kPLCnLZokRPxn9i8AM7SznezApo2HJlzd3v363puF6ylHtDDjwGSMgnpW2rSxKVyKz3utSjLTQRKy~mpnGsZbX4HRFovktCXL2aq9TiYvxvvHboBXhyz5aXbJzLt-WPGGp4rCyCdSTwL0fnntsA__");
         PablicProfile save = publicProfileRepository.save(newPublic);
         currentUser.setCommunity(newPublic);
         save.setOwner(currentUser);
@@ -375,7 +372,10 @@ public class PublicProfileServiceImpl implements PublicProfileService {
 
     @Override
     public List<ShortPublicationResponse> getAllPublicationByCommunityId(Long communityId) {
-        PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с такой айди не существует!"));
+        PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(
+                () -> new NotFoundException("Сообщество с такой айди не существует!")
+        );
+
         List<ShortPublicationResponse> publications = new ArrayList<>();
         for (Publication publication : community.getPublications()) {
             ShortPublicationResponse shortPublicationResponse = new ShortPublicationResponse(publication.getId(), publication.getOwner().getId(), publication.getLinkPublications().getFirst().getLink());
@@ -412,9 +412,10 @@ public class PublicProfileServiceImpl implements PublicProfileService {
     @Override
     public List<SearchResponse> getUsersByCommunityId(Long communityId) {
         PablicProfile community = publicProfileRepository.findById(communityId).orElseThrow(() -> new NotFoundException("Сообщество с таким айди не существует!"));
-        if (!community.getUsers().contains(getCurrentUser()) || !getCurrentUser().equals(community.getOwner())) throw new ForbiddenException("Так как вы не являетесь участником, вы не можете посмотреть список участников ");
+        if (!community.getUsers().contains(getCurrentUser()) || !getCurrentUser().equals(community.getOwner()))
+            throw new ForbiddenException("Так как вы не являетесь участником, вы не можете посмотреть список участников ");
         List<SearchResponse> users = new ArrayList<>();
-        if (community.getUsers() == null ) return new ArrayList<>();
+        if (community.getUsers() == null) return new ArrayList<>();
         for (User user : community.getUsers()) {
             SearchResponse searchResponse = new SearchResponse(user.getId(), user.getThisUserName(), user.getProfile().getAvatar(), user.getProfile().getAboutYourSelf());
             users.add(searchResponse);

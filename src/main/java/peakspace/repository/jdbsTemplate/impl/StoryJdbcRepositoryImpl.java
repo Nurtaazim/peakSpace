@@ -10,6 +10,7 @@ import peakspace.entities.User;
 import peakspace.repository.jdbsTemplate.StoryJdbcRepository;
 
 import java.sql.Timestamp;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class StoryJdbcRepositoryImpl implements StoryJdbcRepository {
     @Override
     public List<StoryAllHomPageResponse> getAllFriendsStory(Long currentUserId) {
 
-        Timestamp cutoffTime = Timestamp.from(ZonedDateTime.now().minus(24, ChronoUnit.HOURS).toInstant());
+        Timestamp cutoffTime = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")).minus(24, ChronoUnit.HOURS).toInstant());
 
         String sql = """
                     SELECT s.id, u.id AS userId, u.user_name AS userName, p.avatar, s.created_at AS createdAt
@@ -60,7 +61,7 @@ public class StoryJdbcRepositoryImpl implements StoryJdbcRepository {
 
     @Override
     public List<MyStoriesResponse> getMyStories(User user) {
-        Timestamp cutoffTime = Timestamp.from(ZonedDateTime.now().minus(24, ChronoUnit.HOURS).toInstant());
+        Timestamp cutoffTime = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")).minus(24, ChronoUnit.HOURS).toInstant());
         List<MyStoriesResponse> myStoriesResponses = new ArrayList<>();
         String sql = """
                     SELECT s.id, lp.link, s.created_at, s.text

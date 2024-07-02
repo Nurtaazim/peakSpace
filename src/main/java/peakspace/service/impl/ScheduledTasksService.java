@@ -11,6 +11,7 @@ import peakspace.entities.User;
 import peakspace.repository.StoryRepository;
 import peakspace.repository.UserRepository;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 @Slf4j
@@ -27,7 +28,7 @@ public class ScheduledTasksService {
         List<Story> stories = storyRepository.findAll();
         stories.stream()
                 .filter(story -> story.getCreatedAt() != null &&
-                                 ZonedDateTime.now().isAfter(story.getCreatedAt().plusHours(24)))
+                                 ZonedDateTime.now(ZoneId.of("Asia/Bishkek")).isAfter(story.getCreatedAt().plusHours(24)))
                 .forEach(story -> {
                     try {
                         story.getLinkPublications().forEach(linkPublication -> {
@@ -49,7 +50,7 @@ public class ScheduledTasksService {
         List<User> users = userRepository.findAll();
         users.stream()
                 .filter(user -> user.getCreatedAt() != null &&
-                                ZonedDateTime.now().isAfter(user.getCreatedAt().plusMinutes(3)) &&
+                                ZonedDateTime.now(ZoneId.of("Asia/Bishkek")).isAfter(user.getCreatedAt().plusMinutes(3)) &&
                                 user.getBlockAccount())
                 .forEach(user -> {
                     try {
