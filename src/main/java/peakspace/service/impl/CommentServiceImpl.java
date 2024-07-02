@@ -15,14 +15,17 @@ import peakspace.entities.Comment;
 import peakspace.entities.Notification;
 import peakspace.entities.Publication;
 import peakspace.entities.User;
+import peakspace.entities.Like;
 import peakspace.enums.Role;
 import peakspace.exception.NotFoundException;
 import peakspace.repository.CommentRepository;
+import peakspace.repository.LikeRepository;
 import peakspace.repository.PublicationRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.CommentService;
 
 import java.time.ZoneId;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     @Transactional
@@ -52,7 +56,8 @@ public class CommentServiceImpl implements CommentService {
 
         Notification notification = new Notification();
         notification.setSeen(false);
-        notification.setNotificationMessage(" Ответил  на вашу публикации  ! ");
+        notification.setNotificationMessage("Пользователь " + currentUser.getThisUserName()+ " прокомментировал(а) вашу публикацию !");
+        notification.setCreatedAt(ZonedDateTime.now());
 //        notification.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
         notification.setComment(save);
         notification.setUserNotification(publication.getOwner());
@@ -68,15 +73,18 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponse> getAllComment(Long postId) {
         List<Comment> comments = commentRepository.getAllCommentById(postId);
         List<CommentResponse> commentResponses = new ArrayList<>();
+        Like like= likeRepository.getByUserId(getCurrentUser().getId());
         for (Comment comment : comments) {
+            boolean isLike = commentRepository.isLike(comment.getId(), like.getId());
             commentResponses.add(CommentResponse.builder()
-                            .id(comment.getId())
-                            .userId(comment.getUser().getId())
-                            .avatar(comment.getUser().getProfile().getAvatar())
-                            .userName(comment.getUser().getThisUserName())
-                            .comment(comment.getMessage())
-                            .countLike(comment.getLikes().size())
-                            .createdAt(comment.getCreatedAt())
+                    .id(comment.getId())
+                    .userId(comment.getUser().getId())
+                    .avatar(comment.getUser().getProfile().getAvatar())
+                    .userName(comment.getUser().getThisUserName())
+                    .comment(comment.getMessage())
+                    .countLike(comment.getLikes().size())
+                    .createdAt(comment.getCreatedAt())
+                    .isLike(isLike)
                     .build());
         }
         return commentResponses;
@@ -124,7 +132,7 @@ public class CommentServiceImpl implements CommentService {
 
         Notification notification = new Notification();
         notification.setSeen(false);
-        notification.setNotificationMessage(" Ответила на ваш комментарий ваша сообщение ! ");
+        notification.setNotificationMessage("Пользователь " + getCurrentUser().getThisUserName() + " ответил(а) на ваш комментарий !");
 //        notification.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
         notification.setComment(innerComment);
         notification.setUserNotification(comment.getUser());
@@ -133,26 +141,28 @@ public class CommentServiceImpl implements CommentService {
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Успешно доставлено комментарии !")
+                .message("Успешно доставлено комментарии !")
                 .build();
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse editInnerComment(Long innerCommentId, CommentRequest commentRequest) {
         User currentUser = getCurrentUser();
         Comment innerComment = commentRepository.findById(innerCommentId).orElseThrow(
-                () -> new NotFoundException(" Нет такой innerComment !")
+                () -> new NotFoundException("Нет такой innerComment !")
         );
 
         innerComment.setMessage(commentRequest.getMessage());
         innerComment.setUser(currentUser);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Успешно изменено комментарии !")
+                .message("Успешно изменено комментарии !")
                 .build();
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public SimpleResponse removeInnerComment(Long innerCommentId) {
         commentRepository.deleteNotificationComment(innerCommentId);
         commentRepository.deleteLikes(innerCommentId);
@@ -161,7 +171,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteByIds(innerCommentId);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message(" Успешно удалено комментарии !")
+                .message("Успешно удалено комментарии !")
                 .build();
     }
 
@@ -184,9 +194,10 @@ public class CommentServiceImpl implements CommentService {
     public List<InnerCommentResponse> getAllInnerComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException(" Нет такой комментарии ! "));
-
+        Like like= likeRepository.getByUserId(getCurrentUser().getId());
         List<InnerCommentResponse> innerCommentResponses = new ArrayList<>();
         for (Comment innerComment : comment.getInnerComments()) {
+            boolean isLike = commentRepository.isLike(innerComment.getId(), like.getId());
             InnerCommentResponse innerCommentResponse = InnerCommentResponse.builder()
                     .innerCommentId(innerComment.getId())
                     .userId(innerComment.getUser().getId())
@@ -195,6 +206,7 @@ public class CommentServiceImpl implements CommentService {
                     .comment(innerComment.getMessage())
                     .countLike(innerComment.getLikes().size())
                     .createdAt(innerComment.getCreatedAt())
+                    .isLike(isLike)
                     .build();
             innerCommentResponses.add(innerCommentResponse);
         }

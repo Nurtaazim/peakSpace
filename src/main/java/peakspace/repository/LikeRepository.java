@@ -23,4 +23,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
         }
         return null;
     }
+    @Query("select l from Like l where l.user.id = :userId")
+    Like getByUserId(Long userId);
 }

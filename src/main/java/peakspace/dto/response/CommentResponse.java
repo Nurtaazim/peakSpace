@@ -1,14 +1,14 @@
 package peakspace.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentResponse {
 
     private Long id;
@@ -18,6 +18,7 @@ public class CommentResponse {
     private String comment;
     private long countLike;
     private ZonedDateTime createdAt;
+    private boolean isLike;
 
     public CommentResponse(Long id, Long userId, String avatar, String userName, String comment, long countLike, ZonedDateTime createdAt) {
         this.id = id;
