@@ -21,6 +21,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class PublicationJdbcRepositoryImpl implements PublicationJdbcRepository {
+
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
     private final PublicationRepository publicationRepository;

@@ -23,6 +23,8 @@ import peakspace.repository.ChatRepository;
 import peakspace.repository.MessageContentRepository;
 import peakspace.repository.UserRepository;
 import peakspace.service.ChatService;
+
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
+
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final MessageContentRepository messageContentRepository;
@@ -78,7 +81,7 @@ public class ChatServiceImpl implements ChatService {
             MessageContent message = new MessageContent();
             message.setContent(content);
 
-            message.setTimestamp(Date.from(ZonedDateTime.now().toInstant()));
+            message.setTimestamp(Date.from(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")).toInstant()));
             message.setReadOrNotRead(false);
             message.setChat(chat);
             MessageContent savedMessage = messageContentRepository.save(message);

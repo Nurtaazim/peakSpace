@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Comment {
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = ZonedDateTime.now();
+        this.createdAt = ZonedDateTime.now(ZoneId.of("Asia/Bishkek"));
     }
 
 }

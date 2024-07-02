@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import peakspace.enums.Role;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,6 +63,7 @@ public class User implements UserDetails {
     private List<Long> myAcceptPost;
     @OneToOne(mappedBy = "owner", fetch = LAZY)
     private PablicProfile community;
+
     public String getThisUserName() {
         return this.userName;
     }
@@ -111,6 +113,11 @@ public class User implements UserDetails {
             }
         }
         return friends.stream().distinct().collect(Collectors.toList());
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = ZonedDateTime.now(ZoneId.of("Asia/Bishkek"));
     }
 
 }

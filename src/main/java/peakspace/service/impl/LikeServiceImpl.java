@@ -48,7 +48,10 @@ public class LikeServiceImpl implements LikeService {
     @Override
     @Transactional
     public boolean addLikeToComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException("Комментарий с такой id не существует!"));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new NotFoundException("Комментарий с такой id не существует!")
+        );
+
         if (removeLikeFromComment(comment.getLikes(), commentId)){
             Like like = createLike();
             comment.getLikes().add(like);
@@ -62,7 +65,10 @@ public class LikeServiceImpl implements LikeService {
     @Override
     @Transactional
     public boolean addLikeToStory(Long storyId) {
-        Story story  = storyRepository.findById(storyId).orElseThrow(() -> new NotFoundException("Сторис с такой id не существует!"));
+        Story story  = storyRepository.findById(storyId).orElseThrow(
+                () -> new NotFoundException("Сторис с такой id не существует!")
+        );
+
         if (removeLikeFromStory(story.getLikes(), storyId)){
             Like like = createLike();
             story.getLikes().add(like);

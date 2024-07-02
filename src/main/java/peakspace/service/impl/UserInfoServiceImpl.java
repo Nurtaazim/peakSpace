@@ -102,7 +102,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getByEmail(email);
 
-        User foundUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found!"));
+        User foundUser = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
 
         if (!user.getId().equals(foundUser.getId())) {
             if (user.getBlockAccounts().contains(foundUser.getId())) {
