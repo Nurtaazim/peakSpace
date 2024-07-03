@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getByEmail(email);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-        mimeMessageHelper.setFrom("aliaskartemirbekov@gmail.com");
+        mimeMessageHelper.setFrom("nurtaazimmukanov24@gmail.com");
         mimeMessageHelper.setTo(email);
         String randomCode = generatorConfirmationCode();
         user.setConfirmationCode(randomCode);
@@ -263,7 +263,7 @@ public class UserServiceImpl implements UserService {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true,"UTF-8");
-            mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
+            mimeMessageHelper.setFrom("nurtaazimmukanov24@gmail.com");
             mimeMessageHelper.setTo(user.getEmail());
             mimeMessageHelper.setText("""
                                               Hi """ + user.getUsername() + """
@@ -557,7 +557,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.USER);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-        mimeMessageHelper.setFrom("arstanbeekovvv@gmail.com");
+        mimeMessageHelper.setFrom("peakspace@gmail.com");
         mimeMessageHelper.setTo(signUpRequest.email());
         user.setConfirmationCode(String.valueOf(new Random().nextInt(1000, 9000)));
 //        user.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Bishkek")));
