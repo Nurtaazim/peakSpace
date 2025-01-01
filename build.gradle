@@ -17,7 +17,6 @@ repositories {
 
 dependencies {
     // для описание метода в свагере
-// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
     // для валидация
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.2.3'
